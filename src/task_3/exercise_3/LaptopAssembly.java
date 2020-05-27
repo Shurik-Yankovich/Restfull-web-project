@@ -10,10 +10,10 @@ public class LaptopAssembly implements AssemblyLine {
 
     LineStep[] lineSteps = new LineStep[3];
 
-    public LaptopAssembly() {
-        lineSteps[0] = new CreateFirstPart();
-        lineSteps[1] = new CreateSecondPart();
-        lineSteps[2] = new CreateThirdPart();
+    public LaptopAssembly(CreateFirstPart firstPart, CreateSecondPart secondPart, CreateThirdPart thirdPart) {
+        lineSteps[0] = firstPart;
+        lineSteps[1] = secondPart;
+        lineSteps[2] = thirdPart;
     }
 
     @Override
