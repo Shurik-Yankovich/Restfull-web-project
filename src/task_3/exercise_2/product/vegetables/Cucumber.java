@@ -1,20 +1,18 @@
-package task_3.exercise_2.product.fruits;
+package task_3.exercise_2.product.vegetables;
 
 import task_3.exercise_2.product.Product;
 
-public class Blackberry extends Product {
+public class Cucumber extends Product {
 
     private String name;
 
-    public Blackberry(double weight) {
+    public Cucumber(double weight) {
         super(weight);
-        name = "Ежевика";
+        name = "Огурец";
     }
 
     @Override
     public String getName() {
         return null;
     }
-
-
 }

@@ -1,8 +1,18 @@
 package task_3.exercise_2.product.fruits;
 
-public class Orange extends Citrus {
+import task_3.exercise_2.product.Product;
 
-    public Orange(String name, double weight) {
-        super(name, weight);
+public class Orange extends Product {
+
+    private String name;
+
+    public Orange(double weight) {
+        super(weight);
+        name = "Апельсин";
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 }

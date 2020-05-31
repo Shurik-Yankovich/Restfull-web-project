@@ -2,18 +2,17 @@ package task_3.exercise_2.product.vegetables;
 
 import task_3.exercise_2.product.Product;
 
-public abstract class Vegetables extends Product {
+public class Potato extends Product {
 
     private String name;
 
-    public Vegetables(String name, double weight) {
+    public Potato(double weight) {
         super(weight);
-        this.name = name;
+        name = "Картофель";
     }
 
     @Override
     public String getName() {
-        return name;
+        return null;
     }
-
 }

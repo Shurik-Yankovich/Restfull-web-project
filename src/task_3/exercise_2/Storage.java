@@ -20,7 +20,7 @@ public class Storage {
         return false;
     }
 
-    public double getWeightOfProductsInStorage() {
+    public double getWeightOfProducts() {
         double sum = 0;
         for (Product product : products) {
             sum += product.getWeight();
