@@ -1,21 +1,9 @@
 package task_3.exercise_2.product;
 
-public abstract class Product {
+public interface Product {
 
-    private double weight;
+    double getWeight();
 
-    public Product(double weight) {
-        this.weight = weight;
-    }
+    String getName();
 
-    public double getWeight() {
-        return weight;
-    }
-
-    public abstract String getName();
-
-    @Override
-    public String toString() {
-        return String.format("Продукт: [%s] имеет вес: %.3f кг", getName(), getWeight());
-    }
 }
