@@ -2,7 +2,7 @@ package task_3.exercise_1;
 
 public class WorkWithNumber {
 
-    public void startWork() {
+    public void doWorkWithNumberAndPrintResult() {
         int number;
         int sumOfDigits;
         number = numberGenerator();
@@ -15,10 +15,11 @@ public class WorkWithNumber {
     }
 
     private int sumOfDigitsOfNumber(int number) {
-        if (number / 10 == 0) {
+        int tensOfNumbers = number / 10;
+        if (tensOfNumbers == 0) {
             return number;
         } else {
-            return number % 10 + sumOfDigitsOfNumber(number / 10);
+            return number % 10 + sumOfDigitsOfNumber(tensOfNumbers);
         }
     }
 

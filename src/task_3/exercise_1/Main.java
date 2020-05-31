@@ -5,6 +5,6 @@ package task_3.exercise_1;
 public class Main {
 
     public static void main(String[] args) {
-        new WorkWithNumber().startWork();
+        new WorkWithNumber().doWorkWithNumberAndPrintResult();
     }
 }
