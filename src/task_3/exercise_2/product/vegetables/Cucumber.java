@@ -13,6 +13,6 @@ public class Cucumber extends Product {
 
     @Override
     public String getName() {
-        return null;
+        return name;
     }
 }
