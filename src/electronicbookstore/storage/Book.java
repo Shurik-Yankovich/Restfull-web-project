@@ -1,6 +1,6 @@
 package electronicbookstore.storage;
 
-public class Book {
+public class Book implements Comparable<Book> {
 
     private String title;
     private String author;
@@ -27,5 +27,14 @@ public class Book {
     @Override
     public String toString() {
         return String.format("[Book: \"%s\" - %s, %d]", title, author, publicationYear);
+    }
+
+    public boolean equals(Book book) {
+        return toString().equals(book.toString());
+    }
+
+    @Override
+    public int compareTo(Book book) {
+        return toString().compareTo(book.toString());
     }
 }

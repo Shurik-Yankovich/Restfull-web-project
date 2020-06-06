@@ -1,11 +1,12 @@
 package electronicbookstore.store;
 
-import electronicbookstore.storage.Book;
-import electronicbookstore.storage.Bookshelf;
 import electronicbookstore.arraylist.MyArrayList;
 import electronicbookstore.arraylist.OrderArrayList;
 import electronicbookstore.arraylist.RequestArrayList;
+import electronicbookstore.storage.Book;
 import electronicbookstore.storage.BookStorage;
+import electronicbookstore.storage.Bookshelf;
+
 
 import java.util.Calendar;
 
@@ -23,7 +24,7 @@ public class ElectronicBookstore implements Store{
 
     @Override
     public void addBookOnStorage(Book book) {
-
+        bookStorage.changePresence(book, true);
     }
 
     @Override
