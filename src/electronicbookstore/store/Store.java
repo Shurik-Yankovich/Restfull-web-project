@@ -1,4 +1,7 @@
-package electronicbookstore;
+package electronicbookstore.store;
+
+import electronicbookstore.storage.Book;
+import electronicbookstore.storage.Bookshelf;
 
 import java.util.Calendar;
 

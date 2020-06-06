@@ -1,4 +1,4 @@
-package electronicbookstore;
+package electronicbookstore.storage;
 
 public class Book {
 

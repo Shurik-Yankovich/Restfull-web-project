@@ -1,6 +1,8 @@
-package electronicbookstore;
+package electronicbookstore.store;
 
-import static electronicbookstore.Status.NEW;
+import electronicbookstore.storage.Book;
+
+import static electronicbookstore.store.Status.NEW;
 
 public class BookRequest {
 

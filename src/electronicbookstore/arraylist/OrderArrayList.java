@@ -1,25 +1,27 @@
 package electronicbookstore.arraylist;
 
+import electronicbookstore.store.BookOrder;
+
 import java.util.Arrays;
 
 public class OrderArrayList implements MyArrayList {
 
     private static final int DEFAULT_CAPACITY = 10;
 
-    private Object[] array;
+    private BookOrder[] array;
     private int length;
 
-    public OrderArrayList(Object[] array) {
+    public OrderArrayList(BookOrder[] array) {
         this.array = array;
         this.length = array.length;
     }
 
     public OrderArrayList(int count) {
-        this.array = new Object[count];
+        this.array = new BookOrder[count];
     }
 
     public OrderArrayList() {
-        this.array = new Object[DEFAULT_CAPACITY];
+        this.array = new BookOrder[DEFAULT_CAPACITY];
     }
 
     @Override
@@ -32,7 +34,7 @@ public class OrderArrayList implements MyArrayList {
         if (length == array.length) {
             increaseArrayLength();
         }
-        array[length] = element;
+        array[length] = (BookOrder) element;
         length++;
     }
 
@@ -41,13 +43,13 @@ public class OrderArrayList implements MyArrayList {
     }
 
     @Override
-    public int size(){
+    public int size() {
         return length;
     }
 
     @Override
-    public Object get(int index){
-        if (index >=0 && index<length){
+    public BookOrder get(int index) {
+        if (index >= 0 && index < length) {
             return array[index];
         } else {
             return null;

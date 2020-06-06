@@ -1,9 +1,11 @@
-package electronicbookstore;
+package electronicbookstore.store;
+
+import electronicbookstore.storage.Book;
 
 import java.util.Arrays;
 import java.util.Calendar;
 
-import static electronicbookstore.Status.NEW;
+import static electronicbookstore.store.Status.NEW;
 
 public class BookOrder {
 

@@ -1,6 +1,9 @@
 package electronicbookstore;
 
 import electronicbookstore.arraylist.OrderArrayList;
+import electronicbookstore.storage.Book;
+import electronicbookstore.store.BookOrder;
+import electronicbookstore.store.Customer;
 
 import java.util.GregorianCalendar;
 

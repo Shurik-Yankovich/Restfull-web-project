@@ -1,4 +1,4 @@
-package electronicbookstore;
+package electronicbookstore.store;
 
 public class Customer {
 

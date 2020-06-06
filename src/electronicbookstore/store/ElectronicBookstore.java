@@ -1,19 +1,24 @@
-package electronicbookstore;
+package electronicbookstore.store;
 
+import electronicbookstore.storage.Book;
+import electronicbookstore.storage.Bookshelf;
+import electronicbookstore.arraylist.MyArrayList;
 import electronicbookstore.arraylist.OrderArrayList;
+import electronicbookstore.arraylist.RequestArrayList;
+import electronicbookstore.storage.BookStorage;
 
 import java.util.Calendar;
 
 public class ElectronicBookstore implements Store{
 
     BookStorage bookStorage;
-    OrderArrayList orderList;
-    OrderArrayList requestList;
+    MyArrayList orderList;
+    MyArrayList requestList;
 
     public ElectronicBookstore() {
         bookStorage = new BookStorage();
         orderList = new OrderArrayList();
-        requestList = new OrderArrayList();
+        requestList = new RequestArrayList();
     }
 
     @Override
