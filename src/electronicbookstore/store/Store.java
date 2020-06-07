@@ -17,7 +17,7 @@ public interface Store {
     BookOrder[] getCompletedOrderList(Calendar dateFrom, Calendar dateTo);
     int getCountCompletedOrder(Calendar dateFrom, Calendar dateTo);
     BookOrder[] getOrderList();
-    BookRequest[] getRequestList(Book book);
+    BookRequest[] getRequestList();
     Bookshelf[] getUnsoldBookList();
 
 }

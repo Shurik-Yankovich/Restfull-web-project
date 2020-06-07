@@ -67,12 +67,12 @@ public class BookOrder {
 
     @Override
     public String toString() {
-        return "BookOrder{" +
-                "books=" + Arrays.toString(books) +
-                ", customer=" + customer +
-                ", orderDate=" + orderDate +
-                ", status=" + status +
-                ", orderCompletionDate=" + orderCompletionDate +
+        return  "Order:\nBooks:" + Arrays.toString(books) +
+                "\nCustomer:" + customer +
+                ", orderDate = " + orderDate +
+                ", status = " + status +
+                ", orderCompletionDate = " + orderCompletionDate +
+                ", price = " + price +
                 '}';
     }
 }

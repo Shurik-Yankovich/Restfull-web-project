@@ -62,36 +62,41 @@ public class ElectronicBookstore implements Store {
 
     @Override
     public double earnedMoney(Calendar dateFrom, Calendar dateTo) {
-        return 0;
+        BookOrder[] bookOrders = getCompletedOrderList(dateFrom, dateTo);
+        double money = 0;
+        for (BookOrder order : bookOrders) {
+            money += getTotalPrice(order.getBooks());
+        }
+        return money;
     }
 
     @Override
     public Bookshelf[] getBookList() {
-        return new Bookshelf[0];
+        return bookStorage.getBookshelfList();
     }
 
     @Override
     public BookOrder[] getCompletedOrderList(Calendar dateFrom, Calendar dateTo) {
-        return new BookOrder[0];
+        return orderList.getCompletedOrder(dateFrom, dateTo);
     }
 
     @Override
     public int getCountCompletedOrder(Calendar dateFrom, Calendar dateTo) {
-        return 0;
+        return getCompletedOrderList(dateFrom, dateTo).length;
     }
 
     @Override
     public BookOrder[] getOrderList() {
-        return new BookOrder[0];
+        return orderList.getArray();
     }
 
     @Override
-    public BookRequest[] getRequestList(Book book) {
-        return new BookRequest[0];
+    public BookRequest[] getRequestList() {
+        return requestList.getArray();
     }
 
     @Override
     public Bookshelf[] getUnsoldBookList() {
-        return new Bookshelf[0];
+        return bookStorage.getUnsoldBookshelfList();
     }
 }

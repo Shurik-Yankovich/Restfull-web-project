@@ -7,5 +7,6 @@ public interface Storage {
     Bookshelf[] getBookshelfList();
     Bookshelf[] getUnsoldBookshelfList();
     String getBookDescription(Book book);
+    void takeOutBook(Book book);
 
 }

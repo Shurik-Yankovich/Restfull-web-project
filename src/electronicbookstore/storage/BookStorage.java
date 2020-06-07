@@ -1,5 +1,9 @@
 package electronicbookstore.storage;
 
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 public class BookStorage implements Storage {
 
     private static final String BOOK_NOT_FOUND = "Данной книги нет в списке!";
@@ -29,15 +33,6 @@ public class BookStorage implements Storage {
         return bookshelves[index];
     }
 
-    private int searchBook(Book book) {
-        for (int i = 0; i < bookshelves.length; i++) {
-            if (bookshelves[i].getBook().equals(book)) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
     @Override
     public Bookshelf[] getBookshelfList() {
         return bookshelves;
@@ -45,11 +40,42 @@ public class BookStorage implements Storage {
 
     @Override
     public Bookshelf[] getUnsoldBookshelfList() {
-        return new Bookshelf[0];
+        Calendar unsoldDate = new GregorianCalendar();
+        unsoldDate.add(Calendar.MONTH, -6);
+        return getBooksByArrivalDate(unsoldDate);
+    }
+
+    private Bookshelf[] getBooksByArrivalDate(Calendar arrivalDate) {
+        Bookshelf[] booksByArrivalDate = new Bookshelf[0];
+        int index;
+        for (Bookshelf bookshelf: bookshelves){
+            if (bookshelf.getArrivalDate().compareTo(arrivalDate) != 1) {
+                index = booksByArrivalDate.length;
+                booksByArrivalDate = Arrays.copyOf(booksByArrivalDate, index + 1);
+                booksByArrivalDate[index] = bookshelf;
+            }
+        }
+        return booksByArrivalDate;
     }
 
     @Override
     public String getBookDescription(Book book) {
-        return null;
+        int index = searchBook(book);
+        return bookshelves[index].toString();
+    }
+
+    @Override
+    public void takeOutBook(Book book) {
+        int index = searchBook(book);
+        bookshelves[index].setPresence(false);
+    }
+
+    private int searchBook(Book book) {
+        for (int i = 0; i < bookshelves.length; i++) {
+            if (bookshelves[i].getBook().equals(book)) {
+                return i;
+            }
+        }
+        return -1;
     }
 }

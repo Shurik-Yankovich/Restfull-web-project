@@ -37,7 +37,7 @@ public class RequestArray {
             if (length == array.length) {
                 increaseArrayLength();
             }
-            array[length] = (BookRequest) element;
+            array[length] = element;
             length++;
     }
 
@@ -45,8 +45,12 @@ public class RequestArray {
         array = Arrays.copyOf(array, array.length + DEFAULT_CAPACITY);
     }
 
-    public int size() {
-        return length;
+    public void closeRequest(Book book) {
+        for (int i = 0; i < length; i++) {
+            if (array[i].getBook().equals(book) && array[i].getStatus() == NEW) {
+                array[i].setStatus(COMPLETED);
+            }
+        }
     }
 
     public BookRequest get(int index) {
@@ -56,11 +60,11 @@ public class RequestArray {
         return null;
     }
 
-    public void closeRequest(Book book) {
-        for (int i = 0; i < length; i++) {
-            if (array[i].getBook().equals(book) && array[i].getStatus() == NEW) {
-                array[i].setStatus(COMPLETED);
-            }
-        }
+    public BookRequest[] getArray() {
+        return array;
+    }
+
+    public int size() {
+        return length;
     }
 }
