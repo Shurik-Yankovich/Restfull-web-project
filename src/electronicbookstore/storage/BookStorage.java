@@ -1,7 +1,10 @@
 package electronicbookstore.storage;
 
+import electronicbookstore.comparator.*;
+
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.GregorianCalendar;
 
 public class BookStorage implements Storage {
@@ -10,11 +13,11 @@ public class BookStorage implements Storage {
 
     private Bookshelf[] bookshelves;
 
-    public BookStorage(Bookshelf[] bookshelves) {
-        this.bookshelves = bookshelves;
+    public BookStorage() {
     }
 
-    public BookStorage() {
+    public BookStorage(Bookshelf[] bookshelves) {
+        this.bookshelves = bookshelves;
     }
 
     @Override
@@ -35,7 +38,7 @@ public class BookStorage implements Storage {
 
     @Override
     public Bookshelf[] getBookshelfList() {
-        return bookshelves;
+        return sortBookshelves();
     }
 
     @Override
@@ -78,4 +81,34 @@ public class BookStorage implements Storage {
         }
         return -1;
     }
+
+    private Bookshelf[] sortBookshelves(){
+        Comparator<Bookshelf> bookComp = new BookshelfTitleComparator().thenComparing(new BookshelfPublicationYearComparator())
+                .thenComparing(new BookshelfPriceComparator()).thenComparing(new BookshelfPresenceComparator());
+        Bookshelf[] books = bookshelves;
+        Arrays.sort(books, bookComp);
+        return books;
+    }
+
+    private void sortBookTitle (Bookshelf[] books) {
+        Arrays.sort(books, new BookshelfTitleComparator());
+    }
+
+    private void sortPublicationYear (Bookshelf[] books) {
+        Arrays.sort(books, new BookshelfPublicationYearComparator());
+    }
+
+    private void sortArrivalDate (Bookshelf[] books) {
+        Arrays.sort(books, new BookshelfArrivalDateComparator());
+    }
+
+    private void sortPrice (Bookshelf[] books) {
+        Arrays.sort(books, new BookshelfPriceComparator());
+    }
+
+    private void sortPresence (Bookshelf[] books) {
+        Arrays.sort(books, new BookshelfPresenceComparator());
+    }
+
+
 }
