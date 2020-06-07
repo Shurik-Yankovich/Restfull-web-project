@@ -14,6 +14,7 @@ public class BookOrder {
     private Calendar orderDate;
     private Status status;
     private Calendar orderCompletionDate;
+    private double price;
 
     public BookOrder(Customer customer, Calendar orderDate, Book... books) {
         this.books = books;
@@ -42,12 +43,26 @@ public class BookOrder {
         return orderCompletionDate;
     }
 
+    public double getPrice() {
+        return price;
+    }
+
     public void setStatus(Status status) {
         this.status = status;
     }
 
     public void setOrderCompletionDate(Calendar orderCompletionDate) {
         this.orderCompletionDate = orderCompletionDate;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public boolean equals(BookOrder order) {
+        return customer.equals(order.getCustomer()) &&
+                orderDate.equals(order.getOrderDate()) &&
+                Arrays.equals(books, order.getBooks());
     }
 
     @Override

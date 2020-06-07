@@ -5,6 +5,8 @@ import electronicbookstore.store.Status;
 
 import java.util.Arrays;
 
+import static electronicbookstore.store.Status.NEW;
+
 public class OrderArray {
 
     private static final int DEFAULT_CAPACITY = 10;
@@ -65,7 +67,7 @@ public class OrderArray {
 
     private int searchOrderIndex(BookOrder bookOrder) {
         for (int i = 0; i < length; i++) {
-            if (array[i].equals(bookOrder)) {
+            if (array[i].equals(bookOrder) && array[i].getStatus() == NEW) {
                 return i;
             }
         }

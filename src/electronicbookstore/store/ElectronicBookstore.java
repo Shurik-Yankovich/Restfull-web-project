@@ -31,7 +31,18 @@ public class ElectronicBookstore implements Store {
 
     @Override
     public void addOrder(Customer customer, Book... books) {
-        orderList.add(new BookOrder(customer, new GregorianCalendar(), books));
+        BookOrder bookOrder = new BookOrder(customer, new GregorianCalendar(), books);
+        double price = getTotalPrice(books);
+        bookOrder.setPrice(price);
+        orderList.add(bookOrder);
+    }
+
+    private double getTotalPrice(Book[] books) {
+        double price = 0;
+        for (Book book : books) {
+            price += bookStorage.getBookshelf(book).getPrice();
+        }
+        return price;
     }
 
     @Override

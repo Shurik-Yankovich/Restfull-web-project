@@ -23,6 +23,12 @@ public class BookStorage implements Storage {
         }
     }
 
+    @Override
+    public Bookshelf getBookshelf(Book book) {
+        int index = searchBook(book);
+        return bookshelves[index];
+    }
+
     private int searchBook(Book book) {
         for (int i = 0; i < bookshelves.length; i++) {
             if (bookshelves[i].getBook().equals(book)) {
