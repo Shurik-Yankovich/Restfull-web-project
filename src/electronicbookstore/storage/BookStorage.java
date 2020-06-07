@@ -45,7 +45,9 @@ public class BookStorage implements Storage {
     public Bookshelf[] getUnsoldBookshelfList() {
         Calendar unsoldDate = new GregorianCalendar();
         unsoldDate.add(Calendar.MONTH, -6);
-        return getBooksByArrivalDate(unsoldDate);
+        Bookshelf[] books = getBooksByArrivalDate(unsoldDate);
+        sortUnsoldBook(books);
+        return books;
     }
 
     private Bookshelf[] getBooksByArrivalDate(Calendar arrivalDate) {
@@ -88,6 +90,11 @@ public class BookStorage implements Storage {
         Bookshelf[] books = bookshelves;
         Arrays.sort(books, bookComp);
         return books;
+    }
+
+    private void sortUnsoldBook(Bookshelf[] books){
+        Comparator<Bookshelf> bookComp = new BookshelfArrivalDateComparator().thenComparing(new BookshelfPriceComparator());
+        Arrays.sort(books, bookComp);
     }
 
     private void sortBookTitle (Bookshelf[] books) {
