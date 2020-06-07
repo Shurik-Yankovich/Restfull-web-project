@@ -13,9 +13,6 @@ public class BookStorage implements Storage {
 
     private Bookshelf[] bookshelves;
 
-    public BookStorage() {
-    }
-
     public BookStorage(Bookshelf[] bookshelves) {
         this.bookshelves = bookshelves;
     }
@@ -25,6 +22,17 @@ public class BookStorage implements Storage {
         int index = searchBook(book);
         if (index >= 0) {
             bookshelves[index].setPresence(presence);
+        } else {
+            System.out.println(BOOK_NOT_FOUND);
+        }
+    }
+
+    @Override
+    public void comingBook(Book book) {
+        int index = searchBook(book);
+        if (index >= 0) {
+            bookshelves[index].setArrivalDate(new GregorianCalendar());
+            bookshelves[index].setPresence(true);
         } else {
             System.out.println(BOOK_NOT_FOUND);
         }

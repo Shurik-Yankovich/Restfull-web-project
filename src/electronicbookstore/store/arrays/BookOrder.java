@@ -1,6 +1,8 @@
-package electronicbookstore.store;
+package electronicbookstore.store.arrays;
 
 import electronicbookstore.storage.Book;
+import electronicbookstore.store.Customer;
+import electronicbookstore.store.Status;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -11,10 +13,11 @@ public class BookOrder {
 
     private Book[] books;
     private Customer customer;
+    private int[] numbersRequest;
     private Calendar orderDate;
-    private Status status;
     private Calendar orderCompletionDate;
     private double price;
+    private Status status;
 
     public BookOrder(Customer customer, Calendar orderDate, Book... books) {
         this.books = books;
@@ -31,12 +34,12 @@ public class BookOrder {
         return customer;
     }
 
-    public Calendar getOrderDate() {
-        return orderDate;
+    public int[] getNumbersRequest() {
+        return numbersRequest;
     }
 
-    public Status getStatus() {
-        return status;
+    public Calendar getOrderDate() {
+        return orderDate;
     }
 
     public Calendar getOrderCompletionDate() {
@@ -47,8 +50,12 @@ public class BookOrder {
         return price;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setNumbersRequest(int[] numbersRequest) {
+        this.numbersRequest = numbersRequest;
     }
 
     public void setOrderCompletionDate(Calendar orderCompletionDate) {
@@ -57,6 +64,10 @@ public class BookOrder {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     public boolean equals(BookOrder order) {

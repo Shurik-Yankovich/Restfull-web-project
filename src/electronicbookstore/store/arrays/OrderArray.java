@@ -4,7 +4,6 @@ import electronicbookstore.comparator.OrderCompletionDateComparator;
 import electronicbookstore.comparator.OrderDateComparator;
 import electronicbookstore.comparator.OrderPriceComparator;
 import electronicbookstore.comparator.OrderStatusComparator;
-import electronicbookstore.store.BookOrder;
 import electronicbookstore.store.Status;
 
 import java.util.Arrays;
@@ -72,6 +71,10 @@ public class OrderArray {
     }
 
     public BookOrder[] getArray() {
+        return array;
+    }
+
+    public BookOrder[] getSortingArray() {
         return sortBookOrders();
     }
 

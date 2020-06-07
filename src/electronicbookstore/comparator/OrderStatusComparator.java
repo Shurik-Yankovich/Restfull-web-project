@@ -1,6 +1,6 @@
 package electronicbookstore.comparator;
 
-import electronicbookstore.store.BookOrder;
+import electronicbookstore.store.arrays.BookOrder;
 
 import java.util.Comparator;
 
