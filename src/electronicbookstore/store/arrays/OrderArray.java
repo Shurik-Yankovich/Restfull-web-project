@@ -1,10 +1,15 @@
 package electronicbookstore.store.arrays;
 
+import electronicbookstore.comparator.OrderCompletionDateComparator;
+import electronicbookstore.comparator.OrderDateComparator;
+import electronicbookstore.comparator.OrderPriceComparator;
+import electronicbookstore.comparator.OrderStatusComparator;
 import electronicbookstore.store.BookOrder;
 import electronicbookstore.store.Status;
 
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Comparator;
 
 import static electronicbookstore.store.Status.NEW;
 
@@ -67,7 +72,7 @@ public class OrderArray {
     }
 
     public BookOrder[] getArray() {
-        return array;
+        return sortBookOrders();
     }
 
     public BookOrder[] getCompletedOrder(Calendar dateFrom, Calendar dateTo) {
@@ -75,13 +80,14 @@ public class OrderArray {
         int index;
 
         for (BookOrder order : array) {
-            if (isBelongsDateToRange(order.getOrderCompletionDate(), dateFrom, dateTo)){
+            if (isBelongsDateToRange(order.getOrderCompletionDate(), dateFrom, dateTo)) {
                 index = orders.length;
                 orders = Arrays.copyOf(orders, index + 1);
                 orders[index] = order;
             }
         }
 
+        sortCompletedOrders(orders);
         return orders;
     }
 
@@ -92,6 +98,35 @@ public class OrderArray {
 
     public int size() {
         return length;
+    }
+
+    private BookOrder[] sortBookOrders() {
+        BookOrder[] orders = array;
+        Comparator<BookOrder> orderComp = new OrderDateComparator().thenComparing(new OrderPriceComparator())
+                .thenComparing(new OrderStatusComparator());
+        Arrays.sort(orders, orderComp);
+        return orders;
+    }
+
+    private void sortCompletedOrders(BookOrder[] orders) {
+        Comparator<BookOrder> orderComp = new OrderCompletionDateComparator().thenComparing(new OrderPriceComparator());
+        Arrays.sort(orders, orderComp);
+    }
+
+    private void sortCompletionDate(BookOrder[] orders) {
+        Arrays.sort(orders, new OrderCompletionDateComparator());
+    }
+
+    private void sortOrderDate(BookOrder[] orders){
+        Arrays.sort(orders, new OrderDateComparator());
+    }
+
+    private void sortPrice(BookOrder[] orders) {
+        Arrays.sort(orders, new OrderPriceComparator());
+    }
+
+    private void sortStatus(BookOrder[] orders) {
+        Arrays.sort(orders, new OrderStatusComparator());
     }
 
     @Override
