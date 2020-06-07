@@ -8,10 +8,10 @@ import java.util.Calendar;
 public interface Store {
 
     void addBookOnStorage(Book book);
-    void addOrder(BookOrder bookOrder);
-    void addRequest(BookRequest bookRequest);
+    void addOrder(Customer customer, Book... books);
+    void addRequest(Book book);
     void cancelOrder(BookOrder bookOrder);
-    void changeOrderStatus();
+    void completeOrder(BookOrder bookOrder);
     double earnedMoney(Calendar dateFrom, Calendar dateTo);
     Bookshelf[] getBookList();
     BookOrder[] getCompletedOrderList(Calendar dateFrom, Calendar dateTo);
