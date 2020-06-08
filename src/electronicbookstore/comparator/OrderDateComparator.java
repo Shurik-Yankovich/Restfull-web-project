@@ -1,12 +1,12 @@
 package electronicbookstore.comparator;
 
-import electronicbookstore.store.arrays.BookOrder;
+import electronicbookstore.store.arrays.Order;
 
 import java.util.Comparator;
 
-public class OrderDateComparator implements Comparator<BookOrder> {
+public class OrderDateComparator implements Comparator<Order> {
     @Override
-    public int compare(BookOrder order1, BookOrder order2) {
+    public int compare(Order order1, Order order2) {
         return order1.getOrderDate().compareTo(order2.getOrderDate());
     }
 }

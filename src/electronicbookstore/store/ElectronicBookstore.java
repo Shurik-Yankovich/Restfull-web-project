@@ -3,8 +3,8 @@ package electronicbookstore.store;
 import electronicbookstore.storage.Book;
 import electronicbookstore.storage.Bookshelf;
 import electronicbookstore.storage.Storage;
-import electronicbookstore.store.arrays.BookOrder;
-import electronicbookstore.store.arrays.BookRequest;
+import electronicbookstore.store.arrays.Order;
+import electronicbookstore.store.arrays.Request;
 import electronicbookstore.store.arrays.OrderArray;
 import electronicbookstore.store.arrays.RequestArray;
 
@@ -36,7 +36,7 @@ public class ElectronicBookstore implements Store {
 
     @Override
     public void addOrder(Customer customer, Book... books) {
-        BookOrder bookOrder = new BookOrder(customer, books);
+        Order bookOrder = new Order(customer, books);
         double price = getTotalPrice(books);
         bookOrder.setPrice(price);
         int[] numbersRequest = checkBooksOnStorage(books);
@@ -45,7 +45,7 @@ public class ElectronicBookstore implements Store {
     }
 
     @Override
-    public void addOrder(BookOrder bookOrder) {
+    public void addOrder(Order bookOrder) {
         double price = getTotalPrice(bookOrder.getBooks());
         bookOrder.setPrice(price);
         int[] numbersRequest = checkBooksOnStorage(bookOrder.getBooks());
@@ -85,11 +85,11 @@ public class ElectronicBookstore implements Store {
 
     @Override
     public int addRequest(Book book) {
-        return requestList.add(new BookRequest(book));
+        return requestList.add(new Request(book));
     }
 
     @Override
-    public void cancelOrder(BookOrder bookOrder) {
+    public void cancelOrder(Order bookOrder) {
         for (int number : bookOrder.getNumbersRequest()) {
             requestList.changeStatus(number, CANCELED);
         }
@@ -97,7 +97,7 @@ public class ElectronicBookstore implements Store {
     }
 
     @Override
-    public boolean completeOrder(BookOrder bookOrder) {
+    public boolean completeOrder(Order bookOrder) {
         boolean result = true;
         int[] numbersRequest = bookOrder.getNumbersRequest();
 
@@ -117,9 +117,9 @@ public class ElectronicBookstore implements Store {
 
     @Override
     public double earnedMoney(Calendar dateFrom, Calendar dateTo) {
-        BookOrder[] bookOrders = getCompletedOrderList(dateFrom, dateTo);
+        Order[] bookOrders = getCompletedOrderList(dateFrom, dateTo);
         double money = 0;
-        for (BookOrder order : bookOrders) {
+        for (Order order : bookOrders) {
             money += getTotalPrice(order.getBooks());
         }
         return money;
@@ -131,7 +131,7 @@ public class ElectronicBookstore implements Store {
     }
 
     @Override
-    public BookOrder[] getCompletedOrderList(Calendar dateFrom, Calendar dateTo) {
+    public Order[] getCompletedOrderList(Calendar dateFrom, Calendar dateTo) {
         return orderList.getCompletedOrder(dateFrom, dateTo);
     }
 
@@ -141,12 +141,12 @@ public class ElectronicBookstore implements Store {
     }
 
     @Override
-    public BookOrder[] getOrderList() {
+    public Order[] getOrderList() {
         return orderList.getSortingArray();
     }
 
     @Override
-    public BookRequest[] getRequestList() {
+    public Request[] getRequestList() {
         return requestList.getArray();
     }
 

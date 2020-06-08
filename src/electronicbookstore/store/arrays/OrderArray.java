@@ -18,23 +18,23 @@ public class OrderArray {
 
     private static final String ORDER_NOT_FOUND = "Order not found!";
 
-    private BookOrder[] array;
+    private Order[] array;
     private int length;
 
     public OrderArray() {
-        this.array = new BookOrder[0];
+        this.array = new Order[0];
     }
 
     public OrderArray(int count) {
-        this.array = new BookOrder[count];
+        this.array = new Order[count];
     }
 
-    public OrderArray(BookOrder[] array) {
+    public OrderArray(Order[] array) {
         this.array = array;
         this.length = array.length;
     }
 
-    public void add(BookOrder element) {
+    public void add(Order element) {
         if (length == array.length) {
             increaseArrayLength();
         }
@@ -46,7 +46,7 @@ public class OrderArray {
         array = Arrays.copyOf(array, length + 1);
     }
 
-    public void changeOrderStatus(BookOrder bookOrder, Status status) {
+    public void changeOrderStatus(Order bookOrder, Status status) {
         int index = searchOrderIndex(bookOrder);
         if (index >= 0) {
             array[index].setStatus(status);
@@ -58,7 +58,7 @@ public class OrderArray {
         }
     }
 
-    private int searchOrderIndex(BookOrder bookOrder) {
+    private int searchOrderIndex(Order bookOrder) {
         for (int i = 0; i < length; i++) {
             if (array[i].equals(bookOrder) && array[i].getStatus() == NEW) {
                 return i;
@@ -67,26 +67,26 @@ public class OrderArray {
         return -1;
     }
 
-    public BookOrder get(int index) {
+    public Order get(int index) {
         if (index >= 0 && index < length) {
             return array[index];
         }
         return null;
     }
 
-    public BookOrder[] getArray() {
+    public Order[] getArray() {
         return array;
     }
 
-    public BookOrder[] getSortingArray() {
+    public Order[] getSortingArray() {
         return sortBookOrders();
     }
 
-    public BookOrder[] getCompletedOrder(Calendar dateFrom, Calendar dateTo) {
-        BookOrder[] orders = new BookOrder[0];
+    public Order[] getCompletedOrder(Calendar dateFrom, Calendar dateTo) {
+        Order[] orders = new Order[0];
         int index;
 
-        for (BookOrder order : array) {
+        for (Order order : array) {
             if (isBelongsDateToRange(order.getOrderCompletionDate(), dateFrom, dateTo)) {
                 index = orders.length;
                 orders = Arrays.copyOf(orders, index + 1);
@@ -109,32 +109,32 @@ public class OrderArray {
         return length;
     }
 
-    private BookOrder[] sortBookOrders() {
-        BookOrder[] orders = array;
-        Comparator<BookOrder> orderComp = new OrderDateComparator().thenComparing(new OrderPriceComparator())
+    private Order[] sortBookOrders() {
+        Order[] orders = array;
+        Comparator<Order> orderComp = new OrderDateComparator().thenComparing(new OrderPriceComparator())
                 .thenComparing(new OrderStatusComparator());
         Arrays.sort(orders, orderComp);
         return orders;
     }
 
-    private void sortCompletedOrders(BookOrder[] orders) {
-        Comparator<BookOrder> orderComp = new OrderCompletionDateComparator().thenComparing(new OrderPriceComparator());
+    private void sortCompletedOrders(Order[] orders) {
+        Comparator<Order> orderComp = new OrderCompletionDateComparator().thenComparing(new OrderPriceComparator());
         Arrays.sort(orders, orderComp);
     }
 
-    private void sortCompletionDate(BookOrder[] orders) {
+    private void sortCompletionDate(Order[] orders) {
         Arrays.sort(orders, new OrderCompletionDateComparator());
     }
 
-    private void sortOrderDate(BookOrder[] orders) {
+    private void sortOrderDate(Order[] orders) {
         Arrays.sort(orders, new OrderDateComparator());
     }
 
-    private void sortPrice(BookOrder[] orders) {
+    private void sortPrice(Order[] orders) {
         Arrays.sort(orders, new OrderPriceComparator());
     }
 
-    private void sortStatus(BookOrder[] orders) {
+    private void sortStatus(Order[] orders) {
         Arrays.sort(orders, new OrderStatusComparator());
     }
 

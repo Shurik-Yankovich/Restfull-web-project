@@ -12,16 +12,16 @@ import static electronicbookstore.store.Status.NEW;
 
 public class RequestArray {
 
-    private BookRequest[] array;
+    private Request[] array;
     private int length;
 
-    public RequestArray(BookRequest[] array) {
+    public RequestArray(Request[] array) {
         this.array = array;
         this.length = array.length;
     }
 
     public RequestArray() {
-        this.array = new BookRequest[0];
+        this.array = new Request[0];
         length = 0;
     }
 
@@ -30,7 +30,7 @@ public class RequestArray {
         return Arrays.toString(array);
     }
 
-    public int add(BookRequest element) {
+    public int add(Request element) {
         increaseArrayLength();
         element.setNumber(length);
         array[length] = element;
@@ -54,7 +54,7 @@ public class RequestArray {
 
     private int getCountRequests(Book book) {
         int result = 0;
-        for (BookRequest request : array) {
+        for (Request request : array) {
             if (book.equals(request.getBook())) {
                 result++;
             }
@@ -71,21 +71,21 @@ public class RequestArray {
     }
 
     public void changeStatus(int numberRequest, Status status) {
-        BookRequest request = getByRequestNumber(numberRequest);
+        Request request = getByRequestNumber(numberRequest);
         if (request != null)
             request.setStatus(status);
     }
 
-    public BookRequest getByRequestNumber(int requestNumber) {
-        BookRequest request = null;
+    public Request getByRequestNumber(int requestNumber) {
+        Request request = null;
         if (requestNumber >= 0 && requestNumber < length) {
             request = searchByRequestNumber(requestNumber);
         }
         return request;
     }
 
-    private BookRequest searchByRequestNumber(int requestNumber) {
-        for (BookRequest request : array) {
+    private Request searchByRequestNumber(int requestNumber) {
+        for (Request request : array) {
             if (request.getNumber() == requestNumber) {
                 return request;
             }
@@ -93,15 +93,15 @@ public class RequestArray {
         return null;
     }
 
-    public BookRequest get(int index) {
-        BookRequest request = null;
+    public Request get(int index) {
+        Request request = null;
         if (index >= 0 && index < length) {
             request = array[index];
         }
         return request;
     }
 
-    public BookRequest[] getArray() {
+    public Request[] getArray() {
         return sortBookRequest();
     }
 
@@ -109,22 +109,22 @@ public class RequestArray {
         return length;
     }
 
-    private BookRequest[] sortBookRequest() {
-        BookRequest[] requests = array;
-        Comparator<BookRequest> requestComp = new RequestCountComparator().thenComparing(new RequestBookNameComparator());
+    private Request[] sortBookRequest() {
+        Request[] requests = array;
+        Comparator<Request> requestComp = new RequestCountComparator().thenComparing(new RequestBookNameComparator());
         Arrays.sort(requests, requestComp);
         return requests;
     }
 
-    private void sortBookName(BookRequest[] requests) {
+    private void sortBookName(Request[] requests) {
         Arrays.sort(requests, new RequestBookNameComparator());
     }
 
-    private void sortStatus(BookRequest[] requests) {
+    private void sortStatus(Request[] requests) {
         Arrays.sort(requests, new RequestStatusComparator());
     }
 
-    private void sortCount(BookRequest[] requests) {
+    private void sortCount(Request[] requests) {
         Arrays.sort(requests, new RequestCountComparator());
     }
 

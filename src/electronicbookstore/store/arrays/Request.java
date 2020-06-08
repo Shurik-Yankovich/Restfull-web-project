@@ -5,14 +5,14 @@ import electronicbookstore.store.Status;
 
 import static electronicbookstore.store.Status.NEW;
 
-public class BookRequest {
+public class Request {
 
     private Book book;
     private int count;
     private int number;
     private Status status;
 
-    public BookRequest(Book book) {
+    public Request(Book book) {
         this.book = book;
         this.count = 1;
         this.status = NEW;

@@ -12,7 +12,7 @@ import java.util.GregorianCalendar;
 
 import static electronicbookstore.store.Status.NEW;
 
-public class BookOrder {
+public class Order {
 
     private Book[] books;
     private Customer customer;
@@ -22,7 +22,7 @@ public class BookOrder {
     private double price;
     private Status status;
 
-    public BookOrder(Customer customer, Book... books) {
+    public Order(Customer customer, Book... books) {
         this.books = books;
         this.customer = customer;
         this.orderDate = new GregorianCalendar();
@@ -73,7 +73,7 @@ public class BookOrder {
         this.status = status;
     }
 
-    public boolean equals(BookOrder order) {
+    public boolean equals(Order order) {
         return customer.equals(order.getCustomer()) &&
                 orderDate.equals(order.getOrderDate()) &&
                 Arrays.equals(books, order.getBooks());

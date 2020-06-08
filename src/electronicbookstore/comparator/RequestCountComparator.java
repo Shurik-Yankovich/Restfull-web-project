@@ -1,12 +1,12 @@
 package electronicbookstore.comparator;
 
-import electronicbookstore.store.arrays.BookRequest;
+import electronicbookstore.store.arrays.Request;
 
 import java.util.Comparator;
 
-public class RequestCountComparator implements Comparator<BookRequest> {
+public class RequestCountComparator implements Comparator<Request> {
     @Override
-    public int compare(BookRequest request1, BookRequest request2) {
+    public int compare(Request request1, Request request2) {
         return Integer.compare(request1.getCount(), request2.getCount());
     }
 }

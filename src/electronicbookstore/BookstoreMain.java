@@ -7,7 +7,7 @@ import electronicbookstore.storage.Storage;
 import electronicbookstore.store.Customer;
 import electronicbookstore.store.ElectronicBookstore;
 import electronicbookstore.store.Store;
-import electronicbookstore.store.arrays.BookOrder;
+import electronicbookstore.store.arrays.Order;
 import electronicbookstore.util.BookGenerator;
 
 import java.util.Arrays;
@@ -25,9 +25,9 @@ public class BookstoreMain {
         Store bookstore = new ElectronicBookstore(bookStorage);
         Customer customer1 = new Customer("John Smith", "+375333753753", "London, Shaftesbury Avenue, 50");
         Customer customer2 = new Customer("Brad Pit", "+375299999999", "London, King's Road, 13");
-        BookOrder order1 = new BookOrder(customer1, bookshelves[5].getBook(), bookshelves[1].getBook());
-        BookOrder order2 = new BookOrder(customer2, bookshelves[9].getBook(), bookshelves[3].getBook(), bookshelves[5].getBook());
-        BookOrder order3 = new BookOrder(customer1, bookshelves[9].getBook(), bookshelves[5].getBook(), bookshelves[0].getBook());
+        Order order1 = new Order(customer1, bookshelves[5].getBook(), bookshelves[1].getBook());
+        Order order2 = new Order(customer2, bookshelves[9].getBook(), bookshelves[3].getBook(), bookshelves[5].getBook());
+        Order order3 = new Order(customer1, bookshelves[9].getBook(), bookshelves[5].getBook(), bookshelves[0].getBook());
 
         System.out.println(Arrays.toString(bookstore.getBookList()) + "\n");
 
