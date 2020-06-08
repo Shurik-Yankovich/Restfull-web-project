@@ -9,7 +9,7 @@ import java.util.GregorianCalendar;
 
 public class BookStorage implements Storage {
 
-    private static final String BOOK_NOT_FOUND = "Данной книги нет в списке!";
+    private static final String BOOK_NOT_FOUND = "Book not found!";
 
     private Bookshelf[] bookshelves;
 
@@ -62,7 +62,7 @@ public class BookStorage implements Storage {
         Bookshelf[] booksByArrivalDate = new Bookshelf[0];
         int index;
         for (Bookshelf bookshelf: bookshelves){
-            if (bookshelf.getArrivalDate().compareTo(arrivalDate) > 0) {
+            if (bookshelf.getArrivalDate().compareTo(arrivalDate) < 0 && bookshelf.isPresence()) {
                 index = booksByArrivalDate.length;
                 booksByArrivalDate = Arrays.copyOf(booksByArrivalDate, index + 1);
                 booksByArrivalDate[index] = bookshelf;

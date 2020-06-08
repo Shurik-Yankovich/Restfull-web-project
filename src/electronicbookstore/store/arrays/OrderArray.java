@@ -16,7 +16,7 @@ import static electronicbookstore.store.Status.NEW;
 
 public class OrderArray {
 
-    private static final String ORDER_NOT_FOUND = "Такого заказа не существует!";
+    private static final String ORDER_NOT_FOUND = "Order not found!";
 
     private BookOrder[] array;
     private int length;
@@ -101,7 +101,7 @@ public class OrderArray {
     }
 
     private boolean isBelongsDateToRange(Calendar date, Calendar dateFrom, Calendar dateTo) {
-        return date != null && (date.compareTo(dateFrom) < 0 && date.compareTo(dateTo) > 0);
+        return date != null && (date.compareTo(dateFrom) > 0 && date.compareTo(dateTo) < 0);
     }
 
 

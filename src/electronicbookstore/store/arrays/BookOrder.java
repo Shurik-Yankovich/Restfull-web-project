@@ -82,12 +82,8 @@ public class BookOrder {
     @Override
     public String toString() {
         DateFormat df = new SimpleDateFormat("dd MMM yyyy");
-        return "Order:\nBooks:" + Arrays.toString(books) +
-                "\n" + customer +
-                "orderDate = " + df.format(orderDate.getTime()) +
-                ", status - " + status +
-                ", orderCompletionDate = " +
-                (orderCompletionDate != null ? df.format(orderCompletionDate.getTime()) : null) +
-                ", price = " + price;
+        return String.format("Order:\nBooks: %s\n%sorderDate = %s, status - %b, orderCompletionDate = %s, price = %.2f",
+                Arrays.toString(books), customer, df.format(orderDate.getTime()), status,
+                (orderCompletionDate != null ? df.format(orderCompletionDate.getTime()) : null), price);
     }
 }

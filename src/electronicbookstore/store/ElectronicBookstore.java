@@ -16,7 +16,7 @@ import static electronicbookstore.store.Status.COMPLETED;
 
 public class ElectronicBookstore implements Store {
 
-    private static final String BOOK_NOT_FOUND = "Данной книги нет в списке!";
+    private static final String BOOK_NOT_FOUND = "Book not found!";
 
     Storage bookStorage;
     OrderArray orderList;
