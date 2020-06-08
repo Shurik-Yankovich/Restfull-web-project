@@ -22,6 +22,7 @@ public class RequestArray {
 
     public RequestArray() {
         this.array = new BookRequest[0];
+        length = 0;
     }
 
     @Override
@@ -30,13 +31,11 @@ public class RequestArray {
     }
 
     public int add(BookRequest element) {
-        if (length == array.length) {
-            increaseArrayLength();
-        }
+        increaseArrayLength();
         element.setNumber(length);
         array[length] = element;
-        changeCountByBook(element.getBook());
         length++;
+        changeCountByBook(element.getBook());
         return length - 1;
     }
 
@@ -44,7 +43,7 @@ public class RequestArray {
         array = Arrays.copyOf(array, array.length + 1);
     }
 
-    private void changeCountByBook(Book book){
+    private void changeCountByBook(Book book) {
         int count = getCountRequests(book);
         for (int i = 0; i < length; i++) {
             if (array[i].getBook().equals(book)) {
@@ -103,7 +102,7 @@ public class RequestArray {
     }
 
     public BookRequest[] getArray() {
-        return array;
+        return sortBookRequest();
     }
 
     public int size() {

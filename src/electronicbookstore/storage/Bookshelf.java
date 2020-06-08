@@ -1,5 +1,6 @@
 package electronicbookstore.storage;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class Bookshelf {
@@ -42,5 +43,12 @@ public class Bookshelf {
 
     public void setArrivalDate(Calendar arrivalDate) {
         this.arrivalDate = arrivalDate;
+    }
+
+    @Override
+    public String toString() {
+        return book.toString() + ", presence=" + presence +
+                ", price=" + price +
+                ", arrivalDate=" + new SimpleDateFormat("dd MMM yyyy").format(arrivalDate.getTime()) + "\n";
     }
 }

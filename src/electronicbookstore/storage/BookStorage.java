@@ -62,7 +62,7 @@ public class BookStorage implements Storage {
         Bookshelf[] booksByArrivalDate = new Bookshelf[0];
         int index;
         for (Bookshelf bookshelf: bookshelves){
-            if (bookshelf.getArrivalDate().compareTo(arrivalDate) != 1) {
+            if (bookshelf.getArrivalDate().compareTo(arrivalDate) > 0) {
                 index = booksByArrivalDate.length;
                 booksByArrivalDate = Arrays.copyOf(booksByArrivalDate, index + 1);
                 booksByArrivalDate[index] = bookshelf;
@@ -124,6 +124,5 @@ public class BookStorage implements Storage {
     private void sortPresence (Bookshelf[] books) {
         Arrays.sort(books, new BookshelfPresenceComparator());
     }
-
 
 }

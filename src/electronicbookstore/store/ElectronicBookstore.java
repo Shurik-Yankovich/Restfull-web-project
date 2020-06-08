@@ -10,7 +10,6 @@ import electronicbookstore.store.arrays.RequestArray;
 
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 import static electronicbookstore.store.Status.CANCELED;
 import static electronicbookstore.store.Status.COMPLETED;
@@ -37,13 +36,23 @@ public class ElectronicBookstore implements Store {
 
     @Override
     public void addOrder(Customer customer, Book... books) {
-        BookOrder bookOrder = new BookOrder(customer, new GregorianCalendar(), books);
+        BookOrder bookOrder = new BookOrder(customer, books);
         double price = getTotalPrice(books);
         bookOrder.setPrice(price);
         int[] numbersRequest = checkBooksOnStorage(books);
         bookOrder.setNumbersRequest(numbersRequest);
         orderList.add(bookOrder);
     }
+
+    @Override
+    public void addOrder(BookOrder bookOrder) {
+        double price = getTotalPrice(bookOrder.getBooks());
+        bookOrder.setPrice(price);
+        int[] numbersRequest = checkBooksOnStorage(bookOrder.getBooks());
+        bookOrder.setNumbersRequest(numbersRequest);
+        orderList.add(bookOrder);
+    }
+
 
     private double getTotalPrice(Book[] books) {
         double price = 0;
@@ -66,6 +75,8 @@ public class ElectronicBookstore implements Store {
                 index = result.length;
                 result = Arrays.copyOf(result, index + 1);
                 result[index] = addRequest(book);
+            } else {
+                bookshelf.setPresence(false);
             }
         }
 
@@ -88,10 +99,13 @@ public class ElectronicBookstore implements Store {
     @Override
     public boolean completeOrder(BookOrder bookOrder) {
         boolean result = true;
+        int[] numbersRequest = bookOrder.getNumbersRequest();
 
-        for (int number : bookOrder.getNumbersRequest()) {
-            if (requestList.getByRequestNumber(number).getStatus() != COMPLETED) {
-                result = false;
+        if (numbersRequest != null) {
+            for (int number : numbersRequest) {
+                if (requestList.getByRequestNumber(number).getStatus() != COMPLETED) {
+                    result = false;
+                }
             }
         }
         if (result) {

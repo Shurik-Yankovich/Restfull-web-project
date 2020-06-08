@@ -9,19 +9,20 @@ import electronicbookstore.store.Status;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Comparator;
+import java.util.GregorianCalendar;
 
+import static electronicbookstore.store.Status.COMPLETED;
 import static electronicbookstore.store.Status.NEW;
 
 public class OrderArray {
 
-    private static final int DEFAULT_CAPACITY = 10;
     private static final String ORDER_NOT_FOUND = "Такого заказа не существует!";
 
     private BookOrder[] array;
     private int length;
 
     public OrderArray() {
-        this.array = new BookOrder[DEFAULT_CAPACITY];
+        this.array = new BookOrder[0];
     }
 
     public OrderArray(int count) {
@@ -42,13 +43,16 @@ public class OrderArray {
     }
 
     private void increaseArrayLength() {
-        array = Arrays.copyOf(array, array.length + DEFAULT_CAPACITY);
+        array = Arrays.copyOf(array, length + 1);
     }
 
     public void changeOrderStatus(BookOrder bookOrder, Status status) {
         int index = searchOrderIndex(bookOrder);
         if (index >= 0) {
             array[index].setStatus(status);
+            if (status == COMPLETED) {
+                array[index].setOrderCompletionDate(new GregorianCalendar());
+            }
         } else {
             System.out.println(ORDER_NOT_FOUND);
         }
@@ -90,12 +94,14 @@ public class OrderArray {
             }
         }
 
-        sortCompletedOrders(orders);
+        if (orders.length > 0) {
+            sortCompletedOrders(orders);
+        }
         return orders;
     }
 
     private boolean isBelongsDateToRange(Calendar date, Calendar dateFrom, Calendar dateTo) {
-        return date != null && (date.compareTo(dateFrom) != -1 && date.compareTo(dateTo) != 1);
+        return date != null && (date.compareTo(dateFrom) < 0 && date.compareTo(dateTo) > 0);
     }
 
 
@@ -120,7 +126,7 @@ public class OrderArray {
         Arrays.sort(orders, new OrderCompletionDateComparator());
     }
 
-    private void sortOrderDate(BookOrder[] orders){
+    private void sortOrderDate(BookOrder[] orders) {
         Arrays.sort(orders, new OrderDateComparator());
     }
 

@@ -11,6 +11,7 @@ public interface Store {
 
     void addBookOnStorage(Book book);
     void addOrder(Customer customer, Book... books);
+    void addOrder(BookOrder bookOrder);
     int addRequest(Book book);
     void cancelOrder(BookOrder bookOrder);
     boolean completeOrder(BookOrder bookOrder);

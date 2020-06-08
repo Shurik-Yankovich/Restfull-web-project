@@ -45,4 +45,10 @@ public class BookRequest {
     public void setStatus(Status status) {
         this.status = status;
     }
+
+    @Override
+    public String toString() {
+        return "Request:" + book +
+                ", status - " + status + '\n';
+    }
 }

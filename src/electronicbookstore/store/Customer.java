@@ -23,4 +23,11 @@ public class Customer {
     public String getAddress() {
         return address;
     }
+
+    @Override
+    public String toString() {
+        return "Customer: '" + fullName + '\'' +
+                ", phoneNumber: " + phoneNumber +
+                ", address: '" + address + "'\n";
+    }
 }

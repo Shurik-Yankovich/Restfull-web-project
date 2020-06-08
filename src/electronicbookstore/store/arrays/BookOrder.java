@@ -4,8 +4,11 @@ import electronicbookstore.storage.Book;
 import electronicbookstore.store.Customer;
 import electronicbookstore.store.Status;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import static electronicbookstore.store.Status.NEW;
 
@@ -19,10 +22,10 @@ public class BookOrder {
     private double price;
     private Status status;
 
-    public BookOrder(Customer customer, Calendar orderDate, Book... books) {
+    public BookOrder(Customer customer, Book... books) {
         this.books = books;
         this.customer = customer;
-        this.orderDate = orderDate;
+        this.orderDate = new GregorianCalendar();
         this.status = NEW;
     }
 
@@ -78,12 +81,13 @@ public class BookOrder {
 
     @Override
     public String toString() {
-        return  "Order:\nBooks:" + Arrays.toString(books) +
-                "\nCustomer:" + customer +
-                ", orderDate = " + orderDate +
-                ", status = " + status +
-                ", orderCompletionDate = " + orderCompletionDate +
-                ", price = " + price +
-                '}';
+        DateFormat df = new SimpleDateFormat("dd MMM yyyy");
+        return "Order:\nBooks:" + Arrays.toString(books) +
+                "\n" + customer +
+                "orderDate = " + df.format(orderDate.getTime()) +
+                ", status - " + status +
+                ", orderCompletionDate = " +
+                (orderCompletionDate != null ? df.format(orderCompletionDate.getTime()) : null) +
+                ", price = " + price;
     }
 }
