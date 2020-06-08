@@ -110,7 +110,7 @@ public class OrderArray {
     }
 
     private Order[] sortBookOrders() {
-        Order[] orders = array;
+        Order[] orders =  Arrays.copyOf(array, length);
         Comparator<Order> orderComp = new OrderDateComparator().thenComparing(new OrderPriceComparator())
                 .thenComparing(new OrderStatusComparator());
         Arrays.sort(orders, orderComp);

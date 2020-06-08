@@ -110,7 +110,7 @@ public class RequestArray {
     }
 
     private Request[] sortBookRequest() {
-        Request[] requests = array;
+        Request[] requests =  Arrays.copyOf(array, length);
         Comparator<Request> requestComp = new RequestCountComparator().thenComparing(new RequestBookNameComparator());
         Arrays.sort(requests, requestComp);
         return requests;

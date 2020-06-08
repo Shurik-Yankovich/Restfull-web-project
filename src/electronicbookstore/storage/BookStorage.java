@@ -95,7 +95,7 @@ public class BookStorage implements Storage {
     private Bookshelf[] sortBookshelves(){
         Comparator<Bookshelf> bookComp = new BookshelfTitleComparator().thenComparing(new BookshelfPublicationYearComparator())
                 .thenComparing(new BookshelfPriceComparator()).thenComparing(new BookshelfPresenceComparator());
-        Bookshelf[] books = bookshelves;
+        Bookshelf[] books = Arrays.copyOf(bookshelves, bookshelves.length);
         Arrays.sort(books, bookComp);
         return books;
     }
