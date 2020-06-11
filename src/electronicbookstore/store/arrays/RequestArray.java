@@ -31,6 +31,7 @@ public class RequestArray {
     }
 
     public int add(Request element) {
+        element.setNumber(array.size());
         array.add(element);
         changeCountByBook(element.getBook());
         return array.size() - 1;
