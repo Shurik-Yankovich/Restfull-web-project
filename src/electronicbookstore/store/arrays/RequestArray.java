@@ -4,50 +4,43 @@ import electronicbookstore.comparator.*;
 import electronicbookstore.storage.Book;
 import electronicbookstore.store.Status;
 
-import java.util.Arrays;
-import java.util.Comparator;
+import java.util.*;
 
 import static electronicbookstore.store.Status.COMPLETED;
 import static electronicbookstore.store.Status.NEW;
 
 public class RequestArray {
 
-    private Request[] array;
-    private int length;
+    private List<Request> array;
 
     public RequestArray(Request[] array) {
+        this.array = Arrays.asList(array);
+    }
+
+    public RequestArray(List<Request> array) {
         this.array = array;
-        this.length = array.length;
     }
 
     public RequestArray() {
-        this.array = new Request[0];
-        length = 0;
+        this.array = new ArrayList<>();
     }
 
     @Override
     public String toString() {
-        return Arrays.toString(array);
+        return array.toString();
     }
 
     public int add(Request element) {
-        increaseArrayLength();
-        element.setNumber(length);
-        array[length] = element;
-        length++;
+        array.add(element);
         changeCountByBook(element.getBook());
-        return length - 1;
-    }
-
-    private void increaseArrayLength() {
-        array = Arrays.copyOf(array, array.length + 1);
+        return array.size() - 1;
     }
 
     private void changeCountByBook(Book book) {
         int count = getCountRequests(book);
-        for (int i = 0; i < length; i++) {
-            if (array[i].getBook().equals(book)) {
-                array[i].setCount(count);
+        for (Request request: array) {
+            if (request.getBook().equals(book)) {
+                request.setCount(count);
             }
         }
     }
@@ -63,9 +56,9 @@ public class RequestArray {
     }
 
     public void closeRequest(Book book) {
-        for (int i = 0; i < length; i++) {
-            if (array[i].getBook().equals(book) && array[i].getStatus() == NEW) {
-                array[i].setStatus(COMPLETED);
+        for (Request request: array) {
+            if (request.getBook().equals(book) && request.getStatus() == NEW) {
+                request.setStatus(COMPLETED);
             }
         }
     }
@@ -78,7 +71,7 @@ public class RequestArray {
 
     public Request getByRequestNumber(int requestNumber) {
         Request request = null;
-        if (requestNumber >= 0 && requestNumber < length) {
+        if (requestNumber >= 0 && requestNumber < array.size()) {
             request = searchByRequestNumber(requestNumber);
         }
         return request;
@@ -94,38 +87,35 @@ public class RequestArray {
     }
 
     public Request get(int index) {
-        Request request = null;
-        if (index >= 0 && index < length) {
-            request = array[index];
-        }
-        return request;
+        return array.get(index);
     }
 
-    public Request[] getArray() {
+    public List<Request> getArray() {
         return sortBookRequest();
     }
 
     public int size() {
-        return length;
+        return array.size();
     }
 
-    private Request[] sortBookRequest() {
-        Request[] requests =  Arrays.copyOf(array, length);
+    private List<Request> sortBookRequest() {
+        List<Request> requests = new ArrayList<>();
+        Collections.copy(requests, array);
         Comparator<Request> requestComp = new RequestCountComparator().thenComparing(new RequestBookNameComparator());
-        Arrays.sort(requests, requestComp);
+        requests.sort(requestComp);
         return requests;
     }
 
-    private void sortBookName(Request[] requests) {
-        Arrays.sort(requests, new RequestBookNameComparator());
+    private void sortBookName(List<Request> requests) {
+        requests.sort(new RequestBookNameComparator());
     }
 
-    private void sortStatus(Request[] requests) {
-        Arrays.sort(requests, new RequestStatusComparator());
+    private void sortStatus(List<Request> requests) {
+        requests.sort(new RequestStatusComparator());
     }
 
-    private void sortCount(Request[] requests) {
-        Arrays.sort(requests, new RequestCountComparator());
+    private void sortCount(List<Request> requests) {
+        requests.sort(new RequestCountComparator());
     }
 
 
