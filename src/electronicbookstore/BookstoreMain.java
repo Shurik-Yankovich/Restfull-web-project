@@ -10,8 +10,7 @@ import electronicbookstore.store.Store;
 import electronicbookstore.store.arrays.Order;
 import electronicbookstore.util.BookGenerator;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -44,10 +43,8 @@ public class BookstoreMain {
         bookstore.cancelOrder(order3);
         System.out.println(bookstore.getRequestList() + "\n");
 
-        Calendar dateFrom = new GregorianCalendar();
-        dateFrom.add(Calendar.MONTH, -2);
-        Calendar dateTo = new GregorianCalendar();
-        dateFrom.add(Calendar.DATE, 1);
+        LocalDate dateFrom = LocalDate.now().minusMonths(2);
+        LocalDate dateTo = LocalDate.now().plusDays(1);
         System.out.println("Earned money: " + bookstore.earnedMoney(dateFrom, dateTo) + "\n");
         System.out.println("Completed orders: " + bookstore.getCompletedOrderList(dateFrom, dateTo) + "\nTheir number = " + bookstore.getCountCompletedOrder(dateFrom, dateTo) + "\n");
 

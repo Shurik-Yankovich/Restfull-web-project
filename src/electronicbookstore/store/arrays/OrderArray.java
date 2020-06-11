@@ -6,6 +6,7 @@ import electronicbookstore.comparator.OrderPriceComparator;
 import electronicbookstore.comparator.OrderStatusComparator;
 import electronicbookstore.store.Status;
 
+import java.time.LocalDate;
 import java.util.*;
 
 import static electronicbookstore.store.Status.COMPLETED;
@@ -24,7 +25,7 @@ public class OrderArray {
         this.array = new ArrayList<>(count);
     }
 
-    public OrderArray(Order[] array) {
+    public OrderArray(Order... array) {
         this.array = Arrays.asList(array);
     }
 
@@ -43,7 +44,7 @@ public class OrderArray {
             Order order = array.get(index);
             order.setStatus(status);
             if (status == COMPLETED) {
-                order.setOrderCompletionDate(new GregorianCalendar());
+                order.setOrderCompletionDate(LocalDate.now());
             }
         } else {
             System.out.println(ORDER_NOT_FOUND);
@@ -62,7 +63,7 @@ public class OrderArray {
         return sortBookOrders();
     }
 
-    public List<Order> getCompletedOrder(Calendar dateFrom, Calendar dateTo) {
+    public List<Order> getCompletedOrder(LocalDate dateFrom, LocalDate dateTo) {
         List<Order> orders = new ArrayList<>();
 
         for (Order order : array) {
@@ -77,8 +78,8 @@ public class OrderArray {
         return orders;
     }
 
-    private boolean isBelongsDateToRange(Calendar date, Calendar dateFrom, Calendar dateTo) {
-        return date != null && (date.compareTo(dateFrom) > 0 && date.compareTo(dateTo) < 0);
+    private boolean isBelongsDateToRange(LocalDate date, LocalDate dateFrom, LocalDate dateTo) {
+        return date != null && (date.isAfter(dateFrom) && date.isBefore(dateTo));
     }
 
 

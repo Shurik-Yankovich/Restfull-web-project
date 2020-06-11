@@ -1,16 +1,16 @@
 package electronicbookstore.storage;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class Bookshelf {
 
     private Book book;
     private boolean presence;
     private double price;
-    private Calendar arrivalDate;
+    private LocalDate arrivalDate;
 
-    public Bookshelf(Book book, double price, Calendar arrivalDate) {
+    public Bookshelf(Book book, double price, LocalDate arrivalDate) {
         this.book = book;
         this.presence = true;
         this.price = price;
@@ -29,7 +29,7 @@ public class Bookshelf {
         return price;
     }
 
-    public Calendar getArrivalDate() {
+    public LocalDate getArrivalDate() {
         return arrivalDate;
     }
 
@@ -41,7 +41,7 @@ public class Bookshelf {
         this.price = price;
     }
 
-    public void setArrivalDate(Calendar arrivalDate) {
+    public void setArrivalDate(LocalDate arrivalDate) {
         this.arrivalDate = arrivalDate;
     }
 
@@ -49,6 +49,6 @@ public class Bookshelf {
     public String toString() {
         return book.toString() + ", presence=" + presence +
                 ", price=" + price +
-                ", arrivalDate=" + new SimpleDateFormat("dd MMM yyyy").format(arrivalDate.getTime()) + "\n";
+                ", arrivalDate=" + arrivalDate.format(DateTimeFormatter.ofPattern("dd MMM yyyy")) + "\n";
     }
 }

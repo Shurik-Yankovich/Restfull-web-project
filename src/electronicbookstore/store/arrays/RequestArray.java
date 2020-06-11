@@ -13,7 +13,7 @@ public class RequestArray {
 
     private List<Request> array;
 
-    public RequestArray(Request[] array) {
+    public RequestArray(Request... array) {
         this.array = Arrays.asList(array);
     }
 

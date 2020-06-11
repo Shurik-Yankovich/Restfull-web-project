@@ -4,11 +4,9 @@ import electronicbookstore.storage.Book;
 import electronicbookstore.store.Customer;
 import electronicbookstore.store.Status;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import static electronicbookstore.store.Status.NEW;
@@ -18,15 +16,15 @@ public class Order {
     private List<Book> books;
     private Customer customer;
     private List<Integer> numbersRequest;
-    private Calendar orderDate;
-    private Calendar orderCompletionDate;
+    private LocalDate orderDate;
+    private LocalDate orderCompletionDate;
     private double price;
     private Status status;
 
     public Order(Customer customer, Book... books) {
         this.books = Arrays.asList(books);
         this.customer = customer;
-        this.orderDate = new GregorianCalendar();
+        this.orderDate = LocalDate.now();
         this.status = NEW;
     }
 
@@ -42,11 +40,11 @@ public class Order {
         return numbersRequest;
     }
 
-    public Calendar getOrderDate() {
+    public LocalDate getOrderDate() {
         return orderDate;
     }
 
-    public Calendar getOrderCompletionDate() {
+    public LocalDate getOrderCompletionDate() {
         return orderCompletionDate;
     }
 
@@ -62,7 +60,7 @@ public class Order {
         this.numbersRequest = numbersRequest;
     }
 
-    public void setOrderCompletionDate(Calendar orderCompletionDate) {
+    public void setOrderCompletionDate(LocalDate orderCompletionDate) {
         this.orderCompletionDate = orderCompletionDate;
     }
 
@@ -82,9 +80,12 @@ public class Order {
 
     @Override
     public String toString() {
-        DateFormat df = new SimpleDateFormat("dd MMM yyyy");
         return String.format("Order:\nBooks: %s\n%sorderDate = %s, status - %b, orderCompletionDate = %s, price = %.2f",
-                books.toString(), customer, df.format(orderDate.getTime()), status,
-                (orderCompletionDate != null ? df.format(orderCompletionDate.getTime()) : null), price);
+                books.toString(),
+                customer,
+                orderDate.format(DateTimeFormatter.ofPattern("dd MMM yyyy")),
+                status,
+                (orderCompletionDate != null ? orderCompletionDate.format(DateTimeFormatter.ofPattern("dd MMM yyyy")) : null),
+                price);
     }
 }

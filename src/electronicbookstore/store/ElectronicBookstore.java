@@ -4,13 +4,13 @@ import electronicbookstore.storage.Book;
 import electronicbookstore.storage.Bookshelf;
 import electronicbookstore.storage.Storage;
 import electronicbookstore.store.arrays.Order;
-import electronicbookstore.store.arrays.Request;
 import electronicbookstore.store.arrays.OrderArray;
+import electronicbookstore.store.arrays.Request;
 import electronicbookstore.store.arrays.RequestArray;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.List;
 
 import static electronicbookstore.store.Status.CANCELED;
@@ -116,7 +116,7 @@ public class ElectronicBookstore implements Store {
     }
 
     @Override
-    public double earnedMoney(Calendar dateFrom, Calendar dateTo) {
+    public double earnedMoney(LocalDate dateFrom, LocalDate dateTo) {
         List<Order> bookOrders = getCompletedOrderList(dateFrom, dateTo);
         double money = 0;
         for (Order order : bookOrders) {
@@ -131,12 +131,12 @@ public class ElectronicBookstore implements Store {
     }
 
     @Override
-    public List<Order> getCompletedOrderList(Calendar dateFrom, Calendar dateTo) {
+    public List<Order> getCompletedOrderList(LocalDate dateFrom, LocalDate dateTo) {
         return orderList.getCompletedOrder(dateFrom, dateTo);
     }
 
     @Override
-    public int getCountCompletedOrder(Calendar dateFrom, Calendar dateTo) {
+    public int getCountCompletedOrder(LocalDate dateFrom, LocalDate dateTo) {
         return getCompletedOrderList(dateFrom, dateTo).size();
     }
 

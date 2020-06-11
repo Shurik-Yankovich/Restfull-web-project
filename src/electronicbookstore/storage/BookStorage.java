@@ -2,15 +2,17 @@ package electronicbookstore.storage;
 
 import electronicbookstore.comparator.*;
 
+import java.time.LocalDate;
 import java.util.*;
 
 public class BookStorage implements Storage {
 
     private static final String BOOK_NOT_FOUND = "Book not found!";
+    private static final int NUMBER_OF_MONTHS_FOR_UNSOLD_BOOKS = 6;
 
     private List<Bookshelf> bookshelves;
 
-    public BookStorage(Bookshelf[] bookshelves) {
+    public BookStorage(Bookshelf... bookshelves) {
         this.bookshelves = new ArrayList<>();
         this.bookshelves = Arrays.asList(bookshelves);
     }
@@ -34,7 +36,7 @@ public class BookStorage implements Storage {
         int index = searchBook(book);
         if (index >= 0) {
             Bookshelf bookshelf = bookshelves.get(index);
-            bookshelf.setArrivalDate(new GregorianCalendar());
+            bookshelf.setArrivalDate(LocalDate.now());
             bookshelf.setPresence(true);
         } else {
             System.out.println(BOOK_NOT_FOUND);
@@ -54,21 +56,20 @@ public class BookStorage implements Storage {
 
     @Override
     public List<Bookshelf> getUnsoldBookshelfList() {
-        Calendar unsoldDate = new GregorianCalendar();
-        unsoldDate.add(Calendar.MONTH, -6);
-        List<Bookshelf> books = getBooksByArrivalDate(unsoldDate);
+        LocalDate unsoldDate = LocalDate.now().minusMonths(NUMBER_OF_MONTHS_FOR_UNSOLD_BOOKS);
+        List<Bookshelf> books = getBooksBeforeArrivalDate(unsoldDate);
         sortUnsoldBook(books);
         return books;
     }
 
-    private List<Bookshelf> getBooksByArrivalDate(Calendar arrivalDate) {
-        List<Bookshelf> booksByArrivalDate = new ArrayList<>();
+    private List<Bookshelf> getBooksBeforeArrivalDate(LocalDate arrivalDate) {
+        List<Bookshelf> booksBeforeArrivalDate = new ArrayList<>();
         for (Bookshelf bookshelf: bookshelves){
-            if (bookshelf.getArrivalDate().compareTo(arrivalDate) < 0 && bookshelf.isPresence()) {
-                booksByArrivalDate.add(bookshelf);
+            if (bookshelf.getArrivalDate().isBefore(arrivalDate) && bookshelf.isPresence()) {
+                booksBeforeArrivalDate.add(bookshelf);
             }
         }
-        return booksByArrivalDate;
+        return booksBeforeArrivalDate;
     }
 
     @Override
