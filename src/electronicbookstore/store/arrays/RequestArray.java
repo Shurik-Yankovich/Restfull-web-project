@@ -99,8 +99,7 @@ public class RequestArray {
     }
 
     private List<Request> sortBookRequest() {
-        List<Request> requests = new ArrayList<>();
-        Collections.copy(requests, array);
+        List<Request> requests = new ArrayList<>(array);
         Comparator<Request> requestComp = new RequestCountComparator().thenComparing(new RequestBookNameComparator());
         requests.sort(requestComp);
         return requests;

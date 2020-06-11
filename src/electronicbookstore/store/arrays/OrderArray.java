@@ -87,8 +87,7 @@ public class OrderArray {
     }
 
     private List<Order> sortBookOrders() {
-        List<Order> orders = new ArrayList<>();
-        Collections.copy(orders, array);
+        List<Order> orders = new ArrayList<>(array);
         Comparator<Order> orderComp = new OrderDateComparator().thenComparing(new OrderPriceComparator())
                 .thenComparing(new OrderStatusComparator());
         orders.sort(orderComp);
