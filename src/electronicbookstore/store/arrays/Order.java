@@ -9,27 +9,28 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import static electronicbookstore.store.Status.NEW;
 
 public class Order {
 
-    private Book[] books;
+    private List<Book> books;
     private Customer customer;
-    private int[] numbersRequest;
+    private List<Integer> numbersRequest;
     private Calendar orderDate;
     private Calendar orderCompletionDate;
     private double price;
     private Status status;
 
     public Order(Customer customer, Book... books) {
-        this.books = books;
+        this.books = Arrays.asList(books);
         this.customer = customer;
         this.orderDate = new GregorianCalendar();
         this.status = NEW;
     }
 
-    public Book[] getBooks() {
+    public List<Book> getBooks() {
         return books;
     }
 
@@ -37,7 +38,7 @@ public class Order {
         return customer;
     }
 
-    public int[] getNumbersRequest() {
+    public List<Integer> getNumbersRequest() {
         return numbersRequest;
     }
 
@@ -57,7 +58,7 @@ public class Order {
         return status;
     }
 
-    public void setNumbersRequest(int[] numbersRequest) {
+    public void setNumbersRequest(List<Integer> numbersRequest) {
         this.numbersRequest = numbersRequest;
     }
 
@@ -76,14 +77,14 @@ public class Order {
     public boolean equals(Order order) {
         return customer.equals(order.getCustomer()) &&
                 orderDate.equals(order.getOrderDate()) &&
-                Arrays.equals(books, order.getBooks());
+                books.equals(order.getBooks());
     }
 
     @Override
     public String toString() {
         DateFormat df = new SimpleDateFormat("dd MMM yyyy");
         return String.format("Order:\nBooks: %s\n%sorderDate = %s, status - %b, orderCompletionDate = %s, price = %.2f",
-                Arrays.toString(books), customer, df.format(orderDate.getTime()), status,
+                books.toString(), customer, df.format(orderDate.getTime()), status,
                 (orderCompletionDate != null ? df.format(orderCompletionDate.getTime()) : null), price);
     }
 }
