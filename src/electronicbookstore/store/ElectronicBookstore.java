@@ -8,8 +8,10 @@ import electronicbookstore.store.arrays.Request;
 import electronicbookstore.store.arrays.OrderArray;
 import electronicbookstore.store.arrays.RequestArray;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 
 import static electronicbookstore.store.Status.CANCELED;
 import static electronicbookstore.store.Status.COMPLETED;
@@ -37,9 +39,10 @@ public class ElectronicBookstore implements Store {
     @Override
     public void addOrder(Customer customer, Book... books) {
         Order bookOrder = new Order(customer, books);
-        double price = getTotalPrice(books);
+        List<Book> bookList = Arrays.asList(books);
+        double price = getTotalPrice(bookList);
         bookOrder.setPrice(price);
-        int[] numbersRequest = checkBooksOnStorage(books);
+        List<Integer> numbersRequest = checkBooksOnStorage(bookList);
         bookOrder.setNumbersRequest(numbersRequest);
         orderList.add(bookOrder);
     }
@@ -48,13 +51,13 @@ public class ElectronicBookstore implements Store {
     public void addOrder(Order bookOrder) {
         double price = getTotalPrice(bookOrder.getBooks());
         bookOrder.setPrice(price);
-        int[] numbersRequest = checkBooksOnStorage(bookOrder.getBooks());
+        List<Integer> numbersRequest = checkBooksOnStorage(bookOrder.getBooks());
         bookOrder.setNumbersRequest(numbersRequest);
         orderList.add(bookOrder);
     }
 
 
-    private double getTotalPrice(Book[] books) {
+    private double getTotalPrice(List<Book> books) {
         double price = 0;
         for (Book book : books) {
             price += bookStorage.getBookshelf(book).getPrice();
@@ -62,9 +65,8 @@ public class ElectronicBookstore implements Store {
         return price;
     }
 
-    private int[] checkBooksOnStorage(Book[] books) {
-        int[] result = new int[0];
-        int index;
+    private List<Integer> checkBooksOnStorage(List<Book> books) {
+        List<Integer> result = new ArrayList<>();
         Bookshelf bookshelf;
 
         for (Book book : books) {
@@ -72,9 +74,7 @@ public class ElectronicBookstore implements Store {
             if (bookshelf == null) {
                 System.out.println(BOOK_NOT_FOUND);
             } else if (!bookshelf.isPresence()) {
-                index = result.length;
-                result = Arrays.copyOf(result, index + 1);
-                result[index] = addRequest(book);
+                result.add(addRequest(book));
             } else {
                 bookshelf.setPresence(false);
             }
@@ -99,7 +99,7 @@ public class ElectronicBookstore implements Store {
     @Override
     public boolean completeOrder(Order bookOrder) {
         boolean result = true;
-        int[] numbersRequest = bookOrder.getNumbersRequest();
+        List<Integer> numbersRequest = bookOrder.getNumbersRequest();
 
         if (numbersRequest != null) {
             for (int number : numbersRequest) {
@@ -117,7 +117,7 @@ public class ElectronicBookstore implements Store {
 
     @Override
     public double earnedMoney(Calendar dateFrom, Calendar dateTo) {
-        Order[] bookOrders = getCompletedOrderList(dateFrom, dateTo);
+        List<Order> bookOrders = getCompletedOrderList(dateFrom, dateTo);
         double money = 0;
         for (Order order : bookOrders) {
             money += getTotalPrice(order.getBooks());
@@ -126,32 +126,32 @@ public class ElectronicBookstore implements Store {
     }
 
     @Override
-    public Bookshelf[] getBookList() {
+    public List<Bookshelf> getBookList() {
         return bookStorage.getBookshelfList();
     }
 
     @Override
-    public Order[] getCompletedOrderList(Calendar dateFrom, Calendar dateTo) {
+    public List<Order> getCompletedOrderList(Calendar dateFrom, Calendar dateTo) {
         return orderList.getCompletedOrder(dateFrom, dateTo);
     }
 
     @Override
     public int getCountCompletedOrder(Calendar dateFrom, Calendar dateTo) {
-        return getCompletedOrderList(dateFrom, dateTo).length;
+        return getCompletedOrderList(dateFrom, dateTo).size();
     }
 
     @Override
-    public Order[] getOrderList() {
+    public List<Order> getOrderList() {
         return orderList.getSortingArray();
     }
 
     @Override
-    public Request[] getRequestList() {
+    public List<Request> getRequestList() {
         return requestList.getArray();
     }
 
     @Override
-    public Bookshelf[] getUnsoldBookList() {
+    public List<Bookshelf> getUnsoldBookList() {
         return bookStorage.getUnsoldBookshelfList();
     }
 }
