@@ -15,6 +15,10 @@ public class BookStorage implements Storage {
         this.bookshelves = Arrays.asList(bookshelves);
     }
 
+    public BookStorage(List<Bookshelf> bookshelves) {
+        this.bookshelves = bookshelves;
+    }
+
     @Override
     public void changePresence(Book book, boolean presence) {
         int index = searchBook(book);
@@ -92,7 +96,7 @@ public class BookStorage implements Storage {
         Comparator<Bookshelf> bookComp = new BookshelfTitleComparator().thenComparing(new BookshelfPublicationYearComparator())
                 .thenComparing(new BookshelfPriceComparator()).thenComparing(new BookshelfPresenceComparator());
         List<Bookshelf> books = new ArrayList<>();
-        books.addAll(bookshelves);
+        Collections.copy(books, bookshelves);
         books.sort(bookComp);
         return books;
     }

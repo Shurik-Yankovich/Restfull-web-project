@@ -6,95 +6,72 @@ import electronicbookstore.comparator.OrderPriceComparator;
 import electronicbookstore.comparator.OrderStatusComparator;
 import electronicbookstore.store.Status;
 
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Comparator;
-import java.util.GregorianCalendar;
+import java.util.*;
 
 import static electronicbookstore.store.Status.COMPLETED;
-import static electronicbookstore.store.Status.NEW;
 
 public class OrderArray {
 
     private static final String ORDER_NOT_FOUND = "Order not found!";
 
-    private Order[] array;
-    private int length;
+    private List<Order> array;
 
     public OrderArray() {
-        this.array = new Order[0];
+        this.array = new ArrayList<>();
     }
 
     public OrderArray(int count) {
-        this.array = new Order[count];
+        this.array = new ArrayList<>(count);
     }
 
     public OrderArray(Order[] array) {
+        this.array = Arrays.asList(array);
+    }
+
+    public OrderArray(List<Order> array) {
         this.array = array;
-        this.length = array.length;
     }
 
     public void add(Order element) {
-        if (length == array.length) {
-            increaseArrayLength();
-        }
-        array[length] = element;
-        length++;
-    }
-
-    private void increaseArrayLength() {
-        array = Arrays.copyOf(array, length + 1);
+        array.add(element);
     }
 
     public void changeOrderStatus(Order bookOrder, Status status) {
-        int index = searchOrderIndex(bookOrder);
-        if (index >= 0) {
-            array[index].setStatus(status);
+
+        if (array.contains(bookOrder)) {
+            int index = array.indexOf(bookOrder);
+            Order order = array.get(index);
+            order.setStatus(status);
             if (status == COMPLETED) {
-                array[index].setOrderCompletionDate(new GregorianCalendar());
+                order.setOrderCompletionDate(new GregorianCalendar());
             }
         } else {
             System.out.println(ORDER_NOT_FOUND);
         }
     }
 
-    private int searchOrderIndex(Order bookOrder) {
-        for (int i = 0; i < length; i++) {
-            if (array[i].equals(bookOrder) && array[i].getStatus() == NEW) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
     public Order get(int index) {
-        if (index >= 0 && index < length) {
-            return array[index];
-        }
-        return null;
+        return array.get(index);
     }
 
-    public Order[] getArray() {
+    public List<Order> getArray() {
         return array;
     }
 
-    public Order[] getSortingArray() {
+    public List<Order> getSortingArray() {
         return sortBookOrders();
     }
 
-    public Order[] getCompletedOrder(Calendar dateFrom, Calendar dateTo) {
-        Order[] orders = new Order[0];
-        int index;
+    public List<Order> getCompletedOrder(Calendar dateFrom, Calendar dateTo) {
+        List<Order> orders = new ArrayList<>();
 
         for (Order order : array) {
             if (isBelongsDateToRange(order.getOrderCompletionDate(), dateFrom, dateTo)) {
-                index = orders.length;
-                orders = Arrays.copyOf(orders, index + 1);
-                orders[index] = order;
+                orders.add(order);
             }
         }
 
-        if (orders.length > 0) {
+        if (orders.size() > 0) {
             sortCompletedOrders(orders);
         }
         return orders;
@@ -106,41 +83,42 @@ public class OrderArray {
 
 
     public int size() {
-        return length;
+        return array.size();
     }
 
-    private Order[] sortBookOrders() {
-        Order[] orders =  Arrays.copyOf(array, length);
+    private List<Order> sortBookOrders() {
+        List<Order> orders = new ArrayList<>();
+        Collections.copy(orders, array);
         Comparator<Order> orderComp = new OrderDateComparator().thenComparing(new OrderPriceComparator())
                 .thenComparing(new OrderStatusComparator());
-        Arrays.sort(orders, orderComp);
+        orders.sort(orderComp);
         return orders;
     }
 
-    private void sortCompletedOrders(Order[] orders) {
+    private void sortCompletedOrders(List<Order> orders) {
         Comparator<Order> orderComp = new OrderCompletionDateComparator().thenComparing(new OrderPriceComparator());
-        Arrays.sort(orders, orderComp);
+        orders.sort(orderComp);
     }
 
-    private void sortCompletionDate(Order[] orders) {
-        Arrays.sort(orders, new OrderCompletionDateComparator());
+    private void sortCompletionDate(List<Order> orders) {
+        orders.sort(new OrderCompletionDateComparator());
     }
 
-    private void sortOrderDate(Order[] orders) {
-        Arrays.sort(orders, new OrderDateComparator());
+    private void sortOrderDate(List<Order> orders) {
+        orders.sort(new OrderDateComparator());
     }
 
-    private void sortPrice(Order[] orders) {
-        Arrays.sort(orders, new OrderPriceComparator());
+    private void sortPrice(List<Order> orders) {
+        orders.sort(new OrderPriceComparator());
     }
 
-    private void sortStatus(Order[] orders) {
-        Arrays.sort(orders, new OrderStatusComparator());
+    private void sortStatus(List<Order> orders) {
+        orders.sort(new OrderStatusComparator());
     }
 
     @Override
     public String toString() {
-        return Arrays.toString(array);
+        return array.toString();
     }
 
 }
