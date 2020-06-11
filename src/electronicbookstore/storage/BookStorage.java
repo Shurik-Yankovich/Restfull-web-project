@@ -2,26 +2,24 @@ package electronicbookstore.storage;
 
 import electronicbookstore.comparator.*;
 
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Comparator;
-import java.util.GregorianCalendar;
+import java.util.*;
 
 public class BookStorage implements Storage {
 
     private static final String BOOK_NOT_FOUND = "Book not found!";
 
-    private Bookshelf[] bookshelves;
+    private List<Bookshelf> bookshelves;
 
     public BookStorage(Bookshelf[] bookshelves) {
-        this.bookshelves = bookshelves;
+        this.bookshelves = new ArrayList<>();
+        this.bookshelves = Arrays.asList(bookshelves);
     }
 
     @Override
     public void changePresence(Book book, boolean presence) {
         int index = searchBook(book);
         if (index >= 0) {
-            bookshelves[index].setPresence(presence);
+            bookshelves.get(index).setPresence(presence);
         } else {
             System.out.println(BOOK_NOT_FOUND);
         }
@@ -31,8 +29,9 @@ public class BookStorage implements Storage {
     public void comingBook(Book book) {
         int index = searchBook(book);
         if (index >= 0) {
-            bookshelves[index].setArrivalDate(new GregorianCalendar());
-            bookshelves[index].setPresence(true);
+            Bookshelf bookshelf = bookshelves.get(index);
+            bookshelf.setArrivalDate(new GregorianCalendar());
+            bookshelf.setPresence(true);
         } else {
             System.out.println(BOOK_NOT_FOUND);
         }
@@ -41,31 +40,28 @@ public class BookStorage implements Storage {
     @Override
     public Bookshelf getBookshelf(Book book) {
         int index = searchBook(book);
-        return bookshelves[index];
+        return bookshelves.get(index);
     }
 
     @Override
-    public Bookshelf[] getBookshelfList() {
+    public List<Bookshelf> getBookshelfList() {
         return sortBookshelves();
     }
 
     @Override
-    public Bookshelf[] getUnsoldBookshelfList() {
+    public List<Bookshelf> getUnsoldBookshelfList() {
         Calendar unsoldDate = new GregorianCalendar();
         unsoldDate.add(Calendar.MONTH, -6);
-        Bookshelf[] books = getBooksByArrivalDate(unsoldDate);
+        List<Bookshelf> books = getBooksByArrivalDate(unsoldDate);
         sortUnsoldBook(books);
         return books;
     }
 
-    private Bookshelf[] getBooksByArrivalDate(Calendar arrivalDate) {
-        Bookshelf[] booksByArrivalDate = new Bookshelf[0];
-        int index;
+    private List<Bookshelf> getBooksByArrivalDate(Calendar arrivalDate) {
+        List<Bookshelf> booksByArrivalDate = new ArrayList<>();
         for (Bookshelf bookshelf: bookshelves){
             if (bookshelf.getArrivalDate().compareTo(arrivalDate) < 0 && bookshelf.isPresence()) {
-                index = booksByArrivalDate.length;
-                booksByArrivalDate = Arrays.copyOf(booksByArrivalDate, index + 1);
-                booksByArrivalDate[index] = bookshelf;
+                booksByArrivalDate.add(bookshelf);
             }
         }
         return booksByArrivalDate;
@@ -74,55 +70,56 @@ public class BookStorage implements Storage {
     @Override
     public String getBookDescription(Book book) {
         int index = searchBook(book);
-        return bookshelves[index].toString();
+        return bookshelves.get(index).toString();
     }
 
     @Override
     public void takeOutBook(Book book) {
         int index = searchBook(book);
-        bookshelves[index].setPresence(false);
+        bookshelves.get(index).setPresence(false);
     }
 
     private int searchBook(Book book) {
-        for (int i = 0; i < bookshelves.length; i++) {
-            if (bookshelves[i].getBook().equals(book)) {
+        for (int i = 0; i < bookshelves.size(); i++) {
+            if (bookshelves.get(i).getBook().equals(book)) {
                 return i;
             }
         }
         return -1;
     }
 
-    private Bookshelf[] sortBookshelves(){
+    private List<Bookshelf> sortBookshelves(){
         Comparator<Bookshelf> bookComp = new BookshelfTitleComparator().thenComparing(new BookshelfPublicationYearComparator())
                 .thenComparing(new BookshelfPriceComparator()).thenComparing(new BookshelfPresenceComparator());
-        Bookshelf[] books = Arrays.copyOf(bookshelves, bookshelves.length);
-        Arrays.sort(books, bookComp);
+        List<Bookshelf> books = new ArrayList<>();
+        books.addAll(bookshelves);
+        books.sort(bookComp);
         return books;
     }
 
-    private void sortUnsoldBook(Bookshelf[] books){
+    private void sortUnsoldBook(List<Bookshelf> books){
         Comparator<Bookshelf> bookComp = new BookshelfArrivalDateComparator().thenComparing(new BookshelfPriceComparator());
-        Arrays.sort(books, bookComp);
+        books.sort(bookComp);
     }
 
-    private void sortBookTitle (Bookshelf[] books) {
-        Arrays.sort(books, new BookshelfTitleComparator());
+    private void sortBookTitle (List<Bookshelf> books) {
+        books.sort(new BookshelfTitleComparator());
     }
 
-    private void sortPublicationYear (Bookshelf[] books) {
-        Arrays.sort(books, new BookshelfPublicationYearComparator());
+    private void sortPublicationYear (List<Bookshelf> books) {
+        books.sort(new BookshelfPublicationYearComparator());
     }
 
-    private void sortArrivalDate (Bookshelf[] books) {
-        Arrays.sort(books, new BookshelfArrivalDateComparator());
+    private void sortArrivalDate (List<Bookshelf> books) {
+        books.sort(new BookshelfArrivalDateComparator());
     }
 
-    private void sortPrice (Bookshelf[] books) {
-        Arrays.sort(books, new BookshelfPriceComparator());
+    private void sortPrice (List<Bookshelf> books) {
+        books.sort(new BookshelfPriceComparator());
     }
 
-    private void sortPresence (Bookshelf[] books) {
-        Arrays.sort(books, new BookshelfPresenceComparator());
+    private void sortPresence (List<Bookshelf> books) {
+        books.sort(new BookshelfPresenceComparator());
     }
 
 }
