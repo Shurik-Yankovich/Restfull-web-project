@@ -2,7 +2,7 @@ package electronicbookstore.storage;
 
 import java.util.Objects;
 
-public class Book implements Comparable<Book> {
+public class Book {
 
     private String title;
     private String author;
@@ -44,10 +44,5 @@ public class Book implements Comparable<Book> {
     @Override
     public int hashCode() {
         return Objects.hash(title, author, publicationYear);
-    }
-
-    @Override
-    public int compareTo(Book book) {
-        return toString().compareTo(book.toString());
     }
 }
