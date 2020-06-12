@@ -20,9 +20,9 @@ public class ElectronicBookstore implements Store {
 
     private static final String BOOK_NOT_FOUND = "Book not found!";
 
-    Storage bookStorage;
-    OrderArray orderList;
-    RequestArray requestList;
+    private Storage bookStorage;
+    private OrderArray orderList;
+    private RequestArray requestList;
 
     public ElectronicBookstore(Storage bookStorage) {
         this.bookStorage = bookStorage;
