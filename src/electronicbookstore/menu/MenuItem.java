@@ -16,7 +16,11 @@ public class MenuItem {
         return title;
     }
 
+    public Menu getNextMenu() {
+        return nextMenu;
+    }
+
     public void doAction(){
-        action.execute();
+            action.execute();
     }
 }

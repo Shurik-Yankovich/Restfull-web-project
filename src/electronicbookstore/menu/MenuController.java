@@ -12,6 +12,6 @@ public class MenuController {
 
     public void run(){
         builder.buildMenu();
-
+        navigator.printMenu();
     }
 }
