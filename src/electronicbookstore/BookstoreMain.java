@@ -5,13 +5,13 @@ import electronicbookstore.storage.BookStorage;
 import electronicbookstore.storage.Bookshelf;
 import electronicbookstore.storage.Storage;
 import electronicbookstore.store.Customer;
-import electronicbookstore.store.ElectronicBookstore;
-import electronicbookstore.store.Store;
 import electronicbookstore.store.arrays.Order;
 import electronicbookstore.util.BookGenerator;
 
 import java.time.LocalDate;
 import java.util.List;
+
+import static electronicbookstore.store.ElectronicBookstore.bookstore;
 
 
 public class BookstoreMain {
@@ -21,7 +21,7 @@ public class BookstoreMain {
         List<Bookshelf> bookshelves = BookGenerator.generate();
         Book book = bookshelves.get(5).getBook();
         Storage bookStorage = new BookStorage(bookshelves);
-        Store bookstore = new ElectronicBookstore(bookStorage);
+//        Store bookstore = new ElectronicBookstore(bookStorage);
         Customer customer1 = new Customer("John Smith", "+375333753753", "London, Shaftesbury Avenue, 50");
         Customer customer2 = new Customer("Brad Pit", "+375299999999", "London, King's Road, 13");
         Order order1 = new Order(customer1, bookshelves.get(5).getBook(), bookshelves.get(1).getBook());

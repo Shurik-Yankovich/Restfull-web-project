@@ -1,12 +1,14 @@
 package electronicbookstore.store;
 
 import electronicbookstore.storage.Book;
+import electronicbookstore.storage.BookStorage;
 import electronicbookstore.storage.Bookshelf;
 import electronicbookstore.storage.Storage;
 import electronicbookstore.store.arrays.Order;
 import electronicbookstore.store.arrays.OrderArray;
 import electronicbookstore.store.arrays.Request;
 import electronicbookstore.store.arrays.RequestArray;
+import electronicbookstore.util.BookGenerator;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -18,13 +20,14 @@ import static electronicbookstore.store.Status.COMPLETED;
 
 public class ElectronicBookstore implements Store {
 
+    public static ElectronicBookstore bookstore = new ElectronicBookstore(new BookStorage(BookGenerator.generate()));
     private static final String BOOK_NOT_FOUND = "Book not found!";
 
     private Storage bookStorage;
     private OrderArray orderList;
     private RequestArray requestList;
 
-    public ElectronicBookstore(Storage bookStorage) {
+    private ElectronicBookstore(Storage bookStorage) {
         this.bookStorage = bookStorage;
         orderList = new OrderArray();
         requestList = new RequestArray();

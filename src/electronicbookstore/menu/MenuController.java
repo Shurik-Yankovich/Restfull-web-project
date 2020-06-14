@@ -5,9 +5,9 @@ public class MenuController {
     private Builder builder;
     private Navigator navigator;
 
-    public MenuController(Builder builder, Navigator navigator) {
-        this.builder = builder;
-        this.navigator = navigator;
+    public MenuController() {
+        this.builder = new Builder();
+        this.navigator = new Navigator(new Menu("", new MenuItem[5]));
     }
 
     public void run(){
