@@ -1,6 +1,8 @@
-package electronicbookstore.storage;
+package electronicbookstore.service.storage;
 
-import electronicbookstore.comparator.*;
+import electronicbookstore.util.comparator.*;
+import electronicbookstore.model.Book;
+import electronicbookstore.model.Bookshelf;
 
 import java.util.Arrays;
 import java.util.Calendar;

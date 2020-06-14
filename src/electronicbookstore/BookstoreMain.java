@@ -1,14 +1,14 @@
 package electronicbookstore;
 
-import electronicbookstore.storage.Book;
-import electronicbookstore.storage.BookStorage;
-import electronicbookstore.storage.Bookshelf;
-import electronicbookstore.storage.Storage;
-import electronicbookstore.store.Customer;
-import electronicbookstore.store.ElectronicBookstore;
-import electronicbookstore.store.Store;
-import electronicbookstore.store.arrays.Order;
-import electronicbookstore.util.BookGenerator;
+import electronicbookstore.model.Book;
+import electronicbookstore.service.storage.BookStorage;
+import electronicbookstore.model.Bookshelf;
+import electronicbookstore.service.storage.Storage;
+import electronicbookstore.model.Customer;
+import electronicbookstore.service.store.ElectronicBookstore;
+import electronicbookstore.service.store.Store;
+import electronicbookstore.model.Order;
+import electronicbookstore.repository.BookGenerator;
 
 import java.util.Arrays;
 import java.util.Calendar;

@@ -1,18 +1,15 @@
-package electronicbookstore.store;
+package electronicbookstore.service.store;
 
-import electronicbookstore.storage.Book;
-import electronicbookstore.storage.Bookshelf;
-import electronicbookstore.storage.Storage;
-import electronicbookstore.store.arrays.Order;
-import electronicbookstore.store.arrays.Request;
-import electronicbookstore.store.arrays.OrderArray;
-import electronicbookstore.store.arrays.RequestArray;
+import electronicbookstore.model.*;
+import electronicbookstore.service.storage.Storage;
+import electronicbookstore.service.arrays.OrderArray;
+import electronicbookstore.service.arrays.RequestArray;
 
 import java.util.Arrays;
 import java.util.Calendar;
 
-import static electronicbookstore.store.Status.CANCELED;
-import static electronicbookstore.store.Status.COMPLETED;
+import static electronicbookstore.model.Status.CANCELED;
+import static electronicbookstore.model.Status.COMPLETED;
 
 public class ElectronicBookstore implements Store {
 

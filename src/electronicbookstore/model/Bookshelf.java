@@ -1,4 +1,4 @@
-package electronicbookstore.storage;
+package electronicbookstore.model;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

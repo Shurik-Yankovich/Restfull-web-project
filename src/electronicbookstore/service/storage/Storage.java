@@ -1,4 +1,7 @@
-package electronicbookstore.storage;
+package electronicbookstore.service.storage;
+
+import electronicbookstore.model.Book;
+import electronicbookstore.model.Bookshelf;
 
 public interface Storage {
 

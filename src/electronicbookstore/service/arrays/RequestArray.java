@@ -1,14 +1,15 @@
-package electronicbookstore.store.arrays;
+package electronicbookstore.service.arrays;
 
-import electronicbookstore.comparator.*;
-import electronicbookstore.storage.Book;
-import electronicbookstore.store.Status;
+import electronicbookstore.util.comparator.*;
+import electronicbookstore.model.Book;
+import electronicbookstore.model.Request;
+import electronicbookstore.model.Status;
 
 import java.util.Arrays;
 import java.util.Comparator;
 
-import static electronicbookstore.store.Status.COMPLETED;
-import static electronicbookstore.store.Status.NEW;
+import static electronicbookstore.model.Status.COMPLETED;
+import static electronicbookstore.model.Status.NEW;
 
 public class RequestArray {
 

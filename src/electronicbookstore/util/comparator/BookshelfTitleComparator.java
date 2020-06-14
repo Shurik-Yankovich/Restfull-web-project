@@ -1,6 +1,6 @@
-package electronicbookstore.comparator;
+package electronicbookstore.util.comparator;
 
-import electronicbookstore.storage.Bookshelf;
+import electronicbookstore.model.Bookshelf;
 
 import java.util.Comparator;
 

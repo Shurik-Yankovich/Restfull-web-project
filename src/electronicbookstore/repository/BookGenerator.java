@@ -1,7 +1,7 @@
-package electronicbookstore.util;
+package electronicbookstore.repository;
 
-import electronicbookstore.storage.Book;
-import electronicbookstore.storage.Bookshelf;
+import electronicbookstore.model.Book;
+import electronicbookstore.model.Bookshelf;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;

@@ -1,9 +1,6 @@
-package electronicbookstore.store.arrays;
+package electronicbookstore.model;
 
-import electronicbookstore.storage.Book;
-import electronicbookstore.store.Status;
-
-import static electronicbookstore.store.Status.NEW;
+import static electronicbookstore.model.Status.NEW;
 
 public class Request {
 

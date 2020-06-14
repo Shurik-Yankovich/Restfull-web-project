@@ -1,8 +1,4 @@
-package electronicbookstore.store.arrays;
-
-import electronicbookstore.storage.Book;
-import electronicbookstore.store.Customer;
-import electronicbookstore.store.Status;
+package electronicbookstore.model;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -10,7 +6,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import static electronicbookstore.store.Status.NEW;
+import static electronicbookstore.model.Status.NEW;
 
 public class Order {
 

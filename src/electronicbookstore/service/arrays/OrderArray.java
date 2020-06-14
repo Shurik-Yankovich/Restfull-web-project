@@ -1,18 +1,19 @@
-package electronicbookstore.store.arrays;
+package electronicbookstore.service.arrays;
 
-import electronicbookstore.comparator.OrderCompletionDateComparator;
-import electronicbookstore.comparator.OrderDateComparator;
-import electronicbookstore.comparator.OrderPriceComparator;
-import electronicbookstore.comparator.OrderStatusComparator;
-import electronicbookstore.store.Status;
+import electronicbookstore.util.comparator.OrderCompletionDateComparator;
+import electronicbookstore.util.comparator.OrderDateComparator;
+import electronicbookstore.util.comparator.OrderPriceComparator;
+import electronicbookstore.util.comparator.OrderStatusComparator;
+import electronicbookstore.model.Order;
+import electronicbookstore.model.Status;
 
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.GregorianCalendar;
 
-import static electronicbookstore.store.Status.COMPLETED;
-import static electronicbookstore.store.Status.NEW;
+import static electronicbookstore.model.Status.COMPLETED;
+import static electronicbookstore.model.Status.NEW;
 
 public class OrderArray {
 

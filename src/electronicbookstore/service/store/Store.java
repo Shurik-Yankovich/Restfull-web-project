@@ -1,9 +1,6 @@
-package electronicbookstore.store;
+package electronicbookstore.service.store;
 
-import electronicbookstore.storage.Book;
-import electronicbookstore.storage.Bookshelf;
-import electronicbookstore.store.arrays.Order;
-import electronicbookstore.store.arrays.Request;
+import electronicbookstore.model.*;
 
 import java.util.Calendar;
 
