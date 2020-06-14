@@ -8,4 +8,7 @@ public class BookListMenuTextConst {
     public static final String ITEM_TEXT_BOOK_PRESENCE_SORT = "Отсортировать список по наличию на складе";
     public static final String ITEM_TEXT_BOOK_LIST_WITHOUT_SORT = "Вывести список без сортировки";
     public static final String ITEM_TEXT_RETURN_TO_MAIN_MENU = "Вернуться в главное меню";
+
+    private BookListMenuTextConst() {
+    }
 }
