@@ -1,15 +1,11 @@
-package electronicbookstore.store.arrays;
-
-import electronicbookstore.storage.Book;
-import electronicbookstore.store.Customer;
-import electronicbookstore.store.Status;
+package electronicbookstore.model;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 
-import static electronicbookstore.store.Status.NEW;
+import static electronicbookstore.model.Status.NEW;
 
 public class Order {
 

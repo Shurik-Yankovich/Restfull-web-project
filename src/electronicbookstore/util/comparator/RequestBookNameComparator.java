@@ -1,6 +1,6 @@
-package electronicbookstore.comparator;
+package electronicbookstore.util.comparator;
 
-import electronicbookstore.store.arrays.Request;
+import electronicbookstore.model.Request;
 
 import java.util.Comparator;
 

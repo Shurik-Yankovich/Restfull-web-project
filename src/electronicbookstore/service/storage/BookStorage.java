@@ -1,6 +1,8 @@
-package electronicbookstore.storage;
+package electronicbookstore.service.storage;
 
-import electronicbookstore.comparator.*;
+import electronicbookstore.model.Book;
+import electronicbookstore.model.Bookshelf;
+import electronicbookstore.util.comparator.*;
 
 import java.time.LocalDate;
 import java.util.*;

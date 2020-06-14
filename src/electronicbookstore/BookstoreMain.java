@@ -1,17 +1,17 @@
 package electronicbookstore;
 
-import electronicbookstore.storage.Book;
-import electronicbookstore.storage.BookStorage;
-import electronicbookstore.storage.Bookshelf;
-import electronicbookstore.storage.Storage;
-import electronicbookstore.store.Customer;
-import electronicbookstore.store.arrays.Order;
-import electronicbookstore.util.BookGenerator;
+import electronicbookstore.model.Book;
+import electronicbookstore.service.storage.BookStorage;
+import electronicbookstore.model.Bookshelf;
+import electronicbookstore.service.storage.Storage;
+import electronicbookstore.model.Customer;
+import electronicbookstore.model.Order;
+import electronicbookstore.repository.BookGenerator;
 
 import java.time.LocalDate;
 import java.util.List;
 
-import static electronicbookstore.store.ElectronicBookstore.bookstore;
+import static electronicbookstore.service.store.ElectronicBookstore.bookstore;
 
 
 public class BookstoreMain {

@@ -1,9 +1,10 @@
-package electronicbookstore.store;
+package electronicbookstore.service.store;
 
-import electronicbookstore.storage.Book;
-import electronicbookstore.storage.Bookshelf;
-import electronicbookstore.store.arrays.Order;
-import electronicbookstore.store.arrays.Request;
+import electronicbookstore.model.Customer;
+import electronicbookstore.model.Book;
+import electronicbookstore.model.Bookshelf;
+import electronicbookstore.model.Order;
+import electronicbookstore.model.Request;
 
 import java.time.LocalDate;
 import java.util.List;

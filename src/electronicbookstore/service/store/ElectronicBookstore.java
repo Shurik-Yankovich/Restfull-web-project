@@ -1,22 +1,23 @@
-package electronicbookstore.store;
+package electronicbookstore.service.store;
 
-import electronicbookstore.storage.Book;
-import electronicbookstore.storage.BookStorage;
-import electronicbookstore.storage.Bookshelf;
-import electronicbookstore.storage.Storage;
-import electronicbookstore.store.arrays.Order;
-import electronicbookstore.store.arrays.OrderArray;
-import electronicbookstore.store.arrays.Request;
-import electronicbookstore.store.arrays.RequestArray;
-import electronicbookstore.util.BookGenerator;
+import electronicbookstore.model.Customer;
+import electronicbookstore.model.Book;
+import electronicbookstore.service.storage.BookStorage;
+import electronicbookstore.model.Bookshelf;
+import electronicbookstore.service.storage.Storage;
+import electronicbookstore.model.Order;
+import electronicbookstore.service.arrays.OrderArray;
+import electronicbookstore.model.Request;
+import electronicbookstore.service.arrays.RequestArray;
+import electronicbookstore.repository.BookGenerator;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static electronicbookstore.store.Status.CANCELED;
-import static electronicbookstore.store.Status.COMPLETED;
+import static electronicbookstore.model.Status.CANCELED;
+import static electronicbookstore.model.Status.COMPLETED;
 
 public class ElectronicBookstore implements Store {
 
