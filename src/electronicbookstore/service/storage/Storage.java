@@ -11,6 +11,7 @@ public interface Storage {
     void comingBook(Book book);
     Bookshelf getBookshelf(Book book);
     List<Bookshelf> getBookshelfList();
+    List<Bookshelf> getSortingBookshelfList();
     List<Bookshelf> getUnsoldBookshelfList();
     String getBookDescription(Book book);
     void takeOutBook(Book book);

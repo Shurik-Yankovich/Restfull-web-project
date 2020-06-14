@@ -1,11 +1,14 @@
 package electronicbookstore.menu;
 
 import electronicbookstore.menu.constant.*;
-import electronicbookstore.service.store.ElectronicBookstore;
+import electronicbookstore.model.Bookshelf;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Scanner;
+
+import static electronicbookstore.service.store.ElectronicBookstore.bookstore;
 
 
 public class Builder {
@@ -19,15 +22,15 @@ public class Builder {
         scanner = new Scanner(System.in);
     }
 
-    public Menu getRootMenu(){
+    public Menu getRootMenu() {
         return rootMenu;
     }
 
-    public void buildMenu(){
+    public void buildMenu() {
         buildMainMenu();
     }
 
-    private void buildMainMenu(){
+    private void buildMainMenu() {
         rootMenu = new Menu();
         MenuItem[] menuItems = new MenuItem[5];
 
@@ -54,9 +57,9 @@ public class Builder {
                 return new MenuItem(String.format(MENU_TEXT, index, MainMenuTextConst.ITEM_TEXT_COUNT_EARNED_MONEY),
                         () -> {
                             System.out.println("Введите период дат в формате \"дд мм гггг\":");
-                            String dateFrom = scanner.nextLine();
-                            String dateTo = scanner.nextLine();
-                            double money = ElectronicBookstore.bookstore.earnedMoney(LocalDate.parse(dateFrom, DateTimeFormatter.ofPattern("dd MM yyyy")),
+                            String dateFrom = readStringFromConsole();
+                            String dateTo = readStringFromConsole();
+                            double money = bookstore.earnedMoney(LocalDate.parse(dateFrom, DateTimeFormatter.ofPattern("dd MM yyyy")),
                                     LocalDate.parse(dateTo, DateTimeFormatter.ofPattern("dd MM yyyy")));
                             System.out.println("За данный промежуток времени заработано: " + money);
                         }, null);
@@ -67,7 +70,7 @@ public class Builder {
         return null;
     }
 
-    private Menu buildStorageMenu(){
+    private Menu buildStorageMenu() {
         Menu menu = new Menu();
         MenuItem[] menuItems = new MenuItem[5];
 
@@ -101,7 +104,7 @@ public class Builder {
         return null;
     }
 
-    private Menu buildOrderMenu(){
+    private Menu buildOrderMenu() {
         Menu menu = new Menu();
         MenuItem[] menuItems = new MenuItem[7];
 
@@ -141,7 +144,7 @@ public class Builder {
         return null;
     }
 
-    private Menu buildRequestMenu(){
+    private Menu buildRequestMenu() {
         Menu menu = new Menu();
         MenuItem[] menuItems = new MenuItem[4];
 
@@ -158,18 +161,67 @@ public class Builder {
         switch (requestMenuAction) {
             case ADD_REQUEST:
                 return new MenuItem(String.format(MENU_TEXT, index, RequestMenuTextConst.ITEM_TEXT_ADD_REQUEST),
-                        null, null);
+                        () -> {
+                            List<Bookshelf> books = bookstore.getBookList();
+                            printList(books);
+                            System.out.println("Выбирете номер книги для добавления:");
+                            bookstore.addRequest(books.get(readIntFromConsole()).getBook());
+                        }, null);
             case SHOW_REQUEST_LIST:
                 return new MenuItem(String.format(MENU_TEXT, index, RequestMenuTextConst.ITEM_TEXT_SHOW_REQUEST_LIST),
-                        null, null);
-            case CHANGE_REQUEST_STATUS:
-                return new MenuItem(String.format(MENU_TEXT, index, RequestMenuTextConst.ITEM_TEXT_CHANGE_REQUEST_STATUS),
-                        null, null);
+                        null, buildRequestListMenu());
             case BACK:
                 return new MenuItem(String.format(MENU_TEXT, index, RequestMenuTextConst.ITEM_TEXT_BACK),
                         null, rootMenu);
         }
         return null;
+    }
+
+    private Menu buildRequestListMenu() {
+        Menu menu = new Menu();
+        MenuItem[] menuItems = new MenuItem[4];
+
+        for (int i = 0; i < RequestListMenuAction.values().length; i++) {
+            menuItems[i] = getRequestListMenuItem(i, RequestListMenuAction.values()[i]);
+        }
+
+        menu.setMenuItems(menuItems);
+        menu.setName("Меню отображения списка запросов");
+        return menu;
+    }
+
+    private MenuItem getRequestListMenuItem(int index, RequestListMenuAction requestListMenuAction) {
+        switch (requestListMenuAction) {
+            case REQUEST_BOOK_NAME_SORT:
+                return new MenuItem(String.format(MENU_TEXT, index, RequestListMenuTextConst.ITEM_TEXT_REQUEST_BOOK_NAME_SORT),
+                        () -> System.out.println(bookstore.getSortingRequestList()), null);
+            case REQUEST_COUNT_SORT:
+                return new MenuItem(String.format(MENU_TEXT, index, RequestListMenuTextConst.ITEM_TEXT_REQUEST_COUNT_SORT),
+                        () -> System.out.println(bookstore.getSortingRequestList()), null);
+            case REQUEST_LIST_WITHOUT_SORT:
+                return new MenuItem(String.format(MENU_TEXT, index, RequestListMenuTextConst.ITEM_TEXT_REQUEST_LIST_WITHOUT_SORT),
+                        () -> System.out.println(bookstore.getRequestList()), null);
+            case RETURN_TO_MAIN_MENU:
+                return new MenuItem(String.format(MENU_TEXT, index, RequestListMenuTextConst.ITEM_TEXT_RETURN_TO_MAIN_MENU),
+                        null, rootMenu);
+        }
+        return null;
+    }
+
+    private <T> void printList(List<T> list) {
+        for (int i = 0; i < list.size(); i++) {
+            System.out.print(String.format(MENU_TEXT, i, list.get(i)));
+        }
+    }
+
+    private int readIntFromConsole() {
+        int number = scanner.nextInt();
+        scanner.nextLine();
+        return number;
+    }
+
+    private String readStringFromConsole() {
+        return scanner.nextLine();
     }
 
 }

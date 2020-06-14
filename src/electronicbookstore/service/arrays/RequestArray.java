@@ -93,6 +93,10 @@ public class RequestArray {
     }
 
     public List<Request> getArray() {
+        return array;
+    }
+
+    public List<Request> getSortingArray() {
         return sortBookRequest();
     }
 

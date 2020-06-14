@@ -1,13 +1,9 @@
 package electronicbookstore.service.store;
 
-import electronicbookstore.model.Customer;
-import electronicbookstore.model.Book;
+import electronicbookstore.model.*;
 import electronicbookstore.service.storage.BookStorage;
-import electronicbookstore.model.Bookshelf;
 import electronicbookstore.service.storage.Storage;
-import electronicbookstore.model.Order;
 import electronicbookstore.service.arrays.OrderArray;
-import electronicbookstore.model.Request;
 import electronicbookstore.service.arrays.RequestArray;
 import electronicbookstore.repository.BookGenerator;
 
@@ -152,6 +148,10 @@ public class ElectronicBookstore implements Store {
     @Override
     public List<Request> getRequestList() {
         return requestList.getArray();
+    }
+
+    public List<Request> getSortingRequestList() {
+        return requestList.getSortingArray();
     }
 
     @Override

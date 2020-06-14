@@ -53,6 +53,11 @@ public class BookStorage implements Storage {
 
     @Override
     public List<Bookshelf> getBookshelfList() {
+        return bookshelves;
+    }
+
+    @Override
+    public List<Bookshelf> getSortingBookshelfList() {
         return sortBookshelves();
     }
 
