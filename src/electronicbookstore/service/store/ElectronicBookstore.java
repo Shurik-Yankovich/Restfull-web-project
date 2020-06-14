@@ -131,6 +131,11 @@ public class ElectronicBookstore implements Store {
     }
 
     @Override
+    public List<Bookshelf> getSortingBookList() {
+        return bookStorage.getSortingBookshelfList();
+    }
+
+    @Override
     public List<Order> getCompletedOrderList(LocalDate dateFrom, LocalDate dateTo) {
         return orderList.getCompletedOrder(dateFrom, dateTo);
     }

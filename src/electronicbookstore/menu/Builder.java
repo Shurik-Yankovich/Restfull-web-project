@@ -32,18 +32,19 @@ public class Builder {
 
     private void buildMainMenu() {
         rootMenu = new Menu();
-        MenuItem[] menuItems = new MenuItem[5];
+        MainMenuAction[] menuActions = MainMenuAction.values();
+        int countMenuItems = menuActions.length;
+        MenuItem[] menuItems = new MenuItem[countMenuItems];
 
-        for (int i = 0; i < MainMenuAction.values().length; i++) {
-            menuItems[i] = getMainMenuItem(i, MainMenuAction.values()[i]);
+        for (int i = 0; i < countMenuItems; i++) {
+            menuItems[i] = getMainMenuItem(i, menuActions[i]);
         }
-
         rootMenu.setMenuItems(menuItems);
         rootMenu.setName("Главное меню");
     }
 
-    private MenuItem getMainMenuItem(int index, MainMenuAction mainMenuAction) {
-        switch (mainMenuAction) {
+    private MenuItem getMainMenuItem(int index, MainMenuAction menuAction) {
+        switch (menuAction) {
             case WORK_WITH_STORAGE:
                 return new MenuItem(String.format(MENU_TEXT, index, MainMenuTextConst.ITEM_TEXT_WORK_WITH_STORAGE),
                         null, buildStorageMenu());
@@ -72,31 +73,34 @@ public class Builder {
 
     private Menu buildStorageMenu() {
         Menu menu = new Menu();
-        MenuItem[] menuItems = new MenuItem[5];
+        StorageMenuAction[] menuActions = StorageMenuAction.values();
+        int countMenuItems = menuActions.length;
+        MenuItem[] menuItems = new MenuItem[countMenuItems];
 
-        for (int i = 0; i < StorageMenuAction.values().length; i++) {
-            menuItems[i] = getStorageMenuItem(i, StorageMenuAction.values()[i]);
+        for (int i = 0; i < countMenuItems; i++) {
+            menuItems[i] = getStorageMenuItem(i, menuActions[i]);
         }
-
         menu.setMenuItems(menuItems);
         menu.setName("Меню работы со складом");
         return menu;
     }
 
-    private MenuItem getStorageMenuItem(int index, StorageMenuAction storageMenuAction) {
-        switch (storageMenuAction) {
+    private MenuItem getStorageMenuItem(int index, StorageMenuAction menuAction) {
+        switch (menuAction) {
             case ADD_BOOK:
                 return new MenuItem(String.format(MENU_TEXT, index, StorageMenuTextConst.ITEM_TEXT_ADD_BOOK),
-                        null, null);
+                        () -> {
+                            List<Bookshelf> books = bookstore.getBookList();
+                            printList(books);
+                            System.out.println("Выбирете номер книги для добавления:");
+                            bookstore.addBookOnStorage(books.get(readIntFromConsole()).getBook());
+                        }, null);
             case SHOW_BOOK_LIST:
                 return new MenuItem(String.format(MENU_TEXT, index, StorageMenuTextConst.ITEM_TEXT_SHOW_BOOK_LIST),
-                        null, null);
+                        null, buildBookListMenu());
             case SHOW_UNSOLD_BOOK_LIST:
                 return new MenuItem(String.format(MENU_TEXT, index, StorageMenuTextConst.ITEM_TEXT_SHOW_UNSOLD_BOOK_LIST),
-                        null, null);
-            case SHOW_BOOK_DESCRIPTION:
-                return new MenuItem(String.format(MENU_TEXT, index, StorageMenuTextConst.ITEM_TEXT_SHOW_BOOK_DESCRIPTION),
-                        null, null);
+                        () -> System.out.println(bookstore.getUnsoldBookList()), null);
             case BACK:
                 return new MenuItem(String.format(MENU_TEXT, index, StorageMenuTextConst.ITEM_TEXT_BACK),
                         null, rootMenu);
@@ -104,21 +108,51 @@ public class Builder {
         return null;
     }
 
+    private Menu buildBookListMenu() {
+        Menu menu = new Menu();
+        BookListMenuAction[] menuActions = BookListMenuAction.values();
+        int countMenuItems = menuActions.length;
+        MenuItem[] menuItems = new MenuItem[countMenuItems];
+
+        for (int i = 0; i < countMenuItems; i++) {
+            menuItems[i] = getBookListMenuItem(i, menuActions[i]);
+        }
+        menu.setMenuItems(menuItems);
+        menu.setName("Меню работы со складом");
+        return menu;
+    }
+
+    private MenuItem getBookListMenuItem(int index, BookListMenuAction menuAction) {
+        switch (menuAction) {
+            case BOOK_LIST_WITH_SORT:
+                return new MenuItem(String.format(MENU_TEXT, index, BookListMenuTextConst.ITEM_TEXT_BOOK_LIST_WITH_SORT),
+                        () -> System.out.println(bookstore.getSortingBookList()), null);
+            case BOOK_LIST_WITHOUT_SORT:
+                return new MenuItem(String.format(MENU_TEXT, index, BookListMenuTextConst.ITEM_TEXT_BOOK_LIST_WITHOUT_SORT),
+                        () -> System.out.println(bookstore.getBookList()), null);
+            case RETURN_TO_MAIN_MENU:
+                return new MenuItem(String.format(MENU_TEXT, index, BookListMenuTextConst.ITEM_TEXT_RETURN_TO_MAIN_MENU),
+                        null, rootMenu);
+        }
+        return null;
+    }
+
     private Menu buildOrderMenu() {
         Menu menu = new Menu();
-        MenuItem[] menuItems = new MenuItem[7];
+        OrderMenuAction[] menuActions = OrderMenuAction.values();
+        int countMenuItems = menuActions.length;
+        MenuItem[] menuItems = new MenuItem[countMenuItems];
 
-        for (int i = 0; i < OrderMenuAction.values().length; i++) {
-            menuItems[i] = getOrderMenuItem(i, OrderMenuAction.values()[i]);
+        for (int i = 0; i < countMenuItems; i++) {
+            menuItems[i] = getOrderMenuItem(i, menuActions[i]);
         }
-
         menu.setMenuItems(menuItems);
         menu.setName("Меню работы с заказами");
         return menu;
     }
 
-    private MenuItem getOrderMenuItem(int index, OrderMenuAction orderMenuAction) {
-        switch (orderMenuAction) {
+    private MenuItem getOrderMenuItem(int index, OrderMenuAction menuAction) {
+        switch (menuAction) {
             case ADD_ORDER:
                 return new MenuItem(String.format(MENU_TEXT, index, OrderMenuTextConst.ITEM_TEXT_ADD_ORDER),
                         null, null);
@@ -146,25 +180,26 @@ public class Builder {
 
     private Menu buildRequestMenu() {
         Menu menu = new Menu();
-        MenuItem[] menuItems = new MenuItem[4];
+        RequestMenuAction[] menuActions = RequestMenuAction.values();
+        int countMenuItems = menuActions.length;
+        MenuItem[] menuItems = new MenuItem[countMenuItems];
 
-        for (int i = 0; i < RequestMenuAction.values().length; i++) {
-            menuItems[i] = getRequestMenuItem(i, RequestMenuAction.values()[i]);
+        for (int i = 0; i < countMenuItems; i++) {
+            menuItems[i] = getRequestMenuItem(i, menuActions[i]);
         }
-
         menu.setMenuItems(menuItems);
         menu.setName("Меню работы с запросами");
         return menu;
     }
 
-    private MenuItem getRequestMenuItem(int index, RequestMenuAction requestMenuAction) {
-        switch (requestMenuAction) {
+    private MenuItem getRequestMenuItem(int index, RequestMenuAction menuAction) {
+        switch (menuAction) {
             case ADD_REQUEST:
                 return new MenuItem(String.format(MENU_TEXT, index, RequestMenuTextConst.ITEM_TEXT_ADD_REQUEST),
                         () -> {
                             List<Bookshelf> books = bookstore.getBookList();
                             printList(books);
-                            System.out.println("Выбирете номер книги для добавления:");
+                            System.out.println("Выбирете номер книги для добавления запроса:");
                             bookstore.addRequest(books.get(readIntFromConsole()).getBook());
                         }, null);
             case SHOW_REQUEST_LIST:
@@ -179,24 +214,22 @@ public class Builder {
 
     private Menu buildRequestListMenu() {
         Menu menu = new Menu();
-        MenuItem[] menuItems = new MenuItem[4];
+        RequestListMenuAction[] menuActions = RequestListMenuAction.values();
+        int countMenuItems = menuActions.length;
+        MenuItem[] menuItems = new MenuItem[countMenuItems];
 
-        for (int i = 0; i < RequestListMenuAction.values().length; i++) {
-            menuItems[i] = getRequestListMenuItem(i, RequestListMenuAction.values()[i]);
+        for (int i = 0; i < countMenuItems; i++) {
+            menuItems[i] = getRequestListMenuItem(i, menuActions[i]);
         }
-
         menu.setMenuItems(menuItems);
         menu.setName("Меню отображения списка запросов");
         return menu;
     }
 
-    private MenuItem getRequestListMenuItem(int index, RequestListMenuAction requestListMenuAction) {
-        switch (requestListMenuAction) {
-            case REQUEST_BOOK_NAME_SORT:
-                return new MenuItem(String.format(MENU_TEXT, index, RequestListMenuTextConst.ITEM_TEXT_REQUEST_BOOK_NAME_SORT),
-                        () -> System.out.println(bookstore.getSortingRequestList()), null);
-            case REQUEST_COUNT_SORT:
-                return new MenuItem(String.format(MENU_TEXT, index, RequestListMenuTextConst.ITEM_TEXT_REQUEST_COUNT_SORT),
+    private MenuItem getRequestListMenuItem(int index, RequestListMenuAction menuAction) {
+        switch (menuAction) {
+            case REQUEST_LIST_WITH_SORT:
+                return new MenuItem(String.format(MENU_TEXT, index, RequestListMenuTextConst.ITEM_TEXT_REQUEST_LIST_WITH_SORT),
                         () -> System.out.println(bookstore.getSortingRequestList()), null);
             case REQUEST_LIST_WITHOUT_SORT:
                 return new MenuItem(String.format(MENU_TEXT, index, RequestListMenuTextConst.ITEM_TEXT_REQUEST_LIST_WITHOUT_SORT),

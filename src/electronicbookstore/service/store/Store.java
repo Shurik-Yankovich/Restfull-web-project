@@ -15,6 +15,7 @@ public interface Store {
     boolean completeOrder(Order bookOrder);
     double earnedMoney(LocalDate dateFrom, LocalDate dateTo);
     List<Bookshelf> getBookList();
+    List<Bookshelf> getSortingBookList();
     List<Order> getCompletedOrderList(LocalDate dateFrom, LocalDate dateTo);
     int getCountCompletedOrder(LocalDate dateFrom, LocalDate dateTo);
     List<Order> getOrderList();
