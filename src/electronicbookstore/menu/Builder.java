@@ -1,10 +1,14 @@
 package electronicbookstore.menu;
 
 import electronicbookstore.menu.constant.*;
+import electronicbookstore.model.Book;
 import electronicbookstore.model.Bookshelf;
+import electronicbookstore.model.Customer;
+import electronicbookstore.model.Order;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -118,7 +122,7 @@ public class Builder {
             menuItems[i] = getBookListMenuItem(i, menuActions[i]);
         }
         menu.setMenuItems(menuItems);
-        menu.setName("Меню работы со складом");
+        menu.setName("Меню отображения списка книг");
         return menu;
     }
 
@@ -155,24 +159,98 @@ public class Builder {
         switch (menuAction) {
             case ADD_ORDER:
                 return new MenuItem(String.format(MENU_TEXT, index, OrderMenuTextConst.ITEM_TEXT_ADD_ORDER),
-                        null, null);
+                        () -> bookstore.addOrder(createOrder()), null);
             case CANCEL_ORDER:
                 return new MenuItem(String.format(MENU_TEXT, index, OrderMenuTextConst.ITEM_TEXT_CANCEL_ORDER),
-                        null, null);
+                        () -> {
+                            System.out.println("Выбирете заказ из списка для его отмены:");
+                            List<Order> orders = bookstore.getOrderList();
+                            printList(orders);
+                            bookstore.cancelOrder(orders.get(readIntFromConsole()));
+                        }, null);
             case COMPLETE_ORDER:
                 return new MenuItem(String.format(MENU_TEXT, index, OrderMenuTextConst.ITEM_TEXT_COMPLETE_ORDER),
-                        null, null);
+                        () -> {
+                            System.out.println("Выбирете заказ из списка для его завершения:");
+                            List<Order> orders = bookstore.getOrderList();
+                            printList(orders);
+                            bookstore.completeOrder(orders.get(readIntFromConsole()));
+                        }, null);
             case SHOW_ORDER_LIST:
                 return new MenuItem(String.format(MENU_TEXT, index, OrderMenuTextConst.ITEM_TEXT_SHOW_ORDER_LIST),
-                        null, null);
+                        null, buildOrderListMenu());
             case SHOW_COMPLETED_ORDER_LIST:
                 return new MenuItem(String.format(MENU_TEXT, index, OrderMenuTextConst.ITEM_TEXT_SHOW_COMPLETED_ORDER_LIST),
-                        null, null);
-            case SHOW_ORDER_DESCRIPTION:
-                return new MenuItem(String.format(MENU_TEXT, index, OrderMenuTextConst.ITEM_TEXT_SHOW_ORDER_DESCRIPTION),
-                        null, null);
+                        () -> {
+                            System.out.println("Введите период дат в формате \"дд мм гггг\":");
+                            String dateFrom = readStringFromConsole();
+                            String dateTo = readStringFromConsole();
+                            System.out.println(bookstore.getCompletedOrderList(LocalDate.parse(dateFrom, DateTimeFormatter.ofPattern("dd MM yyyy")),
+                                    LocalDate.parse(dateTo, DateTimeFormatter.ofPattern("dd MM yyyy"))));
+                        }, null);
+            case SHOW_COUNT_COMPLETED_ORDER:
+                return new MenuItem(String.format(MENU_TEXT, index, OrderMenuTextConst.ITEM_TEXT_SHOW_COUNT_COMPLETED_ORDER),
+                        () -> {
+                            System.out.println("Введите период дат в формате \"дд мм гггг\":");
+                            String dateFrom = readStringFromConsole();
+                            String dateTo = readStringFromConsole();
+                            int numberComplOrder = bookstore.getCountCompletedOrder(LocalDate.parse(dateFrom, DateTimeFormatter.ofPattern("dd MM yyyy")),
+                                    LocalDate.parse(dateTo, DateTimeFormatter.ofPattern("dd MM yyyy")));
+                            System.out.println("За данный промежуток времени завершено " + numberComplOrder + " заказов");
+                        }, null);
             case BACK:
                 return new MenuItem(String.format(MENU_TEXT, index, OrderMenuTextConst.ITEM_TEXT_BACK),
+                        null, rootMenu);
+        }
+        return null;
+    }
+
+    private Order createOrder() {
+        System.out.println("Введите ваше ФИО:");
+        String name = readStringFromConsole();
+        System.out.println("Введите ваш адрес:");
+        String address = readStringFromConsole();
+        System.out.println("Введите номер телефона:");
+        String phone = readStringFromConsole();
+        Customer customer = new Customer(name, phone, address);
+        List<Book> booksInOrder = new ArrayList<>();
+
+        List<Bookshelf> bookshelves = bookstore.getBookList();
+        printList(bookshelves);
+        System.out.println("Выбирете книги из списка (для завершения формирования списка введите -1):");
+        int bookNumber = readIntFromConsole();
+        while (bookNumber != -1){
+            booksInOrder.add(bookshelves.get(bookNumber).getBook());
+            bookNumber = readIntFromConsole();
+        }
+
+        return new Order(customer, booksInOrder);
+    }
+
+    private Menu buildOrderListMenu() {
+        Menu menu = new Menu();
+        OrderListMenuAction[] menuActions = OrderListMenuAction.values();
+        int countMenuItems = menuActions.length;
+        MenuItem[] menuItems = new MenuItem[countMenuItems];
+
+        for (int i = 0; i < countMenuItems; i++) {
+            menuItems[i] = getOrderListMenuItem(i, menuActions[i]);
+        }
+        menu.setMenuItems(menuItems);
+        menu.setName("Меню отображения списка заказов");
+        return menu;
+    }
+
+    private MenuItem getOrderListMenuItem(int index, OrderListMenuAction menuAction) {
+        switch (menuAction) {
+            case ORDER_LIST_WITH_SORT:
+                return new MenuItem(String.format(MENU_TEXT, index, OrderListMenuTextConst.ITEM_TEXT_ORDER_LIST_WITH_SORT),
+                        () -> System.out.println(bookstore.getSortingOrderList()), null);
+            case ORDER_LIST_WITHOUT_SORT:
+                return new MenuItem(String.format(MENU_TEXT, index, OrderListMenuTextConst.ITEM_TEXT_ORDER_LIST_WITHOUT_SORT),
+                        () -> System.out.println(bookstore.getOrderList()), null);
+            case RETURN_TO_MAIN_MENU:
+                return new MenuItem(String.format(MENU_TEXT, index, OrderListMenuTextConst.ITEM_TEXT_RETURN_TO_MAIN_MENU),
                         null, rootMenu);
         }
         return null;

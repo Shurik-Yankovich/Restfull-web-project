@@ -147,6 +147,11 @@ public class ElectronicBookstore implements Store {
 
     @Override
     public List<Order> getOrderList() {
+        return orderList.getArray();
+    }
+
+    @Override
+    public List<Order> getSortingOrderList() {
         return orderList.getSortingArray();
     }
 

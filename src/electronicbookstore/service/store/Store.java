@@ -19,6 +19,7 @@ public interface Store {
     List<Order> getCompletedOrderList(LocalDate dateFrom, LocalDate dateTo);
     int getCountCompletedOrder(LocalDate dateFrom, LocalDate dateTo);
     List<Order> getOrderList();
+    List<Order> getSortingOrderList();
     List<Request> getRequestList();
     List<Bookshelf> getUnsoldBookList();
 

@@ -24,6 +24,13 @@ public class Order {
         this.status = NEW;
     }
 
+    public Order(Customer customer, List<Book> books) {
+        this.books = books;
+        this.customer = customer;
+        this.orderDate = LocalDate.now();
+        this.status = NEW;
+    }
+
     public List<Book> getBooks() {
         return books;
     }
