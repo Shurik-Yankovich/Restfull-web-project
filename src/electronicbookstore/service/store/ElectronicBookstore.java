@@ -21,7 +21,7 @@ import static electronicbookstore.model.Status.COMPLETED;
 
 public class ElectronicBookstore implements Store {
 
-    public static ElectronicBookstore bookstore = new ElectronicBookstore(new BookStorage(BookGenerator.generate()));
+    public static final ElectronicBookstore bookstore = new ElectronicBookstore(new BookStorage(BookGenerator.generate()));
     private static final String BOOK_NOT_FOUND = "Book not found!";
 
     private Storage bookStorage;

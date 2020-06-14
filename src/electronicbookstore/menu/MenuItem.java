@@ -20,6 +20,10 @@ public class MenuItem {
         return nextMenu;
     }
 
+    public void setNextMenu(Menu nextMenu) {
+        this.nextMenu = nextMenu;
+    }
+
     public void doAction(){
             action.execute();
     }

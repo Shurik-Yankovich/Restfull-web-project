@@ -4,18 +4,27 @@ public class Navigator {
 
     private Menu currentMenu;
 
-    public Navigator(Menu currentMenu) {
+    public Menu getCurrentMenu() {
+        return currentMenu;
+    }
+
+    public void setCurrentMenu(Menu currentMenu) {
         this.currentMenu = currentMenu;
     }
 
     public void printMenu() {
         MenuItem[] menuItems = currentMenu.getMenuItems();
-        for (int i = 0; i < menuItems.length; i++) {
-            System.out.println(String.format("%d - %s", i, menuItems[i].getTitle()));
+        for (MenuItem menuItem : menuItems) {
+            System.out.println(menuItem.getTitle());
         }
     }
 
     public void navigate(Integer index) {
-        currentMenu.getMenuItems()[index].doAction();
+        MenuItem menuItem = currentMenu.getMenuItems()[index];
+        if (menuItem.getNextMenu() == null) {
+            menuItem.doAction();
+        } else {
+            currentMenu = menuItem.getNextMenu();
+        }
     }
 }
