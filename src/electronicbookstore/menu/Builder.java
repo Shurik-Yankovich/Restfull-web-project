@@ -93,12 +93,7 @@ public class Builder {
         switch (menuAction) {
             case ADD_BOOK:
                 return new MenuItem(String.format(MENU_TEXT, index, StorageMenuTextConst.ITEM_TEXT_ADD_BOOK),
-                        () -> {
-                            List<Bookshelf> books = bookstore.getBookList();
-                            printList(books);
-                            System.out.println("Выбирете номер книги для добавления:");
-                            bookstore.addBookOnStorage(books.get(readIntFromConsole()).getBook());
-                        }, null);
+                        () -> bookstore.addBookOnStorage(choiceFromList(bookstore.getBookList()).getBook()), null);
             case SHOW_BOOK_LIST:
                 return new MenuItem(String.format(MENU_TEXT, index, StorageMenuTextConst.ITEM_TEXT_SHOW_BOOK_LIST),
                         null, buildBookListMenu());
@@ -162,20 +157,10 @@ public class Builder {
                         () -> bookstore.addOrder(createOrder()), null);
             case CANCEL_ORDER:
                 return new MenuItem(String.format(MENU_TEXT, index, OrderMenuTextConst.ITEM_TEXT_CANCEL_ORDER),
-                        () -> {
-                            System.out.println("Выбирете заказ из списка для его отмены:");
-                            List<Order> orders = bookstore.getOrderList();
-                            printList(orders);
-                            bookstore.cancelOrder(orders.get(readIntFromConsole()));
-                        }, null);
+                        () -> bookstore.cancelOrder(choiceFromList(bookstore.getOrderList())), null);
             case COMPLETE_ORDER:
                 return new MenuItem(String.format(MENU_TEXT, index, OrderMenuTextConst.ITEM_TEXT_COMPLETE_ORDER),
-                        () -> {
-                            System.out.println("Выбирете заказ из списка для его завершения:");
-                            List<Order> orders = bookstore.getOrderList();
-                            printList(orders);
-                            bookstore.completeOrder(orders.get(readIntFromConsole()));
-                        }, null);
+                        () -> bookstore.completeOrder(choiceFromList(bookstore.getOrderList())), null);
             case SHOW_ORDER_LIST:
                 return new MenuItem(String.format(MENU_TEXT, index, OrderMenuTextConst.ITEM_TEXT_SHOW_ORDER_LIST),
                         null, buildOrderListMenu());
@@ -219,9 +204,11 @@ public class Builder {
         printList(bookshelves);
         System.out.println("Выбирете книги из списка (для завершения формирования списка введите -1):");
         int bookNumber = readIntFromConsole();
-        while (bookNumber != -1){
-            booksInOrder.add(bookshelves.get(bookNumber).getBook());
-            bookNumber = readIntFromConsole();
+        while (bookNumber != -1) {
+            if (bookNumber >= 0 && bookNumber < bookshelves.size()) {
+                booksInOrder.add(bookshelves.get(bookNumber).getBook());
+                bookNumber = readIntFromConsole();
+            }
         }
 
         return new Order(customer, booksInOrder);
@@ -274,12 +261,7 @@ public class Builder {
         switch (menuAction) {
             case ADD_REQUEST:
                 return new MenuItem(String.format(MENU_TEXT, index, RequestMenuTextConst.ITEM_TEXT_ADD_REQUEST),
-                        () -> {
-                            List<Bookshelf> books = bookstore.getBookList();
-                            printList(books);
-                            System.out.println("Выбирете номер книги для добавления запроса:");
-                            bookstore.addRequest(books.get(readIntFromConsole()).getBook());
-                        }, null);
+                        () -> bookstore.addRequest(choiceFromList(bookstore.getBookList()).getBook()), null);
             case SHOW_REQUEST_LIST:
                 return new MenuItem(String.format(MENU_TEXT, index, RequestMenuTextConst.ITEM_TEXT_SHOW_REQUEST_LIST),
                         null, buildRequestListMenu());
@@ -317,6 +299,16 @@ public class Builder {
                         null, rootMenu);
         }
         return null;
+    }
+
+    private <T> T choiceFromList(List<T> list){
+        printList(list);
+        int choice;
+        do {
+            System.out.println("Выбирете пункт из списка:");
+            choice = readIntFromConsole();
+        } while (choice < 0 || choice >= list.size());
+        return list.get(choice);
     }
 
     private <T> void printList(List<T> list) {

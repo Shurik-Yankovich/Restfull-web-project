@@ -15,7 +15,7 @@ public class MenuController {
         scanner = new Scanner(System.in);
     }
 
-    public void run(){
+    public void run() {
         int choice;
         Menu currentMenu;
 
@@ -25,9 +25,13 @@ public class MenuController {
             navigator.printMenu();
             choice = scanner.nextInt();
             currentMenu = navigator.getCurrentMenu();
-            navigator.navigate(choice);
-            if (currentMenu.getName().equals(navigator.getCurrentMenu().getName())) {
-                navigator.setCurrentMenu(builder.getRootMenu());
+            if (choice >= 0 && choice < currentMenu.getMenuItems().length) {
+                navigator.navigate(choice);
+                if (currentMenu.getName().equals(navigator.getCurrentMenu().getName())) {
+                    navigator.setCurrentMenu(builder.getRootMenu());
+                }
+            } else {
+                System.out.println("Неверно выбран пункт меню!\nПожалуйста выбирете нужный пункт меню:\n");
             }
         }
     }
