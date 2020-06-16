@@ -1,12 +1,10 @@
-package electronicbookstore.service.storage;
+package electronicbookstore.repository.storage;
 
-import electronicbookstore.util.comparator.*;
 import electronicbookstore.model.Book;
 import electronicbookstore.model.Bookshelf;
 
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Comparator;
 import java.util.GregorianCalendar;
 
 public class BookStorage implements Storage {
@@ -48,16 +46,14 @@ public class BookStorage implements Storage {
 
     @Override
     public Bookshelf[] getBookshelfList() {
-        return sortBookshelves();
+        return bookshelves;
     }
 
     @Override
     public Bookshelf[] getUnsoldBookshelfList() {
         Calendar unsoldDate = new GregorianCalendar();
         unsoldDate.add(Calendar.MONTH, -6);
-        Bookshelf[] books = getBooksByArrivalDate(unsoldDate);
-        sortUnsoldBook(books);
-        return books;
+        return getBooksByArrivalDate(unsoldDate);
     }
 
     private Bookshelf[] getBooksByArrivalDate(Calendar arrivalDate) {
@@ -93,38 +89,4 @@ public class BookStorage implements Storage {
         }
         return -1;
     }
-
-    private Bookshelf[] sortBookshelves(){
-        Comparator<Bookshelf> bookComp = new BookshelfTitleComparator().thenComparing(new BookshelfPublicationYearComparator())
-                .thenComparing(new BookshelfPriceComparator()).thenComparing(new BookshelfPresenceComparator());
-        Bookshelf[] books = Arrays.copyOf(bookshelves, bookshelves.length);
-        Arrays.sort(books, bookComp);
-        return books;
-    }
-
-    private void sortUnsoldBook(Bookshelf[] books){
-        Comparator<Bookshelf> bookComp = new BookshelfArrivalDateComparator().thenComparing(new BookshelfPriceComparator());
-        Arrays.sort(books, bookComp);
-    }
-
-    private void sortBookTitle (Bookshelf[] books) {
-        Arrays.sort(books, new BookshelfTitleComparator());
-    }
-
-    private void sortPublicationYear (Bookshelf[] books) {
-        Arrays.sort(books, new BookshelfPublicationYearComparator());
-    }
-
-    private void sortArrivalDate (Bookshelf[] books) {
-        Arrays.sort(books, new BookshelfArrivalDateComparator());
-    }
-
-    private void sortPrice (Bookshelf[] books) {
-        Arrays.sort(books, new BookshelfPriceComparator());
-    }
-
-    private void sortPresence (Bookshelf[] books) {
-        Arrays.sort(books, new BookshelfPresenceComparator());
-    }
-
 }

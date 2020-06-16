@@ -1,21 +1,16 @@
-package electronicbookstore.service.arrays;
+package electronicbookstore.repository.order;
 
-import electronicbookstore.util.comparator.OrderCompletionDateComparator;
-import electronicbookstore.util.comparator.OrderDateComparator;
-import electronicbookstore.util.comparator.OrderPriceComparator;
-import electronicbookstore.util.comparator.OrderStatusComparator;
 import electronicbookstore.model.Order;
 import electronicbookstore.model.Status;
 
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Comparator;
 import java.util.GregorianCalendar;
 
 import static electronicbookstore.model.Status.COMPLETED;
 import static electronicbookstore.model.Status.NEW;
 
-public class OrderArray {
+public class OrderArray implements OrderRepository{
 
     private static final String ORDER_NOT_FOUND = "Order not found!";
 
@@ -35,6 +30,7 @@ public class OrderArray {
         this.length = array.length;
     }
 
+    @Override
     public void add(Order element) {
         if (length == array.length) {
             increaseArrayLength();
@@ -47,6 +43,7 @@ public class OrderArray {
         array = Arrays.copyOf(array, length + 1);
     }
 
+    @Override
     public void changeOrderStatus(Order bookOrder, Status status) {
         int index = searchOrderIndex(bookOrder);
         if (index >= 0) {
@@ -68,6 +65,7 @@ public class OrderArray {
         return -1;
     }
 
+    @Override
     public Order get(int index) {
         if (index >= 0 && index < length) {
             return array[index];
@@ -75,14 +73,12 @@ public class OrderArray {
         return null;
     }
 
+    @Override
     public Order[] getArray() {
         return array;
     }
 
-    public Order[] getSortingArray() {
-        return sortBookOrders();
-    }
-
+    @Override
     public Order[] getCompletedOrder(Calendar dateFrom, Calendar dateTo) {
         Order[] orders = new Order[0];
         int index;
@@ -94,10 +90,6 @@ public class OrderArray {
                 orders[index] = order;
             }
         }
-
-        if (orders.length > 0) {
-            sortCompletedOrders(orders);
-        }
         return orders;
     }
 
@@ -105,38 +97,9 @@ public class OrderArray {
         return date != null && (date.compareTo(dateFrom) > 0 && date.compareTo(dateTo) < 0);
     }
 
-
+    @Override
     public int size() {
         return length;
-    }
-
-    private Order[] sortBookOrders() {
-        Order[] orders =  Arrays.copyOf(array, length);
-        Comparator<Order> orderComp = new OrderDateComparator().thenComparing(new OrderPriceComparator())
-                .thenComparing(new OrderStatusComparator());
-        Arrays.sort(orders, orderComp);
-        return orders;
-    }
-
-    private void sortCompletedOrders(Order[] orders) {
-        Comparator<Order> orderComp = new OrderCompletionDateComparator().thenComparing(new OrderPriceComparator());
-        Arrays.sort(orders, orderComp);
-    }
-
-    private void sortCompletionDate(Order[] orders) {
-        Arrays.sort(orders, new OrderCompletionDateComparator());
-    }
-
-    private void sortOrderDate(Order[] orders) {
-        Arrays.sort(orders, new OrderDateComparator());
-    }
-
-    private void sortPrice(Order[] orders) {
-        Arrays.sort(orders, new OrderPriceComparator());
-    }
-
-    private void sortStatus(Order[] orders) {
-        Arrays.sort(orders, new OrderStatusComparator());
     }
 
     @Override

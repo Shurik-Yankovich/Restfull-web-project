@@ -1,17 +1,15 @@
-package electronicbookstore.service.arrays;
+package electronicbookstore.repository.request;
 
-import electronicbookstore.util.comparator.*;
 import electronicbookstore.model.Book;
 import electronicbookstore.model.Request;
 import electronicbookstore.model.Status;
 
 import java.util.Arrays;
-import java.util.Comparator;
 
 import static electronicbookstore.model.Status.COMPLETED;
 import static electronicbookstore.model.Status.NEW;
 
-public class RequestArray {
+public class RequestArray implements RequestRepository {
 
     private Request[] array;
     private int length;
@@ -31,6 +29,7 @@ public class RequestArray {
         return Arrays.toString(array);
     }
 
+    @Override
     public int add(Request element) {
         increaseArrayLength();
         element.setNumber(length);
@@ -63,6 +62,7 @@ public class RequestArray {
         return result;
     }
 
+    @Override
     public void closeRequest(Book book) {
         for (int i = 0; i < length; i++) {
             if (array[i].getBook().equals(book) && array[i].getStatus() == NEW) {
@@ -71,12 +71,14 @@ public class RequestArray {
         }
     }
 
+    @Override
     public void changeStatus(int numberRequest, Status status) {
         Request request = getByRequestNumber(numberRequest);
         if (request != null)
             request.setStatus(status);
     }
 
+    @Override
     public Request getByRequestNumber(int requestNumber) {
         Request request = null;
         if (requestNumber >= 0 && requestNumber < length) {
@@ -94,6 +96,7 @@ public class RequestArray {
         return null;
     }
 
+    @Override
     public Request get(int index) {
         Request request = null;
         if (index >= 0 && index < length) {
@@ -102,32 +105,13 @@ public class RequestArray {
         return request;
     }
 
+    @Override
     public Request[] getArray() {
-        return sortBookRequest();
+        return array;
     }
 
+    @Override
     public int size() {
         return length;
     }
-
-    private Request[] sortBookRequest() {
-        Request[] requests =  Arrays.copyOf(array, length);
-        Comparator<Request> requestComp = new RequestCountComparator().thenComparing(new RequestBookNameComparator());
-        Arrays.sort(requests, requestComp);
-        return requests;
-    }
-
-    private void sortBookName(Request[] requests) {
-        Arrays.sort(requests, new RequestBookNameComparator());
-    }
-
-    private void sortStatus(Request[] requests) {
-        Arrays.sort(requests, new RequestStatusComparator());
-    }
-
-    private void sortCount(Request[] requests) {
-        Arrays.sort(requests, new RequestCountComparator());
-    }
-
-
 }
