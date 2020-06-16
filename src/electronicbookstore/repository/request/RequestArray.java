@@ -1,4 +1,4 @@
-package electronicbookstore.service.arrays;
+package electronicbookstore.repository.request;
 
 import electronicbookstore.model.Request;
 import electronicbookstore.util.comparator.*;

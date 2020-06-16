@@ -1,11 +1,11 @@
 package electronicbookstore.service.store;
 
 import electronicbookstore.model.*;
-import electronicbookstore.service.storage.BookStorage;
-import electronicbookstore.service.storage.Storage;
-import electronicbookstore.service.arrays.OrderArray;
-import electronicbookstore.service.arrays.RequestArray;
-import electronicbookstore.repository.BookGenerator;
+import electronicbookstore.repository.storage.BookStorage;
+import electronicbookstore.repository.storage.Storage;
+import electronicbookstore.repository.order.OrderArray;
+import electronicbookstore.repository.request.RequestArray;
+import electronicbookstore.util.BookGenerator;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

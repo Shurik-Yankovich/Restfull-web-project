@@ -1,4 +1,4 @@
-package electronicbookstore.menu;
+package electronicbookstore.menu.model;
 
 public class Menu {
 

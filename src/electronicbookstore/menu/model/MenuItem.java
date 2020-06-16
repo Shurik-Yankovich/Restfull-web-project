@@ -1,4 +1,6 @@
-package electronicbookstore.menu;
+package electronicbookstore.menu.model;
+
+import electronicbookstore.menu.action.Action;
 
 public class MenuItem {
 

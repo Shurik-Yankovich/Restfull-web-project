@@ -1,6 +1,6 @@
 package electronicbookstore.menu.constant;
 
-public enum OrderMenuAction {
+public enum OrderMenu {
 
     ADD_ORDER,
     CANCEL_ORDER,

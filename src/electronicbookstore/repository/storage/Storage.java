@@ -1,4 +1,4 @@
-package electronicbookstore.service.storage;
+package electronicbookstore.repository.storage;
 
 import electronicbookstore.model.Book;
 import electronicbookstore.model.Bookshelf;

@@ -1,6 +1,6 @@
 package electronicbookstore.menu.constant;
 
-public enum RequestListMenuAction {
+public enum RequestListMenu {
 
     REQUEST_LIST_WITH_SORT,
     REQUEST_LIST_WITHOUT_SORT,

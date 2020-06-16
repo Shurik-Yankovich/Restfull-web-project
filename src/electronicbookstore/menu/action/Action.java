@@ -1,4 +1,4 @@
-package electronicbookstore.menu;
+package electronicbookstore.menu.action;
 
 public interface Action {
 

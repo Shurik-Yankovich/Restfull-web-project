@@ -1,4 +1,4 @@
-package electronicbookstore.service.arrays;
+package electronicbookstore.repository.order;
 
 import electronicbookstore.model.Order;
 import electronicbookstore.util.comparator.OrderCompletionDateComparator;
@@ -12,7 +12,7 @@ import java.util.*;
 
 import static electronicbookstore.model.Status.COMPLETED;
 
-public class OrderArray {
+public class OrderArray implements OrderRepository {
 
     private static final String ORDER_NOT_FOUND = "Order not found!";
 

@@ -1,6 +1,6 @@
 package electronicbookstore.menu.constant;
 
-public enum OrderListMenuAction {
+public enum OrderListMenu {
 
     ORDER_LIST_WITH_SORT,
     ORDER_LIST_WITHOUT_SORT,
