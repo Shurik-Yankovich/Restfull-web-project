@@ -2,10 +2,11 @@ package electronicbookstore.repository.storage;
 
 import electronicbookstore.model.Book;
 import electronicbookstore.model.Bookshelf;
-import electronicbookstore.util.comparator.*;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class BookStorage implements Storage {
 
@@ -57,16 +58,9 @@ public class BookStorage implements Storage {
     }
 
     @Override
-    public List<Bookshelf> getSortingBookshelfList() {
-        return sortBookshelves();
-    }
-
-    @Override
     public List<Bookshelf> getUnsoldBookshelfList() {
         LocalDate unsoldDate = LocalDate.now().minusMonths(NUMBER_OF_MONTHS_FOR_UNSOLD_BOOKS);
-        List<Bookshelf> books = getBooksBeforeArrivalDate(unsoldDate);
-        sortUnsoldBook(books);
-        return books;
+        return getBooksBeforeArrivalDate(unsoldDate);
     }
 
     private List<Bookshelf> getBooksBeforeArrivalDate(LocalDate arrivalDate) {
@@ -99,38 +93,4 @@ public class BookStorage implements Storage {
         }
         return -1;
     }
-
-    private List<Bookshelf> sortBookshelves(){
-        Comparator<Bookshelf> bookComp = new BookshelfTitleComparator().thenComparing(new BookshelfPublicationYearComparator())
-                .thenComparing(new BookshelfPriceComparator()).thenComparing(new BookshelfPresenceComparator());
-        List<Bookshelf> books = new ArrayList<>(bookshelves);
-        books.sort(bookComp);
-        return books;
-    }
-
-    private void sortUnsoldBook(List<Bookshelf> books){
-        Comparator<Bookshelf> bookComp = new BookshelfArrivalDateComparator().thenComparing(new BookshelfPriceComparator());
-        books.sort(bookComp);
-    }
-
-    private void sortBookTitle (List<Bookshelf> books) {
-        books.sort(new BookshelfTitleComparator());
-    }
-
-    private void sortPublicationYear (List<Bookshelf> books) {
-        books.sort(new BookshelfPublicationYearComparator());
-    }
-
-    private void sortArrivalDate (List<Bookshelf> books) {
-        books.sort(new BookshelfArrivalDateComparator());
-    }
-
-    private void sortPrice (List<Bookshelf> books) {
-        books.sort(new BookshelfPriceComparator());
-    }
-
-    private void sortPresence (List<Bookshelf> books) {
-        books.sort(new BookshelfPresenceComparator());
-    }
-
 }

@@ -1,4 +1,4 @@
-package electronicbookstore.menu.constant;
+package electronicbookstore.menu.constant.storagemenu;
 
 public enum StorageMenu {
     ADD_BOOK,

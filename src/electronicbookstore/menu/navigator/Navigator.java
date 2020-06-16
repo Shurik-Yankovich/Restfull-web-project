@@ -20,6 +20,7 @@ public class Navigator implements Navigable {
     @Override
     public void printMenu() {
         MenuItem[] menuItems = currentMenu.getMenuItems();
+        System.out.println();
         for (MenuItem menuItem : menuItems) {
             System.out.println(menuItem.getTitle());
         }

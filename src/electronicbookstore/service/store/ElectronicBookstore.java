@@ -1,15 +1,19 @@
 package electronicbookstore.service.store;
 
 import electronicbookstore.model.*;
+import electronicbookstore.repository.order.OrderArray;
+import electronicbookstore.repository.order.OrderRepository;
+import electronicbookstore.repository.request.RequestArray;
+import electronicbookstore.repository.request.RequestRepository;
 import electronicbookstore.repository.storage.BookStorage;
 import electronicbookstore.repository.storage.Storage;
-import electronicbookstore.repository.order.OrderArray;
-import electronicbookstore.repository.request.RequestArray;
 import electronicbookstore.util.BookGenerator;
+import electronicbookstore.util.comparator.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 import static electronicbookstore.model.Status.CANCELED;
@@ -21,8 +25,8 @@ public class ElectronicBookstore implements Store {
     private static final String BOOK_NOT_FOUND = "Book not found!";
 
     private Storage bookStorage;
-    private OrderArray orderList;
-    private RequestArray requestList;
+    private OrderRepository orderList;
+    private RequestRepository requestList;
 
     private ElectronicBookstore(Storage bookStorage) {
         this.bookStorage = bookStorage;
@@ -132,12 +136,23 @@ public class ElectronicBookstore implements Store {
 
     @Override
     public List<Bookshelf> getSortingBookList() {
-        return bookStorage.getSortingBookshelfList();
+        List<Bookshelf> books = new ArrayList<>(bookStorage.getBookshelfList());
+        if (books.size() > 0) {
+            Comparator<Bookshelf> bookComp = new BookshelfTitleComparator().thenComparing(new BookshelfPublicationYearComparator())
+                    .thenComparing(new BookshelfPriceComparator()).thenComparing(new BookshelfPresenceComparator());
+            books.sort(bookComp);
+        }
+        return books;
     }
 
     @Override
     public List<Order> getCompletedOrderList(LocalDate dateFrom, LocalDate dateTo) {
-        return orderList.getCompletedOrder(dateFrom, dateTo);
+        List<Order> orders = orderList.getCompletedOrder(dateFrom, dateTo);
+        if (orders.size() > 0) {
+            Comparator<Order> orderComp = new OrderCompletionDateComparator().thenComparing(new OrderPriceComparator());
+            orders.sort(orderComp);
+        }
+        return orders;
     }
 
     @Override
@@ -152,7 +167,13 @@ public class ElectronicBookstore implements Store {
 
     @Override
     public List<Order> getSortingOrderList() {
-        return orderList.getSortingArray();
+        List<Order> orders = new ArrayList<>(orderList.getArray());
+        if (orders.size() > 0) {
+            Comparator<Order> orderComp = new OrderDateComparator().thenComparing(new OrderPriceComparator())
+                    .thenComparing(new OrderStatusComparator());
+            orders.sort(orderComp);
+        }
+        return orders;
     }
 
     @Override
@@ -161,11 +182,21 @@ public class ElectronicBookstore implements Store {
     }
 
     public List<Request> getSortingRequestList() {
-        return requestList.getSortingArray();
+        List<Request> requests = new ArrayList<>(requestList.getArray());
+        if (requests.size() > 0) {
+            Comparator<Request> requestComp = new RequestCountComparator().thenComparing(new RequestBookNameComparator());
+            requests.sort(requestComp);
+        }
+        return requests;
     }
 
     @Override
     public List<Bookshelf> getUnsoldBookList() {
-        return bookStorage.getUnsoldBookshelfList();
+        List<Bookshelf> books = bookStorage.getUnsoldBookshelfList();
+        if (books.size() > 0) {
+            Comparator<Bookshelf> bookComp = new BookshelfArrivalDateComparator().thenComparing(new BookshelfPriceComparator());
+            books.sort(bookComp);
+        }
+        return books;
     }
 }

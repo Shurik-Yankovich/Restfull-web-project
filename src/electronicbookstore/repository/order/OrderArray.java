@@ -1,14 +1,12 @@
 package electronicbookstore.repository.order;
 
 import electronicbookstore.model.Order;
-import electronicbookstore.util.comparator.OrderCompletionDateComparator;
-import electronicbookstore.util.comparator.OrderDateComparator;
-import electronicbookstore.util.comparator.OrderPriceComparator;
-import electronicbookstore.util.comparator.OrderStatusComparator;
 import electronicbookstore.model.Status;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static electronicbookstore.model.Status.COMPLETED;
 
@@ -34,10 +32,12 @@ public class OrderArray implements OrderRepository {
         this.array = array;
     }
 
+    @Override
     public void add(Order element) {
         array.add(element);
     }
 
+    @Override
     public void changeOrderStatus(Order bookOrder, Status status) {
 
         if (array.contains(bookOrder)) {
@@ -52,18 +52,17 @@ public class OrderArray implements OrderRepository {
         }
     }
 
+    @Override
     public Order get(int index) {
         return array.get(index);
     }
 
+    @Override
     public List<Order> getArray() {
         return array;
     }
 
-    public List<Order> getSortingArray() {
-        return sortBookOrders();
-    }
-
+    @Override
     public List<Order> getCompletedOrder(LocalDate dateFrom, LocalDate dateTo) {
         List<Order> orders = new ArrayList<>();
 
@@ -72,10 +71,6 @@ public class OrderArray implements OrderRepository {
                 orders.add(order);
             }
         }
-
-        if (orders.size() > 0) {
-            sortCompletedOrders(orders);
-        }
         return orders;
     }
 
@@ -83,38 +78,9 @@ public class OrderArray implements OrderRepository {
         return date != null && (date.isAfter(dateFrom) && date.isBefore(dateTo));
     }
 
-
+    @Override
     public int size() {
         return array.size();
-    }
-
-    private List<Order> sortBookOrders() {
-        List<Order> orders = new ArrayList<>(array);
-        Comparator<Order> orderComp = new OrderDateComparator().thenComparing(new OrderPriceComparator())
-                .thenComparing(new OrderStatusComparator());
-        orders.sort(orderComp);
-        return orders;
-    }
-
-    private void sortCompletedOrders(List<Order> orders) {
-        Comparator<Order> orderComp = new OrderCompletionDateComparator().thenComparing(new OrderPriceComparator());
-        orders.sort(orderComp);
-    }
-
-    private void sortCompletionDate(List<Order> orders) {
-        orders.sort(new OrderCompletionDateComparator());
-    }
-
-    private void sortOrderDate(List<Order> orders) {
-        orders.sort(new OrderDateComparator());
-    }
-
-    private void sortPrice(List<Order> orders) {
-        orders.sort(new OrderPriceComparator());
-    }
-
-    private void sortStatus(List<Order> orders) {
-        orders.sort(new OrderStatusComparator());
     }
 
     @Override

@@ -1,4 +1,4 @@
-package electronicbookstore.menu.constant;
+package electronicbookstore.menu.constant.ordermenu;
 
 public enum OrderMenu {
 
