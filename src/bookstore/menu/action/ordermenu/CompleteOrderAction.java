@@ -10,6 +10,8 @@ public class CompleteOrderAction implements Action {
     @Override
     public void execute() {
         Order order = console.choiceFromList(bookstore.getOrderList());
-        bookstore.completeOrder(order);
+        if (!bookstore.completeOrder(order)) {
+            System.out.println("Неудалось завершить заказ!");
+        }
     }
 }

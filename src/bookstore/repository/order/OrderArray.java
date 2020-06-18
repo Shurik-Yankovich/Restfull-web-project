@@ -38,7 +38,7 @@ public class OrderArray implements OrderRepository {
     }
 
     @Override
-    public void changeOrderStatus(Order bookOrder, Status status) {
+    public boolean changeOrderStatus(Order bookOrder, Status status) {
 
         if (array.contains(bookOrder)) {
             int index = array.indexOf(bookOrder);
@@ -47,9 +47,11 @@ public class OrderArray implements OrderRepository {
             if (status == COMPLETED) {
                 order.setOrderCompletionDate(LocalDate.now());
             }
+            return true;
         } else {
             System.out.println(ORDER_NOT_FOUND);
         }
+        return false;
     }
 
     @Override
@@ -58,7 +60,7 @@ public class OrderArray implements OrderRepository {
     }
 
     @Override
-    public List<Order> getArray() {
+    public List<Order> getAll() {
         return array;
     }
 

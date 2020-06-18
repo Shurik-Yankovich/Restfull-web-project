@@ -10,6 +10,8 @@ public class CancelOrderAction implements Action {
     @Override
     public void execute() {
         Order order = console.choiceFromList(bookstore.getOrderList());
-        bookstore.cancelOrder(order);
+        if (!bookstore.cancelOrder(order)) {
+            System.out.println("Неудалось отменить заказ!");
+        }
     }
 }

@@ -69,10 +69,13 @@ public class RequestArray implements RequestRepository {
     }
 
     @Override
-    public void changeStatus(int numberRequest, Status status) {
+    public boolean changeStatus(int numberRequest, Status status) {
         Request request = getByRequestNumber(numberRequest);
-        if (request != null)
+        if (request != null) {
             request.setStatus(status);
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -99,7 +102,7 @@ public class RequestArray implements RequestRepository {
     }
 
     @Override
-    public List<Request> getArray() {
+    public List<Request> getAll() {
         return array;
     }
 

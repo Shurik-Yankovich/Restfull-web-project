@@ -10,9 +10,9 @@ public interface RequestRepository {
 
     int add(Request element);
     void closeRequest(Book book);
-    void changeStatus(int numberRequest, Status status);
+    boolean changeStatus(int numberRequest, Status status);
     Request getByRequestNumber(int requestNumber);
     Request get(int index);
-    List<Request> getArray();
+    List<Request> getAll();
     int size();
 }

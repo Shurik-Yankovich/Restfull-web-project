@@ -9,9 +9,9 @@ import java.util.List;
 public interface OrderRepository {
 
     void add(Order element);
-    void changeOrderStatus(Order bookOrder, Status status);
+    boolean changeOrderStatus(Order bookOrder, Status status);
     Order get(int index);
-    List<Order> getArray();
+    List<Order> getAll();
     List<Order> getCompletedOrder(LocalDate dateFrom, LocalDate dateTo);
     int size();
 }

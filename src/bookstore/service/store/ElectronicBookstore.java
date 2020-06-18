@@ -12,7 +12,6 @@ import bookstore.util.comparator.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
@@ -43,12 +42,7 @@ public class ElectronicBookstore implements Store {
     @Override
     public void addOrder(Customer customer, Book... books) {
         Order bookOrder = new Order(customer, books);
-        List<Book> bookList = Arrays.asList(books);
-        double price = getTotalPrice(bookList);
-        bookOrder.setPrice(price);
-        List<Integer> numbersRequest = checkBooksOnStorage(bookList);
-        bookOrder.setNumbersRequest(numbersRequest);
-        orderList.add(bookOrder);
+        addOrder(bookOrder);
     }
 
     @Override
@@ -86,11 +80,11 @@ public class ElectronicBookstore implements Store {
     }
 
     @Override
-    public void cancelOrder(Order bookOrder) {
+    public boolean cancelOrder(Order bookOrder) {
         for (int number : bookOrder.getNumbersRequest()) {
             requestList.changeStatus(number, CANCELED);
         }
-        orderList.changeOrderStatus(bookOrder, CANCELED);
+        return orderList.changeOrderStatus(bookOrder, CANCELED);
     }
 
     @Override
@@ -106,7 +100,7 @@ public class ElectronicBookstore implements Store {
             }
         }
         if (result) {
-            orderList.changeOrderStatus(bookOrder, COMPLETED);
+            result = orderList.changeOrderStatus(bookOrder, COMPLETED);
         }
 
         return result;
@@ -155,12 +149,12 @@ public class ElectronicBookstore implements Store {
 
     @Override
     public List<Order> getOrderList() {
-        return orderList.getArray();
+        return orderList.getAll();
     }
 
     @Override
     public List<Order> getSortingOrderList() {
-        List<Order> orders = new ArrayList<>(orderList.getArray());
+        List<Order> orders = new ArrayList<>(orderList.getAll());
         if (orders.size() > 0) {
             Comparator<Order> orderComp = new OrderDateComparator().thenComparing(new OrderPriceComparator())
                     .thenComparing(new OrderStatusComparator());
@@ -171,11 +165,11 @@ public class ElectronicBookstore implements Store {
 
     @Override
     public List<Request> getRequestList() {
-        return requestList.getArray();
+        return requestList.getAll();
     }
 
     public List<Request> getSortingRequestList() {
-        List<Request> requests = new ArrayList<>(requestList.getArray());
+        List<Request> requests = new ArrayList<>(requestList.getAll());
         if (requests.size() > 0) {
             Comparator<Request> requestComp = new RequestCountComparator().thenComparing(new RequestBookNameComparator());
             requests.sort(requestComp);
