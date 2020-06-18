@@ -1,9 +1,9 @@
 package bookstore.service.store;
 
 import bookstore.model.*;
-import bookstore.repository.order.OrderArray;
+import bookstore.repository.order.ConsoleOrderRepository;
 import bookstore.repository.order.OrderRepository;
-import bookstore.repository.request.RequestArray;
+import bookstore.repository.request.ConsoleRequestRepository;
 import bookstore.repository.request.RequestRepository;
 import bookstore.repository.storage.BookStorage;
 import bookstore.repository.storage.Storage;
@@ -29,8 +29,8 @@ public class ElectronicBookstore implements Store {
 
     private ElectronicBookstore(Storage bookStorage) {
         this.bookStorage = bookStorage;
-        orderList = new OrderArray();
-        requestList = new RequestArray();
+        orderList = new ConsoleOrderRepository();
+        requestList = new ConsoleRequestRepository();
     }
 
     @Override

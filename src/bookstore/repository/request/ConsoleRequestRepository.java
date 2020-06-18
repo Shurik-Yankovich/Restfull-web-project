@@ -11,19 +11,19 @@ import java.util.List;
 import static bookstore.model.Status.COMPLETED;
 import static bookstore.model.Status.NEW;
 
-public class RequestArray implements RequestRepository {
+public class ConsoleRequestRepository implements RequestRepository {
 
     private List<Request> array;
 
-    public RequestArray(Request... array) {
+    public ConsoleRequestRepository(Request... array) {
         this.array = Arrays.asList(array);
     }
 
-    public RequestArray(List<Request> array) {
+    public ConsoleRequestRepository(List<Request> array) {
         this.array = array;
     }
 
-    public RequestArray() {
+    public ConsoleRequestRepository() {
         this.array = new ArrayList<>();
     }
 
