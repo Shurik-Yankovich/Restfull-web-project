@@ -35,9 +35,9 @@ public class ElectronicBookstore implements Store {
     }
 
     @Override
-    public void addBookOnStorage(Book book) {
+    public void addBookOnStorage(Book book, int count) {
         requestList.closeRequest(book);
-        bookStorage.comingBook(book);
+        bookStorage.comingBook(book, count);
     }
 
     @Override
@@ -71,19 +71,12 @@ public class ElectronicBookstore implements Store {
 
     private List<Integer> checkBooksOnStorage(List<Book> books) {
         List<Integer> result = new ArrayList<>();
-        Bookshelf bookshelf;
 
         for (Book book : books) {
-            bookshelf = bookStorage.getBookshelf(book);
-            if (bookshelf == null) {
-                System.out.println(BOOK_NOT_FOUND);
-            } else if (!bookshelf.isPresence()) {
+            if (!bookStorage.takeOutBook(book)) {
                 result.add(addRequest(book));
-            } else {
-                bookshelf.setPresence(false);
             }
         }
-
         return result;
     }
 

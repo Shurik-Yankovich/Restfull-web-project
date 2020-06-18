@@ -10,6 +10,8 @@ public class AddBookAction implements Action {
     @Override
     public void execute() {
         Book book = console.choiceFromList(bookstore.getBookList()).getBook();
-        bookstore.addBookOnStorage(book);
+        System.out.println("Введите количество книг:");
+        int count = console.readIntFromConsole();
+        bookstore.addBookOnStorage(book, count);
     }
 }

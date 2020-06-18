@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface Store {
 
-    void addBookOnStorage(Book book);
+    void addBookOnStorage(Book book, int count);
     void addOrder(Customer customer, Book... books);
     void addOrder(Order bookOrder);
     int addRequest(Book book);

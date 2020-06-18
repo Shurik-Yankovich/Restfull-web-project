@@ -25,22 +25,13 @@ public class BookStorage implements Storage {
     }
 
     @Override
-    public void changePresence(Book book, boolean presence) {
-        int index = searchBook(book);
-        if (index >= 0) {
-            bookshelves.get(index).setPresence(presence);
-        } else {
-            System.out.println(BOOK_NOT_FOUND);
-        }
-    }
-
-    @Override
-    public void comingBook(Book book) {
+    public void comingBook(Book book, int count) {
         int index = searchBook(book);
         if (index >= 0) {
             Bookshelf bookshelf = bookshelves.get(index);
+            int currentCount = bookshelf.getCount();
             bookshelf.setArrivalDate(LocalDate.now());
-            bookshelf.setPresence(true);
+            bookshelf.setCount(count + currentCount);
         } else {
             System.out.println(BOOK_NOT_FOUND);
         }
@@ -65,8 +56,8 @@ public class BookStorage implements Storage {
 
     private List<Bookshelf> getBooksBeforeArrivalDate(LocalDate arrivalDate) {
         List<Bookshelf> booksBeforeArrivalDate = new ArrayList<>();
-        for (Bookshelf bookshelf: bookshelves){
-            if (bookshelf.getArrivalDate().isBefore(arrivalDate) && bookshelf.isPresence()) {
+        for (Bookshelf bookshelf : bookshelves) {
+            if (bookshelf.getArrivalDate().isBefore(arrivalDate) && bookshelf.getCount() > 0) {
                 booksBeforeArrivalDate.add(bookshelf);
             }
         }
@@ -74,15 +65,17 @@ public class BookStorage implements Storage {
     }
 
     @Override
-    public String getBookDescription(Book book) {
+    public boolean takeOutBook(Book book) {
         int index = searchBook(book);
-        return bookshelves.get(index).toString();
-    }
-
-    @Override
-    public void takeOutBook(Book book) {
-        int index = searchBook(book);
-        bookshelves.get(index).setPresence(false);
+        if (index >= 0) {
+            Bookshelf bookshelf = bookshelves.get(index);
+            int count = bookshelf.getCount();
+            if (count > 0) {
+                bookshelf.setCount(count - 1);
+                return true;
+            }
+        }
+        return false;
     }
 
     private int searchBook(Book book) {

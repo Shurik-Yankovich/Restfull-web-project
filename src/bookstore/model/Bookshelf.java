@@ -6,13 +6,13 @@ import java.time.format.DateTimeFormatter;
 public class Bookshelf {
 
     private Book book;
-    private boolean presence;
+    private int count;
     private double price;
     private LocalDate arrivalDate;
 
-    public Bookshelf(Book book, double price, LocalDate arrivalDate) {
+    public Bookshelf(Book book, int count, double price, LocalDate arrivalDate) {
         this.book = book;
-        this.presence = true;
+        this.count = count;
         this.price = price;
         this.arrivalDate = arrivalDate;
     }
@@ -21,8 +21,8 @@ public class Bookshelf {
         return book;
     }
 
-    public boolean isPresence() {
-        return presence;
+    public int getCount() {
+        return count;
     }
 
     public double getPrice() {
@@ -33,8 +33,8 @@ public class Bookshelf {
         return arrivalDate;
     }
 
-    public void setPresence(boolean presence) {
-        this.presence = presence;
+    public void setCount(int count) {
+        this.count = count;
     }
 
     public void setPrice(double price) {
@@ -47,7 +47,7 @@ public class Bookshelf {
 
     @Override
     public String toString() {
-        return book.toString() + ", presence=" + presence +
+        return book.toString() + ", count=" + count +
                 ", price=" + price +
                 ", arrivalDate=" + arrivalDate.format(DateTimeFormatter.ofPattern("dd MMM yyyy")) + "\n";
     }
