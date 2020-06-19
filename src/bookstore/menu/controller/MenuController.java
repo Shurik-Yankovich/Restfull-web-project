@@ -6,7 +6,7 @@ import bookstore.menu.navigator.Navigator;
 import bookstore.menu.builder.Builder;
 import bookstore.menu.model.Menu;
 
-import static bookstore.menu.Console.console;
+import static bookstore.menu.ConsoleWorker.CONSOLE_WORKER;
 
 public class MenuController implements Controller {
 
@@ -27,7 +27,7 @@ public class MenuController implements Controller {
         navigator.setCurrentMenu(builder.getRootMenu());
         while (true) {
             navigator.printMenu();
-            choice = console.readIntFromConsole();
+            choice = CONSOLE_WORKER.readIntFromConsole();
             currentMenu = navigator.getCurrentMenu();
             if (choice >= 0 && choice < currentMenu.getMenuItems().length) {
                 navigator.navigate(choice);

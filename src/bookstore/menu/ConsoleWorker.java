@@ -3,15 +3,15 @@ package bookstore.menu;
 import java.util.List;
 import java.util.Scanner;
 
-public class Console {
+public class ConsoleWorker {
 
-    public static final Console console = new Console();
+    public static final ConsoleWorker CONSOLE_WORKER = new ConsoleWorker();
 
     private static final String MENU_TEXT = "%d - %s";
 
     private Scanner scanner;
 
-    private Console() {
+    private ConsoleWorker() {
         scanner = new Scanner(System.in);
     }
 
