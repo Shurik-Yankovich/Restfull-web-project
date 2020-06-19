@@ -38,7 +38,7 @@ public class BookRequestService implements RequestService {
 
     @Override
     public void completeRequest(Book book) {
-        requestList.completeRequest(book);
+        requestList.complete(book);
     }
 
     @Override

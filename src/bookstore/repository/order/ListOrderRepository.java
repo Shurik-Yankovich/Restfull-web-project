@@ -34,7 +34,7 @@ public class ListOrderRepository implements OrderRepository {
     }
 
     @Override
-    public boolean changeOrderStatus(Order bookOrder, Status status) {
+    public boolean changeStatus(Order bookOrder, Status status) {
 
         if (array.contains(bookOrder)) {
             int index = array.indexOf(bookOrder);

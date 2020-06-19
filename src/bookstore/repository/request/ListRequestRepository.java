@@ -60,7 +60,7 @@ public class ListRequestRepository implements RequestRepository {
     }
 
     @Override
-    public void completeRequest(Book book) {
+    public void complete(Book book) {
         for (Request request: array) {
             if (request.getBook().equals(book) && request.getStatus() == NEW) {
                 request.setStatus(COMPLETED);

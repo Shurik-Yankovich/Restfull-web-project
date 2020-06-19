@@ -26,12 +26,12 @@ public class BookOrderService implements OrderService {
 
     @Override
     public boolean cancelOrder(Order bookOrder) {
-        return orderList.changeOrderStatus(bookOrder, CANCELED);
+        return orderList.changeStatus(bookOrder, CANCELED);
     }
 
     @Override
     public boolean completeOrder(Order bookOrder) {
-        return orderList.changeOrderStatus(bookOrder, COMPLETED);
+        return orderList.changeStatus(bookOrder, COMPLETED);
     }
 
     @Override

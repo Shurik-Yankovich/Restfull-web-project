@@ -9,7 +9,7 @@ import java.util.List;
 public interface OrderRepository {
 
     void add(Order element);
-    boolean changeOrderStatus(Order bookOrder, Status status);
+    boolean changeStatus(Order bookOrder, Status status);
     Order get(int index);
     List<Order> getAll();
     List<Order> getCompletedOrders(LocalDate dateFrom, LocalDate dateTo);
