@@ -12,6 +12,6 @@ public interface RequestService {
     void completeRequest(Book book);
     void cancelRequest(int number);
     boolean checkCompleteRequest(List<Integer> requestNumbers);
-    List<Request> getRequestList();
-    List<Request> getSortingRequestList();
+    List<Request> getAll();
+    List<Request> getSortingRequests();
 }

@@ -61,7 +61,7 @@ public class ListOrderRepository implements OrderRepository {
     }
 
     @Override
-    public List<Order> getCompletedOrder(LocalDate dateFrom, LocalDate dateTo) {
+    public List<Order> getCompletedOrders(LocalDate dateFrom, LocalDate dateTo) {
         List<Order> orders = new ArrayList<>();
 
         for (Order order : array) {

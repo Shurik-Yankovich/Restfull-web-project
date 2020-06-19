@@ -85,17 +85,17 @@ public class BookStoreService implements StoreService {
 
     @Override
     public List<Bookshelf> getBookList() {
-        return storageService.getBookList();
+        return storageService.getAll();
     }
 
     @Override
     public List<Bookshelf> getSortingBookList() {
-        return storageService.getSortingBookList();
+        return storageService.getSortingBookshelves();
     }
 
     @Override
     public List<Order> getCompletedOrderList(LocalDate dateFrom, LocalDate dateTo) {
-        return orderService.getCompletedOrderList(dateFrom, dateTo);
+        return orderService.getCompletedOrder(dateFrom, dateTo);
     }
 
     @Override
@@ -105,26 +105,26 @@ public class BookStoreService implements StoreService {
 
     @Override
     public List<Order> getOrderList() {
-        return orderService.getOrderList();
+        return orderService.getAll();
     }
 
     @Override
     public List<Order> getSortingOrderList() {
-        return orderService.getSortingOrderList();
+        return orderService.getSortingOrders();
     }
 
     @Override
     public List<Request> getRequestList() {
-        return requestService.getRequestList();
+        return requestService.getAll();
     }
 
     @Override
     public List<Request> getSortingRequestList() {
-        return requestService.getSortingRequestList();
+        return requestService.getSortingRequests();
     }
 
     @Override
     public List<Bookshelf> getUnsoldBookList() {
-        return storageService.getUnsoldBookList();
+        return storageService.getUnsoldBookshelves();
     }
 }

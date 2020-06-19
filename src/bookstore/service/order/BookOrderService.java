@@ -35,8 +35,8 @@ public class BookOrderService implements OrderService {
     }
 
     @Override
-    public List<Order> getCompletedOrderList(LocalDate dateFrom, LocalDate dateTo) {
-        List<Order> orders = orderList.getCompletedOrder(dateFrom, dateTo);
+    public List<Order> getCompletedOrder(LocalDate dateFrom, LocalDate dateTo) {
+        List<Order> orders = orderList.getCompletedOrders(dateFrom, dateTo);
         if (orders.size() > 0) {
             Comparator<Order> orderComp = new OrderCompletionDateComparator().thenComparing(new OrderPriceComparator());
             orders.sort(orderComp);
@@ -46,16 +46,16 @@ public class BookOrderService implements OrderService {
 
     @Override
     public int getCountCompletedOrder(LocalDate dateFrom, LocalDate dateTo) {
-        return getCompletedOrderList(dateFrom, dateTo).size();
+        return getCompletedOrder(dateFrom, dateTo).size();
     }
 
     @Override
-    public List<Order> getOrderList() {
+    public List<Order> getAll() {
         return orderList.getAll();
     }
 
     @Override
-    public List<Order> getSortingOrderList() {
+    public List<Order> getSortingOrders() {
         List<Order> orders = new ArrayList<>(orderList.getAll());
         if (orders.size() > 0) {
             Comparator<Order> orderComp = new OrderDateComparator().thenComparing(new OrderPriceComparator())

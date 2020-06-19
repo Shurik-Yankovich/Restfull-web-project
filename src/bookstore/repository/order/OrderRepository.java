@@ -12,6 +12,6 @@ public interface OrderRepository {
     boolean changeOrderStatus(Order bookOrder, Status status);
     Order get(int index);
     List<Order> getAll();
-    List<Order> getCompletedOrder(LocalDate dateFrom, LocalDate dateTo);
+    List<Order> getCompletedOrders(LocalDate dateFrom, LocalDate dateTo);
     int size();
 }

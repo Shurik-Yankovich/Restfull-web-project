@@ -19,7 +19,7 @@ public class BookStorageService implements StorageService {
 
     @Override
     public void addBookOnStorage(Book book, int count) {
-        bookStorageRepository.comingBook(book, count);
+        bookStorageRepository.addBook(book, count);
     }
 
     public double getTotalPrice(List<Book> books) {
@@ -41,13 +41,13 @@ public class BookStorageService implements StorageService {
     }
 
     @Override
-    public List<Bookshelf> getBookList() {
-        return bookStorageRepository.getBookshelfList();
+    public List<Bookshelf> getAll() {
+        return bookStorageRepository.getAll();
     }
 
     @Override
-    public List<Bookshelf> getSortingBookList() {
-        List<Bookshelf> books = new ArrayList<>(bookStorageRepository.getBookshelfList());
+    public List<Bookshelf> getSortingBookshelves() {
+        List<Bookshelf> books = new ArrayList<>(bookStorageRepository.getAll());
         if (books.size() > 0) {
             Comparator<Bookshelf> bookComp = new BookshelfTitleComparator().thenComparing(new BookshelfPublicationYearComparator())
                     .thenComparing(new BookshelfPriceComparator()).thenComparing(new BookshelfPresenceComparator());
@@ -57,8 +57,8 @@ public class BookStorageService implements StorageService {
     }
 
     @Override
-    public List<Bookshelf> getUnsoldBookList() {
-        List<Bookshelf> books = bookStorageRepository.getUnsoldBookshelfList();
+    public List<Bookshelf> getUnsoldBookshelves() {
+        List<Bookshelf> books = bookStorageRepository.getUnsoldBookshelves();
         if (books.size() > 0) {
             Comparator<Bookshelf> bookComp = new BookshelfArrivalDateComparator().thenComparing(new BookshelfPriceComparator());
             books.sort(bookComp);

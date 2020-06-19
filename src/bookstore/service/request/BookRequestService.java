@@ -59,12 +59,12 @@ public class BookRequestService implements RequestService {
     }
 
     @Override
-    public List<Request> getRequestList() {
+    public List<Request> getAll() {
         return requestList.getAll();
     }
 
     @Override
-    public List<Request> getSortingRequestList() {
+    public List<Request> getSortingRequests() {
         List<Request> requests = new ArrayList<>(requestList.getAll());
         if (requests.size() > 0) {
             Comparator<Request> requestComp = new RequestCountComparator().thenComparing(new RequestBookNameComparator());

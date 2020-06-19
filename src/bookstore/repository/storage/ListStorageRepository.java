@@ -16,7 +16,6 @@ public class ListStorageRepository implements StorageRepository {
     private List<Bookshelf> bookshelves;
 
     public ListStorageRepository(Bookshelf... bookshelves) {
-        this.bookshelves = new ArrayList<>();
         this.bookshelves = Arrays.asList(bookshelves);
     }
 
@@ -25,7 +24,7 @@ public class ListStorageRepository implements StorageRepository {
     }
 
     @Override
-    public void comingBook(Book book, int count) {
+    public void addBook(Book book, int count) {
         int index = searchBook(book);
         if (index >= 0) {
             Bookshelf bookshelf = bookshelves.get(index);
@@ -44,12 +43,12 @@ public class ListStorageRepository implements StorageRepository {
     }
 
     @Override
-    public List<Bookshelf> getBookshelfList() {
+    public List<Bookshelf> getAll() {
         return bookshelves;
     }
 
     @Override
-    public List<Bookshelf> getUnsoldBookshelfList() {
+    public List<Bookshelf> getUnsoldBookshelves() {
         LocalDate unsoldDate = LocalDate.now().minusMonths(NUMBER_OF_MONTHS_FOR_UNSOLD_BOOKS);
         return getBooksBeforeArrivalDate(unsoldDate);
     }

@@ -10,7 +10,7 @@ public interface StorageService {
     void addBookOnStorage(Book book, int count);
     double getTotalPrice(List<Book> books);
     List<Book> checkBooksNotOnStorage(List<Book> books);
-    List<Bookshelf> getBookList();
-    List<Bookshelf> getSortingBookList();
-    List<Bookshelf> getUnsoldBookList();
+    List<Bookshelf> getAll();
+    List<Bookshelf> getSortingBookshelves();
+    List<Bookshelf> getUnsoldBookshelves();
 }
