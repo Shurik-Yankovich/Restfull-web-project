@@ -1,6 +1,6 @@
 package bookstore.repository.storage;
 
-import bookstore.model.Book;
+import bookstore.model.book.Book;
 import bookstore.model.Bookshelf;
 
 import java.time.LocalDate;

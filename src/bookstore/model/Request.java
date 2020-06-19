@@ -1,5 +1,7 @@
 package bookstore.model;
 
+import bookstore.model.book.Book;
+
 import static bookstore.model.Status.NEW;
 
 public class Request {

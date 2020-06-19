@@ -1,7 +1,7 @@
 package bookstore.menu.action.storagemenu;
 
 import bookstore.menu.action.Action;
-import bookstore.model.Book;
+import bookstore.model.book.Book;
 
 import static bookstore.menu.ConsoleWorker.CONSOLE_WORKER;
 import static bookstore.service.store.BookStoreService.bookstore;

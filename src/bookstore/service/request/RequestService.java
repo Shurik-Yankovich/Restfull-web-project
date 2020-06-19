@@ -1,6 +1,6 @@
 package bookstore.service.request;
 
-import bookstore.model.Book;
+import bookstore.model.book.Book;
 import bookstore.model.Request;
 
 import java.util.List;

@@ -1,5 +1,7 @@
 package bookstore.model;
 
+import bookstore.model.book.Book;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 

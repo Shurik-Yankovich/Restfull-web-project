@@ -1,6 +1,6 @@
 package bookstore.repository.request;
 
-import bookstore.model.Book;
+import bookstore.model.book.Book;
 import bookstore.model.Request;
 import bookstore.model.Status;
 

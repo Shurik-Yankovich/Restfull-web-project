@@ -1,6 +1,6 @@
 package bookstore.service.storage;
 
-import bookstore.model.Book;
+import bookstore.model.book.Book;
 import bookstore.model.Bookshelf;
 import bookstore.repository.storage.StorageRepository;
 import bookstore.util.comparator.*;

@@ -1,7 +1,7 @@
 package bookstore.menu.action.ordermenu;
 
 import bookstore.menu.action.Action;
-import bookstore.model.Book;
+import bookstore.model.book.Book;
 import bookstore.model.Bookshelf;
 import bookstore.model.Customer;
 import bookstore.model.Order;

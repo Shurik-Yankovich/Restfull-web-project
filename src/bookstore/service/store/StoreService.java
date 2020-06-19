@@ -1,6 +1,7 @@
 package bookstore.service.store;
 
 import bookstore.model.*;
+import bookstore.model.book.Book;
 
 import java.time.LocalDate;
 import java.util.List;

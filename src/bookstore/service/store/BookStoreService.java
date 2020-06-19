@@ -1,6 +1,7 @@
 package bookstore.service.store;
 
 import bookstore.model.*;
+import bookstore.model.book.Book;
 import bookstore.repository.storage.ListStorageRepository;
 import bookstore.repository.storage.StorageRepository;
 import bookstore.service.order.BookOrderService;

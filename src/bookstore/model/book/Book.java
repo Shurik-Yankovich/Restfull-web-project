@@ -1,4 +1,4 @@
-package bookstore.model;
+package bookstore.model.book;
 
 import java.util.Objects;
 
@@ -7,6 +7,9 @@ public class Book {
     private String title;
     private String author;
     private int publicationYear;
+
+    public Book() {
+    }
 
     public Book(String title, String author, int publicationYear) {
         this.title = title;
