@@ -27,19 +27,12 @@ import bookstore.menu.constant.storagemenu.StorageMenuTextConst;
 import bookstore.menu.model.Menu;
 import bookstore.menu.model.MenuItem;
 
-import java.util.Scanner;
-
 
 public class Builder implements Buildable {
 
     private static final String MENU_TEXT = "%d - %s";
-    private Scanner scanner;
 
     private Menu rootMenu;
-
-    public Builder() {
-        scanner = new Scanner(System.in);
-    }
 
     @Override
     public Menu getRootMenu() {

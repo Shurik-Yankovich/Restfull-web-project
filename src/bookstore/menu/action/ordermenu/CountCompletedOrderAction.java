@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import static bookstore.menu.Console.console;
-import static bookstore.service.store.ElectronicBookstore.bookstore;
+import static bookstore.service.store.BookStoreService.bookstore;
 
 public class CountCompletedOrderAction implements Action {
     @Override

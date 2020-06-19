@@ -11,19 +11,19 @@ import java.util.List;
 import static bookstore.model.Status.COMPLETED;
 import static bookstore.model.Status.NEW;
 
-public class ConsoleRequestRepository implements RequestRepository {
+public class ListRequestRepository implements RequestRepository {
 
     private List<Request> array;
 
-    public ConsoleRequestRepository(Request... array) {
+    public ListRequestRepository(Request... array) {
         this.array = Arrays.asList(array);
     }
 
-    public ConsoleRequestRepository(List<Request> array) {
+    public ListRequestRepository(List<Request> array) {
         this.array = array;
     }
 
-    public ConsoleRequestRepository() {
+    public ListRequestRepository() {
         this.array = new ArrayList<>();
     }
 
@@ -60,7 +60,7 @@ public class ConsoleRequestRepository implements RequestRepository {
     }
 
     @Override
-    public void closeRequest(Book book) {
+    public void completeRequest(Book book) {
         for (Request request: array) {
             if (request.getBook().equals(book) && request.getStatus() == NEW) {
                 request.setStatus(COMPLETED);

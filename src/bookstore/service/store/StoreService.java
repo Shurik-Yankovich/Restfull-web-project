@@ -5,7 +5,7 @@ import bookstore.model.*;
 import java.time.LocalDate;
 import java.util.List;
 
-public interface Store {
+public interface StoreService {
 
     void addBookOnStorage(Book book, int count);
     void addOrder(Customer customer, Book... books);
@@ -21,6 +21,7 @@ public interface Store {
     List<Order> getOrderList();
     List<Order> getSortingOrderList();
     List<Request> getRequestList();
+    List<Request> getSortingRequestList();
     List<Bookshelf> getUnsoldBookList();
 
 }

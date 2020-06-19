@@ -10,25 +10,21 @@ import java.util.List;
 
 import static bookstore.model.Status.COMPLETED;
 
-public class ConsoleOrderRepository implements OrderRepository {
+public class ListOrderRepository implements OrderRepository {
 
     private static final String ORDER_NOT_FOUND = "Order not found!";
 
     private List<Order> array;
 
-    public ConsoleOrderRepository() {
+    public ListOrderRepository() {
         this.array = new ArrayList<>();
     }
 
-    public ConsoleOrderRepository(int count) {
-        this.array = new ArrayList<>(count);
-    }
-
-    public ConsoleOrderRepository(Order... array) {
+    public ListOrderRepository(Order... array) {
         this.array = Arrays.asList(array);
     }
 
-    public ConsoleOrderRepository(List<Order> array) {
+    public ListOrderRepository(List<Order> array) {
         this.array = array;
     }
 

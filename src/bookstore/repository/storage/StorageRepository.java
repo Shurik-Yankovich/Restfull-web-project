@@ -5,7 +5,7 @@ import bookstore.model.Bookshelf;
 
 import java.util.List;
 
-public interface Storage {
+public interface StorageRepository {
 
     void comingBook(Book book, int count);
     Bookshelf getBookshelf(Book book);

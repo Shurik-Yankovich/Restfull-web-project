@@ -8,19 +8,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class BookStorage implements Storage {
+public class ListStorageRepository implements StorageRepository {
 
     private static final String BOOK_NOT_FOUND = "Book not found!";
     private static final int NUMBER_OF_MONTHS_FOR_UNSOLD_BOOKS = 6;
 
     private List<Bookshelf> bookshelves;
 
-    public BookStorage(Bookshelf... bookshelves) {
+    public ListStorageRepository(Bookshelf... bookshelves) {
         this.bookshelves = new ArrayList<>();
         this.bookshelves = Arrays.asList(bookshelves);
     }
 
-    public BookStorage(List<Bookshelf> bookshelves) {
+    public ListStorageRepository(List<Bookshelf> bookshelves) {
         this.bookshelves = bookshelves;
     }
 

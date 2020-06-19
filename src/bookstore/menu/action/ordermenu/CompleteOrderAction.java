@@ -4,7 +4,7 @@ import bookstore.menu.action.Action;
 import bookstore.model.Order;
 
 import static bookstore.menu.Console.console;
-import static bookstore.service.store.ElectronicBookstore.bookstore;
+import static bookstore.service.store.BookStoreService.bookstore;
 
 public class CompleteOrderAction implements Action {
     @Override

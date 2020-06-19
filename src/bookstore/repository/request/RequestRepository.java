@@ -9,7 +9,7 @@ import java.util.List;
 public interface RequestRepository {
 
     int add(Request element);
-    void closeRequest(Book book);
+    void completeRequest(Book book);
     boolean changeStatus(int numberRequest, Status status);
     Request getByRequestNumber(int requestNumber);
     Request get(int index);
