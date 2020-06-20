@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import static bookstore.menu.ConsoleWorker.CONSOLE_WORKER;
-import static bookstore.service.store.BookStoreService.bookstore;
+import static bookstore.service.order.BookOrderService.ORDER_SERVICE;
 
 public class EarnedMoneyAction implements Action {
     @Override
@@ -14,7 +14,7 @@ public class EarnedMoneyAction implements Action {
         System.out.println("Введите период дат в формате \"дд мм гггг\":");
         String dateFrom = CONSOLE_WORKER.readStringFromConsole();
         String dateTo = CONSOLE_WORKER.readStringFromConsole();
-        double money = bookstore.earnedMoney(LocalDate.parse(dateFrom, DateTimeFormatter.ofPattern("dd MM yyyy")),
+        double money = ORDER_SERVICE.earnedMoney(LocalDate.parse(dateFrom, DateTimeFormatter.ofPattern("dd MM yyyy")),
                 LocalDate.parse(dateTo, DateTimeFormatter.ofPattern("dd MM yyyy")));
         System.out.println("За данный промежуток времени заработано: " + money);
     }

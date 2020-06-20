@@ -1,21 +1,22 @@
 package bookstore.menu.action.ordermenu;
 
 import bookstore.menu.action.Action;
-import bookstore.model.book.Book;
 import bookstore.model.Bookshelf;
 import bookstore.model.Customer;
 import bookstore.model.Order;
+import bookstore.model.book.Book;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static bookstore.menu.ConsoleWorker.CONSOLE_WORKER;
-import static bookstore.service.store.BookStoreService.bookstore;
+import static bookstore.service.order.BookOrderService.ORDER_SERVICE;
+import static bookstore.service.storage.BookStorageService.STORAGE_SERVICE;
 
 public class AddOrderAction implements Action {
     @Override
     public void execute() {
-        bookstore.addOrder(createOrder());
+        ORDER_SERVICE.addOrder(createOrder());
     }
 
     private Order createOrder() {
@@ -28,7 +29,7 @@ public class AddOrderAction implements Action {
         Customer customer = new Customer(name, phone, address);
         List<Book> booksInOrder = new ArrayList<>();
 
-        List<Bookshelf> bookshelves = bookstore.getBookList();
+        List<Bookshelf> bookshelves = STORAGE_SERVICE.getBookshelfList();
         CONSOLE_WORKER.printList(bookshelves);
         System.out.println("Выбирете книги из списка (для завершения формирования списка введите -1):");
         int bookNumber = CONSOLE_WORKER.readIntFromConsole();

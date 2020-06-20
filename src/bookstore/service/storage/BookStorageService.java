@@ -2,23 +2,30 @@ package bookstore.service.storage;
 
 import bookstore.model.book.Book;
 import bookstore.model.Bookshelf;
+import bookstore.repository.storage.ListStorageRepository;
 import bookstore.repository.storage.StorageRepository;
+import bookstore.util.BookGenerator;
 import bookstore.util.comparator.*;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import static bookstore.service.request.BookRequestService.REQUEST_SERVICE;
+
 public class BookStorageService implements StorageService {
+
+    public static final StorageService STORAGE_SERVICE = new BookStorageService(new ListStorageRepository(BookGenerator.generate()));
 
     private StorageRepository bookStorageRepository;
 
-    public BookStorageService(StorageRepository bookStorageRepository) {
+    private BookStorageService(StorageRepository bookStorageRepository) {
         this.bookStorageRepository = bookStorageRepository;
     }
 
     @Override
     public void addBookOnStorage(Book book, int count) {
+        REQUEST_SERVICE.completeRequest(book);
         bookStorageRepository.addBook(book, count);
     }
 
@@ -41,7 +48,7 @@ public class BookStorageService implements StorageService {
     }
 
     @Override
-    public List<Bookshelf> getAll() {
+    public List<Bookshelf> getBookshelfList() {
         return bookStorageRepository.getAll();
     }
 

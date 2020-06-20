@@ -16,9 +16,11 @@ import static bookstore.model.Status.COMPLETED;
 
 public class BookRequestService implements RequestService {
 
+    public static final RequestService REQUEST_SERVICE = new BookRequestService();
+
     private RequestRepository requestList;
 
-    public BookRequestService() {
+    private BookRequestService() {
         requestList = new ListRequestRepository();
     }
 
@@ -59,12 +61,12 @@ public class BookRequestService implements RequestService {
     }
 
     @Override
-    public List<Request> getAll() {
+    public List<Request> getRequestList() {
         return requestList.getAll();
     }
 
     @Override
-    public List<Request> getSortingRequests() {
+    public List<Request> getSortingRequestList() {
         List<Request> requests = new ArrayList<>(requestList.getAll());
         if (requests.size() > 0) {
             Comparator<Request> requestComp = new RequestCountComparator().thenComparing(new RequestBookNameComparator());
