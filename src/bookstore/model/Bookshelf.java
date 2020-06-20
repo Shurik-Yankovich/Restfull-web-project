@@ -1,6 +1,7 @@
 package bookstore.model;
 
 import bookstore.model.book.Book;
+import bookstore.model.book.BookFactory;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -11,6 +12,10 @@ public class Bookshelf {
     private int count;
     private double price;
     private LocalDate arrivalDate;
+
+    public Bookshelf(String genre) {
+        book = BookFactory.getBookByGenre(genre);
+    }
 
     public Bookshelf(Book book, int count, double price, LocalDate arrivalDate) {
         this.book = book;
