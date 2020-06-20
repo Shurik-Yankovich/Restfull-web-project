@@ -15,8 +15,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import static bookstore.model.Status.CANCELED;
-import static bookstore.model.Status.COMPLETED;
+import static bookstore.model.Status.*;
 import static bookstore.service.request.BookRequestService.REQUEST_SERVICE;
 import static bookstore.service.storage.BookStorageService.STORAGE_SERVICE;
 
@@ -92,6 +91,17 @@ public class BookOrderService implements OrderService {
     @Override
     public List<Order> getOrderList() {
         return orderList.getAll();
+    }
+
+    @Override
+    public List<Order> getNewOrder() {
+        List<Order> orders = new ArrayList<>();
+        for (Order order : orderList.getAll()) {
+            if (order.getStatus() == NEW) {
+                orders.add(order);
+            }
+        }
+        return orders;
     }
 
     @Override

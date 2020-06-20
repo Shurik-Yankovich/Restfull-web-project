@@ -85,7 +85,7 @@ public class Order {
 
     @Override
     public String toString() {
-        return String.format("Order:\nBooks: %s\n%sorderDate = %s, status - %b, orderCompletionDate = %s, price = %.2f\n",
+        return String.format("Order:\nBooks: %s\n%sorderDate = %s, status - %s, orderCompletionDate = %s, price = %.2f\n",
                 books.toString(),
                 customer,
                 orderDate.format(DateTimeFormatter.ofPattern("dd MMM yyyy")),

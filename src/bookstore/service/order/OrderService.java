@@ -17,5 +17,6 @@ public interface OrderService {
     List<Order> getCompletedOrder(LocalDate dateFrom, LocalDate dateTo);
     int getCountCompletedOrder(LocalDate dateFrom, LocalDate dateTo);
     List<Order> getOrderList();
+    List<Order> getNewOrder();
     List<Order> getSortingOrderList();
 }
