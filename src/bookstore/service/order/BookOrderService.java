@@ -1,6 +1,7 @@
 package bookstore.service.order;
 
 import bookstore.model.Order;
+import bookstore.repository.order.ListOrderRepository;
 import bookstore.repository.order.OrderRepository;
 import bookstore.util.comparator.OrderCompletionDateComparator;
 import bookstore.util.comparator.OrderDateComparator;
@@ -18,6 +19,10 @@ import static bookstore.model.Status.COMPLETED;
 public class BookOrderService implements OrderService {
 
     private OrderRepository orderList;
+
+    public BookOrderService() {
+        orderList = new ListOrderRepository();
+    }
 
     @Override
     public void addOrder(Order bookOrder) {
