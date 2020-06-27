@@ -13,11 +13,11 @@ public class Bookshelf {
     private double price;
     private LocalDate arrivalDate;
 
-    public Bookshelf(String genre, Book book, int count, double price, LocalDate arrivalDate) {
-        this.book = BookFactory.getBookByGenre(genre);
-        this.book.setTitle(book.getTitle());
-        this.book.setAuthor(book.getAuthor());
-        this.book.setPublicationYear(book.getPublicationYear());
+    public Bookshelf(BookFactory bookFactory, String title, String author, int publicationYear, int count, double price, LocalDate arrivalDate) {
+        this.book = bookFactory.createBook();
+        this.book.setTitle(title);
+        this.book.setAuthor(author);
+        this.book.setPublicationYear(publicationYear);
         this.count = count;
         this.price = price;
         this.arrivalDate = arrivalDate;

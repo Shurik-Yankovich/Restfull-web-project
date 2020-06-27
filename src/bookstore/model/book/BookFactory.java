@@ -1,22 +1,17 @@
 package bookstore.model.book;
 
-public class BookFactory {
+public enum BookFactory {
+    NOVEL(new NovelBookMaker()),
+    TECHNICAL(new TechnicalBookMaker()),
+    THRILLER(new ThrillerBookMaker());
 
-    public static Book getBookByGenre(String genre) {
-        BookMaker maker = getMakerByGenre(genre);
-        return maker.makeBook();
+    private BookMaker bookMaker;
+
+    BookFactory(BookMaker bookMaker) {
+        this.bookMaker = bookMaker;
     }
 
-    private static BookMaker getMakerByGenre(String genre) {
-        switch (genre) {
-            case "Novel":
-                return new NovelBookMaker();
-            case "Technical":
-                return new TechnicalBookMaker();
-            case "Thriller":
-                return new ThrillerBookMaker();
-            default:
-                throw new RuntimeException("Не поддерживаемый жанр книг " + genre);
-        }
+    public Book createBook(){
+        return bookMaker.makeBook();
     }
 }
