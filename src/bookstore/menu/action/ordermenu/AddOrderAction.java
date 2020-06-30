@@ -37,7 +37,7 @@ public class AddOrderAction implements Action {
             if (bookNumber >= 0 && bookNumber < bookshelves.size()) {
                 booksInOrder.add(bookshelves.get(bookNumber).getBook());
             } else {
-                System.out.println("Неверно выбран номер книги из списка!");
+                System.err.println("Неверно выбран номер книги из списка!");
             }
             bookNumber = CONSOLE_WORKER.readIntFromConsole();
         }

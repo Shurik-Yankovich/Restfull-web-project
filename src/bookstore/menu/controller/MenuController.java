@@ -35,7 +35,7 @@ public class MenuController implements Controller {
                     navigator.setCurrentMenu(builder.getRootMenu());
                 }
             } else {
-                System.out.println("Неверно выбран пункт меню!\nПожалуйста выбирете нужный пункт меню:\n");
+                System.err.println("Неверно выбран пункт меню!\nПожалуйста выбирете нужный пункт меню:\n");
             }
         }
     }
