@@ -7,6 +7,6 @@ public interface Repository<T,P> {
     T read(P p);//+++
     T update(T t, P p);//+++
     void delete(P p);//---
-    List readAll(List p);//???
-    void createAll(List t);//---
+    List<T> readAll(List<P> p);//???
+    void createAll(List<T> t);//---
 }
