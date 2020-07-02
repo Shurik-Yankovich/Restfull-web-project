@@ -1,4 +1,4 @@
-package bookstore.view;
+package bookstore.view.out;
 
 import java.util.List;
 

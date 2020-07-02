@@ -1,4 +1,4 @@
-package bookstore.view;
+package bookstore.view.in;
 
 import bookstore.model.Bookshelf;
 import bookstore.model.Customer;

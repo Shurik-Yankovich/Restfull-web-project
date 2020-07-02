@@ -3,7 +3,7 @@ package bookstore.service.storage;
 import bookstore.model.Bookshelf;
 import bookstore.model.book.Book;
 import bookstore.repository.storage.StorageRepository;
-import bookstore.util.BookGenerator;
+import bookstore.service.request.RequestService;
 import bookstore.util.comparator.*;
 
 import java.time.LocalDate;
@@ -11,22 +11,21 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import static bookstore.service.request.BookRequestService.REQUEST_SERVICE;
-
 public class BookStorageService implements StorageService {
 
-    public static final StorageService STORAGE_SERVICE = new BookStorageService(BookGenerator.generate());
     private static final int NUMBER_OF_MONTHS_FOR_UNSOLD_BOOKS = 6;
 
     private StorageRepository bookStorageRepository;
+    private RequestService requestService;
 
-    public BookStorageService(StorageRepository bookStorageRepository) {
+    public BookStorageService(StorageRepository bookStorageRepository, RequestService requestService) {
         this.bookStorageRepository = bookStorageRepository;
+        this.requestService = requestService;
     }
 
     @Override
     public void addBookOnStorage(Book book, int count) {
-        REQUEST_SERVICE.completeRequest(book);
+        requestService.completeRequest(book);
         bookStorageRepository.update(book, count);
     }
 

@@ -15,8 +15,6 @@ import static bookstore.model.Status.*;
 
 public class BookRequestService implements RequestService {
 
-    public static final RequestService REQUEST_SERVICE = new BookRequestService();
-
     private RequestRepository requestList;
 
     public BookRequestService() {

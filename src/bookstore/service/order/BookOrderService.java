@@ -5,6 +5,8 @@ import bookstore.model.Order;
 import bookstore.model.book.Book;
 import bookstore.repository.order.BookOrderRepository;
 import bookstore.repository.order.OrderRepository;
+import bookstore.service.request.RequestService;
+import bookstore.service.storage.StorageService;
 import bookstore.util.comparator.OrderCompletionDateComparator;
 import bookstore.util.comparator.OrderDateComparator;
 import bookstore.util.comparator.OrderPriceComparator;
@@ -16,16 +18,16 @@ import java.util.Comparator;
 import java.util.List;
 
 import static bookstore.model.Status.*;
-import static bookstore.service.request.BookRequestService.REQUEST_SERVICE;
-import static bookstore.service.storage.BookStorageService.STORAGE_SERVICE;
 
 public class BookOrderService implements OrderService {
 
-    public static final OrderService ORDER_SERVICE = new BookOrderService();
-
     private OrderRepository orderList;
+    private StorageService storageService;
+    private RequestService requestService;
 
-    public BookOrderService() {
+    public BookOrderService(StorageService storageService, RequestService requestService) {
+        this.storageService = storageService;
+        this.requestService = requestService;
         orderList = new BookOrderRepository();
     }
 
@@ -37,10 +39,10 @@ public class BookOrderService implements OrderService {
 
     @Override
     public void addOrder(Order bookOrder) {
-        double price = STORAGE_SERVICE.getTotalPrice(bookOrder.getBooks());
+        double price = storageService.getTotalPrice(bookOrder.getBooks());
         bookOrder.setPrice(price);
-        List<Book> books = STORAGE_SERVICE.checkBooksNotOnStorage(bookOrder.getBooks());
-        List<Integer> numbersRequest = REQUEST_SERVICE.addRequestList(books);
+        List<Book> books = storageService.checkBooksNotOnStorage(bookOrder.getBooks());
+        List<Integer> numbersRequest = requestService.addRequestList(books);
         bookOrder.setNumbersRequest(numbersRequest);
         orderList.create(bookOrder);
     }
@@ -48,7 +50,7 @@ public class BookOrderService implements OrderService {
     @Override
     public boolean cancelOrder(Order bookOrder) {
         for (int number : bookOrder.getNumbersRequest()) {
-            REQUEST_SERVICE.cancelRequest(number);
+            requestService.cancelRequest(number);
         }
         return orderList.update(bookOrder, CANCELED) != null;
     }
@@ -56,7 +58,7 @@ public class BookOrderService implements OrderService {
     @Override
     public boolean completeOrder(Order bookOrder) {
         List<Integer> requestNumbers = bookOrder.getNumbersRequest();
-        boolean result = REQUEST_SERVICE.checkCompleteRequest(requestNumbers);
+        boolean result = requestService.checkCompleteRequest(requestNumbers);
         if (result) {
             result = orderList.update(bookOrder, COMPLETED) != null;
         }
@@ -68,7 +70,7 @@ public class BookOrderService implements OrderService {
         List<Order> bookOrders = getCompletedOrder(dateFrom, dateTo);
         double money = 0;
         for (Order order : bookOrders) {
-            money += STORAGE_SERVICE.getTotalPrice(order.getBooks());
+            money += storageService.getTotalPrice(order.getBooks());
         }
         return money;
     }

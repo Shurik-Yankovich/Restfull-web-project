@@ -7,16 +7,12 @@ import bookstore.model.book.Book;
 import bookstore.service.order.OrderService;
 import bookstore.service.request.RequestService;
 import bookstore.service.storage.StorageService;
-import bookstore.view.ViewIn;
-import bookstore.view.ViewOut;
+import bookstore.view.in.ViewIn;
+import bookstore.view.out.ViewOut;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
-import static bookstore.service.order.BookOrderService.ORDER_SERVICE;
-import static bookstore.service.request.BookRequestService.REQUEST_SERVICE;
-import static bookstore.service.storage.BookStorageService.STORAGE_SERVICE;
 
 public class StoreAction {
 
@@ -38,7 +34,7 @@ public class StoreAction {
     public void earnedMoneyAction() {
         LocalDate dateFrom = viewIn.readDateFrom();
         LocalDate dateTo = viewIn.readDateTo();
-        double money = ORDER_SERVICE.earnedMoney(dateFrom, dateTo);
+        double money = orderService.earnedMoney(dateFrom, dateTo);
         viewOut.earnedMoneyOut(money);
     }
 
@@ -47,13 +43,13 @@ public class StoreAction {
     }
 
     public void addOrderAction() {
-        ORDER_SERVICE.addOrder(createOrder());
+        orderService.addOrder(createOrder());
     }
 
     private Order createOrder() {
         Customer customer = viewIn.readCustomer();
         List<Book> booksInOrder = new ArrayList<>();
-        List<Bookshelf> bookshelves = STORAGE_SERVICE.getBookshelfList();
+        List<Bookshelf> bookshelves = storageService.getBookshelfList();
         for (Integer bookNumber : viewIn.readBookList(bookshelves)) {
             booksInOrder.add(bookshelves.get(bookNumber).getBook());
         }
@@ -61,66 +57,66 @@ public class StoreAction {
     }
 
     public void cancelOrderAction() {
-        Order order = viewIn.choiceFromList(ORDER_SERVICE.getNewOrder());
-        viewOut.cancelOrderOut(ORDER_SERVICE.cancelOrder(order));
+        Order order = viewIn.choiceFromList(orderService.getNewOrder());
+        viewOut.cancelOrderOut(orderService.cancelOrder(order));
     }
 
     public void completeOrderAction() {
-        Order order = viewIn.choiceFromList(ORDER_SERVICE.getNewOrder());
-        viewOut.completeOrderOut(ORDER_SERVICE.completeOrder(order));
+        Order order = viewIn.choiceFromList(orderService.getNewOrder());
+        viewOut.completeOrderOut(orderService.completeOrder(order));
     }
 
     public void countCompletedOrderAction() {
         LocalDate dateFrom = viewIn.readDateFrom();
         LocalDate dateTo = viewIn.readDateTo();
-        int countCompletedOrder = ORDER_SERVICE.getCountCompletedOrder(dateFrom, dateTo);
+        int countCompletedOrder = orderService.getCountCompletedOrder(dateFrom, dateTo);
         viewOut.countCompletedOrderOut(countCompletedOrder);
     }
 
     public void showCompletedOrdersAction() {
         LocalDate dateFrom = viewIn.readDateFrom();
         LocalDate dateTo = viewIn.readDateTo();
-        List<Order> orders = ORDER_SERVICE.getCompletedOrder(dateFrom, dateTo);
+        List<Order> orders = orderService.getCompletedOrder(dateFrom, dateTo);
         viewOut.printList(orders);
     }
 
     public void sortingOrdersAction() {
-        viewOut.printList(ORDER_SERVICE.getSortingOrderList());
+        viewOut.printList(orderService.getSortingOrderList());
     }
 
     public void unsortingOrdersAction() {
-        viewOut.printList(ORDER_SERVICE.getOrderList());
+        viewOut.printList(orderService.getOrderList());
     }
 
     public void addRequestAction() {
-        Book book = viewIn.choiceFromList(STORAGE_SERVICE.getBookshelfList()).getBook();
-        REQUEST_SERVICE.addRequest(book);
+        Book book = viewIn.choiceFromList(storageService.getBookshelfList()).getBook();
+        requestService.addRequest(book);
     }
 
     public void sortingRequestsAction() {
-        viewOut.printList(REQUEST_SERVICE.getSortingRequestList());
+        viewOut.printList(requestService.getSortingRequestList());
     }
 
     public void unsortingRequestAction() {
-        viewOut.printList(REQUEST_SERVICE.getRequestList());
+        viewOut.printList(requestService.getRequestList());
     }
 
     public void addBookAction() {
-        Book book = viewIn.choiceFromList(STORAGE_SERVICE.getBookshelfList()).getBook();
+        Book book = viewIn.choiceFromList(storageService.getBookshelfList()).getBook();
         int count = viewIn.readCountBook();
-        STORAGE_SERVICE.addBookOnStorage(book, count);
+        storageService.addBookOnStorage(book, count);
     }
 
     public void showUnsoldBooks() {
-        viewOut.printList(STORAGE_SERVICE.getUnsoldBookshelves());
+        viewOut.printList(storageService.getUnsoldBookshelves());
     }
 
     public void sortingBooksAction() {
-        viewOut.printList(STORAGE_SERVICE.getSortingBookshelves());
+        viewOut.printList(storageService.getSortingBookshelves());
     }
 
     public void unsortingBooksAction() {
-        viewOut.printList(STORAGE_SERVICE.getBookshelfList());
+        viewOut.printList(storageService.getBookshelfList());
     }
 
     public void notFoundMenuItem() {
