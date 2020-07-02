@@ -2,16 +2,8 @@ package bookstore.repository.order;
 
 import bookstore.model.Order;
 import bookstore.model.Status;
+import bookstore.repository.Repository;
 
-import java.time.LocalDate;
-import java.util.List;
+public interface OrderRepository extends Repository<Order, Status, Integer, Order> {
 
-public interface OrderRepository {
-
-    void add(Order element);
-    boolean changeStatus(Order bookOrder, Status status);
-    Order get(int index);
-    List<Order> getAll();
-    List<Order> getCompletedOrders(LocalDate dateFrom, LocalDate dateTo);
-    int size();
 }

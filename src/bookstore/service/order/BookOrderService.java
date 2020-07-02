@@ -3,7 +3,7 @@ package bookstore.service.order;
 import bookstore.model.Customer;
 import bookstore.model.Order;
 import bookstore.model.book.Book;
-import bookstore.repository.order.ListOrderRepository;
+import bookstore.repository.order.StoreOrderRepository;
 import bookstore.repository.order.OrderRepository;
 import bookstore.util.comparator.OrderCompletionDateComparator;
 import bookstore.util.comparator.OrderDateComparator;
@@ -26,7 +26,7 @@ public class BookOrderService implements OrderService {
     private OrderRepository orderList;
 
     private BookOrderService() {
-        orderList = new ListOrderRepository();
+        orderList = new StoreOrderRepository();
     }
 
     @Override
@@ -42,7 +42,7 @@ public class BookOrderService implements OrderService {
         List<Book> books = STORAGE_SERVICE.checkBooksNotOnStorage(bookOrder.getBooks());
         List<Integer> numbersRequest = REQUEST_SERVICE.addRequestList(books);
         bookOrder.setNumbersRequest(numbersRequest);
-        orderList.add(bookOrder);
+        orderList.create(bookOrder);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class BookOrderService implements OrderService {
         for (int number : bookOrder.getNumbersRequest()) {
             REQUEST_SERVICE.cancelRequest(number);
         }
-        return orderList.changeStatus(bookOrder, CANCELED);
+        return orderList.update(bookOrder, CANCELED) != null;
     }
 
     @Override
@@ -58,7 +58,7 @@ public class BookOrderService implements OrderService {
         List<Integer> requestNumbers = bookOrder.getNumbersRequest();
         boolean result = REQUEST_SERVICE.checkCompleteRequest(requestNumbers);
         if (result) {
-            result = orderList.changeStatus(bookOrder, COMPLETED);
+            result = orderList.update(bookOrder, COMPLETED) != null;
         }
         return result;
     }
@@ -75,12 +75,26 @@ public class BookOrderService implements OrderService {
 
     @Override
     public List<Order> getCompletedOrder(LocalDate dateFrom, LocalDate dateTo) {
-        List<Order> orders = orderList.getCompletedOrders(dateFrom, dateTo);
+        List<Order> orders = searchByDate(dateFrom, dateTo);
         if (orders.size() > 0) {
             Comparator<Order> orderComp = new OrderCompletionDateComparator().thenComparing(new OrderPriceComparator());
             orders.sort(orderComp);
         }
         return orders;
+    }
+
+    private List<Order> searchByDate(LocalDate dateFrom, LocalDate dateTo) {
+        List<Order> orders = new ArrayList<>();
+        for (Order order : getOrderList()) {
+            if (isBelongsDateToRange(order.getOrderCompletionDate(), dateFrom, dateTo)) {
+                orders.add(order);
+            }
+        }
+        return orders;
+    }
+
+    private boolean isBelongsDateToRange(LocalDate date, LocalDate dateFrom, LocalDate dateTo) {
+        return date != null && (date.isAfter(dateFrom) && date.isBefore(dateTo));
     }
 
     @Override
@@ -90,13 +104,13 @@ public class BookOrderService implements OrderService {
 
     @Override
     public List<Order> getOrderList() {
-        return orderList.getAll();
+        return orderList.readAll();
     }
 
     @Override
     public List<Order> getNewOrder() {
         List<Order> orders = new ArrayList<>();
-        for (Order order : orderList.getAll()) {
+        for (Order order : orderList.readAll()) {
             if (order.getStatus() == NEW) {
                 orders.add(order);
             }
@@ -106,7 +120,7 @@ public class BookOrderService implements OrderService {
 
     @Override
     public List<Order> getSortingOrderList() {
-        List<Order> orders = new ArrayList<>(orderList.getAll());
+        List<Order> orders = new ArrayList<>(orderList.readAll());
         if (orders.size() > 0) {
             Comparator<Order> orderComp = new OrderDateComparator().thenComparing(new OrderPriceComparator())
                     .thenComparing(new OrderStatusComparator());

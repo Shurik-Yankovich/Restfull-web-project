@@ -8,7 +8,7 @@ public class Request {
 
     private Book book;
     private int count;
-    private int number;
+    private int index;
     private Status status;
 
     public Request(Book book) {
@@ -25,8 +25,8 @@ public class Request {
         return count;
     }
 
-    public int getNumber() {
-        return number;
+    public int getIndex() {
+        return index;
     }
 
     public Status getStatus() {
@@ -37,8 +37,8 @@ public class Request {
         this.count = count;
     }
 
-    public void setNumber(int number) {
-        this.number = number;
+    public void setIndex(int index) {
+        this.index = index;
     }
 
     public void setStatus(Status status) {

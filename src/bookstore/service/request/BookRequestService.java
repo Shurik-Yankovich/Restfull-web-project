@@ -2,7 +2,7 @@ package bookstore.service.request;
 
 import bookstore.model.book.Book;
 import bookstore.model.Request;
-import bookstore.repository.request.ListRequestRepository;
+import bookstore.repository.request.StoreRequestRepository;
 import bookstore.repository.request.RequestRepository;
 import bookstore.util.comparator.RequestBookNameComparator;
 import bookstore.util.comparator.RequestCountComparator;
@@ -11,8 +11,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import static bookstore.model.Status.CANCELED;
-import static bookstore.model.Status.COMPLETED;
+import static bookstore.model.Status.*;
 
 public class BookRequestService implements RequestService {
 
@@ -21,12 +20,41 @@ public class BookRequestService implements RequestService {
     private RequestRepository requestList;
 
     private BookRequestService() {
-        requestList = new ListRequestRepository();
+        requestList = new StoreRequestRepository();
     }
 
     @Override
     public int addRequest(Book book) {
-        return requestList.add(new Request(book));
+        Request request = createNewRequest(book);
+        return requestList.create(request).getIndex();
+    }
+
+    private Request createNewRequest(Book book) {
+        Request request = new Request(book);
+        request.setIndex(requestList.readAll().size());
+        int count = changeCountByBook(book);
+        request.setCount(count);
+        return request;
+    }
+
+    private int changeCountByBook(Book book) {
+        int count = getCountRequests(book);
+        for (Request request: requestList.readAll()) {
+            if (request.getBook().equals(book)) {
+                request.setCount(count);
+            }
+        }
+        return count;
+    }
+
+    private int getCountRequests(Book book) {
+        int result = 0;
+        for (Request request : requestList.readAll()) {
+            if (book.equals(request.getBook())) {
+                result++;
+            }
+        }
+        return result;
     }
 
     @Override
@@ -40,19 +68,23 @@ public class BookRequestService implements RequestService {
 
     @Override
     public void completeRequest(Book book) {
-        requestList.complete(book);
+        for (Request request: requestList.readAll()) {
+            if (request.getBook().equals(book) && request.getStatus() == NEW) {
+                request.setStatus(COMPLETED);
+            }
+        }
     }
 
     @Override
     public void cancelRequest(int number) {
-        requestList.changeStatus(number, CANCELED);
+        requestList.update(number, CANCELED);
     }
 
     @Override
     public boolean checkCompleteRequest(List<Integer> requestNumbers) {
         if (requestNumbers != null) {
             for (int number : requestNumbers) {
-                if (requestList.getByRequestNumber(number).getStatus() != COMPLETED) {
+                if (requestList.read(number).getStatus() != COMPLETED) {
                     return false;
                 }
             }
@@ -62,12 +94,12 @@ public class BookRequestService implements RequestService {
 
     @Override
     public List<Request> getRequestList() {
-        return requestList.getAll();
+        return requestList.readAll();
     }
 
     @Override
     public List<Request> getSortingRequestList() {
-        List<Request> requests = new ArrayList<>(requestList.getAll());
+        List<Request> requests = new ArrayList<>(requestList.readAll());
         if (requests.size() > 0) {
             Comparator<Request> requestComp = new RequestCountComparator().thenComparing(new RequestBookNameComparator());
             requests.sort(requestComp);

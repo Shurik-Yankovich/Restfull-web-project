@@ -1,16 +1,8 @@
 package bookstore.repository.storage;
 
-import bookstore.model.book.Book;
 import bookstore.model.Bookshelf;
+import bookstore.model.book.Book;
+import bookstore.repository.Repository;
 
-import java.util.List;
-
-public interface StorageRepository {
-
-    void addBook(Book book, int count);
-    Bookshelf getBookshelf(Book book);
-    List<Bookshelf> getAll();
-    List<Bookshelf> getUnsoldBookshelves();
-    boolean takeOutBook(Book book);
-
+public interface StorageRepository extends Repository<Bookshelf, Integer, Book, Book> {
 }
