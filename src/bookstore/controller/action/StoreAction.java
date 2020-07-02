@@ -1,4 +1,4 @@
-package bookstore.controller;
+package bookstore.controller.action;
 
 import bookstore.model.Bookshelf;
 import bookstore.model.Customer;
@@ -18,7 +18,7 @@ import static bookstore.service.order.BookOrderService.ORDER_SERVICE;
 import static bookstore.service.request.BookRequestService.REQUEST_SERVICE;
 import static bookstore.service.storage.BookStorageService.STORAGE_SERVICE;
 
-public class Action {
+public class StoreAction {
 
     private OrderService orderService;
     private RequestService requestService;
@@ -26,8 +26,8 @@ public class Action {
     private ViewIn viewIn;
     private ViewOut viewOut;
 
-    public Action(OrderService orderService, RequestService requestService, StorageService storageService,
-                  ViewIn viewIn, ViewOut viewOut) {
+    public StoreAction(OrderService orderService, RequestService requestService, StorageService storageService,
+                       ViewIn viewIn, ViewOut viewOut) {
         this.orderService = orderService;
         this.requestService = requestService;
         this.storageService = storageService;
@@ -119,11 +119,15 @@ public class Action {
         viewOut.printList(STORAGE_SERVICE.getSortingBookshelves());
     }
 
-    public void UnsortingBooksAction() {
+    public void unsortingBooksAction() {
         viewOut.printList(STORAGE_SERVICE.getBookshelfList());
     }
 
     public void notFoundMenuItem() {
         viewOut.notFoundMenuItem();
+    }
+
+    public int readIntFromConsole() {
+        return viewIn.readIntFromConsole();
     }
 }

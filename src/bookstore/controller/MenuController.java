@@ -4,13 +4,11 @@ import bookstore.controller.builder.Buildable;
 import bookstore.controller.model.Menu;
 import bookstore.controller.navigator.Navigable;
 
-import static bookstore.view.ConsoleWorker.CONSOLE_WORKER;
 
 public class MenuController {
 
     private Buildable builder;
     private Navigable navigator;
-    private Action action;
 
     public MenuController(Buildable builder, Navigable navigator) {
         this.builder = builder;
@@ -25,7 +23,7 @@ public class MenuController {
         navigator.setCurrentMenu(builder.getRootMenu());
         while (true) {
             navigator.printMenu();
-            choice = CONSOLE_WORKER.readIntFromConsole();
+            choice = builder.getStoreAction().readIntFromConsole();
             currentMenu = navigator.getCurrentMenu();
             if (choice >= 0 && choice < currentMenu.getMenuItems().length) {
                 navigator.navigate(choice);
@@ -33,7 +31,7 @@ public class MenuController {
                     navigator.setCurrentMenu(builder.getRootMenu());
                 }
             } else {
-                action.notFoundMenuItem();
+                builder.getStoreAction().notFoundMenuItem();
             }
         }
     }

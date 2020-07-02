@@ -1,6 +1,6 @@
 package bookstore;
 
-import bookstore.controller.Action;
+import bookstore.controller.action.StoreAction;
 import bookstore.controller.MenuController;
 import bookstore.controller.builder.Buildable;
 import bookstore.controller.builder.Builder;
@@ -13,19 +13,19 @@ import bookstore.service.request.RequestService;
 import bookstore.service.storage.BookStorageService;
 import bookstore.service.storage.StorageService;
 import bookstore.util.BookGenerator;
-import bookstore.view.ViewIn;
-import bookstore.view.ViewOut;
+import bookstore.view.StoreViewIn;
+import bookstore.view.StoreViewOut;
 
 public class BookstoreMain {
 
     public static void main(String[] args) {
-        ViewIn viewIn = new ViewIn();
-        ViewOut viewOut = new ViewOut();
+        StoreViewIn viewIn = new StoreViewIn();
+        StoreViewOut viewOut = new StoreViewOut();
         OrderService orderService = new BookOrderService();
         RequestService requestService = new BookRequestService();
         StorageService storageService = new BookStorageService(BookGenerator.generate());
-        Action action = new Action(orderService, requestService, storageService, viewIn, viewOut);
-        Buildable builder = new Builder();
+        StoreAction action = new StoreAction(orderService, requestService, storageService, viewIn, viewOut);
+        Buildable builder = new Builder(action);
         Navigable navigator = new Navigator();
         MenuController menuController = new MenuController(builder, navigator);
         menuController.run();

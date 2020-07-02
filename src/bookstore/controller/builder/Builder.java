@@ -1,15 +1,6 @@
 package bookstore.controller.builder;
 
-import bookstore.controller.action.mainmenu.EarnedMoneyAction;
-import bookstore.controller.action.mainmenu.ExitAction;
-import bookstore.controller.action.ordermenu.*;
-import bookstore.controller.action.requestmenu.AddRequestAction;
-import bookstore.controller.action.requestmenu.SortingRequestsAction;
-import bookstore.controller.action.requestmenu.UnsortingRequestAction;
-import bookstore.controller.action.storagemenu.AddBookAction;
-import bookstore.controller.action.storagemenu.ShowUnsoldBooks;
-import bookstore.controller.action.storagemenu.SortingBooksAction;
-import bookstore.controller.action.storagemenu.UnsortingBooksAction;
+import bookstore.controller.action.StoreAction;
 import bookstore.controller.constant.mainmenu.MainMenu;
 import bookstore.controller.constant.mainmenu.MainMenuTextConst;
 import bookstore.controller.constant.ordermenu.OrderListMenu;
@@ -32,10 +23,20 @@ public class Builder implements Buildable {
     private static final String MENU_TEXT = "%d - %s";
 
     private Menu rootMenu;
+    private StoreAction storeAction;
+
+    public Builder(StoreAction storeAction) {
+        this.storeAction = storeAction;
+    }
 
     @Override
     public Menu getRootMenu() {
         return rootMenu;
+    }
+
+    @Override
+    public StoreAction getStoreAction() {
+        return storeAction;
     }
 
     @Override
@@ -69,10 +70,10 @@ public class Builder implements Buildable {
                         null, buildRequestMenu());
             case COUNT_EARNED_MONEY:
                 return new MenuItem(String.format(MENU_TEXT, index, MainMenuTextConst.ITEM_TEXT_COUNT_EARNED_MONEY),
-                        new EarnedMoneyAction(), null);
+                        () -> storeAction.earnedMoneyAction(), null);
             case EXIT:
                 return new MenuItem(String.format(MENU_TEXT, index, MainMenuTextConst.ITEM_TEXT_EXIT),
-                        new ExitAction(), null);
+                        () -> storeAction.exitAction(), null);
         }
         return null;
     }
@@ -95,13 +96,13 @@ public class Builder implements Buildable {
         switch (menuAction) {
             case ADD_BOOK:
                 return new MenuItem(String.format(MENU_TEXT, index, StorageMenuTextConst.ITEM_TEXT_ADD_BOOK),
-                        new AddBookAction(), null);
+                        () -> storeAction.addBookAction(), null);
             case SHOW_BOOK_LIST:
                 return new MenuItem(String.format(MENU_TEXT, index, StorageMenuTextConst.ITEM_TEXT_SHOW_BOOK_LIST),
                         null, buildBookListMenu());
             case SHOW_UNSOLD_BOOK_LIST:
                 return new MenuItem(String.format(MENU_TEXT, index, StorageMenuTextConst.ITEM_TEXT_SHOW_UNSOLD_BOOK_LIST),
-                        new ShowUnsoldBooks(), null);
+                        () -> storeAction.showUnsoldBooks(), null);
             case BACK:
                 return new MenuItem(String.format(MENU_TEXT, index, StorageMenuTextConst.ITEM_TEXT_BACK),
                         null, rootMenu);
@@ -127,10 +128,10 @@ public class Builder implements Buildable {
         switch (menuAction) {
             case BOOK_LIST_WITH_SORT:
                 return new MenuItem(String.format(MENU_TEXT, index, BookListMenuTextConst.ITEM_TEXT_BOOK_LIST_WITH_SORT),
-                        new SortingBooksAction(), null);
+                        () -> storeAction.sortingBooksAction(), null);
             case BOOK_LIST_WITHOUT_SORT:
                 return new MenuItem(String.format(MENU_TEXT, index, BookListMenuTextConst.ITEM_TEXT_BOOK_LIST_WITHOUT_SORT),
-                        new UnsortingBooksAction(), null);
+                        () -> storeAction.unsortingBooksAction(), null);
             case RETURN_TO_MAIN_MENU:
                 return new MenuItem(String.format(MENU_TEXT, index, BookListMenuTextConst.ITEM_TEXT_RETURN_TO_MAIN_MENU),
                         null, rootMenu);
@@ -156,22 +157,22 @@ public class Builder implements Buildable {
         switch (menuAction) {
             case ADD_ORDER:
                 return new MenuItem(String.format(MENU_TEXT, index, OrderMenuTextConst.ITEM_TEXT_ADD_ORDER),
-                        new AddOrderAction(), null);
+                        () -> storeAction.addOrderAction(), null);
             case CANCEL_ORDER:
                 return new MenuItem(String.format(MENU_TEXT, index, OrderMenuTextConst.ITEM_TEXT_CANCEL_ORDER),
-                        new CancelOrderAction(), null);
+                        () -> storeAction.cancelOrderAction(), null);
             case COMPLETE_ORDER:
                 return new MenuItem(String.format(MENU_TEXT, index, OrderMenuTextConst.ITEM_TEXT_COMPLETE_ORDER),
-                        new CompleteOrderAction(), null);
+                        () -> storeAction.completeOrderAction(), null);
             case SHOW_ORDER_LIST:
                 return new MenuItem(String.format(MENU_TEXT, index, OrderMenuTextConst.ITEM_TEXT_SHOW_ORDER_LIST),
                         null, buildOrderListMenu());
             case SHOW_COMPLETED_ORDER_LIST:
                 return new MenuItem(String.format(MENU_TEXT, index, OrderMenuTextConst.ITEM_TEXT_SHOW_COMPLETED_ORDER_LIST),
-                        new ShowCompletedOrdersAction(), null);
+                        () -> storeAction.showCompletedOrdersAction(), null);
             case SHOW_COUNT_COMPLETED_ORDER:
                 return new MenuItem(String.format(MENU_TEXT, index, OrderMenuTextConst.ITEM_TEXT_SHOW_COUNT_COMPLETED_ORDER),
-                        new CountCompletedOrderAction(), null);
+                        () -> storeAction.countCompletedOrderAction(), null);
             case BACK:
                 return new MenuItem(String.format(MENU_TEXT, index, OrderMenuTextConst.ITEM_TEXT_BACK),
                         null, rootMenu);
@@ -197,10 +198,10 @@ public class Builder implements Buildable {
         switch (menuAction) {
             case ORDER_LIST_WITH_SORT:
                 return new MenuItem(String.format(MENU_TEXT, index, OrderListMenuTextConst.ITEM_TEXT_ORDER_LIST_WITH_SORT),
-                        new SortingOrdersAction(), null);
+                        () -> storeAction.sortingOrdersAction(), null);
             case ORDER_LIST_WITHOUT_SORT:
                 return new MenuItem(String.format(MENU_TEXT, index, OrderListMenuTextConst.ITEM_TEXT_ORDER_LIST_WITHOUT_SORT),
-                        new UnsortingOrdersAction(), null);
+                        () -> storeAction.unsortingOrdersAction(), null);
             case RETURN_TO_MAIN_MENU:
                 return new MenuItem(String.format(MENU_TEXT, index, OrderListMenuTextConst.ITEM_TEXT_RETURN_TO_MAIN_MENU),
                         null, rootMenu);
@@ -226,7 +227,7 @@ public class Builder implements Buildable {
         switch (menuAction) {
             case ADD_REQUEST:
                 return new MenuItem(String.format(MENU_TEXT, index, RequestMenuTextConst.ITEM_TEXT_ADD_REQUEST),
-                        new AddRequestAction(), null);
+                        () -> storeAction.addRequestAction(), null);
             case SHOW_REQUEST_LIST:
                 return new MenuItem(String.format(MENU_TEXT, index, RequestMenuTextConst.ITEM_TEXT_SHOW_REQUEST_LIST),
                         null, buildRequestListMenu());
@@ -255,10 +256,10 @@ public class Builder implements Buildable {
         switch (menuAction) {
             case REQUEST_LIST_WITH_SORT:
                 return new MenuItem(String.format(MENU_TEXT, index, RequestListMenuTextConst.ITEM_TEXT_REQUEST_LIST_WITH_SORT),
-                        new SortingRequestsAction(), null);
+                        () -> storeAction.sortingRequestsAction(), null);
             case REQUEST_LIST_WITHOUT_SORT:
                 return new MenuItem(String.format(MENU_TEXT, index, RequestListMenuTextConst.ITEM_TEXT_REQUEST_LIST_WITHOUT_SORT),
-                        new UnsortingRequestAction(), null);
+                        () -> storeAction.unsortingRequestAction(), null);
             case RETURN_TO_MAIN_MENU:
                 return new MenuItem(String.format(MENU_TEXT, index, RequestListMenuTextConst.ITEM_TEXT_RETURN_TO_MAIN_MENU),
                         null, rootMenu);
