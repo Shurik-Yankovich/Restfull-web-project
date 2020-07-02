@@ -41,7 +41,7 @@ public class BookOrderService implements OrderService {
     public void addOrder(Order bookOrder) {
         double price = storageService.getTotalPrice(bookOrder.getBooks());
         bookOrder.setPrice(price);
-        List<Book> books = storageService.checkBooksNotOnStorage(bookOrder.getBooks());
+        List<Book> books = storageService.checkBooksNotInStorage(bookOrder.getBooks());
         List<Integer> numbersRequest = requestService.addRequestList(books);
         bookOrder.setNumbersRequest(numbersRequest);
         orderList.create(bookOrder);
@@ -49,6 +49,7 @@ public class BookOrderService implements OrderService {
 
     @Override
     public boolean cancelOrder(Order bookOrder) {
+        storageService.cancelBookReservation(bookOrder);
         for (int number : bookOrder.getNumbersRequest()) {
             requestService.cancelRequest(number);
         }

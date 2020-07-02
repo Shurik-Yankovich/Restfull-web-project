@@ -1,6 +1,8 @@
 package bookstore.service.storage;
 
 import bookstore.model.Bookshelf;
+import bookstore.model.Order;
+import bookstore.model.Request;
 import bookstore.model.book.Book;
 import bookstore.repository.storage.StorageRepository;
 import bookstore.service.request.RequestService;
@@ -10,6 +12,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+
+import static bookstore.model.Status.COMPLETED;
 
 public class BookStorageService implements StorageService {
 
@@ -39,17 +43,17 @@ public class BookStorageService implements StorageService {
     }
 
     @Override
-    public List<Book> checkBooksNotOnStorage(List<Book> books) {
+    public List<Book> checkBooksNotInStorage(List<Book> books) {
         List<Book> result = new ArrayList<>();
         for (Book book : books) {
-            if (!takeOutBook(book)) {
+            if (!bookReservation(book)) {
                 result.add(book);
             }
         }
         return result;
     }
 
-    private boolean takeOutBook(Book book) {
+    private boolean bookReservation(Book book) {
         List<Bookshelf> bookshelves = bookStorageRepository.readAll();
         int index = searchBook(book, bookshelves);
         if (index >= 0) {
@@ -61,6 +65,43 @@ public class BookStorageService implements StorageService {
             }
         }
         return false;
+    }
+
+    @Override
+    public void cancelBookReservation(Order order) {
+        List<Request> requestList = getRequestFromOrder(order);
+        Request request;
+        for (Book book : order.getBooks()) {
+            request = searchBookInRequest(book, requestList);
+            if (request == null || request.getStatus() == COMPLETED) {
+                changeBookCount(book);
+            }
+        }
+    }
+
+    private Request searchBookInRequest(Book book, List<Request> requestList) {
+        for (Request request : requestList) {
+            if (request.getBook().equals(book)) {
+                return request;
+            }
+        }
+        return null;
+    }
+
+    private List<Request> getRequestFromOrder(Order order) {
+        List<Request> requests = new ArrayList<>();
+        for (Integer requestNumber : order.getNumbersRequest()) {
+            requests.add(requestService.getRequestByNumber(requestNumber));
+        }
+        return requests;
+    }
+
+    private void changeBookCount(Book book) {
+        List<Bookshelf> bookshelves = bookStorageRepository.readAll();
+        int index = searchBook(book, bookshelves);
+        Bookshelf bookshelf = bookshelves.get(index);
+        int count = bookshelf.getCount();
+        bookshelf.setCount(count + 1);
     }
 
     private int searchBook(Book book, List<Bookshelf> bookshelves) {

@@ -82,12 +82,17 @@ public class BookRequestService implements RequestService {
     public boolean checkCompleteRequest(List<Integer> requestNumbers) {
         if (requestNumbers != null) {
             for (int number : requestNumbers) {
-                if (requestList.read(number).getStatus() != COMPLETED) {
+                if (getRequestByNumber(number).getStatus() != COMPLETED) {
                     return false;
                 }
             }
         }
         return true;
+    }
+
+    @Override
+    public Request getRequestByNumber(int requestNumber) {
+        return requestList.read(requestNumber);
     }
 
     @Override
