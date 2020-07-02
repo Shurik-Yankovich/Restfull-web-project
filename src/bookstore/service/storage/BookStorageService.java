@@ -20,7 +20,7 @@ public class BookStorageService implements StorageService {
 
     private StorageRepository bookStorageRepository;
 
-    private BookStorageService(StorageRepository bookStorageRepository) {
+    public BookStorageService(StorageRepository bookStorageRepository) {
         this.bookStorageRepository = bookStorageRepository;
     }
 

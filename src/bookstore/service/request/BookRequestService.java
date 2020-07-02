@@ -2,7 +2,7 @@ package bookstore.service.request;
 
 import bookstore.model.book.Book;
 import bookstore.model.Request;
-import bookstore.repository.request.StoreRequestRepository;
+import bookstore.repository.request.BookRequestRepository;
 import bookstore.repository.request.RequestRepository;
 import bookstore.util.comparator.RequestBookNameComparator;
 import bookstore.util.comparator.RequestCountComparator;
@@ -19,8 +19,8 @@ public class BookRequestService implements RequestService {
 
     private RequestRepository requestList;
 
-    private BookRequestService() {
-        requestList = new StoreRequestRepository();
+    public BookRequestService() {
+        requestList = new BookRequestRepository();
     }
 
     @Override

@@ -1,7 +1,7 @@
 package bookstore.util;
 
 import bookstore.model.Bookshelf;
-import bookstore.repository.storage.StoreStorageRepository;
+import bookstore.repository.storage.BookStorageRepository;
 import bookstore.repository.storage.StorageRepository;
 
 import java.time.LocalDate;
@@ -10,7 +10,7 @@ import static bookstore.model.book.BookFactory.*;
 
 public class BookGenerator {
     public static StorageRepository generate(){
-        StorageRepository storageRepository = new StoreStorageRepository();
+        StorageRepository storageRepository = new BookStorageRepository();
         storageRepository.create(new Bookshelf(NOVEL, "Алхимик", "Пауло Коэльо", 2019, 3, 14.22, LocalDate.of(2020, 1, 20)));
         storageRepository.create(new Bookshelf(NOVEL,"Шантарам", "Грэгори Дэвид Робертс", 2013, 2, 29.02, LocalDate.of(2020, 3, 21)));
         storageRepository.create(new Bookshelf(TECHNICAL, "Чистый код", "Роберт Мартин", 2016, 1, 40.17, LocalDate.of(2020, 5, 9)));

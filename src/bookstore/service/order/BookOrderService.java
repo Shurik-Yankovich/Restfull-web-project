@@ -3,7 +3,7 @@ package bookstore.service.order;
 import bookstore.model.Customer;
 import bookstore.model.Order;
 import bookstore.model.book.Book;
-import bookstore.repository.order.StoreOrderRepository;
+import bookstore.repository.order.BookOrderRepository;
 import bookstore.repository.order.OrderRepository;
 import bookstore.util.comparator.OrderCompletionDateComparator;
 import bookstore.util.comparator.OrderDateComparator;
@@ -25,8 +25,8 @@ public class BookOrderService implements OrderService {
 
     private OrderRepository orderList;
 
-    private BookOrderService() {
-        orderList = new StoreOrderRepository();
+    public BookOrderService() {
+        orderList = new BookOrderRepository();
     }
 
     @Override
