@@ -10,15 +10,15 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BookshelfCsv implements CsvUtil<Bookshelf> {
+public class StorageCsv implements CsvUtil<Bookshelf> {
 
-    private static final String ROOT_DIR_PATH = ".\\src\\bookstore\\rootdir\\bookshelf.csv";
+    private static final String ROOT_DIR_PATH = ".\\src\\bookstore\\rootdir\\storage.csv";
 
     @Override
     public void writeToCsv(Bookshelf bookshelf) {
         try (Writer writer = new FileWriter(ROOT_DIR_PATH)) {
             writer.write(convertBookshelfToString(bookshelf));
-            System.out.println("Bookshelf №" + bookshelf.getId() + " был добавлен в файл bookshelf.csv");
+            System.out.println("Bookshelf №" + bookshelf.getId() + " был добавлен в файл storage.csv");
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
@@ -32,7 +32,7 @@ public class BookshelfCsv implements CsvUtil<Bookshelf> {
                 text.append(convertBookshelfToString(bookshelf)).append("\n");
             }
             writer.write(text.toString());
-            System.out.println("Список книг был записан в файл bookshelf.csv");
+            System.out.println("Список книг был записан в файл storage.csv");
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
