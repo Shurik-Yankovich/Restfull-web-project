@@ -1,7 +1,7 @@
 package bookstore.repository.list;
 
-import bookstore.model.Request;
-import bookstore.model.Status;
+import bookstore.entity.Request;
+import bookstore.entity.Status;
 import bookstore.repository.base.RequestRepository;
 
 import java.util.ArrayList;
@@ -10,9 +10,11 @@ import java.util.List;
 public class BookRequestRepository implements RequestRepository {
 
     private List<Request> array;
+    private int index;
 
     public BookRequestRepository() {
-        this.array = new ArrayList<>();
+        array = new ArrayList<>();
+        index = 0;
     }
 
     @Override
@@ -22,6 +24,8 @@ public class BookRequestRepository implements RequestRepository {
 
     @Override
     public Request create(Request request) {
+        request.setId(index);
+        index++;
         array.add(request);
         return request;
     }
@@ -53,8 +57,8 @@ public class BookRequestRepository implements RequestRepository {
     }
 
     @Override
-    public void createAll(List<Request> list) {
-        array.addAll(list);
+    public void createAll(List<Request> requests) {
+        array = requests;
     }
 
     private Request searchByRequestNumber(int requestNumber) {

@@ -1,9 +1,9 @@
 package bookstore.controller.action;
 
-import bookstore.model.Bookshelf;
-import bookstore.model.Customer;
-import bookstore.model.Order;
-import bookstore.model.book.Book;
+import bookstore.entity.Bookshelf;
+import bookstore.entity.Customer;
+import bookstore.entity.Order;
+import bookstore.entity.book.Book;
 import bookstore.service.order.OrderService;
 import bookstore.service.request.RequestService;
 import bookstore.service.storage.StorageService;
@@ -88,6 +88,10 @@ public class StoreAction {
         viewOut.printList(orderService.getOrderList());
     }
 
+    public void exportOrderAction(){orderService.readDataFromFile();}
+
+    public void importOrderAction(){orderService.writeDataToFile();}
+
     public void addRequestAction() {
         Book book = viewIn.choiceFromList(storageService.getBookshelfList()).getBook();
         requestService.addRequest(book);
@@ -100,6 +104,10 @@ public class StoreAction {
     public void unsortingRequestAction() {
         viewOut.printList(requestService.getRequestList());
     }
+
+    public void exportRequestAction(){requestService.readDataFromFile();}
+
+    public void importRequestAction(){requestService.writeDataToFile();}
 
     public void addBookAction() {
         Book book = viewIn.choiceFromList(storageService.getBookshelfList()).getBook();
@@ -119,9 +127,9 @@ public class StoreAction {
         viewOut.printList(storageService.getBookshelfList());
     }
 
-    public void exportDataAction(){storageService.exportData();}
+    public void exportBookshelfAction(){storageService.readDataFromFile();}
 
-    public void importDataAction(){storageService.importData();}
+    public void importBookshelfAction(){storageService.writeDataToFile();}
 
     public void notFoundMenuItem() {
         viewOut.notFoundMenuItem();

@@ -1,7 +1,7 @@
 package bookstore.service.request;
 
-import bookstore.model.book.Book;
-import bookstore.model.Request;
+import bookstore.entity.book.Book;
+import bookstore.entity.Request;
 
 import java.util.List;
 
@@ -15,4 +15,6 @@ public interface RequestService {
     Request getRequestByNumber(int requestNumber);
     List<Request> getRequestList();
     List<Request> getSortingRequestList();
+    void readDataFromFile();
+    void writeDataToFile();
 }

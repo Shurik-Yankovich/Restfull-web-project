@@ -1,13 +1,13 @@
-package bookstore.model;
+package bookstore.entity;
 
-import bookstore.model.book.Book;
+import bookstore.entity.book.Book;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 
-import static bookstore.model.Status.NEW;
+import static bookstore.entity.Status.NEW;
 
 public class Order {
 
@@ -32,6 +32,9 @@ public class Order {
         this.customer = customer;
         this.orderDate = LocalDate.now();
         this.status = NEW;
+    }
+
+    public Order() {
     }
 
     public int getId() {
@@ -70,8 +73,20 @@ public class Order {
         this.id = id;
     }
 
+    public void setBooks(List<Book> books) {
+        this.books = books;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
     public void setNumbersRequest(List<Integer> numbersRequest) {
         this.numbersRequest = numbersRequest;
+    }
+
+    public void setOrderDate(LocalDate orderDate) {
+        this.orderDate = orderDate;
     }
 
     public void setOrderCompletionDate(LocalDate orderCompletionDate) {

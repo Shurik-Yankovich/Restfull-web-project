@@ -1,9 +1,9 @@
 package bookstore.service.storage;
 
-import bookstore.model.Bookshelf;
-import bookstore.model.Order;
-import bookstore.model.Request;
-import bookstore.model.book.Book;
+import bookstore.entity.Bookshelf;
+import bookstore.entity.Order;
+import bookstore.entity.Request;
+import bookstore.entity.book.Book;
 import bookstore.repository.base.StorageRepository;
 import bookstore.repository.file.FileStorageRepository;
 import bookstore.service.request.RequestService;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import static bookstore.model.Status.COMPLETED;
+import static bookstore.entity.Status.COMPLETED;
 
 public class BookStorageService implements StorageService {
 
@@ -153,11 +153,11 @@ public class BookStorageService implements StorageService {
         return booksBeforeArrivalDate;
     }
 
-    public void exportData() {
+    public void readDataFromFile() {
         fileStorageRepository.createAll(storageRepository.readAll());
     }
 
-    public void importData() {
+    public void writeDataToFile() {
         List<Bookshelf> bookshelves = fileStorageRepository.readAll();
         storageRepository.createAll(bookshelves);
     }

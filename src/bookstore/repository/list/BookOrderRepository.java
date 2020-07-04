@@ -1,25 +1,29 @@
 package bookstore.repository.list;
 
-import bookstore.model.Order;
-import bookstore.model.Status;
+import bookstore.entity.Order;
+import bookstore.entity.Status;
 import bookstore.repository.base.OrderRepository;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static bookstore.model.Status.COMPLETED;
+import static bookstore.entity.Status.COMPLETED;
 
 public class BookOrderRepository implements OrderRepository {
 
     private List<Order> array;
+    private int index;
 
     public BookOrderRepository() {
-        this.array = new ArrayList<>();
+        array = new ArrayList<>();
+        index = 0;
     }
 
     @Override
     public Order create(Order order) {
+        order.setId(index);
+        index++;
         array.add(order);
         return order;
     }
@@ -54,8 +58,8 @@ public class BookOrderRepository implements OrderRepository {
     }
 
     @Override
-    public void createAll(List<Order> list) {
-        array.addAll(list);
+    public void createAll(List<Order> orders) {
+        array = orders;
     }
 
     @Override

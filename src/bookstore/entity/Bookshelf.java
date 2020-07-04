@@ -1,7 +1,7 @@
-package bookstore.model;
+package bookstore.entity;
 
-import bookstore.model.book.Book;
-import bookstore.model.book.BookFactory;
+import bookstore.entity.book.Book;
+import bookstore.entity.book.BookFactory;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -33,8 +33,6 @@ public class Bookshelf {
 
     public Bookshelf() {
     }
-
-
 
     public int getId() {
         return id;

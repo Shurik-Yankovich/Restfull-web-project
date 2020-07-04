@@ -1,10 +1,11 @@
 package bookstore.service.order;
 
-import bookstore.model.Customer;
-import bookstore.model.Order;
-import bookstore.model.book.Book;
-import bookstore.repository.list.BookOrderRepository;
+import bookstore.entity.Customer;
+import bookstore.entity.Order;
+import bookstore.entity.book.Book;
 import bookstore.repository.base.OrderRepository;
+import bookstore.repository.file.FileOrderRepository;
+import bookstore.repository.list.BookOrderRepository;
 import bookstore.service.request.RequestService;
 import bookstore.service.storage.StorageService;
 import bookstore.util.comparator.OrderCompletionDateComparator;
@@ -17,18 +18,20 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import static bookstore.model.Status.*;
+import static bookstore.entity.Status.*;
 
 public class BookOrderService implements OrderService {
 
-    private OrderRepository orderList;
+    private OrderRepository orderRepository;
     private StorageService storageService;
     private RequestService requestService;
+    private FileOrderRepository fileOrderRepository;
 
     public BookOrderService(StorageService storageService, RequestService requestService) {
         this.storageService = storageService;
         this.requestService = requestService;
-        orderList = new BookOrderRepository();
+        orderRepository = new BookOrderRepository();
+        fileOrderRepository = new FileOrderRepository();
     }
 
     @Override
@@ -44,7 +47,7 @@ public class BookOrderService implements OrderService {
         List<Book> books = storageService.checkBooksNotInStorage(bookOrder.getBooks());
         List<Integer> numbersRequest = requestService.addRequestList(books);
         bookOrder.setNumbersRequest(numbersRequest);
-        orderList.create(bookOrder);
+        orderRepository.create(bookOrder);
     }
 
     @Override
@@ -53,7 +56,7 @@ public class BookOrderService implements OrderService {
         for (int number : bookOrder.getNumbersRequest()) {
             requestService.cancelRequest(number);
         }
-        return orderList.update(bookOrder, CANCELED) != null;
+        return orderRepository.update(bookOrder, CANCELED) != null;
     }
 
     @Override
@@ -61,7 +64,7 @@ public class BookOrderService implements OrderService {
         List<Integer> requestNumbers = bookOrder.getNumbersRequest();
         boolean result = requestService.checkCompleteRequest(requestNumbers);
         if (result) {
-            result = orderList.update(bookOrder, COMPLETED) != null;
+            result = orderRepository.update(bookOrder, COMPLETED) != null;
         }
         return result;
     }
@@ -107,13 +110,13 @@ public class BookOrderService implements OrderService {
 
     @Override
     public List<Order> getOrderList() {
-        return orderList.readAll();
+        return orderRepository.readAll();
     }
 
     @Override
     public List<Order> getNewOrder() {
         List<Order> orders = new ArrayList<>();
-        for (Order order : orderList.readAll()) {
+        for (Order order : orderRepository.readAll()) {
             if (order.getStatus() == NEW) {
                 orders.add(order);
             }
@@ -123,12 +126,23 @@ public class BookOrderService implements OrderService {
 
     @Override
     public List<Order> getSortingOrderList() {
-        List<Order> orders = new ArrayList<>(orderList.readAll());
+        List<Order> orders = new ArrayList<>(orderRepository.readAll());
         if (orders.size() > 0) {
             Comparator<Order> orderComp = new OrderDateComparator().thenComparing(new OrderPriceComparator())
                     .thenComparing(new OrderStatusComparator());
             orders.sort(orderComp);
         }
         return orders;
+    }
+
+    @Override
+    public void readDataFromFile() {
+        fileOrderRepository.createAll(orderRepository.readAll());
+    }
+
+    @Override
+    public void writeDataToFile() {
+        List<Order> orders = fileOrderRepository.readAll();
+        orderRepository.createAll(orders);
     }
 }

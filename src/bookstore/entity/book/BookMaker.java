@@ -1,4 +1,4 @@
-package bookstore.model.book;
+package bookstore.entity.book;
 
 public interface BookMaker {
 

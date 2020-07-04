@@ -1,8 +1,8 @@
 package bookstore.service.storage;
 
-import bookstore.model.Order;
-import bookstore.model.book.Book;
-import bookstore.model.Bookshelf;
+import bookstore.entity.Order;
+import bookstore.entity.book.Book;
+import bookstore.entity.Bookshelf;
 
 import java.util.List;
 
@@ -15,6 +15,6 @@ public interface StorageService {
     List<Bookshelf> getBookshelfList();
     List<Bookshelf> getSortingBookshelves();
     List<Bookshelf> getUnsoldBookshelves();
-    void exportData();
-    void importData();
+    void readDataFromFile();
+    void writeDataToFile();
 }

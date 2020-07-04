@@ -1,8 +1,8 @@
 package bookstore.service.order;
 
-import bookstore.model.Customer;
-import bookstore.model.Order;
-import bookstore.model.book.Book;
+import bookstore.entity.Customer;
+import bookstore.entity.Order;
+import bookstore.entity.book.Book;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -19,4 +19,6 @@ public interface OrderService {
     List<Order> getOrderList();
     List<Order> getNewOrder();
     List<Order> getSortingOrderList();
+    void readDataFromFile();
+    void writeDataToFile();
 }

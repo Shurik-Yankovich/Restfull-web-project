@@ -4,8 +4,8 @@ import java.util.List;
 
 public interface CsvUtil <T> {
 
-    void writeInCsv(T t);
-    void writeAllInCsv(List<T> t);
+    void writeToCsv(T t);
+    void writeAllToCsv(List<T> t);
     T readFromCsv(int id);
     List<T> readAllFromCsv();
 }

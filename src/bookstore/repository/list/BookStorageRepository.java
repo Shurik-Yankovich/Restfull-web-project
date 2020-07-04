@@ -1,7 +1,7 @@
 package bookstore.repository.list;
 
-import bookstore.model.Bookshelf;
-import bookstore.model.book.Book;
+import bookstore.entity.Bookshelf;
+import bookstore.entity.book.Book;
 import bookstore.repository.base.StorageRepository;
 
 import java.time.LocalDate;
@@ -13,13 +13,17 @@ public class BookStorageRepository implements StorageRepository {
     private static final String BOOK_NOT_FOUND = "Book not found!";
 
     private List<Bookshelf> bookshelves;
+    private int index;
 
     public BookStorageRepository() {
         bookshelves = new ArrayList<>();
+        index = 0;
     }
 
     @Override
     public Bookshelf create(Bookshelf book) {
+        book.setId(index);
+        index++;
         bookshelves.add(book);
         return book;
     }

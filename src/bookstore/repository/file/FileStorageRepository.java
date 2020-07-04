@@ -1,6 +1,6 @@
 package bookstore.repository.file;
 
-import bookstore.model.Bookshelf;
+import bookstore.entity.Bookshelf;
 import bookstore.repository.base.Repository;
 import bookstore.util.csv.BookshelfCsv;
 
@@ -8,15 +8,15 @@ import java.util.List;
 
 public class FileStorageRepository implements Repository<Bookshelf, Integer, Integer, Bookshelf> {
 
-    BookshelfCsv bookshelfCsv;
+    private BookshelfCsv bookshelfCsv;
 
     public FileStorageRepository() {
-        this.bookshelfCsv = new BookshelfCsv();
+        bookshelfCsv = new BookshelfCsv();
     }
 
     @Override
     public Bookshelf create(Bookshelf bookshelf) {
-        bookshelfCsv.writeInCsv(bookshelf);
+        bookshelfCsv.writeToCsv(bookshelf);
         return bookshelf;
     }
 
@@ -29,7 +29,7 @@ public class FileStorageRepository implements Repository<Bookshelf, Integer, Int
                 break;
             }
         }
-        bookshelfCsv.writeAllInCsv(bookshelves);
+        bookshelfCsv.writeAllToCsv(bookshelves);
         return book;
     }
 
@@ -50,6 +50,6 @@ public class FileStorageRepository implements Repository<Bookshelf, Integer, Int
 
     @Override
     public void createAll(List<Bookshelf> bookshelves) {
-        bookshelfCsv.writeAllInCsv(bookshelves);
+        bookshelfCsv.writeAllToCsv(bookshelves);
     }
 }

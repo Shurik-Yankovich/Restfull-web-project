@@ -1,8 +1,8 @@
 package bookstore.util.csv;
 
-import bookstore.model.Bookshelf;
-import bookstore.model.book.Book;
-import bookstore.model.book.NovelBook;
+import bookstore.entity.Bookshelf;
+import bookstore.entity.book.Book;
+import bookstore.entity.book.NovelBook;
 
 import java.io.*;
 import java.time.LocalDate;
@@ -15,23 +15,24 @@ public class BookshelfCsv implements CsvUtil<Bookshelf> {
     private static final String ROOT_DIR_PATH = ".\\src\\bookstore\\rootdir\\bookshelf.csv";
 
     @Override
-    public void writeInCsv(Bookshelf bookshelf) {
+    public void writeToCsv(Bookshelf bookshelf) {
         try (Writer writer = new FileWriter(ROOT_DIR_PATH)) {
             writer.write(convertBookshelfToString(bookshelf));
-            System.out.println("Bookshelf " + bookshelf.getId() + " exported to file - bookshelf.csv");
+            System.out.println("Bookshelf №" + bookshelf.getId() + " был добавлен в файл bookshelf.csv");
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
     }
 
     @Override
-    public void writeAllInCsv(List<Bookshelf> bookshelves) {
+    public void writeAllToCsv(List<Bookshelf> bookshelves) {
         try (Writer writer = new FileWriter(ROOT_DIR_PATH)) {
             StringBuilder text = new StringBuilder();
             for (Bookshelf bookshelf : bookshelves) {
                 text.append(convertBookshelfToString(bookshelf)).append("\n");
             }
             writer.write(text.toString());
+            System.out.println("Список книг был записан в файл bookshelf.csv");
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
@@ -57,28 +58,6 @@ public class BookshelfCsv implements CsvUtil<Bookshelf> {
                 Bookshelf bookshelf = convertStringToBookshelf(line);
                 bookshelves.add(bookshelf);
             }
-//                boolean isPresent = false;
-//                for (HotelRoom hotelRoom : storageRepository.getHotelRooms()) {
-//                    if (hotelRoom.getId() == id) {
-//                        roomId = 1;
-//                    }
-//                }
-//
-//                if (roomId == 1) {
-//                    HotelRoom hotelRoom = new HotelRoom(id, number, capacity, stars, price);
-//                    hotelRoom.setRoomStatus(getRoomStatus(status));
-//                    storageRepository.update(hotelRoom);
-//                    System.out.println("Room number - " + number + "changed");
-//                } else {
-//                    id = storageRepository.getHotelRooms().size() + 1;
-//                    HotelRoom hotelRoom = new HotelRoom(id, number, capacity, stars, price);
-//                    hotelRoom.setRoomStatus(getRoomStatus(status));
-//                    storageRepository.addHotelRoom(hotelRoom);
-//                    System.out.println("Added new room " + number);
-//                }
-//            } catch (NumberFormatException e) {
-//                System.err.println(e.getMessage());
-//            }
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }

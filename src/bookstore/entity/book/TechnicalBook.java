@@ -1,17 +1,17 @@
-package bookstore.model.book;
+package bookstore.entity.book;
 
 import java.util.Objects;
 
-public class ThrillerBook implements Book {
+public class TechnicalBook implements Book {
 
     private String title;
     private String author;
     private int publicationYear;
 
-    public ThrillerBook() {
+    public TechnicalBook() {
     }
 
-    public ThrillerBook(String title, String author, int publicationYear) {
+    public TechnicalBook(String title, String author, int publicationYear) {
         this.title = title;
         this.author = author;
         this.publicationYear = publicationYear;
@@ -56,7 +56,7 @@ public class ThrillerBook implements Book {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ThrillerBook book = (ThrillerBook) o;
+        TechnicalBook book = (TechnicalBook) o;
         return publicationYear == book.publicationYear &&
                 Objects.equals(title, book.title) &&
                 Objects.equals(author, book.author);

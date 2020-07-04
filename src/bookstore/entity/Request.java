@@ -1,8 +1,8 @@
-package bookstore.model;
+package bookstore.entity;
 
-import bookstore.model.book.Book;
+import bookstore.entity.book.Book;
 
-import static bookstore.model.Status.NEW;
+import static bookstore.entity.Status.NEW;
 
 public class Request {
 
@@ -17,6 +17,13 @@ public class Request {
         this.status = NEW;
     }
 
+    public Request() {
+    }
+
+    public int getId() {
+        return id;
+    }
+
     public Book getBook() {
         return book;
     }
@@ -25,12 +32,12 @@ public class Request {
         return count;
     }
 
-    public int getId() {
-        return id;
-    }
-
     public Status getStatus() {
         return status;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
     }
 
     public void setCount(int count) {

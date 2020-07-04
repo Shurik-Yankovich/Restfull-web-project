@@ -1,12 +1,12 @@
 package bookstore.util;
 
-import bookstore.model.Bookshelf;
+import bookstore.entity.Bookshelf;
 import bookstore.repository.list.BookStorageRepository;
 import bookstore.repository.base.StorageRepository;
 
 import java.time.LocalDate;
 
-import static bookstore.model.book.BookFactory.*;
+import static bookstore.entity.book.BookFactory.*;
 
 public class BookGenerator {
     public static StorageRepository generate(){

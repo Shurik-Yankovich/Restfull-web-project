@@ -1,4 +1,4 @@
-package bookstore.model;
+package bookstore.entity;
 
 public class Customer {
 
@@ -12,6 +12,9 @@ public class Customer {
         this.address = address;
     }
 
+    public Customer() {
+    }
+
     public String getFullName() {
         return fullName;
     }
@@ -22,6 +25,18 @@ public class Customer {
 
     public String getAddress() {
         return address;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     @Override

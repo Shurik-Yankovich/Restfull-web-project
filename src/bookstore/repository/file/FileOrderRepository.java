@@ -1,35 +1,42 @@
 package bookstore.repository.file;
 
-import bookstore.model.Order;
-import bookstore.model.Status;
+import bookstore.entity.Order;
+import bookstore.entity.Status;
 import bookstore.repository.base.OrderRepository;
+import bookstore.util.csv.OrderCsv;
 
-import java.io.*;
 import java.util.List;
 
 public class FileOrderRepository implements OrderRepository {
 
-    private static final String ROOT_DIR_PATH = "";
-
-    private File rootDirectory;
+    private OrderCsv orderCsv;
 
     public FileOrderRepository() {
-        this.rootDirectory = new File(ROOT_DIR_PATH);
+        orderCsv = new OrderCsv();
     }
 
     @Override
     public Order create(Order order) {
-        return null;
+        orderCsv.writeToCsv(order);
+        return order;
     }
 
     @Override
     public Order update(Order order, Status status) {
-        return null;
+        List<Order> orderList = orderCsv.readAllFromCsv();
+        for (Order bookOrder : orderList) {
+            if (bookOrder.getId() == order.getId()) {
+                bookOrder = order;
+                break;
+            }
+        }
+        orderCsv.writeAllToCsv(orderList);
+        return order;
     }
 
     @Override
-    public Order read(Integer integer) {
-        return null;
+    public Order read(Integer id) {
+        return orderCsv.readFromCsv(id);
     }
 
     @Override
@@ -39,11 +46,11 @@ public class FileOrderRepository implements OrderRepository {
 
     @Override
     public List<Order> readAll() {
-        return null;
+        return orderCsv.readAllFromCsv();
     }
 
     @Override
-    public void createAll(List<Order> t) {
-
+    public void createAll(List<Order> orderList) {
+        orderCsv.writeAllToCsv(orderList);
     }
 }

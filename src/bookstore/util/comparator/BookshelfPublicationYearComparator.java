@@ -1,6 +1,6 @@
 package bookstore.util.comparator;
 
-import bookstore.model.Bookshelf;
+import bookstore.entity.Bookshelf;
 
 import java.util.Comparator;
 

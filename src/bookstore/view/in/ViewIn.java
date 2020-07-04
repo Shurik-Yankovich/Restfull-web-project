@@ -1,7 +1,7 @@
 package bookstore.view.in;
 
-import bookstore.model.Bookshelf;
-import bookstore.model.Customer;
+import bookstore.entity.Bookshelf;
+import bookstore.entity.Customer;
 
 import java.time.LocalDate;
 import java.util.List;
