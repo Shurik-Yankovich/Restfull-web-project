@@ -19,7 +19,7 @@ public class OrderCsv implements CsvUtil<Order> {
 
     @Override
     public void writeToCsv(Order order) {
-        try (Writer writer = new FileWriter(ROOT_DIR_PATH)) {
+        try (Writer writer = new FileWriter(ROOT_DIR_PATH, true)) {
             writer.write(convertOrderToString(order));
             System.out.println("Order №" + order.getId() + " был добавлен в файл request.csv");
         } catch (IOException e) {

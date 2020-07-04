@@ -16,7 +16,7 @@ public class StorageCsv implements CsvUtil<Bookshelf> {
 
     @Override
     public void writeToCsv(Bookshelf bookshelf) {
-        try (Writer writer = new FileWriter(ROOT_DIR_PATH)) {
+        try (Writer writer = new FileWriter(ROOT_DIR_PATH, true)) {
             writer.write(convertBookshelfToString(bookshelf));
             System.out.println("Bookshelf №" + bookshelf.getId() + " был добавлен в файл storage.csv");
         } catch (IOException e) {

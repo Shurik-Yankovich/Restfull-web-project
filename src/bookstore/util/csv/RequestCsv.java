@@ -16,7 +16,7 @@ public class RequestCsv implements CsvUtil<Request> {
 
     @Override
     public void writeToCsv(Request request) {
-        try (Writer writer = new FileWriter(ROOT_DIR_PATH)) {
+        try (Writer writer = new FileWriter(ROOT_DIR_PATH, true)) {
             writer.write(convertRequestToString(request));
             System.out.println("Request №" + request.getId() + " был добавлен в файл request.csv");
         } catch (IOException e) {
