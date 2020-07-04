@@ -8,6 +8,7 @@ import java.time.format.DateTimeFormatter;
 
 public class Bookshelf {
 
+    private int id;
     private Book book;
     private int count;
     private double price;
@@ -30,6 +31,15 @@ public class Bookshelf {
         this.arrivalDate = arrivalDate;
     }
 
+    public Bookshelf() {
+    }
+
+
+
+    public int getId() {
+        return id;
+    }
+
     public Book getBook() {
         return book;
     }
@@ -44,6 +54,14 @@ public class Bookshelf {
 
     public LocalDate getArrivalDate() {
         return arrivalDate;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
     }
 
     public void setCount(int count) {

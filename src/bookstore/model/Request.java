@@ -6,9 +6,9 @@ import static bookstore.model.Status.NEW;
 
 public class Request {
 
+    private int id;
     private Book book;
     private int count;
-    private int index;
     private Status status;
 
     public Request(Book book) {
@@ -25,8 +25,8 @@ public class Request {
         return count;
     }
 
-    public int getIndex() {
-        return index;
+    public int getId() {
+        return id;
     }
 
     public Status getStatus() {
@@ -37,8 +37,8 @@ public class Request {
         this.count = count;
     }
 
-    public void setIndex(int index) {
-        this.index = index;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setStatus(Status status) {

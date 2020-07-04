@@ -4,7 +4,8 @@ import bookstore.model.Bookshelf;
 import bookstore.model.Order;
 import bookstore.model.Request;
 import bookstore.model.book.Book;
-import bookstore.repository.storage.StorageRepository;
+import bookstore.repository.base.StorageRepository;
+import bookstore.repository.file.FileStorageRepository;
 import bookstore.service.request.RequestService;
 import bookstore.util.comparator.*;
 
@@ -19,25 +20,27 @@ public class BookStorageService implements StorageService {
 
     private static final int NUMBER_OF_MONTHS_FOR_UNSOLD_BOOKS = 6;
 
-    private StorageRepository bookStorageRepository;
+    private StorageRepository storageRepository;
     private RequestService requestService;
+    private FileStorageRepository fileStorageRepository;
 
-    public BookStorageService(StorageRepository bookStorageRepository, RequestService requestService) {
-        this.bookStorageRepository = bookStorageRepository;
+    public BookStorageService(StorageRepository storageRepository, RequestService requestService) {
+        this.storageRepository = storageRepository;
         this.requestService = requestService;
+        this.fileStorageRepository = new FileStorageRepository();
     }
 
     @Override
     public void addBookOnStorage(Book book, int count) {
         requestService.completeRequest(book);
-        bookStorageRepository.update(book, count);
+        storageRepository.update(book, count);
     }
 
     @Override
     public double getTotalPrice(List<Book> books) {
         double price = 0;
         for (Book book : books) {
-            price += bookStorageRepository.read(book).getPrice();
+            price += storageRepository.read(book).getPrice();
         }
         return price;
     }
@@ -54,7 +57,7 @@ public class BookStorageService implements StorageService {
     }
 
     private boolean bookReservation(Book book) {
-        List<Bookshelf> bookshelves = bookStorageRepository.readAll();
+        List<Bookshelf> bookshelves = storageRepository.readAll();
         int index = searchBook(book, bookshelves);
         if (index >= 0) {
             Bookshelf bookshelf = bookshelves.get(index);
@@ -97,7 +100,7 @@ public class BookStorageService implements StorageService {
     }
 
     private void changeBookCount(Book book) {
-        List<Bookshelf> bookshelves = bookStorageRepository.readAll();
+        List<Bookshelf> bookshelves = storageRepository.readAll();
         int index = searchBook(book, bookshelves);
         Bookshelf bookshelf = bookshelves.get(index);
         int count = bookshelf.getCount();
@@ -115,12 +118,12 @@ public class BookStorageService implements StorageService {
 
     @Override
     public List<Bookshelf> getBookshelfList() {
-        return bookStorageRepository.readAll();
+        return storageRepository.readAll();
     }
 
     @Override
     public List<Bookshelf> getSortingBookshelves() {
-        List<Bookshelf> books = new ArrayList<>(bookStorageRepository.readAll());
+        List<Bookshelf> books = new ArrayList<>(storageRepository.readAll());
         if (books.size() > 0) {
             Comparator<Bookshelf> bookComp = new BookshelfTitleComparator().thenComparing(new BookshelfPublicationYearComparator())
                     .thenComparing(new BookshelfPriceComparator()).thenComparing(new BookshelfPresenceComparator());
@@ -142,11 +145,20 @@ public class BookStorageService implements StorageService {
     private List<Bookshelf> getBooksBeforeArrivalDate() {
         LocalDate arrivalDate = LocalDate.now().minusMonths(NUMBER_OF_MONTHS_FOR_UNSOLD_BOOKS);
         List<Bookshelf> booksBeforeArrivalDate = new ArrayList<>();
-        for (Bookshelf bookshelf : bookStorageRepository.readAll()) {
+        for (Bookshelf bookshelf : storageRepository.readAll()) {
             if (bookshelf.getArrivalDate().isBefore(arrivalDate) && bookshelf.getCount() > 0) {
                 booksBeforeArrivalDate.add(bookshelf);
             }
         }
         return booksBeforeArrivalDate;
+    }
+
+    public void exportData() {
+        fileStorageRepository.createAll(storageRepository.readAll());
+    }
+
+    public void importData() {
+        List<Bookshelf> bookshelves = fileStorageRepository.readAll();
+        storageRepository.createAll(bookshelves);
     }
 }

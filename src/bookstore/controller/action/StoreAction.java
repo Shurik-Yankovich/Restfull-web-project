@@ -119,6 +119,10 @@ public class StoreAction {
         viewOut.printList(storageService.getBookshelfList());
     }
 
+    public void exportDataAction(){storageService.exportData();}
+
+    public void importDataAction(){storageService.importData();}
+
     public void notFoundMenuItem() {
         viewOut.notFoundMenuItem();
     }

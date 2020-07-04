@@ -1,7 +1,8 @@
-package bookstore.repository.order;
+package bookstore.repository.list;
 
 import bookstore.model.Order;
 import bookstore.model.Status;
+import bookstore.repository.base.OrderRepository;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

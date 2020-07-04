@@ -1,7 +1,8 @@
-package bookstore.repository.storage;
+package bookstore.repository.list;
 
 import bookstore.model.Bookshelf;
 import bookstore.model.book.Book;
+import bookstore.repository.base.StorageRepository;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -56,8 +57,8 @@ public class BookStorageRepository implements StorageRepository {
     }
 
     @Override
-    public void createAll(List<Bookshelf> list) {
-        bookshelves.addAll(list);
+    public void createAll(List<Bookshelf> bookshelves) {
+        this.bookshelves = bookshelves;
     }
 
     private int searchBook(Book book) {

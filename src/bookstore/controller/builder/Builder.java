@@ -103,6 +103,12 @@ public class Builder implements Buildable {
             case SHOW_UNSOLD_BOOK_LIST:
                 return new MenuItem(String.format(MENU_TEXT, index, StorageMenuTextConst.ITEM_TEXT_SHOW_UNSOLD_BOOK_LIST),
                         () -> storeAction.showUnsoldBooks(), null);
+            case EXPORT_BOOKSHELF:
+                return new MenuItem(String.format(MENU_TEXT, index, StorageMenuTextConst.ITEM_TEXT_EXPORT_BOOKSHELF),
+                        () -> storeAction.exportDataAction(), null);
+            case IMPORT_BOOKSHELF:
+                return new MenuItem(String.format(MENU_TEXT, index, StorageMenuTextConst.ITEM_TEXT_IMPORT_BOOKSHELF),
+                        () -> storeAction.importDataAction(), null);
             case BACK:
                 return new MenuItem(String.format(MENU_TEXT, index, StorageMenuTextConst.ITEM_TEXT_BACK),
                         null, rootMenu);
@@ -173,6 +179,12 @@ public class Builder implements Buildable {
             case SHOW_COUNT_COMPLETED_ORDER:
                 return new MenuItem(String.format(MENU_TEXT, index, OrderMenuTextConst.ITEM_TEXT_SHOW_COUNT_COMPLETED_ORDER),
                         () -> storeAction.countCompletedOrderAction(), null);
+            case EXPORT_ORDER:
+                return new MenuItem(String.format(MENU_TEXT, index, OrderMenuTextConst.ITEM_TEXT_EXPORT_ORDER),
+                        null, null);
+            case IMPORT_ORDER:
+                return new MenuItem(String.format(MENU_TEXT, index, OrderMenuTextConst.ITEM_TEXT_IMPORT_ORDER),
+                        null, null);
             case BACK:
                 return new MenuItem(String.format(MENU_TEXT, index, OrderMenuTextConst.ITEM_TEXT_BACK),
                         null, rootMenu);
@@ -231,6 +243,12 @@ public class Builder implements Buildable {
             case SHOW_REQUEST_LIST:
                 return new MenuItem(String.format(MENU_TEXT, index, RequestMenuTextConst.ITEM_TEXT_SHOW_REQUEST_LIST),
                         null, buildRequestListMenu());
+            case EXPORT_REQUEST:
+                return new MenuItem(String.format(MENU_TEXT, index, RequestMenuTextConst.ITEM_TEXT_EXPORT_REQUEST),
+                        null, null);
+            case IMPORT_REQUEST:
+                return new MenuItem(String.format(MENU_TEXT, index, RequestMenuTextConst.ITEM_TEXT_IMPORT_REQUEST_LIST),
+                        null, null);
             case BACK:
                 return new MenuItem(String.format(MENU_TEXT, index, RequestMenuTextConst.ITEM_TEXT_BACK),
                         null, rootMenu);

@@ -8,6 +8,8 @@ public class OrderMenuTextConst {
     public static final String ITEM_TEXT_SHOW_ORDER_LIST = "Показать список заказов";
     public static final String ITEM_TEXT_SHOW_COMPLETED_ORDER_LIST = "Показать список выполненных заказов за период";
     public static final String ITEM_TEXT_SHOW_COUNT_COMPLETED_ORDER = "Показать количество  выполненных заказов за период";
+    public static final String ITEM_TEXT_EXPORT_ORDER = "Экспорт данных в файл";
+    public static final String ITEM_TEXT_IMPORT_ORDER = "Импорт данных из файла";
     public static final String ITEM_TEXT_BACK = "Вернутся в главное меню";
 
 

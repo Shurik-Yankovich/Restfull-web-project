@@ -1,7 +1,8 @@
-package bookstore.repository.request;
+package bookstore.repository.list;
 
 import bookstore.model.Request;
 import bookstore.model.Status;
+import bookstore.repository.base.RequestRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +59,7 @@ public class BookRequestRepository implements RequestRepository {
 
     private Request searchByRequestNumber(int requestNumber) {
         for (Request request : array) {
-            if (request.getIndex() == requestNumber) {
+            if (request.getId() == requestNumber) {
                 return request;
             }
         }

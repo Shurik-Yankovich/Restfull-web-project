@@ -2,8 +2,8 @@ package bookstore.service.request;
 
 import bookstore.model.book.Book;
 import bookstore.model.Request;
-import bookstore.repository.request.BookRequestRepository;
-import bookstore.repository.request.RequestRepository;
+import bookstore.repository.list.BookRequestRepository;
+import bookstore.repository.base.RequestRepository;
 import bookstore.util.comparator.RequestBookNameComparator;
 import bookstore.util.comparator.RequestCountComparator;
 
@@ -24,12 +24,12 @@ public class BookRequestService implements RequestService {
     @Override
     public int addRequest(Book book) {
         Request request = createNewRequest(book);
-        return requestList.create(request).getIndex();
+        return requestList.create(request).getId();
     }
 
     private Request createNewRequest(Book book) {
         Request request = new Request(book);
-        request.setIndex(requestList.readAll().size());
+        request.setId(requestList.readAll().size());
         int count = changeCountByBook(book);
         request.setCount(count);
         return request;

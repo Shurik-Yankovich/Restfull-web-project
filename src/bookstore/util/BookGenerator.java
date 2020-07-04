@@ -1,8 +1,8 @@
 package bookstore.util;
 
 import bookstore.model.Bookshelf;
-import bookstore.repository.storage.BookStorageRepository;
-import bookstore.repository.storage.StorageRepository;
+import bookstore.repository.list.BookStorageRepository;
+import bookstore.repository.base.StorageRepository;
 
 import java.time.LocalDate;
 

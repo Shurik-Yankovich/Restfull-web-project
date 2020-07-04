@@ -15,4 +15,6 @@ public interface StorageService {
     List<Bookshelf> getBookshelfList();
     List<Bookshelf> getSortingBookshelves();
     List<Bookshelf> getUnsoldBookshelves();
+    void exportData();
+    void importData();
 }

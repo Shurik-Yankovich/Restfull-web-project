@@ -11,6 +11,7 @@ import static bookstore.model.Status.NEW;
 
 public class Order {
 
+    private int id;
     private List<Book> books;
     private Customer customer;
     private List<Integer> numbersRequest;
@@ -31,6 +32,10 @@ public class Order {
         this.customer = customer;
         this.orderDate = LocalDate.now();
         this.status = NEW;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public List<Book> getBooks() {
@@ -59,6 +64,10 @@ public class Order {
 
     public Status getStatus() {
         return status;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setNumbersRequest(List<Integer> numbersRequest) {
