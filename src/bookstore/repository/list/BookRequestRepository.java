@@ -10,11 +10,9 @@ import java.util.List;
 public class BookRequestRepository implements RequestRepository {
 
     private List<Request> array;
-    private int index;
 
     public BookRequestRepository() {
         array = new ArrayList<>();
-        index = 0;
     }
 
     @Override
@@ -24,8 +22,8 @@ public class BookRequestRepository implements RequestRepository {
 
     @Override
     public Request create(Request request) {
+        int index = array.size();
         request.setId(index);
-        index++;
         array.add(request);
         return request;
     }

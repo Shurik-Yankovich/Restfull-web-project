@@ -101,7 +101,7 @@ public class StoreViewIn implements ViewIn {
 
     @Override
     public int saveChanging() {
-        System.out.println("Записать изменения в файл:\n0 - Да\n1 - Нет\n");
+        System.out.println("Записать изменения в файл:\n0 - Да\n1 - Нет");
         return readIntFromConsole();
     }
 

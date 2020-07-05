@@ -18,7 +18,7 @@ public class StorageCsv implements CsvUtil<Bookshelf> {
     public void writeToCsv(Bookshelf bookshelf) {
         try (Writer writer = new FileWriter(ROOT_DIR_PATH, true)) {
             writer.write(convertBookshelfToString(bookshelf));
-            System.out.println("Bookshelf №" + bookshelf.getId() + " был добавлен в файл storage.csv");
+            System.out.println("Книга №" + bookshelf.getId() + " был добавлен в файл storage.csv");
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }

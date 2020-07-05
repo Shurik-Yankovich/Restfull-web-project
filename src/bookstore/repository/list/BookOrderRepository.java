@@ -13,17 +13,15 @@ import static bookstore.entity.Status.COMPLETED;
 public class BookOrderRepository implements OrderRepository {
 
     private List<Order> array;
-    private int index;
 
     public BookOrderRepository() {
         array = new ArrayList<>();
-        index = 0;
     }
 
     @Override
     public Order create(Order order) {
+        int index = array.size();
         order.setId(index);
-        index++;
         array.add(order);
         return order;
     }

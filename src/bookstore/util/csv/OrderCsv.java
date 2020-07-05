@@ -21,7 +21,7 @@ public class OrderCsv implements CsvUtil<Order> {
     public void writeToCsv(Order order) {
         try (Writer writer = new FileWriter(ROOT_DIR_PATH, true)) {
             writer.write(convertOrderToString(order));
-            System.out.println("Order №" + order.getId() + " был добавлен в файл request.csv");
+            System.out.println("Заказ №" + order.getId() + " был добавлен в файл order.csv");
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
@@ -35,7 +35,7 @@ public class OrderCsv implements CsvUtil<Order> {
                 text.append(convertOrderToString(order)).append("\n");
             }
             writer.write(text.toString());
-            System.out.println("Список запросов был записан в файл request.csv");
+            System.out.println("Список заказов был записан в файл order.csv");
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
