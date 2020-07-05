@@ -37,6 +37,11 @@ public class BookStorageService implements StorageService {
     }
 
     @Override
+    public void addBookOnStorage(Book book, int count, double price) {
+        storageRepository.create(new Bookshelf(book, count, price, LocalDate.now()));
+    }
+
+    @Override
     public double getTotalPrice(List<Book> books) {
         double price = 0;
         for (Book book : books) {

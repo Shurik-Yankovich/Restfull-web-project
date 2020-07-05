@@ -9,6 +9,7 @@ import java.util.List;
 public interface StorageService {
 
     void addBookOnStorage(Book book, int count);
+    void addBookOnStorage(Book book, int count, double price);
     double getTotalPrice(List<Book> books);
     List<Book> checkBooksNotInStorage(List<Book> books);
     void cancelBookReservation(Order order);
