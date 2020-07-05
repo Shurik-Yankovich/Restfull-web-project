@@ -35,7 +35,6 @@ public class OrderCsv implements CsvUtil<Order> {
                 text.append(convertOrderToString(order)).append("\n");
             }
             writer.write(text.toString());
-            System.out.println("Список заказов был записан в файл order.csv");
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
@@ -61,7 +60,6 @@ public class OrderCsv implements CsvUtil<Order> {
                 Order order = convertStringToOrder(line);
                 orderList.add(order);
             }
-            System.out.println("Список заказов был считан из файла order.csv");
         } catch (GetStatusException e) {
             System.err.println(e.getMessage());
         } catch (IOException e) {

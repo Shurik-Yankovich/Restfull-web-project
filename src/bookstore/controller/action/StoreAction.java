@@ -64,14 +64,13 @@ public class StoreAction {
 
     public void cancelOrderAction() {
         Order order = viewIn.choiceFromList(orderService.getNewOrder());
-        order = orderService.cancelOrder(order);
-        boolean isCanceled = order != null;
+        Order cancelOrder = orderService.cancelOrder(order);
+        boolean isCanceled = cancelOrder != null;
         viewOut.cancelOrderOut(isCanceled);
         if (isCanceled && saveChanging()) {
-            orderService.updateOrderToFile(order);
-            Request request;
-            for (int number : order.getNumbersRequest()) {
-                request = requestService.getRequestByNumber(number);
+            orderService.updateOrderToFile(cancelOrder);
+            for (int number : cancelOrder.getNumbersRequest()) {
+                Request request = requestService.getRequestByNumber(number);
                 requestService.updateRequestToFile(request);
             }
             storageService.writeAllToFile();
@@ -80,11 +79,11 @@ public class StoreAction {
 
     public void completeOrderAction() {
         Order order = viewIn.choiceFromList(orderService.getNewOrder());
-        order = orderService.completeOrder(order);
-        boolean isCompleted = order != null;
+        Order completeOrder = orderService.completeOrder(order);
+        boolean isCompleted = completeOrder != null;
         viewOut.completeOrderOut(isCompleted);
         if (isCompleted && saveChanging()) {
-            orderService.updateOrderToFile(order);
+            orderService.updateOrderToFile(completeOrder);
             storageService.writeAllToFile();
         }
     }
@@ -113,10 +112,12 @@ public class StoreAction {
 
     public void exportOrderAction() {
         orderService.writeAllToFile();
+        viewOut.writeOrderListFromFile();
     }
 
     public void importOrderAction() {
         orderService.readAllFromFile();
+        viewOut.readOrderListFromFile();
     }
 
     public void addRequestAction() {
@@ -137,10 +138,12 @@ public class StoreAction {
 
     public void exportRequestAction() {
         requestService.writeAllToFile();
+        viewOut.writeRequestListFromFile();
     }
 
     public void importRequestAction() {
         requestService.readAllFromFile();
+        viewOut.readRequestListFromFile();
     }
 
     public void addBookAction() {
@@ -167,10 +170,12 @@ public class StoreAction {
 
     public void exportBookshelfAction() {
         storageService.writeAllToFile();
+        viewOut.writeBookshelfListFromFile();
     }
 
     public void importBookshelfAction() {
         storageService.readAllFromFile();
+        viewOut.readBookshelfListFromFile();
     }
 
     public void notFoundMenuItem() {

@@ -23,9 +23,9 @@ public class FileStorageRepository implements Repository<Bookshelf, Integer, Int
     @Override
     public Bookshelf update(Bookshelf book, Integer integer) {
         List<Bookshelf> bookshelves = storageCsv.readAllFromCsv();
-        for (Bookshelf bookshelf : bookshelves) {
-            if (bookshelf.getId() == book.getId()) {
-                bookshelf = book;
+        for (int i = 0; i < bookshelves.size(); i++) {
+            if (bookshelves.get(i).getId() == book.getId()) {
+                bookshelves.set(i, book);
                 break;
             }
         }

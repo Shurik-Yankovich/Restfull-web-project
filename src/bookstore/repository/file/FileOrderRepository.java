@@ -25,9 +25,9 @@ public class FileOrderRepository implements OrderRepository {
     public Order update(Order order, Status status) {
         List<Order> orderList = orderCsv.readAllFromCsv();
         boolean isPresent = false;
-        for (Order bookOrder : orderList) {
-            if (bookOrder.getId() == order.getId()) {
-                bookOrder = order;
+        for (int i = 0; i < orderList.size(); i++) {
+            if (orderList.get(i).getId() == order.getId()) {
+                orderList.set(i, order);
                 isPresent = true;
                 break;
             }

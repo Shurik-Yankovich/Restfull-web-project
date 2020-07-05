@@ -24,9 +24,9 @@ public class FileRequestRepository implements Repository<Request, Integer, Integ
     public Request update(Request request, Integer integer) {
         List<Request> requestList = requestCsv.readAllFromCsv();
         boolean isPresent = false;
-        for (Request bookRequest : requestList) {
-            if (bookRequest.getId() == request.getId()) {
-                bookRequest = request;
+        for (int i = 0; i < requestList.size(); i++) {
+            if (requestList.get(i).getId() == request.getId()) {
+                requestList.set(i, request);
                 isPresent = true;
                 break;
             }

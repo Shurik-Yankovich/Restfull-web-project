@@ -32,7 +32,6 @@ public class RequestCsv implements CsvUtil<Request> {
                 text.append(convertRequestToString(request)).append("\n");
             }
             writer.write(text.toString());
-            System.out.println("Список запросов был записан в файл request.csv");
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
@@ -58,7 +57,6 @@ public class RequestCsv implements CsvUtil<Request> {
                 Request request = convertStringToRequest(line);
                 requestList.add(request);
             }
-            System.out.println("Список запросов был считан из файла request.csv");
         } catch (GetStatusException e) {
             System.err.println(e.getMessage());
         } catch (IOException e) {

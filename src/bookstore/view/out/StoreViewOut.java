@@ -45,4 +45,28 @@ public class StoreViewOut implements ViewOut{
     public void notFoundMenuItem() {
         System.err.println("Неверно выбран пункт меню!\nПожалуйста выбирете нужный пункт меню:\n");
     }
+
+    public void readOrderListFromFile(){
+        System.out.println("Список заказов был считан из файла");
+    }
+
+    public void readRequestListFromFile(){
+        System.out.println("Список запросов был считан из файла");
+    }
+
+    public void readBookshelfListFromFile(){
+        System.out.println("Список книг был считан из файла");
+    }
+
+    public void writeOrderListFromFile(){
+        System.out.println("Список заказов был записан в файл");
+    }
+
+    public void writeRequestListFromFile(){
+        System.out.println("Список запросов был записан в файл");
+    }
+
+    public void writeBookshelfListFromFile(){
+        System.out.println("Список книг был записан в файл");
+    }
 }

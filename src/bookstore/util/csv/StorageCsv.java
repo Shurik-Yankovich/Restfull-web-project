@@ -32,7 +32,6 @@ public class StorageCsv implements CsvUtil<Bookshelf> {
                 text.append(convertBookshelfToString(bookshelf)).append("\n");
             }
             writer.write(text.toString());
-            System.out.println("Список книг был записан в файл storage.csv");
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
@@ -58,7 +57,6 @@ public class StorageCsv implements CsvUtil<Bookshelf> {
                 Bookshelf bookshelf = convertStringToBookshelf(line);
                 bookshelves.add(bookshelf);
             }
-            System.out.println("Список книг был считан из файла storage.csv");
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
