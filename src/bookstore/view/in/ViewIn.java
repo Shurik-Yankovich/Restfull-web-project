@@ -15,4 +15,5 @@ public interface ViewIn {
     <T> T choiceFromList(List<T> list);
     int readCountBook();
     int readIntFromConsole();
+    int saveChanging();
 }

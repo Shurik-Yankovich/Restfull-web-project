@@ -25,9 +25,9 @@ public class BookRequestService implements RequestService {
     }
 
     @Override
-    public int addRequest(Book book) {
+    public Request addRequest(Book book) {
         Request request = createNewRequest(book);
-        return requestRepository.create(request).getId();
+        return requestRepository.create(request);
     }
 
     private Request createNewRequest(Book book) {
@@ -40,7 +40,7 @@ public class BookRequestService implements RequestService {
 
     private int changeCountByBook(Book book) {
         int count = getCountRequests(book);
-        for (Request request: requestRepository.readAll()) {
+        for (Request request : requestRepository.readAll()) {
             if (request.getBook().equals(book)) {
                 request.setCount(count);
             }
@@ -62,23 +62,26 @@ public class BookRequestService implements RequestService {
     public List<Integer> addRequestList(List<Book> books) {
         List<Integer> requestNumbers = new ArrayList<>();
         for (Book book : books) {
-            requestNumbers.add(addRequest(book));
+            requestNumbers.add(addRequest(book).getId());
         }
         return requestNumbers;
     }
 
     @Override
-    public void completeRequest(Book book) {
-        for (Request request: requestRepository.readAll()) {
+    public List<Request> completeRequest(Book book) {
+        List<Request> requestList = new ArrayList<>();
+        for (Request request : requestRepository.readAll()) {
             if (request.getBook().equals(book) && request.getStatus() == NEW) {
                 request.setStatus(COMPLETED);
+                requestList.add(request);
             }
         }
+        return requestList;
     }
 
     @Override
-    public void cancelRequest(int number) {
-        requestRepository.update(number, CANCELED);
+    public Request cancelRequest(int number) {
+        return requestRepository.update(number, CANCELED);
     }
 
     @Override
@@ -114,13 +117,23 @@ public class BookRequestService implements RequestService {
     }
 
     @Override
-    public void readDataFromFile() {
+    public void readAllFromFile() {
         fileRequestRepository.createAll(requestRepository.readAll());
     }
 
     @Override
-    public void writeDataToFile() {
+    public void writeAllToFile() {
         List<Request> requests = fileRequestRepository.readAll();
         requestRepository.createAll(requests);
+    }
+
+    @Override
+    public void writeRequestToFile(Request request) {
+        fileRequestRepository.create(request);
+    }
+
+    @Override
+    public void updateRequestToFile(Request request) {
+        fileRequestRepository.update(request, null);
     }
 }

@@ -31,14 +31,14 @@ public class BookStorageService implements StorageService {
     }
 
     @Override
-    public void addBookOnStorage(Book book, int count) {
+    public Bookshelf addBookOnStorage(Book book, int count) {
         requestService.completeRequest(book);
-        storageRepository.update(book, count);
+        return storageRepository.update(book, count);
     }
 
     @Override
-    public void addBookOnStorage(Book book, int count, double price) {
-        storageRepository.create(new Bookshelf(book, count, price, LocalDate.now()));
+    public Bookshelf addBookOnStorage(Book book, int count, double price) {
+        return storageRepository.create(new Bookshelf(book, count, price, LocalDate.now()));
     }
 
     @Override
@@ -158,12 +158,24 @@ public class BookStorageService implements StorageService {
         return booksBeforeArrivalDate;
     }
 
-    public void readDataFromFile() {
+    @Override
+    public void readAllFromFile() {
         fileStorageRepository.createAll(storageRepository.readAll());
     }
 
-    public void writeDataToFile() {
+    @Override
+    public void writeAllToFile() {
         List<Bookshelf> bookshelves = fileStorageRepository.readAll();
         storageRepository.createAll(bookshelves);
+    }
+
+    @Override
+    public void writeBookshelfToFile(Bookshelf bookshelf) {
+        fileStorageRepository.create(bookshelf);
+    }
+
+    @Override
+    public void updateBookshelfToFile(Bookshelf bookshelf) {
+        fileStorageRepository.update(bookshelf, null);
     }
 }

@@ -3,6 +3,7 @@ package bookstore.controller.action;
 import bookstore.entity.Bookshelf;
 import bookstore.entity.Customer;
 import bookstore.entity.Order;
+import bookstore.entity.Request;
 import bookstore.entity.book.Book;
 import bookstore.service.order.OrderService;
 import bookstore.service.request.RequestService;
@@ -43,7 +44,12 @@ public class StoreAction {
     }
 
     public void addOrderAction() {
-        orderService.addOrder(createOrder());
+        Order order = orderService.addOrder(createOrder());
+        if (saveChanging()) {
+            orderService.writeOrderToFile(order);
+            storageService.writeAllToFile();
+            requestService.writeAllToFile();
+        }
     }
 
     private Order createOrder() {
@@ -58,12 +64,29 @@ public class StoreAction {
 
     public void cancelOrderAction() {
         Order order = viewIn.choiceFromList(orderService.getNewOrder());
-        viewOut.cancelOrderOut(orderService.cancelOrder(order));
+        order = orderService.cancelOrder(order);
+        boolean isCanceled = order != null;
+        viewOut.cancelOrderOut(isCanceled);
+        if (isCanceled && saveChanging()) {
+            orderService.updateOrderToFile(order);
+            Request request;
+            for (int number : order.getNumbersRequest()) {
+                request = requestService.getRequestByNumber(number);
+                requestService.updateRequestToFile(request);
+            }
+            storageService.writeAllToFile();
+        }
     }
 
     public void completeOrderAction() {
         Order order = viewIn.choiceFromList(orderService.getNewOrder());
-        viewOut.completeOrderOut(orderService.completeOrder(order));
+        order = orderService.completeOrder(order);
+        boolean isCompleted = order != null;
+        viewOut.completeOrderOut(isCompleted);
+        if (isCompleted && saveChanging()) {
+            orderService.updateOrderToFile(order);
+            storageService.writeAllToFile();
+        }
     }
 
     public void countCompletedOrderAction() {
@@ -88,13 +111,20 @@ public class StoreAction {
         viewOut.printList(orderService.getOrderList());
     }
 
-    public void exportOrderAction(){orderService.readDataFromFile();}
+    public void exportOrderAction() {
+        orderService.readAllFromFile();
+    }
 
-    public void importOrderAction(){orderService.writeDataToFile();}
+    public void importOrderAction() {
+        orderService.writeAllToFile();
+    }
 
     public void addRequestAction() {
         Book book = viewIn.choiceFromList(storageService.getBookshelfList()).getBook();
         requestService.addRequest(book);
+        if (saveChanging()) {
+            requestService.writeAllToFile();
+        }
     }
 
     public void sortingRequestsAction() {
@@ -105,14 +135,22 @@ public class StoreAction {
         viewOut.printList(requestService.getRequestList());
     }
 
-    public void exportRequestAction(){requestService.readDataFromFile();}
+    public void exportRequestAction() {
+        requestService.readAllFromFile();
+    }
 
-    public void importRequestAction(){requestService.writeDataToFile();}
+    public void importRequestAction() {
+        requestService.writeAllToFile();
+    }
 
     public void addBookAction() {
         Book book = viewIn.choiceFromList(storageService.getBookshelfList()).getBook();
         int count = viewIn.readCountBook();
-        storageService.addBookOnStorage(book, count);
+        Bookshelf bookshelf = storageService.addBookOnStorage(book, count);
+        if (saveChanging()) {
+            storageService.updateBookshelfToFile(bookshelf);
+            requestService.writeAllToFile();
+        }
     }
 
     public void showUnsoldBooks() {
@@ -127,9 +165,13 @@ public class StoreAction {
         viewOut.printList(storageService.getBookshelfList());
     }
 
-    public void exportBookshelfAction(){storageService.readDataFromFile();}
+    public void exportBookshelfAction() {
+        storageService.readAllFromFile();
+    }
 
-    public void importBookshelfAction(){storageService.writeDataToFile();}
+    public void importBookshelfAction() {
+        storageService.writeAllToFile();
+    }
 
     public void notFoundMenuItem() {
         viewOut.notFoundMenuItem();
@@ -137,5 +179,10 @@ public class StoreAction {
 
     public int readIntFromConsole() {
         return viewIn.readIntFromConsole();
+    }
+
+    private boolean saveChanging() {
+        int choice = viewIn.saveChanging();
+        return choice == 0;
     }
 }

@@ -35,38 +35,40 @@ public class BookOrderService implements OrderService {
     }
 
     @Override
-    public void addOrder(Customer customer, Book... books) {
+    public Order addOrder(Customer customer, Book... books) {
         Order bookOrder = new Order(customer, books);
-        addOrder(bookOrder);
+        return addOrder(bookOrder);
     }
 
     @Override
-    public void addOrder(Order bookOrder) {
+    public Order addOrder(Order bookOrder) {
         double price = storageService.getTotalPrice(bookOrder.getBooks());
         bookOrder.setPrice(price);
         List<Book> books = storageService.checkBooksNotInStorage(bookOrder.getBooks());
         List<Integer> numbersRequest = requestService.addRequestList(books);
         bookOrder.setNumbersRequest(numbersRequest);
         orderRepository.create(bookOrder);
+        return bookOrder;
     }
 
     @Override
-    public boolean cancelOrder(Order bookOrder) {
+    public Order cancelOrder(Order bookOrder) {
         storageService.cancelBookReservation(bookOrder);
         for (int number : bookOrder.getNumbersRequest()) {
             requestService.cancelRequest(number);
         }
-        return orderRepository.update(bookOrder, CANCELED) != null;
+        return orderRepository.update(bookOrder, CANCELED);
     }
 
     @Override
-    public boolean completeOrder(Order bookOrder) {
+    public Order completeOrder(Order bookOrder) {
         List<Integer> requestNumbers = bookOrder.getNumbersRequest();
         boolean result = requestService.checkCompleteRequest(requestNumbers);
         if (result) {
-            result = orderRepository.update(bookOrder, COMPLETED) != null;
+            bookOrder = orderRepository.update(bookOrder, COMPLETED);
+            result = bookOrder != null;
         }
-        return result;
+        return result ? bookOrder : null;
     }
 
     @Override
@@ -136,13 +138,23 @@ public class BookOrderService implements OrderService {
     }
 
     @Override
-    public void readDataFromFile() {
+    public void readAllFromFile() {
         fileOrderRepository.createAll(orderRepository.readAll());
     }
 
     @Override
-    public void writeDataToFile() {
+    public void writeAllToFile() {
         List<Order> orders = fileOrderRepository.readAll();
         orderRepository.createAll(orders);
+    }
+
+    @Override
+    public void writeOrderToFile(Order order) {
+        fileOrderRepository.create(order);
+    }
+
+    @Override
+    public void updateOrderToFile(Order order) {
+        fileOrderRepository.update(order, null);
     }
 }

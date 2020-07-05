@@ -9,16 +9,18 @@ import java.util.List;
 
 public interface OrderService {
 
-    void addOrder(Customer customer, Book... books);
-    void addOrder(Order bookOrder);
-    boolean cancelOrder(Order bookOrder);
-    boolean completeOrder(Order bookOrder);
+    Order addOrder(Customer customer, Book... books);
+    Order addOrder(Order bookOrder);
+    Order cancelOrder(Order bookOrder);
+    Order completeOrder(Order bookOrder);
     double earnedMoney(LocalDate dateFrom, LocalDate dateTo);
     List<Order> getCompletedOrder(LocalDate dateFrom, LocalDate dateTo);
     int getCountCompletedOrder(LocalDate dateFrom, LocalDate dateTo);
     List<Order> getOrderList();
     List<Order> getNewOrder();
     List<Order> getSortingOrderList();
-    void readDataFromFile();
-    void writeDataToFile();
+    void readAllFromFile();
+    void writeAllToFile();
+    void writeOrderToFile(Order order);
+    void updateOrderToFile(Order order);
 }
