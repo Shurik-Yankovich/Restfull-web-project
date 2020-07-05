@@ -160,13 +160,13 @@ public class BookStorageService implements StorageService {
 
     @Override
     public void readAllFromFile() {
-        fileStorageRepository.createAll(storageRepository.readAll());
+        List<Bookshelf> bookshelves = fileStorageRepository.readAll();
+        storageRepository.createAll(bookshelves);
     }
 
     @Override
     public void writeAllToFile() {
-        List<Bookshelf> bookshelves = fileStorageRepository.readAll();
-        storageRepository.createAll(bookshelves);
+        fileStorageRepository.createAll(storageRepository.readAll());
     }
 
     @Override

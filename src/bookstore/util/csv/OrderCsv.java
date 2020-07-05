@@ -29,7 +29,7 @@ public class OrderCsv implements CsvUtil<Order> {
 
     @Override
     public void writeAllToCsv(List<Order> orderList) {
-        try (Writer writer = new FileWriter(ROOT_DIR_PATH)) {
+        try (Writer writer = new FileWriter(ROOT_DIR_PATH, false)) {
             StringBuilder text = new StringBuilder();
             for (Order order : orderList) {
                 text.append(convertOrderToString(order)).append("\n");
@@ -61,6 +61,7 @@ public class OrderCsv implements CsvUtil<Order> {
                 Order order = convertStringToOrder(line);
                 orderList.add(order);
             }
+            System.out.println("Список заказов был считан из файла order.csv");
         } catch (GetStatusException e) {
             System.err.println(e.getMessage());
         } catch (IOException e) {

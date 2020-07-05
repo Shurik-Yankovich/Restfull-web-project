@@ -118,13 +118,13 @@ public class BookRequestService implements RequestService {
 
     @Override
     public void readAllFromFile() {
-        fileRequestRepository.createAll(requestRepository.readAll());
+        List<Request> requests = fileRequestRepository.readAll();
+        requestRepository.createAll(requests);
     }
 
     @Override
     public void writeAllToFile() {
-        List<Request> requests = fileRequestRepository.readAll();
-        requestRepository.createAll(requests);
+        fileRequestRepository.createAll(requestRepository.readAll());
     }
 
     @Override

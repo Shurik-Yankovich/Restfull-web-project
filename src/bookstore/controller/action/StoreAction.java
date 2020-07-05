@@ -112,11 +112,11 @@ public class StoreAction {
     }
 
     public void exportOrderAction() {
-        orderService.readAllFromFile();
+        orderService.writeAllToFile();
     }
 
     public void importOrderAction() {
-        orderService.writeAllToFile();
+        orderService.readAllFromFile();
     }
 
     public void addRequestAction() {
@@ -136,11 +136,11 @@ public class StoreAction {
     }
 
     public void exportRequestAction() {
-        requestService.readAllFromFile();
+        requestService.writeAllToFile();
     }
 
     public void importRequestAction() {
-        requestService.writeAllToFile();
+        requestService.readAllFromFile();
     }
 
     public void addBookAction() {
@@ -166,11 +166,11 @@ public class StoreAction {
     }
 
     public void exportBookshelfAction() {
-        storageService.readAllFromFile();
+        storageService.writeAllToFile();
     }
 
     public void importBookshelfAction() {
-        storageService.writeAllToFile();
+        storageService.readAllFromFile();
     }
 
     public void notFoundMenuItem() {

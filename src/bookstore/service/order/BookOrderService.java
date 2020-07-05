@@ -139,13 +139,13 @@ public class BookOrderService implements OrderService {
 
     @Override
     public void readAllFromFile() {
-        fileOrderRepository.createAll(orderRepository.readAll());
+        List<Order> orders = fileOrderRepository.readAll();
+        orderRepository.createAll(orders);
     }
 
     @Override
     public void writeAllToFile() {
-        List<Order> orders = fileOrderRepository.readAll();
-        orderRepository.createAll(orders);
+        fileOrderRepository.createAll(orderRepository.readAll());
     }
 
     @Override

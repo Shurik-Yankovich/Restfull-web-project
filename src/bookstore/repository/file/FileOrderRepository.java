@@ -24,11 +24,16 @@ public class FileOrderRepository implements OrderRepository {
     @Override
     public Order update(Order order, Status status) {
         List<Order> orderList = orderCsv.readAllFromCsv();
+        boolean isPresent = false;
         for (Order bookOrder : orderList) {
             if (bookOrder.getId() == order.getId()) {
                 bookOrder = order;
+                isPresent = true;
                 break;
             }
+        }
+        if (!isPresent) {
+            orderList.add(order);
         }
         orderCsv.writeAllToCsv(orderList);
         return order;

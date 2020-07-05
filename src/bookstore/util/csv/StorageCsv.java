@@ -26,7 +26,7 @@ public class StorageCsv implements CsvUtil<Bookshelf> {
 
     @Override
     public void writeAllToCsv(List<Bookshelf> bookshelves) {
-        try (Writer writer = new FileWriter(ROOT_DIR_PATH)) {
+        try (Writer writer = new FileWriter(ROOT_DIR_PATH, false)) {
             StringBuilder text = new StringBuilder();
             for (Bookshelf bookshelf : bookshelves) {
                 text.append(convertBookshelfToString(bookshelf)).append("\n");
@@ -58,6 +58,7 @@ public class StorageCsv implements CsvUtil<Bookshelf> {
                 Bookshelf bookshelf = convertStringToBookshelf(line);
                 bookshelves.add(bookshelf);
             }
+            System.out.println("Список книг был считан из файла storage.csv");
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }

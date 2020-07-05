@@ -26,7 +26,7 @@ public class RequestCsv implements CsvUtil<Request> {
 
     @Override
     public void writeAllToCsv(List<Request> requestList) {
-        try (Writer writer = new FileWriter(ROOT_DIR_PATH)) {
+        try (Writer writer = new FileWriter(ROOT_DIR_PATH, false)) {
             StringBuilder text = new StringBuilder();
             for (Request request : requestList) {
                 text.append(convertRequestToString(request)).append("\n");
@@ -58,6 +58,7 @@ public class RequestCsv implements CsvUtil<Request> {
                 Request request = convertStringToRequest(line);
                 requestList.add(request);
             }
+            System.out.println("Список запросов был считан из файла request.csv");
         } catch (GetStatusException e) {
             System.err.println(e.getMessage());
         } catch (IOException e) {

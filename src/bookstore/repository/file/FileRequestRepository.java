@@ -23,11 +23,16 @@ public class FileRequestRepository implements Repository<Request, Integer, Integ
     @Override
     public Request update(Request request, Integer integer) {
         List<Request> requestList = requestCsv.readAllFromCsv();
+        boolean isPresent = false;
         for (Request bookRequest : requestList) {
             if (bookRequest.getId() == request.getId()) {
                 bookRequest = request;
+                isPresent = true;
                 break;
             }
+        }
+        if (!isPresent) {
+            requestList.add(request);
         }
         requestCsv.writeAllToCsv(requestList);
         return request;
