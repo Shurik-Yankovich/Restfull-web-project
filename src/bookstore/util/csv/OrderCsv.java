@@ -1,6 +1,6 @@
 package bookstore.util.csv;
 
-import bookstore.exeption.GetStatusException;
+import bookstore.exeption.StatusException;
 import bookstore.entity.Customer;
 import bookstore.entity.Order;
 import bookstore.entity.Status;
@@ -60,7 +60,7 @@ public class OrderCsv implements CsvUtil<Order> {
                 Order order = convertStringToOrder(line);
                 orderList.add(order);
             }
-        } catch (GetStatusException e) {
+        } catch (StatusException e) {
             System.err.println(e.getMessage());
         } catch (IOException e) {
             System.err.println(e.getMessage());
@@ -106,7 +106,7 @@ public class OrderCsv implements CsvUtil<Order> {
         return null;
     }
 
-    private Order convertStringToOrder(String text) throws GetStatusException {
+    private Order convertStringToOrder(String text) throws StatusException {
         final String regex = ";";
         String[] values = text.split(regex);
         Order order = new Order();

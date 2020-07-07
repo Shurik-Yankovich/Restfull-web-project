@@ -1,6 +1,6 @@
 package bookstore.util.csv;
 
-import bookstore.exeption.GetStatusException;
+import bookstore.exeption.StatusException;
 import bookstore.entity.Request;
 import bookstore.entity.Status;
 import bookstore.entity.book.Book;
@@ -40,7 +40,7 @@ public class RequestCsv implements CsvUtil<Request> {
     @Override
     public Request readFromCsv(int id) {
         List<Request> requestList = readAllFromCsv();
-        for (Request request: requestList) {
+        for (Request request : requestList) {
             if (request.getId() == id) {
                 return request;
             }
@@ -57,7 +57,7 @@ public class RequestCsv implements CsvUtil<Request> {
                 Request request = convertStringToRequest(line);
                 requestList.add(request);
             }
-        } catch (GetStatusException e) {
+        } catch (StatusException e) {
             System.err.println(e.getMessage());
         } catch (IOException e) {
             System.err.println(e.getMessage());
@@ -75,7 +75,7 @@ public class RequestCsv implements CsvUtil<Request> {
                 request.getStatus());
     }
 
-    private Request convertStringToRequest(String text) throws GetStatusException {
+    private Request convertStringToRequest(String text) throws StatusException {
         final String regex = ";";
         String[] values = text.split(regex);
         Request request = new Request();

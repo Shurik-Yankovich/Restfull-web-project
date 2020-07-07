@@ -1,11 +1,11 @@
 package bookstore.entity;
 
-import bookstore.exeption.GetStatusException;
+import bookstore.exeption.StatusException;
 
 public enum Status {
     NEW, COMPLETED, CANCELED;
 
-    public static Status getStatus(String statusText) throws GetStatusException {
+    public static Status getStatus(String statusText) throws StatusException {
         switch (statusText) {
             case "NEW":
                 return NEW;
@@ -14,7 +14,7 @@ public enum Status {
             case "CANCELED":
                 return CANCELED;
             default:
-                throw new GetStatusException("Wrong status!");
+                throw new StatusException("Wrong status!");
         }
     }
 }
