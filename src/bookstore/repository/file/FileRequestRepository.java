@@ -16,6 +16,12 @@ public class FileRequestRepository implements Repository<Request, Integer, Integ
 
     @Override
     public Request create(Request request) {
+        List<Request> requestList = requestCsv.readAllFromCsv();
+        for (Request bookRequest : requestList) {
+            if (bookRequest.getId() == request.getId()) {
+                request.setId(requestList.size());
+            }
+        }
         requestCsv.writeToCsv(request);
         return request;
     }

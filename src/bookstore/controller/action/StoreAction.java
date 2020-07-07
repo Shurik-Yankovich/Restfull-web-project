@@ -122,9 +122,9 @@ public class StoreAction {
 
     public void addRequestAction() {
         Book book = viewIn.choiceFromList(storageService.getBookshelfList()).getBook();
-        requestService.addRequest(book);
+        Request request = requestService.addRequest(book);
         if (saveChanging()) {
-            requestService.writeAllToFile();
+            requestService.writeRequestToFile(request);
         }
     }
 

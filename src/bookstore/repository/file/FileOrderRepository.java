@@ -17,6 +17,12 @@ public class FileOrderRepository implements OrderRepository {
 
     @Override
     public Order create(Order order) {
+        List<Order> orderList = orderCsv.readAllFromCsv();
+        for (Order bookOrder : orderList) {
+            if (bookOrder.getId() == order.getId()) {
+                order.setId(orderList.size());
+            }
+        }
         orderCsv.writeToCsv(order);
         return order;
     }

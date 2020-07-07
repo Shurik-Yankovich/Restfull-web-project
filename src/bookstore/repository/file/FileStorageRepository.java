@@ -16,6 +16,12 @@ public class FileStorageRepository implements Repository<Bookshelf, Integer, Int
 
     @Override
     public Bookshelf create(Bookshelf bookshelf) {
+        List<Bookshelf> bookshelves = storageCsv.readAllFromCsv();
+        for (Bookshelf book : bookshelves) {
+            if (book.getId() == bookshelf.getId()) {
+                bookshelf.setId(bookshelves.size());
+            }
+        }
         storageCsv.writeToCsv(bookshelf);
         return bookshelf;
     }
