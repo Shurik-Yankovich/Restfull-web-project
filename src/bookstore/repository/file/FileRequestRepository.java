@@ -1,9 +1,12 @@
 package bookstore.repository.file;
 
 import bookstore.entity.Request;
+import bookstore.exeption.RepositoryException;
+import bookstore.exeption.StatusException;
 import bookstore.repository.base.Repository;
 import bookstore.util.csv.RequestCsv;
 
+import java.io.IOException;
 import java.util.List;
 
 public class FileRequestRepository implements Repository<Request, Integer, Integer, Request> {
@@ -15,38 +18,56 @@ public class FileRequestRepository implements Repository<Request, Integer, Integ
     }
 
     @Override
-    public Request create(Request request) {
-        List<Request> requestList = requestCsv.readAllFromCsv();
-        for (Request bookRequest : requestList) {
-            if (bookRequest.getId() == request.getId()) {
-                request.setId(requestList.size());
+    public Request create(Request request) throws RepositoryException {
+        try {
+            List<Request> requestList = requestCsv.readAllFromCsv();
+            for (Request bookRequest : requestList) {
+                if (bookRequest.getId() == request.getId()) {
+                    request.setId(requestList.size());
+                }
             }
+            requestCsv.writeToCsv(request);
+            return request;
+        } catch (StatusException e) {
+            throw new RepositoryException("Неверно введен статус!");
+        } catch (IOException e) {
+            throw new RepositoryException("Ошибка записи запроса в файл!");
         }
-        requestCsv.writeToCsv(request);
-        return request;
     }
 
     @Override
-    public Request update(Request request, Integer integer) {
-        List<Request> requestList = requestCsv.readAllFromCsv();
-        boolean isPresent = false;
-        for (int i = 0; i < requestList.size(); i++) {
-            if (requestList.get(i).getId() == request.getId()) {
-                requestList.set(i, request);
-                isPresent = true;
-                break;
+    public Request update(Request request, Integer integer) throws RepositoryException {
+        try {
+            List<Request> requestList = requestCsv.readAllFromCsv();
+            boolean isPresent = false;
+            for (int i = 0; i < requestList.size(); i++) {
+                if (requestList.get(i).getId() == request.getId()) {
+                    requestList.set(i, request);
+                    isPresent = true;
+                    break;
+                }
             }
+            if (!isPresent) {
+                requestList.add(request);
+            }
+            requestCsv.writeAllToCsv(requestList);
+            return request;
+        } catch (StatusException e) {
+            throw new RepositoryException("Неверно введен статус!");
+        } catch (IOException e) {
+            throw new RepositoryException("Ошибка обновления запроса в файле!");
         }
-        if (!isPresent) {
-            requestList.add(request);
-        }
-        requestCsv.writeAllToCsv(requestList);
-        return request;
     }
 
     @Override
-    public Request read(Integer id) {
-        return requestCsv.readFromCsv(id);
+    public Request read(Integer id) throws RepositoryException {
+        try {
+            return requestCsv.readFromCsv(id);
+        } catch (StatusException e) {
+            throw new RepositoryException("Неверно введен статус!");
+        } catch (IOException e) {
+            throw new RepositoryException("Ошибка чтения запроса из файла!");
+        }
     }
 
     @Override
@@ -55,12 +76,23 @@ public class FileRequestRepository implements Repository<Request, Integer, Integ
     }
 
     @Override
-    public List<Request> readAll() {
-        return requestCsv.readAllFromCsv();
+    public List<Request> readAll() throws RepositoryException {
+        try {
+            return requestCsv.readAllFromCsv();
+        } catch (StatusException e) {
+            throw new RepositoryException("Неверно введен статус!");
+        } catch (IOException e) {
+            throw new RepositoryException("Ошибка чтения запросов из файлае!");
+        }
     }
 
     @Override
-    public void createAll(List<Request> requestList) {
-        requestCsv.writeAllToCsv(requestList);
+    public void createAll(List<Request> requestList) throws RepositoryException {
+        try {
+            requestCsv.writeAllToCsv(requestList);
+        } catch (IOException e) {
+            throw new RepositoryException("Ошибка записи запросов в файл!");
+        }
+
     }
 }

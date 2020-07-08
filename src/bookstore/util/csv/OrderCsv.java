@@ -18,30 +18,32 @@ public class OrderCsv implements CsvUtil<Order> {
     private static final String ROOT_DIR_PATH = ".\\src\\bookstore\\rootdir\\order.csv";
 
     @Override
-    public void writeToCsv(Order order) {
-        try (Writer writer = new FileWriter(ROOT_DIR_PATH, true)) {
-            writer.write(convertOrderToString(order));
-            System.out.println("Заказ №" + order.getId() + " был добавлен в файл order.csv");
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
-        }
+    public void writeToCsv(Order order) throws IOException {
+//        try (Writer writer = new FileWriter(ROOT_DIR_PATH, true)) {
+        Writer writer = new FileWriter(ROOT_DIR_PATH, true);
+        writer.write(convertOrderToString(order));
+//            System.out.println("Заказ №" + order.getId() + " был добавлен в файл order.csv");
+//        } catch (IOException e) {
+//            System.err.println(e.getMessage());
+//        }
     }
 
     @Override
-    public void writeAllToCsv(List<Order> orderList) {
-        try (Writer writer = new FileWriter(ROOT_DIR_PATH, false)) {
-            StringBuilder text = new StringBuilder();
-            for (Order order : orderList) {
-                text.append(convertOrderToString(order)).append("\n");
-            }
-            writer.write(text.toString());
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
+    public void writeAllToCsv(List<Order> orderList) throws IOException {
+//        try (Writer writer = new FileWriter(ROOT_DIR_PATH, false)) {
+        Writer writer = new FileWriter(ROOT_DIR_PATH, false);
+        StringBuilder text = new StringBuilder();
+        for (Order order : orderList) {
+            text.append(convertOrderToString(order)).append("\n");
         }
+        writer.write(text.toString());
+//        } catch (IOException e) {
+//            System.err.println(e.getMessage());
+//        }
     }
 
     @Override
-    public Order readFromCsv(int id) {
+    public Order readFromCsv(int id) throws IOException, StatusException {
         List<Order> orderList = readAllFromCsv();
         for (Order order : orderList) {
             if (order.getId() == id) {
@@ -52,19 +54,20 @@ public class OrderCsv implements CsvUtil<Order> {
     }
 
     @Override
-    public List<Order> readAllFromCsv() {
+    public List<Order> readAllFromCsv() throws IOException, StatusException {
         List<Order> orderList = new ArrayList<>();
         String line;
-        try (BufferedReader reader = new BufferedReader(new FileReader(ROOT_DIR_PATH))) {
-            while ((line = reader.readLine()) != null) {
-                Order order = convertStringToOrder(line);
-                orderList.add(order);
-            }
-        } catch (StatusException e) {
-            System.err.println(e.getMessage());
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
+//        try (BufferedReader reader = new BufferedReader(new FileReader(ROOT_DIR_PATH))) {
+        BufferedReader reader = new BufferedReader(new FileReader(ROOT_DIR_PATH));
+        while ((line = reader.readLine()) != null) {
+            Order order = convertStringToOrder(line);
+            orderList.add(order);
         }
+//        } catch (StatusException e) {
+//            System.err.println(e.getMessage());
+//        } catch (IOException e) {
+//            System.err.println(e.getMessage());
+//        }
         return orderList;
     }
 

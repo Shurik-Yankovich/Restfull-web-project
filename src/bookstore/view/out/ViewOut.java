@@ -10,6 +10,7 @@ public interface ViewOut {
     void countCompletedOrderOut(int countOrder);
     <T> void printList(List<T> list);
     void notFoundMenuItem();
+    void printExceptionMessage(String text);
     void readOrderListFromFile();
     void readRequestListFromFile();
     void readBookshelfListFromFile();

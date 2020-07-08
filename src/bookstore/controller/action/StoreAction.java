@@ -5,6 +5,7 @@ import bookstore.entity.Customer;
 import bookstore.entity.Order;
 import bookstore.entity.Request;
 import bookstore.entity.book.Book;
+import bookstore.exeption.RepositoryException;
 import bookstore.service.order.OrderService;
 import bookstore.service.request.RequestService;
 import bookstore.service.storage.StorageService;
@@ -33,10 +34,15 @@ public class StoreAction {
     }
 
     public void earnedMoneyAction() {
-        LocalDate dateFrom = viewIn.readDateFrom();
-        LocalDate dateTo = viewIn.readDateTo();
-        double money = orderService.earnedMoney(dateFrom, dateTo);
-        viewOut.earnedMoneyOut(money);
+        try {
+            LocalDate dateFrom = viewIn.readDateFrom();
+            LocalDate dateTo = viewIn.readDateTo();
+            double money = orderService.earnedMoney(dateFrom, dateTo);
+            viewOut.earnedMoneyOut(money);
+        } catch (RepositoryException e) {
+            viewOut.printExceptionMessage(e.getMessage());
+        }
+
     }
 
     public void exitAction() {
@@ -44,15 +50,19 @@ public class StoreAction {
     }
 
     public void addOrderAction() {
-        Order order = orderService.addOrder(createOrder());
-        if (saveChanging()) {
-            orderService.writeOrderToFile(order);
-            storageService.writeAllToFile();
-            requestService.writeAllToFile();
+        try {
+            Order order = orderService.addOrder(createOrder());
+            if (saveChanging()) {
+                orderService.writeOrderToFile(order);
+                storageService.writeAllToFile();
+                requestService.writeAllToFile();
+            }
+        } catch (RepositoryException e) {
+            viewOut.printExceptionMessage(e.getMessage());
         }
     }
 
-    private Order createOrder() {
+    private Order createOrder() throws RepositoryException {
         Customer customer = viewIn.readCustomer();
         List<Book> booksInOrder = new ArrayList<>();
         List<Bookshelf> bookshelves = storageService.getBookshelfList();
@@ -63,119 +73,196 @@ public class StoreAction {
     }
 
     public void cancelOrderAction() {
-        Order order = viewIn.choiceFromList(orderService.getNewOrder());
-        Order cancelOrder = orderService.cancelOrder(order);
-        boolean isCanceled = cancelOrder != null;
-        viewOut.cancelOrderOut(isCanceled);
-        if (isCanceled && saveChanging()) {
-            orderService.updateOrderToFile(cancelOrder);
-            for (int number : cancelOrder.getNumbersRequest()) {
-                Request request = requestService.getRequestByNumber(number);
-                requestService.updateRequestToFile(request);
+        try {
+            Order order = viewIn.choiceFromList(orderService.getNewOrder());
+            Order cancelOrder = orderService.cancelOrder(order);
+            boolean isCanceled = cancelOrder != null;
+            viewOut.cancelOrderOut(isCanceled);
+            if (isCanceled && saveChanging()) {
+                orderService.updateOrderToFile(cancelOrder);
+                for (int number : cancelOrder.getNumbersRequest()) {
+                    Request request = requestService.getRequestByNumber(number);
+                    requestService.updateRequestToFile(request);
+                }
+                storageService.writeAllToFile();
             }
-            storageService.writeAllToFile();
+        } catch (RepositoryException e) {
+            viewOut.printExceptionMessage(e.getMessage());
         }
+
     }
 
     public void completeOrderAction() {
-        Order order = viewIn.choiceFromList(orderService.getNewOrder());
-        Order completeOrder = orderService.completeOrder(order);
-        boolean isCompleted = completeOrder != null;
-        viewOut.completeOrderOut(isCompleted);
-        if (isCompleted && saveChanging()) {
-            orderService.updateOrderToFile(completeOrder);
-            storageService.writeAllToFile();
+        try {
+            Order order = viewIn.choiceFromList(orderService.getNewOrder());
+            Order completeOrder = orderService.completeOrder(order);
+            boolean isCompleted = completeOrder != null;
+            viewOut.completeOrderOut(isCompleted);
+            if (isCompleted && saveChanging()) {
+                orderService.updateOrderToFile(completeOrder);
+                storageService.writeAllToFile();
+            }
+        } catch (RepositoryException e) {
+            viewOut.printExceptionMessage(e.getMessage());
         }
     }
 
     public void countCompletedOrderAction() {
-        LocalDate dateFrom = viewIn.readDateFrom();
-        LocalDate dateTo = viewIn.readDateTo();
-        int countCompletedOrder = orderService.getCountCompletedOrder(dateFrom, dateTo);
-        viewOut.countCompletedOrderOut(countCompletedOrder);
+        try {
+            LocalDate dateFrom = viewIn.readDateFrom();
+            LocalDate dateTo = viewIn.readDateTo();
+            int countCompletedOrder = orderService.getCountCompletedOrder(dateFrom, dateTo);
+            viewOut.countCompletedOrderOut(countCompletedOrder);
+        } catch (RepositoryException e) {
+            viewOut.printExceptionMessage(e.getMessage());
+        }
     }
 
     public void showCompletedOrdersAction() {
-        LocalDate dateFrom = viewIn.readDateFrom();
-        LocalDate dateTo = viewIn.readDateTo();
-        List<Order> orders = orderService.getCompletedOrder(dateFrom, dateTo);
-        viewOut.printList(orders);
+        try {
+            LocalDate dateFrom = viewIn.readDateFrom();
+            LocalDate dateTo = viewIn.readDateTo();
+            List<Order> orders = orderService.getCompletedOrder(dateFrom, dateTo);
+            viewOut.printList(orders);
+        } catch (RepositoryException e) {
+            viewOut.printExceptionMessage(e.getMessage());
+        }
     }
 
     public void sortingOrdersAction() {
-        viewOut.printList(orderService.getSortingOrderList());
+        try {
+            viewOut.printList(orderService.getSortingOrderList());
+        } catch (RepositoryException e) {
+            viewOut.printExceptionMessage(e.getMessage());
+        }
     }
 
     public void unsortingOrdersAction() {
-        viewOut.printList(orderService.getOrderList());
+        try {
+            viewOut.printList(orderService.getOrderList());
+        } catch (RepositoryException e) {
+            viewOut.printExceptionMessage(e.getMessage());
+        }
     }
 
     public void exportOrderAction() {
-        orderService.writeAllToFile();
-        viewOut.writeOrderListFromFile();
+        try {
+            orderService.writeAllToFile();
+            viewOut.writeOrderListFromFile();
+        } catch (RepositoryException e) {
+            viewOut.printExceptionMessage(e.getMessage());
+        }
     }
 
     public void importOrderAction() {
-        orderService.readAllFromFile();
-        viewOut.readOrderListFromFile();
+        try {
+            orderService.readAllFromFile();
+            viewOut.readOrderListFromFile();
+        } catch (RepositoryException e) {
+            viewOut.printExceptionMessage(e.getMessage());
+        }
     }
 
     public void addRequestAction() {
-        Book book = viewIn.choiceFromList(storageService.getBookshelfList()).getBook();
-        Request request = requestService.addRequest(book);
-        if (saveChanging()) {
-            requestService.writeRequestToFile(request);
+        try {
+            Book book = viewIn.choiceFromList(storageService.getBookshelfList()).getBook();
+            Request request = requestService.addRequest(book);
+            if (saveChanging()) {
+                requestService.writeRequestToFile(request);
+            }
+        } catch (RepositoryException e) {
+            viewOut.printExceptionMessage(e.getMessage());
         }
     }
 
     public void sortingRequestsAction() {
-        viewOut.printList(requestService.getSortingRequestList());
+        try {
+            viewOut.printList(requestService.getSortingRequestList());
+        } catch (RepositoryException e) {
+            viewOut.printExceptionMessage(e.getMessage());
+        }
     }
 
     public void unsortingRequestAction() {
-        viewOut.printList(requestService.getRequestList());
+        try {
+            viewOut.printList(requestService.getRequestList());
+        } catch (RepositoryException e) {
+            viewOut.printExceptionMessage(e.getMessage());
+        }
     }
 
     public void exportRequestAction() {
-        requestService.writeAllToFile();
-        viewOut.writeRequestListFromFile();
+        try {
+            requestService.writeAllToFile();
+            viewOut.writeRequestListFromFile();
+        } catch (RepositoryException e) {
+            viewOut.printExceptionMessage(e.getMessage());
+        }
     }
 
     public void importRequestAction() {
-        requestService.readAllFromFile();
-        viewOut.readRequestListFromFile();
+        try {
+            requestService.readAllFromFile();
+            viewOut.readRequestListFromFile();
+        } catch (RepositoryException e) {
+            viewOut.printExceptionMessage(e.getMessage());
+        }
     }
 
     public void addBookAction() {
-        Book book = viewIn.choiceFromList(storageService.getBookshelfList()).getBook();
-        int count = viewIn.readCountBook();
-        Bookshelf bookshelf = storageService.addBookOnStorage(book, count);
-        if (saveChanging()) {
-            storageService.updateBookshelfToFile(bookshelf);
-            requestService.writeAllToFile();
+        try {
+            Book book = viewIn.choiceFromList(storageService.getBookshelfList()).getBook();
+            int count = viewIn.readCountBook();
+            Bookshelf bookshelf = storageService.addBookOnStorage(book, count);
+            if (saveChanging()) {
+                storageService.updateBookshelfToFile(bookshelf);
+                requestService.writeAllToFile();
+            }
+        } catch (RepositoryException e) {
+            viewOut.printExceptionMessage(e.getMessage());
         }
     }
 
     public void showUnsoldBooks() {
-        viewOut.printList(storageService.getUnsoldBookshelves());
+        try {
+            viewOut.printList(storageService.getUnsoldBookshelves());
+        } catch (RepositoryException e) {
+            viewOut.printExceptionMessage(e.getMessage());
+        }
     }
 
     public void sortingBooksAction() {
-        viewOut.printList(storageService.getSortingBookshelves());
+        try {
+            viewOut.printList(storageService.getSortingBookshelves());
+        } catch (RepositoryException e) {
+            viewOut.printExceptionMessage(e.getMessage());
+        }
     }
 
     public void unsortingBooksAction() {
-        viewOut.printList(storageService.getBookshelfList());
+        try {
+            viewOut.printList(storageService.getBookshelfList());
+        } catch (RepositoryException e) {
+            viewOut.printExceptionMessage(e.getMessage());
+        }
     }
 
     public void exportBookshelfAction() {
-        storageService.writeAllToFile();
-        viewOut.writeBookshelfListFromFile();
+        try {
+            storageService.writeAllToFile();
+            viewOut.writeBookshelfListFromFile();
+        } catch (RepositoryException e) {
+            viewOut.printExceptionMessage(e.getMessage());
+        }
     }
 
     public void importBookshelfAction() {
-        storageService.readAllFromFile();
-        viewOut.readBookshelfListFromFile();
+        try {
+            storageService.readAllFromFile();
+            viewOut.readBookshelfListFromFile();
+        } catch (RepositoryException e) {
+            viewOut.printExceptionMessage(e.getMessage());
+        }
     }
 
     public void notFoundMenuItem() {

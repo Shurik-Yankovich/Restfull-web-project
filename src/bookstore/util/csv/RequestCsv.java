@@ -15,30 +15,32 @@ public class RequestCsv implements CsvUtil<Request> {
     private static final String ROOT_DIR_PATH = ".\\src\\bookstore\\rootdir\\request.csv";
 
     @Override
-    public void writeToCsv(Request request) {
-        try (Writer writer = new FileWriter(ROOT_DIR_PATH, true)) {
-            writer.write(convertRequestToString(request));
-            System.out.println("Запрос №" + request.getId() + " был добавлен в файл request.csv");
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
-        }
+    public void writeToCsv(Request request) throws IOException {
+//        try (Writer writer = new FileWriter(ROOT_DIR_PATH, true)) {
+        Writer writer = new FileWriter(ROOT_DIR_PATH, true);
+        writer.write(convertRequestToString(request));
+//            System.out.println("Запрос №" + request.getId() + " был добавлен в файл request.csv");
+//        } catch (IOException e) {
+//            System.err.println(e.getMessage());
+//        }
     }
 
     @Override
-    public void writeAllToCsv(List<Request> requestList) {
-        try (Writer writer = new FileWriter(ROOT_DIR_PATH, false)) {
-            StringBuilder text = new StringBuilder();
-            for (Request request : requestList) {
-                text.append(convertRequestToString(request)).append("\n");
-            }
-            writer.write(text.toString());
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
+    public void writeAllToCsv(List<Request> requestList) throws IOException {
+//        try (Writer writer = new FileWriter(ROOT_DIR_PATH, false)) {
+        Writer writer = new FileWriter(ROOT_DIR_PATH, false);
+        StringBuilder text = new StringBuilder();
+        for (Request request : requestList) {
+            text.append(convertRequestToString(request)).append("\n");
         }
+        writer.write(text.toString());
+//        } catch (IOException e) {
+//            System.err.println(e.getMessage());
+//        }
     }
 
     @Override
-    public Request readFromCsv(int id) {
+    public Request readFromCsv(int id) throws IOException, StatusException {
         List<Request> requestList = readAllFromCsv();
         for (Request request : requestList) {
             if (request.getId() == id) {
@@ -49,19 +51,20 @@ public class RequestCsv implements CsvUtil<Request> {
     }
 
     @Override
-    public List<Request> readAllFromCsv() {
+    public List<Request> readAllFromCsv() throws IOException, StatusException {
         List<Request> requestList = new ArrayList<>();
         String line;
-        try (BufferedReader reader = new BufferedReader(new FileReader(ROOT_DIR_PATH))) {
-            while ((line = reader.readLine()) != null) {
-                Request request = convertStringToRequest(line);
-                requestList.add(request);
-            }
-        } catch (StatusException e) {
-            System.err.println(e.getMessage());
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
+//        try (BufferedReader reader = new BufferedReader(new FileReader(ROOT_DIR_PATH))) {
+        BufferedReader reader = new BufferedReader(new FileReader(ROOT_DIR_PATH));
+        while ((line = reader.readLine()) != null) {
+            Request request = convertStringToRequest(line);
+            requestList.add(request);
         }
+//        } catch (StatusException e) {
+//            System.err.println(e.getMessage());
+//        } catch (IOException e) {
+//            System.err.println(e.getMessage());
+//        }
         return requestList;
     }
 

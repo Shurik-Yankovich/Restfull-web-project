@@ -4,6 +4,7 @@ import bookstore.entity.Bookshelf;
 import bookstore.entity.Order;
 import bookstore.entity.Request;
 import bookstore.entity.book.Book;
+import bookstore.exeption.RepositoryException;
 import bookstore.repository.base.StorageRepository;
 import bookstore.repository.file.FileStorageRepository;
 import bookstore.service.request.RequestService;
@@ -31,18 +32,18 @@ public class BookStorageService implements StorageService {
     }
 
     @Override
-    public Bookshelf addBookOnStorage(Book book, int count) {
+    public Bookshelf addBookOnStorage(Book book, int count) throws RepositoryException {
         requestService.completeRequest(book);
         return storageRepository.update(book, count);
     }
 
     @Override
-    public Bookshelf addBookOnStorage(Book book, int count, double price) {
+    public Bookshelf addBookOnStorage(Book book, int count, double price) throws RepositoryException {
         return storageRepository.create(new Bookshelf(book, count, price, LocalDate.now()));
     }
 
     @Override
-    public double getTotalPrice(List<Book> books) {
+    public double getTotalPrice(List<Book> books) throws RepositoryException {
         double price = 0;
         for (Book book : books) {
             price += storageRepository.read(book).getPrice();
@@ -51,7 +52,7 @@ public class BookStorageService implements StorageService {
     }
 
     @Override
-    public List<Book> checkBooksNotInStorage(List<Book> books) {
+    public List<Book> checkBooksNotInStorage(List<Book> books) throws RepositoryException {
         List<Book> result = new ArrayList<>();
         for (Book book : books) {
             if (!bookReservation(book)) {
@@ -61,7 +62,7 @@ public class BookStorageService implements StorageService {
         return result;
     }
 
-    private boolean bookReservation(Book book) {
+    private boolean bookReservation(Book book) throws RepositoryException {
         List<Bookshelf> bookshelves = storageRepository.readAll();
         int index = searchBook(book, bookshelves);
         if (index >= 0) {
@@ -76,7 +77,7 @@ public class BookStorageService implements StorageService {
     }
 
     @Override
-    public void cancelBookReservation(Order order) {
+    public void cancelBookReservation(Order order) throws RepositoryException {
         List<Request> requestList = getRequestFromOrder(order);
         Request request;
         for (Book book : order.getBooks()) {
@@ -96,7 +97,7 @@ public class BookStorageService implements StorageService {
         return null;
     }
 
-    private List<Request> getRequestFromOrder(Order order) {
+    private List<Request> getRequestFromOrder(Order order) throws RepositoryException {
         List<Request> requests = new ArrayList<>();
         for (Integer requestNumber : order.getNumbersRequest()) {
             requests.add(requestService.getRequestByNumber(requestNumber));
@@ -104,7 +105,7 @@ public class BookStorageService implements StorageService {
         return requests;
     }
 
-    private void changeBookCount(Book book) {
+    private void changeBookCount(Book book) throws RepositoryException {
         List<Bookshelf> bookshelves = storageRepository.readAll();
         int index = searchBook(book, bookshelves);
         Bookshelf bookshelf = bookshelves.get(index);
@@ -122,12 +123,12 @@ public class BookStorageService implements StorageService {
     }
 
     @Override
-    public List<Bookshelf> getBookshelfList() {
+    public List<Bookshelf> getBookshelfList() throws RepositoryException {
         return storageRepository.readAll();
     }
 
     @Override
-    public List<Bookshelf> getSortingBookshelves() {
+    public List<Bookshelf> getSortingBookshelves() throws RepositoryException {
         List<Bookshelf> books = new ArrayList<>(storageRepository.readAll());
         if (books.size() > 0) {
             Comparator<Bookshelf> bookComp = new BookshelfTitleComparator().thenComparing(new BookshelfPublicationYearComparator())
@@ -138,7 +139,7 @@ public class BookStorageService implements StorageService {
     }
 
     @Override
-    public List<Bookshelf> getUnsoldBookshelves() {
+    public List<Bookshelf> getUnsoldBookshelves() throws RepositoryException {
         List<Bookshelf> bookshelves = getBooksBeforeArrivalDate();
         if (bookshelves.size() > 0) {
             Comparator<Bookshelf> bookComp = new BookshelfArrivalDateComparator().thenComparing(new BookshelfPriceComparator());
@@ -147,7 +148,7 @@ public class BookStorageService implements StorageService {
         return bookshelves;
     }
 
-    private List<Bookshelf> getBooksBeforeArrivalDate() {
+    private List<Bookshelf> getBooksBeforeArrivalDate() throws RepositoryException {
         LocalDate arrivalDate = LocalDate.now().minusMonths(NUMBER_OF_MONTHS_FOR_UNSOLD_BOOKS);
         List<Bookshelf> booksBeforeArrivalDate = new ArrayList<>();
         for (Bookshelf bookshelf : storageRepository.readAll()) {
@@ -159,23 +160,23 @@ public class BookStorageService implements StorageService {
     }
 
     @Override
-    public void readAllFromFile() {
+    public void readAllFromFile() throws RepositoryException {
         List<Bookshelf> bookshelves = fileStorageRepository.readAll();
         storageRepository.createAll(bookshelves);
     }
 
     @Override
-    public void writeAllToFile() {
+    public void writeAllToFile() throws RepositoryException {
         fileStorageRepository.createAll(storageRepository.readAll());
     }
 
     @Override
-    public void writeBookshelfToFile(Bookshelf bookshelf) {
+    public void writeBookshelfToFile(Bookshelf bookshelf) throws RepositoryException {
         fileStorageRepository.create(bookshelf);
     }
 
     @Override
-    public void updateBookshelfToFile(Bookshelf bookshelf) {
+    public void updateBookshelfToFile(Bookshelf bookshelf) throws RepositoryException {
         fileStorageRepository.update(bookshelf, null);
     }
 }
