@@ -240,6 +240,9 @@ public class Builder implements Buildable {
             case ADD_REQUEST:
                 return new MenuItem(String.format(MENU_TEXT, index, RequestMenuTextConst.ITEM_TEXT_ADD_REQUEST),
                         () -> storeAction.addRequestAction(), null);
+            case COMPLETE_REQUEST:
+                return new MenuItem(String.format(MENU_TEXT, index, RequestMenuTextConst.ITEM_TEXT_COMPLETE_REQUEST),
+                        () -> storeAction.completeRequestAction(), null);
             case SHOW_REQUEST_LIST:
                 return new MenuItem(String.format(MENU_TEXT, index, RequestMenuTextConst.ITEM_TEXT_SHOW_REQUEST_LIST),
                         null, buildRequestListMenu());

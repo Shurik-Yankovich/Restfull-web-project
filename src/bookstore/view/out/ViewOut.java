@@ -8,6 +8,7 @@ public interface ViewOut {
     void cancelOrderOut(boolean isCanceled);
     void completeOrderOut(boolean isCompleted);
     void countCompletedOrderOut(int countOrder);
+    void completeRequestOut(boolean isCompleted);
     <T> void printList(List<T> list);
     void notFoundMenuItem();
     void printExceptionMessage(String text);

@@ -38,7 +38,9 @@ public class BookStorageService implements StorageService {
 
     @Override
     public Bookshelf addBookOnStorage(Book book, int count) throws RepositoryException {
-        requestService.completeRequest(book);
+        if (MARK_REQUESTS_AS_COMPLETED) {
+            requestService.completeRequestsByBook(book);
+        }
         return storageRepository.update(book, count);
     }
 
@@ -69,9 +71,8 @@ public class BookStorageService implements StorageService {
 
     private boolean bookReservation(Book book) throws RepositoryException {
         List<Bookshelf> bookshelves = storageRepository.readAll();
-        int index = searchBook(book, bookshelves);
-        if (index >= 0) {
-            Bookshelf bookshelf = bookshelves.get(index);
+        Bookshelf bookshelf = searchBook(book, bookshelves);
+        if (bookshelf != null) {
             int count = bookshelf.getCount();
             if (count > 0) {
                 bookshelf.setCount(count - 1);
@@ -111,20 +112,24 @@ public class BookStorageService implements StorageService {
     }
 
     private void changeBookCount(Book book) throws RepositoryException {
-        List<Bookshelf> bookshelves = storageRepository.readAll();
-        int index = searchBook(book, bookshelves);
-        Bookshelf bookshelf = bookshelves.get(index);
+        Bookshelf bookshelf = getBookshelf(book);
         int count = bookshelf.getCount();
         bookshelf.setCount(count + 1);
     }
 
-    private int searchBook(Book book, List<Bookshelf> bookshelves) {
-        for (int i = 0; i < bookshelves.size(); i++) {
-            if (bookshelves.get(i).getBook().equals(book)) {
-                return i;
+    private Bookshelf searchBook(Book book, List<Bookshelf> bookshelves) {
+        for (Bookshelf bookshelf : bookshelves) {
+            if (bookshelf.getBook().equals(book)) {
+                return bookshelf;
             }
         }
-        return -1;
+        return null;
+    }
+
+    @Override
+    public Bookshelf getBookshelf(Book book) throws RepositoryException {
+        List<Bookshelf> bookshelves = storageRepository.readAll();
+        return searchBook(book, bookshelves);
     }
 
     @Override

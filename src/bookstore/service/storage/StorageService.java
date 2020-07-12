@@ -19,6 +19,8 @@ public interface StorageService {
 
     void cancelBookReservation(Order order) throws RepositoryException;
 
+    Bookshelf getBookshelf(Book book) throws RepositoryException;
+
     List<Bookshelf> getBookshelfList() throws RepositoryException;
 
     List<Bookshelf> getSortingBookshelves() throws RepositoryException;

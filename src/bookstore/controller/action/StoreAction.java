@@ -175,6 +175,27 @@ public class StoreAction {
         }
     }
 
+    public void completeRequestAction() {
+        try {
+            Request request = viewIn.choiceFromList(requestService.getNewRequests());
+            List<Book> book = new ArrayList<>();
+            book.add(request.getBook());
+            book = storageService.checkBooksNotInStorage(book);
+            boolean isCompleted = book.size() == 0;
+            viewOut.completeRequestOut(isCompleted);
+            if (isCompleted) {
+                request = requestService.completeRequest(request);
+                if (saveChanging()) {
+                    requestService.updateRequestToFile(request);
+                    Bookshelf bookshelf = storageService.getBookshelf(request.getBook());
+                    storageService.updateBookshelfToFile(bookshelf);
+                }
+            }
+        } catch (RepositoryException e) {
+            viewOut.printExceptionMessage(e.getMessage());
+        }
+    }
+
     public void sortingRequestsAction() {
         try {
             viewOut.printList(requestService.getSortingRequestList());
