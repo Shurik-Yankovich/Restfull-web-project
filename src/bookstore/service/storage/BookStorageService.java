@@ -14,21 +14,26 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Properties;
 
 import static bookstore.entity.Status.COMPLETED;
 
 public class BookStorageService implements StorageService {
 
-    private static final int NUMBER_OF_MONTHS_FOR_UNSOLD_BOOKS = 6;
+    private final int NUMBER_OF_MONTHS_FOR_UNSOLD_BOOKS;
+    private final boolean MARK_REQUESTS_AS_COMPLETED;
 
     private StorageRepository storageRepository;
     private RequestService requestService;
     private FileStorageRepository fileStorageRepository;
 
-    public BookStorageService(StorageRepository storageRepository, RequestService requestService) {
+
+    public BookStorageService(StorageRepository storageRepository, RequestService requestService, Properties properties) {
         this.storageRepository = storageRepository;
         this.requestService = requestService;
         this.fileStorageRepository = new FileStorageRepository();
+        NUMBER_OF_MONTHS_FOR_UNSOLD_BOOKS = Integer.parseInt(properties.getProperty("month_for_unsold_book"));
+        MARK_REQUESTS_AS_COMPLETED = Boolean.parseBoolean(properties.getProperty("mark_requests_as_completed"));
     }
 
     @Override

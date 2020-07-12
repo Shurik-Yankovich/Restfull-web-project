@@ -1,7 +1,7 @@
 package bookstore;
 
-import bookstore.controller.action.StoreAction;
 import bookstore.controller.MenuController;
+import bookstore.controller.action.StoreAction;
 import bookstore.controller.builder.Buildable;
 import bookstore.controller.builder.Builder;
 import bookstore.controller.navigator.Navigable;
@@ -17,14 +17,20 @@ import bookstore.util.BookGenerator;
 import bookstore.view.in.StoreViewIn;
 import bookstore.view.out.StoreViewOut;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
+
 public class BookstoreMain {
 
     public static void main(String[] args) {
         StoreViewIn viewIn = new StoreViewIn();
         StoreViewOut viewOut = new StoreViewOut();
-        try {
+        Properties property = new Properties();
+        try (FileInputStream fis =  new FileInputStream("src/resources/config.properties")) {
+            property.load(fis);
             RequestService requestService = new BookRequestService();
-            StorageService storageService = new BookStorageService(BookGenerator.generate(), requestService);
+            StorageService storageService = new BookStorageService(BookGenerator.generate(), requestService, property);
             OrderService orderService = new BookOrderService(storageService, requestService);
             StoreAction action = new StoreAction(orderService, requestService, storageService, viewIn, viewOut);
             Buildable builder = new Builder(action);
@@ -33,8 +39,9 @@ public class BookstoreMain {
             menuController.run();
         } catch (RepositoryException e) {
             viewOut.printExceptionMessage(e.getMessage());
+        } catch (IOException e) {
+            viewOut.printExceptionMessage("ОШИБКА: Файл свойств отсуствует!");
         }
-
     }
 
 }
