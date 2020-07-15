@@ -7,6 +7,7 @@ import bookstore.entity.book.Book;
 import bookstore.exeption.RepositoryException;
 import bookstore.repository.base.StorageRepository;
 import bookstore.repository.file.FileStorageRepository;
+import bookstore.repository.list.BookStorageRepository;
 import bookstore.service.request.RequestService;
 import bookstore.util.comparator.*;
 
@@ -30,6 +31,14 @@ public class BookStorageService implements StorageService {
 
     public BookStorageService(StorageRepository storageRepository, RequestService requestService, Properties properties) {
         this.storageRepository = storageRepository;
+        this.requestService = requestService;
+        this.fileStorageRepository = new FileStorageRepository();
+        NUMBER_OF_MONTHS_FOR_UNSOLD_BOOKS = Integer.parseInt(properties.getProperty("month_for_unsold_book"));
+        MARK_REQUESTS_AS_COMPLETED = Boolean.parseBoolean(properties.getProperty("mark_requests_as_completed"));
+    }
+
+    public BookStorageService(List<Bookshelf> bookshelfList, RequestService requestService, Properties properties) {
+        this.storageRepository = new BookStorageRepository(bookshelfList);
         this.requestService = requestService;
         this.fileStorageRepository = new FileStorageRepository();
         NUMBER_OF_MONTHS_FOR_UNSOLD_BOOKS = Integer.parseInt(properties.getProperty("month_for_unsold_book"));

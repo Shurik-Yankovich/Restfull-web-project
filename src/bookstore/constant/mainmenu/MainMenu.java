@@ -1,4 +1,4 @@
-package bookstore.controller.constant.mainmenu;
+package bookstore.constant.mainmenu;
 
 public enum MainMenu {
     WORK_WITH_STORAGE,

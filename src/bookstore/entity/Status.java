@@ -2,7 +2,9 @@ package bookstore.entity;
 
 import bookstore.exeption.StatusException;
 
-public enum Status {
+import java.io.Serializable;
+
+public enum Status implements Serializable {
     NEW, COMPLETED, CANCELED;
 
     public static Status getStatus(String statusText) throws StatusException {

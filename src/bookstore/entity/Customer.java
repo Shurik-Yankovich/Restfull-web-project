@@ -1,6 +1,8 @@
 package bookstore.entity;
 
-public class Customer {
+import java.io.Serializable;
+
+public class Customer implements Serializable {
 
     private String fullName;
     private String phoneNumber;

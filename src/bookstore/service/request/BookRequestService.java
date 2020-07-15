@@ -25,6 +25,11 @@ public class BookRequestService implements RequestService {
         fileRequestRepository = new FileRequestRepository();
     }
 
+    public BookRequestService(List<Request> requestList) {
+        requestRepository = new BookRequestRepository(requestList);
+        fileRequestRepository = new FileRequestRepository();
+    }
+
     @Override
     public Request addRequest(Book book) throws RepositoryException {
         Request request = createNewRequest(book);

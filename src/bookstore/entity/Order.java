@@ -2,6 +2,7 @@ package bookstore.entity;
 
 import bookstore.entity.book.Book;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -9,7 +10,7 @@ import java.util.List;
 
 import static bookstore.entity.Status.NEW;
 
-public class Order {
+public class Order implements Serializable {
 
     private int id;
     private List<Book> books;

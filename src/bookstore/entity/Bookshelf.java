@@ -3,10 +3,11 @@ package bookstore.entity;
 import bookstore.entity.book.Book;
 import bookstore.entity.book.BookFactory;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class Bookshelf {
+public class Bookshelf implements Serializable {
 
     private int id;
     private Book book;

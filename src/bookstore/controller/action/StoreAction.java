@@ -6,6 +6,8 @@ import bookstore.entity.Order;
 import bookstore.entity.Request;
 import bookstore.entity.book.Book;
 import bookstore.exeption.RepositoryException;
+import bookstore.serialize.ISerializationService;
+import bookstore.serialize.SerializationService;
 import bookstore.service.order.OrderService;
 import bookstore.service.request.RequestService;
 import bookstore.service.storage.StorageService;
@@ -15,6 +17,8 @@ import bookstore.view.out.ViewOut;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+import static bookstore.constant.FileName.*;
 
 public class StoreAction {
 
@@ -46,6 +50,16 @@ public class StoreAction {
     }
 
     public void exitAction() {
+        try {
+            ISerializationService<Request> requestSerialize = new SerializationService<>();
+            ISerializationService<Order> orderSerialize = new SerializationService<>();
+            ISerializationService<Bookshelf> storageSerialize = new SerializationService<>();
+            requestSerialize.save(requestService.getRequestList(), REQUEST_SERIALIZATION_FILE_NAME);
+            orderSerialize.save(orderService.getOrderList(), ORDER_SERIALIZATION_FILE_NAME);
+            storageSerialize.save(storageService.getBookshelfList(), STORAGE_SERIALIZATION_FILE_NAME);
+        } catch (RepositoryException e) {
+            viewOut.printExceptionMessage(e.getMessage());
+        }
         System.exit(1);
     }
 
