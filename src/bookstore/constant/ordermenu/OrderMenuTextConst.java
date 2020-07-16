@@ -1,4 +1,4 @@
-package bookstore.controller.constant.ordermenu;
+package bookstore.constant.ordermenu;
 
 public class OrderMenuTextConst {
 

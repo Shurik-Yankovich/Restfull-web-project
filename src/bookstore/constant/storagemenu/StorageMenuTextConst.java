@@ -1,4 +1,4 @@
-package bookstore.controller.constant.storagemenu;
+package bookstore.constant.storagemenu;
 
 public class StorageMenuTextConst {
 

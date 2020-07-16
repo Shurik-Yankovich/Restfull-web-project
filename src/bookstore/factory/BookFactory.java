@@ -1,4 +1,4 @@
-package bookstore.entity.factory;
+package bookstore.factory;
 
 import bookstore.entity.book.Book;
 

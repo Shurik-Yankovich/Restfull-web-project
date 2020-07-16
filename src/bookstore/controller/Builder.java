@@ -1,24 +1,24 @@
-package bookstore.controller.builder;
+package bookstore.controller;
 
 import bookstore.controller.action.StoreAction;
-import bookstore.controller.constant.mainmenu.MainMenu;
-import bookstore.controller.constant.mainmenu.MainMenuTextConst;
-import bookstore.controller.constant.ordermenu.OrderListMenu;
-import bookstore.controller.constant.ordermenu.OrderListMenuTextConst;
-import bookstore.controller.constant.ordermenu.OrderMenu;
-import bookstore.controller.constant.ordermenu.OrderMenuTextConst;
-import bookstore.controller.constant.requestmenu.RequestListMenu;
-import bookstore.controller.constant.requestmenu.RequestListMenuTextConst;
-import bookstore.controller.constant.requestmenu.RequestMenu;
-import bookstore.controller.constant.requestmenu.RequestMenuTextConst;
-import bookstore.controller.constant.storagemenu.BookListMenu;
-import bookstore.controller.constant.storagemenu.BookListMenuTextConst;
-import bookstore.controller.constant.storagemenu.StorageMenu;
-import bookstore.controller.constant.storagemenu.StorageMenuTextConst;
+import bookstore.constant.mainmenu.MainMenu;
+import bookstore.constant.mainmenu.MainMenuTextConst;
+import bookstore.constant.ordermenu.OrderListMenu;
+import bookstore.constant.ordermenu.OrderListMenuTextConst;
+import bookstore.constant.ordermenu.OrderMenu;
+import bookstore.constant.ordermenu.OrderMenuTextConst;
+import bookstore.constant.requestmenu.RequestListMenu;
+import bookstore.constant.requestmenu.RequestListMenuTextConst;
+import bookstore.constant.requestmenu.RequestMenu;
+import bookstore.constant.requestmenu.RequestMenuTextConst;
+import bookstore.constant.storagemenu.BookListMenu;
+import bookstore.constant.storagemenu.BookListMenuTextConst;
+import bookstore.constant.storagemenu.StorageMenu;
+import bookstore.constant.storagemenu.StorageMenuTextConst;
 import bookstore.controller.model.Menu;
 import bookstore.controller.model.MenuItem;
 
-public class Builder implements Buildable {
+public class Builder {
 
     private static final String MENU_TEXT = "%d - %s";
 
@@ -29,17 +29,14 @@ public class Builder implements Buildable {
         this.storeAction = storeAction;
     }
 
-    @Override
     public Menu getRootMenu() {
         return rootMenu;
     }
 
-    @Override
     public StoreAction getStoreAction() {
         return storeAction;
     }
 
-    @Override
     public void buildMenu() {
         buildMainMenu();
     }

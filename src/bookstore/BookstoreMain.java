@@ -1,11 +1,9 @@
 package bookstore;
 
-import bookstore.controller.action.StoreAction;
 import bookstore.controller.MenuController;
-import bookstore.controller.builder.Buildable;
-import bookstore.controller.builder.Builder;
-import bookstore.controller.navigator.Navigable;
-import bookstore.controller.navigator.Navigator;
+import bookstore.controller.action.StoreAction;
+import bookstore.controller.Builder;
+import bookstore.controller.Navigator;
 import bookstore.exeption.RepositoryException;
 import bookstore.service.order.BookOrderService;
 import bookstore.service.order.OrderService;
@@ -27,8 +25,8 @@ public class BookstoreMain {
             StorageService storageService = new BookStorageService(BookGenerator.generate(), requestService);
             OrderService orderService = new BookOrderService(storageService, requestService);
             StoreAction action = new StoreAction(orderService, requestService, storageService, viewIn, viewOut);
-            Buildable builder = new Builder(action);
-            Navigable navigator = new Navigator();
+            Builder builder = new Builder(action);
+            Navigator navigator = new Navigator();
             MenuController menuController = new MenuController(builder, navigator);
             menuController.run();
         } catch (RepositoryException e) {

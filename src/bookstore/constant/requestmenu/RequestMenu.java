@@ -1,4 +1,4 @@
-package bookstore.controller.constant.requestmenu;
+package bookstore.constant.requestmenu;
 
 public enum RequestMenu {
 

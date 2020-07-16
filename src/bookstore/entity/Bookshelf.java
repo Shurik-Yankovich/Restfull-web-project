@@ -1,7 +1,7 @@
 package bookstore.entity;
 
 import bookstore.entity.book.Book;
-import bookstore.entity.factory.BookFactory;
+import bookstore.factory.BookFactory;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
