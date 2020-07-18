@@ -1,6 +1,6 @@
 package bookstore.util.comparator;
 
-import bookstore.model.Request;
+import bookstore.entity.Request;
 
 import java.util.Comparator;
 

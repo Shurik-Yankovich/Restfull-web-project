@@ -1,10 +1,12 @@
 package bookstore.service.order;
 
-import bookstore.model.Customer;
-import bookstore.model.Order;
-import bookstore.model.book.Book;
-import bookstore.repository.order.BookOrderRepository;
-import bookstore.repository.order.OrderRepository;
+import bookstore.entity.Customer;
+import bookstore.entity.Order;
+import bookstore.entity.book.Book;
+import bookstore.exeption.RepositoryException;
+import bookstore.repository.base.OrderRepository;
+import bookstore.repository.file.FileOrderRepository;
+import bookstore.repository.list.BookOrderRepository;
 import bookstore.service.request.RequestService;
 import bookstore.service.storage.StorageService;
 import bookstore.util.comparator.OrderCompletionDateComparator;
@@ -17,57 +19,61 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import static bookstore.model.Status.*;
+import static bookstore.entity.Status.*;
 
 public class BookOrderService implements OrderService {
 
-    private OrderRepository orderList;
+    private OrderRepository orderRepository;
     private StorageService storageService;
     private RequestService requestService;
+    private FileOrderRepository fileOrderRepository;
 
     public BookOrderService(StorageService storageService, RequestService requestService) {
         this.storageService = storageService;
         this.requestService = requestService;
-        orderList = new BookOrderRepository();
+        orderRepository = new BookOrderRepository();
+        fileOrderRepository = new FileOrderRepository();
     }
 
     @Override
-    public void addOrder(Customer customer, Book... books) {
+    public Order addOrder(Customer customer, Book... books) throws RepositoryException {
         Order bookOrder = new Order(customer, books);
-        addOrder(bookOrder);
+        return addOrder(bookOrder);
     }
 
     @Override
-    public void addOrder(Order bookOrder) {
+    public Order addOrder(Order bookOrder) throws RepositoryException {
         double price = storageService.getTotalPrice(bookOrder.getBooks());
         bookOrder.setPrice(price);
         List<Book> books = storageService.checkBooksNotInStorage(bookOrder.getBooks());
         List<Integer> numbersRequest = requestService.addRequestList(books);
         bookOrder.setNumbersRequest(numbersRequest);
-        orderList.create(bookOrder);
+        orderRepository.create(bookOrder);
+        return bookOrder;
     }
 
     @Override
-    public boolean cancelOrder(Order bookOrder) {
+    public Order cancelOrder(Order bookOrder) throws RepositoryException {
         storageService.cancelBookReservation(bookOrder);
         for (int number : bookOrder.getNumbersRequest()) {
             requestService.cancelRequest(number);
         }
-        return orderList.update(bookOrder, CANCELED) != null;
+        return orderRepository.update(bookOrder, CANCELED);
     }
 
     @Override
-    public boolean completeOrder(Order bookOrder) {
+    public Order completeOrder(Order bookOrder) throws RepositoryException {
         List<Integer> requestNumbers = bookOrder.getNumbersRequest();
         boolean result = requestService.checkCompleteRequest(requestNumbers);
         if (result) {
-            result = orderList.update(bookOrder, COMPLETED) != null;
+            bookOrder = orderRepository.update(bookOrder, COMPLETED);
+            result = bookOrder != null;
         }
-        return result;
+        return result ? bookOrder : null;
     }
 
     @Override
-    public double earnedMoney(LocalDate dateFrom, LocalDate dateTo) {
+    public double earnedMoney(LocalDate dateFrom, LocalDate dateTo) throws RepositoryException {
         List<Order> bookOrders = getCompletedOrder(dateFrom, dateTo);
         double money = 0;
         for (Order order : bookOrders) {
@@ -77,7 +83,7 @@ public class BookOrderService implements OrderService {
     }
 
     @Override
-    public List<Order> getCompletedOrder(LocalDate dateFrom, LocalDate dateTo) {
+    public List<Order> getCompletedOrder(LocalDate dateFrom, LocalDate dateTo) throws RepositoryException {
         List<Order> orders = searchByDate(dateFrom, dateTo);
         if (orders.size() > 0) {
             Comparator<Order> orderComp = new OrderCompletionDateComparator().thenComparing(new OrderPriceComparator());
@@ -86,7 +92,7 @@ public class BookOrderService implements OrderService {
         return orders;
     }
 
-    private List<Order> searchByDate(LocalDate dateFrom, LocalDate dateTo) {
+    private List<Order> searchByDate(LocalDate dateFrom, LocalDate dateTo) throws RepositoryException {
         List<Order> orders = new ArrayList<>();
         for (Order order : getOrderList()) {
             if (isBelongsDateToRange(order.getOrderCompletionDate(), dateFrom, dateTo)) {
@@ -101,19 +107,19 @@ public class BookOrderService implements OrderService {
     }
 
     @Override
-    public int getCountCompletedOrder(LocalDate dateFrom, LocalDate dateTo) {
+    public int getCountCompletedOrder(LocalDate dateFrom, LocalDate dateTo) throws RepositoryException {
         return getCompletedOrder(dateFrom, dateTo).size();
     }
 
     @Override
-    public List<Order> getOrderList() {
-        return orderList.readAll();
+    public List<Order> getOrderList() throws RepositoryException {
+        return orderRepository.readAll();
     }
 
     @Override
-    public List<Order> getNewOrder() {
+    public List<Order> getNewOrder() throws RepositoryException {
         List<Order> orders = new ArrayList<>();
-        for (Order order : orderList.readAll()) {
+        for (Order order : orderRepository.readAll()) {
             if (order.getStatus() == NEW) {
                 orders.add(order);
             }
@@ -122,13 +128,34 @@ public class BookOrderService implements OrderService {
     }
 
     @Override
-    public List<Order> getSortingOrderList() {
-        List<Order> orders = new ArrayList<>(orderList.readAll());
+    public List<Order> getSortingOrderList() throws RepositoryException {
+        List<Order> orders = new ArrayList<>(orderRepository.readAll());
         if (orders.size() > 0) {
             Comparator<Order> orderComp = new OrderDateComparator().thenComparing(new OrderPriceComparator())
                     .thenComparing(new OrderStatusComparator());
             orders.sort(orderComp);
         }
         return orders;
+    }
+
+    @Override
+    public void readAllFromFile() throws RepositoryException {
+        List<Order> orders = fileOrderRepository.readAll();
+        orderRepository.createAll(orders);
+    }
+
+    @Override
+    public void writeAllToFile() throws RepositoryException {
+        fileOrderRepository.createAll(orderRepository.readAll());
+    }
+
+    @Override
+    public void writeOrderToFile(Order order) throws RepositoryException {
+        fileOrderRepository.create(order);
+    }
+
+    @Override
+    public void updateOrderToFile(Order order) throws RepositoryException {
+        fileOrderRepository.update(order, null);
     }
 }

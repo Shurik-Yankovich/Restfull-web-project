@@ -1,12 +1,13 @@
 package bookstore.view.in;
 
-import bookstore.model.Bookshelf;
-import bookstore.model.Customer;
+import bookstore.entity.Bookshelf;
+import bookstore.entity.Customer;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -45,7 +46,7 @@ public class StoreViewIn implements ViewIn {
     }
 
     @Override
-    public List<Integer> readBookList(List<Bookshelf> bookshelves){
+    public List<Integer> readBookList(List<Bookshelf> bookshelves) {
         printList(bookshelves);
         System.out.println("Выбирете книги из списка (для завершения формирования списка введите -1):");
         List<Integer> bookNumbers = new ArrayList<>();
@@ -69,7 +70,7 @@ public class StoreViewIn implements ViewIn {
         do {
             System.out.println("Выбирете пункт из списка:");
             choice = readIntFromConsole();
-            if (choice >= 0 && choice < list.size()){
+            if (choice >= 0 && choice < list.size()) {
                 isSelection = true;
             } else {
                 System.err.println("Неверно выбран пункт из списка!");
@@ -86,16 +87,29 @@ public class StoreViewIn implements ViewIn {
 
     @Override
     public int readIntFromConsole() {
-        int number = scanner.nextInt();
-        scanner.nextLine();
-        return number;
+        while (true) {
+            try {
+                int number = scanner.nextInt();
+                scanner.nextLine();
+                return number;
+            } catch (InputMismatchException e) {
+                System.err.println("Неверно введены данные! Пожалуйста введите число!");
+                scanner.nextLine();
+            }
+        }
+    }
+
+    @Override
+    public int saveChanging() {
+        System.out.println("Записать изменения в файл:\n0 - Да\n1 - Нет");
+        return readIntFromConsole();
     }
 
     private String readStringFromConsole() {
         return scanner.nextLine();
     }
 
-    private  <T> void printList(List<T> list) {
+    private <T> void printList(List<T> list) {
         for (int i = 0; i < list.size(); i++) {
             System.out.print(String.format(MENU_TEXT, i, list.get(i)));
         }
@@ -110,7 +124,7 @@ public class StoreViewIn implements ViewIn {
             try {
                 date = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("dd MM yyyy"));
                 isFormatting = true;
-            } catch (DateTimeException e){
+            } catch (DateTimeException e) {
                 System.err.println("Неверно введена дата! Повторите ввод!");
             }
         } while (!isFormatting);
