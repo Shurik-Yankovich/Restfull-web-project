@@ -1,6 +1,5 @@
 package bookstore.util.csv;
 
-import bookstore.exeption.StatusException;
 import bookstore.entity.Customer;
 import bookstore.entity.Order;
 import bookstore.entity.Status;
@@ -19,31 +18,22 @@ public class OrderCsv implements CsvUtil<Order> {
 
     @Override
     public void writeToCsv(Order order) throws IOException {
-//        try (Writer writer = new FileWriter(ROOT_DIR_PATH, true)) {
         Writer writer = new FileWriter(ROOT_DIR_PATH, true);
         writer.write(convertOrderToString(order));
-//            System.out.println("Заказ №" + order.getId() + " был добавлен в файл order.csv");
-//        } catch (IOException e) {
-//            System.err.println(e.getMessage());
-//        }
     }
 
     @Override
     public void writeAllToCsv(List<Order> orderList) throws IOException {
-//        try (Writer writer = new FileWriter(ROOT_DIR_PATH, false)) {
         Writer writer = new FileWriter(ROOT_DIR_PATH, false);
         StringBuilder text = new StringBuilder();
         for (Order order : orderList) {
             text.append(convertOrderToString(order)).append("\n");
         }
         writer.write(text.toString());
-//        } catch (IOException e) {
-//            System.err.println(e.getMessage());
-//        }
     }
 
     @Override
-    public Order readFromCsv(int id) throws IOException, StatusException {
+    public Order readFromCsv(int id) throws IOException {
         List<Order> orderList = readAllFromCsv();
         for (Order order : orderList) {
             if (order.getId() == id) {
@@ -54,20 +44,14 @@ public class OrderCsv implements CsvUtil<Order> {
     }
 
     @Override
-    public List<Order> readAllFromCsv() throws IOException, StatusException {
+    public List<Order> readAllFromCsv() throws IOException {
         List<Order> orderList = new ArrayList<>();
         String line;
-//        try (BufferedReader reader = new BufferedReader(new FileReader(ROOT_DIR_PATH))) {
         BufferedReader reader = new BufferedReader(new FileReader(ROOT_DIR_PATH));
         while ((line = reader.readLine()) != null) {
             Order order = convertStringToOrder(line);
             orderList.add(order);
         }
-//        } catch (StatusException e) {
-//            System.err.println(e.getMessage());
-//        } catch (IOException e) {
-//            System.err.println(e.getMessage());
-//        }
         return orderList;
     }
 
@@ -109,7 +93,7 @@ public class OrderCsv implements CsvUtil<Order> {
         return null;
     }
 
-    private Order convertStringToOrder(String text) throws StatusException {
+    private Order convertStringToOrder(String text) {
         final String regex = ";";
         String[] values = text.split(regex);
         Order order = new Order();
@@ -122,7 +106,7 @@ public class OrderCsv implements CsvUtil<Order> {
             order.setOrderCompletionDate(LocalDate.parse(values[5], DateTimeFormatter.ofPattern("dd MM yyyy")));
         }
         order.setPrice(Double.parseDouble(values[6]));
-        order.setStatus(Status.getStatus(values[7]));
+        order.setStatus(Status.valueOf(values[7]));
         return order;
     }
 

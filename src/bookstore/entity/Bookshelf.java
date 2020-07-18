@@ -1,7 +1,7 @@
 package bookstore.entity;
 
 import bookstore.entity.book.Book;
-import bookstore.entity.book.BookFactory;
+import bookstore.factory.BookFactory;
 
 import java.io.Serializable;
 import java.time.LocalDate;

@@ -1,24 +1,21 @@
-package bookstore.controller.navigator;
+package bookstore.controller;
 
 
 import bookstore.controller.model.Menu;
 import bookstore.controller.model.MenuItem;
 
-public class Navigator implements Navigable {
+public class Navigator {
 
     private Menu currentMenu;
 
-    @Override
     public Menu getCurrentMenu() {
         return currentMenu;
     }
 
-    @Override
     public void setCurrentMenu(Menu currentMenu) {
         this.currentMenu = currentMenu;
     }
 
-    @Override
     public void printMenu() {
         MenuItem[] menuItems = currentMenu.getMenuItems();
         System.out.println();
@@ -27,7 +24,6 @@ public class Navigator implements Navigable {
         }
     }
 
-    @Override
     public void navigate(Integer index) {
         MenuItem menuItem = currentMenu.getMenuItems()[index];
         if (menuItem.getNextMenu() == null) {

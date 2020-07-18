@@ -3,7 +3,6 @@ package bookstore.repository.file;
 import bookstore.entity.Order;
 import bookstore.entity.Status;
 import bookstore.exeption.RepositoryException;
-import bookstore.exeption.StatusException;
 import bookstore.repository.base.OrderRepository;
 import bookstore.util.csv.OrderCsv;
 
@@ -29,8 +28,6 @@ public class FileOrderRepository implements OrderRepository {
             }
             orderCsv.writeToCsv(order);
             return order;
-        } catch (StatusException e) {
-            throw new RepositoryException("Неверно введен статус!");
         } catch (IOException e) {
             throw new RepositoryException("Ошибка записи заказа в файл!");
         }
@@ -53,8 +50,6 @@ public class FileOrderRepository implements OrderRepository {
             }
             orderCsv.writeAllToCsv(orderList);
             return order;
-        } catch (StatusException e) {
-            throw new RepositoryException("Неверно введен статус!");
         } catch (IOException e) {
             throw new RepositoryException("Ошибка обновления заказа в файле!");
         }
@@ -64,8 +59,6 @@ public class FileOrderRepository implements OrderRepository {
     public Order read(Integer id) throws RepositoryException {
         try {
             return orderCsv.readFromCsv(id);
-        } catch (StatusException e) {
-            throw new RepositoryException("Неверно введен статус!");
         } catch (IOException e) {
             throw new RepositoryException("Ошибка чтения заказа из файла!");
         }
@@ -80,8 +73,6 @@ public class FileOrderRepository implements OrderRepository {
     public List<Order> readAll() throws RepositoryException {
         try {
             return orderCsv.readAllFromCsv();
-        } catch (StatusException e) {
-            throw new RepositoryException("Неверно введен статус!");
         } catch (IOException e) {
             throw new RepositoryException("Ошибка чтения заказа из файла!");
         }

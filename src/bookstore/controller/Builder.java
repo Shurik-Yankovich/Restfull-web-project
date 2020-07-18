@@ -1,4 +1,4 @@
-package bookstore.controller.builder;
+package bookstore.controller;
 
 import bookstore.controller.action.StoreAction;
 import bookstore.constant.mainmenu.MainMenu;
@@ -18,7 +18,7 @@ import bookstore.constant.storagemenu.StorageMenuTextConst;
 import bookstore.controller.model.Menu;
 import bookstore.controller.model.MenuItem;
 
-public class Builder implements Buildable {
+public class Builder {
 
     private static final String MENU_TEXT = "%d - %s";
 
@@ -29,17 +29,14 @@ public class Builder implements Buildable {
         this.storeAction = storeAction;
     }
 
-    @Override
     public Menu getRootMenu() {
         return rootMenu;
     }
 
-    @Override
     public StoreAction getStoreAction() {
         return storeAction;
     }
 
-    @Override
     public void buildMenu() {
         buildMainMenu();
     }

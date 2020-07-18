@@ -16,27 +16,18 @@ public class StorageCsv implements CsvUtil<Bookshelf> {
 
     @Override
     public void writeToCsv(Bookshelf bookshelf) throws IOException {
-//        try (Writer writer = new FileWriter(ROOT_DIR_PATH, true)) {
         Writer writer = new FileWriter(ROOT_DIR_PATH, true);
         writer.write(convertBookshelfToString(bookshelf));
-//            System.out.println("Книга №" + bookshelf.getId() + " был добавлен в файл storage.csv");
-//        } catch (IOException e) {
-//            System.err.println(e.getMessage());
-//        }
     }
 
     @Override
     public void writeAllToCsv(List<Bookshelf> bookshelves) throws IOException {
-//        try (Writer writer = new FileWriter(ROOT_DIR_PATH, false)) {
         Writer writer = new FileWriter(ROOT_DIR_PATH, false);
         StringBuilder text = new StringBuilder();
         for (Bookshelf bookshelf : bookshelves) {
             text.append(convertBookshelfToString(bookshelf)).append("\n");
         }
         writer.write(text.toString());
-//        } catch (IOException e) {
-//            System.err.println(e.getMessage());
-//        }
     }
 
     @Override
@@ -54,15 +45,11 @@ public class StorageCsv implements CsvUtil<Bookshelf> {
     public List<Bookshelf> readAllFromCsv() throws IOException {
         List<Bookshelf> bookshelves = new ArrayList<>();
         String line;
-//        try (BufferedReader reader = new BufferedReader(new FileReader(ROOT_DIR_PATH))) {
         BufferedReader reader = new BufferedReader(new FileReader(ROOT_DIR_PATH));
         while ((line = reader.readLine()) != null) {
             Bookshelf bookshelf = convertStringToBookshelf(line);
             bookshelves.add(bookshelf);
         }
-//        } catch (IOException e) {
-//            System.err.println(e.getMessage());
-//        }
         return bookshelves;
     }
 

@@ -7,7 +7,7 @@ import bookstore.repository.base.StorageRepository;
 
 import java.time.LocalDate;
 
-import static bookstore.entity.book.BookFactory.*;
+import static bookstore.factory.BookFactory.*;
 
 public class BookGenerator {
     public static StorageRepository generate() throws RepositoryException {

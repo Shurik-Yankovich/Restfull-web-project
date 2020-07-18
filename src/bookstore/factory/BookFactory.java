@@ -1,4 +1,6 @@
-package bookstore.entity.book;
+package bookstore.factory;
+
+import bookstore.entity.book.Book;
 
 public enum BookFactory {
     NOVEL(new NovelBookMaker()),

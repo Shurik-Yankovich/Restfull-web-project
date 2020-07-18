@@ -1,16 +1,14 @@
 package bookstore.controller;
 
-import bookstore.controller.builder.Buildable;
 import bookstore.controller.model.Menu;
-import bookstore.controller.navigator.Navigable;
 
 
 public class MenuController {
 
-    private Buildable builder;
-    private Navigable navigator;
+    private Builder builder;
+    private Navigator navigator;
 
-    public MenuController(Buildable builder, Navigable navigator) {
+    public MenuController(Builder builder, Navigator navigator) {
         this.builder = builder;
         this.navigator = navigator;
     }
