@@ -6,6 +6,8 @@ import bookstore.exeption.RepositoryException;
 import bookstore.repository.base.RequestRepository;
 import bookstore.repository.file.FileRequestRepository;
 import bookstore.repository.list.BookRequestRepository;
+import bookstore.serialize.ISerializationService;
+import bookstore.serialize.SerializationService;
 import bookstore.util.comparator.RequestBookNameComparator;
 import bookstore.util.comparator.RequestCountComparator;
 
@@ -13,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import static bookstore.constant.FileName.REQUEST_SERIALIZATION_FILE_NAME;
 import static bookstore.entity.Status.*;
 
 public class BookRequestService implements RequestService {
@@ -31,9 +34,13 @@ public class BookRequestService implements RequestService {
     }
 
     @Override
-    public Request addRequest(Book book) throws RepositoryException {
-        Request request = createNewRequest(book);
-        return requestRepository.create(request);
+    public Request addRequest(Book book) {
+        try {
+            Request request = createNewRequest(book);
+            return requestRepository.create(request);
+        } catch (RepositoryException e) {
+            return null;
+        }
     }
 
     private Request createNewRequest(Book book) throws RepositoryException {
@@ -65,7 +72,7 @@ public class BookRequestService implements RequestService {
     }
 
     @Override
-    public List<Integer> addRequestList(List<Book> books) throws RepositoryException {
+    public List<Integer> addRequestList(List<Book> books) {
         List<Integer> requestNumbers = new ArrayList<>();
         for (Book book : books) {
             requestNumbers.add(addRequest(book).getId());
@@ -74,15 +81,19 @@ public class BookRequestService implements RequestService {
     }
 
     @Override
-    public List<Request> completeRequestsByBook(Book book) throws RepositoryException {
-        List<Request> requestList = new ArrayList<>();
-        for (Request request : requestRepository.readAll()) {
-            if (request.getBook().equals(book) && request.getStatus() == NEW) {
-                request.setStatus(COMPLETED);
-                requestList.add(request);
+    public List<Request> completeRequestsByBook(Book book) {
+        try {
+            List<Request> requestList = new ArrayList<>();
+            for (Request request : requestRepository.readAll()) {
+                if (request.getBook().equals(book) && request.getStatus() == NEW) {
+                    request.setStatus(COMPLETED);
+                    requestList.add(request);
+                }
             }
+            return requestList;
+        } catch (RepositoryException e) {
+            return null;
         }
-        return requestList;
     }
 
     public Request completeRequest(Request request) {
@@ -96,7 +107,7 @@ public class BookRequestService implements RequestService {
     }
 
     @Override
-    public boolean checkCompleteRequest(List<Integer> requestNumbers) throws RepositoryException {
+    public boolean checkCompleteRequest(List<Integer> requestNumbers) {
         if (requestNumbers != null) {
             for (int number : requestNumbers) {
                 if (getRequestByNumber(number).getStatus() != COMPLETED) {
@@ -108,54 +119,101 @@ public class BookRequestService implements RequestService {
     }
 
     @Override
-    public Request getRequestByNumber(int requestNumber) throws RepositoryException {
-        return requestRepository.read(requestNumber);
+    public Request getRequestByNumber(int requestNumber) {
+        try {
+            return requestRepository.read(requestNumber);
+        } catch (RepositoryException e) {
+            return null;
+        }
     }
 
     @Override
-    public List<Request> getRequestList() throws RepositoryException {
-        return requestRepository.readAll();
+    public List<Request> getRequestList() {
+        try {
+            return requestRepository.readAll();
+        } catch (RepositoryException e) {
+            return null;
+        }
     }
 
     @Override
-    public List<Request> getNewRequests() throws RepositoryException {
-        List<Request> newRequests = new ArrayList<>();
-        for (Request request: requestRepository.readAll()) {
-            if (request.getStatus() == NEW) {
-                newRequests.add(request);
+    public List<Request> getNewRequests() {
+        try {
+            List<Request> newRequests = new ArrayList<>();
+            for (Request request : requestRepository.readAll()) {
+                if (request.getStatus() == NEW) {
+                    newRequests.add(request);
+                }
             }
+            return newRequests;
+        } catch (RepositoryException e) {
+            return null;
         }
-        return newRequests;
     }
 
     @Override
-    public List<Request> getSortingRequestList() throws RepositoryException {
-        List<Request> requests = new ArrayList<>(requestRepository.readAll());
-        if (requests.size() > 0) {
-            Comparator<Request> requestComp = new RequestCountComparator().thenComparing(new RequestBookNameComparator());
-            requests.sort(requestComp);
+    public List<Request> getSortingRequestList() {
+        try {
+            List<Request> requests = new ArrayList<>(requestRepository.readAll());
+            if (requests.size() > 0) {
+                Comparator<Request> requestComp = new RequestCountComparator().thenComparing(new RequestBookNameComparator());
+                requests.sort(requestComp);
+            }
+            return requests;
+        } catch (RepositoryException e) {
+            return null;
         }
-        return requests;
     }
 
     @Override
-    public void readAllFromFile() throws RepositoryException {
-        List<Request> requests = fileRequestRepository.readAll();
-        requestRepository.createAll(requests);
+    public boolean readAllFromFile() {
+        try {
+            List<Request> requests = fileRequestRepository.readAll();
+            requestRepository.createAll(requests);
+            return true;
+        } catch (RepositoryException e) {
+            return false;
+        }
     }
 
     @Override
-    public void writeAllToFile() throws RepositoryException {
-        fileRequestRepository.createAll(requestRepository.readAll());
+    public boolean writeAllToFile() {
+        try {
+            fileRequestRepository.createAll(requestRepository.readAll());
+            return true;
+        } catch (RepositoryException e) {
+            return false;
+        }
     }
 
     @Override
-    public void writeRequestToFile(Request request) throws RepositoryException {
-        fileRequestRepository.create(request);
+    public boolean writeRequestToFile(Request request) {
+        try {
+            fileRequestRepository.create(request);
+            return true;
+        } catch (RepositoryException e) {
+            return false;
+        }
     }
 
     @Override
-    public void updateRequestToFile(Request request) throws RepositoryException {
-        fileRequestRepository.update(request, null);
+    public boolean updateRequestToFile(Request request) {
+        try {
+            fileRequestRepository.update(request, null);
+            return true;
+        } catch (RepositoryException e) {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean save() {
+        try {
+            ISerializationService<Request> requestSerialize = new SerializationService<>();
+            requestSerialize.save(requestRepository.readAll(), REQUEST_SERIALIZATION_FILE_NAME);
+            return true;
+        } catch (RepositoryException e) {
+            return false;
+        }
     }
 }

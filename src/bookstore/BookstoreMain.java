@@ -18,10 +18,6 @@ import bookstore.service.storage.StorageService;
 import bookstore.view.in.StoreViewIn;
 import bookstore.view.out.StoreViewOut;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.Properties;
-
 import static bookstore.constant.FileName.*;
 
 public class BookstoreMain {
@@ -29,27 +25,19 @@ public class BookstoreMain {
     public static void main(String[] args) {
         StoreViewIn viewIn = new StoreViewIn();
         StoreViewOut viewOut = new StoreViewOut();
-        Properties property = new Properties();
-        try (FileInputStream fis =  new FileInputStream("src/resources/config.properties")) {
-            property.load(fis);
-            ISerializationService<Request> requestSerialize = new SerializationService<>();
-            ISerializationService<Order> orderSerialize = new SerializationService<>();
-            ISerializationService<Bookshelf> storageSerialize = new SerializationService<>();
-            RequestService requestService = new BookRequestService(requestSerialize.load(REQUEST_SERIALIZATION_FILE_NAME));
-//            RequestService requestService = new BookRequestService();
-            StorageService storageService = new BookStorageService(storageSerialize.load(STORAGE_SERIALIZATION_FILE_NAME),
-                    requestService, property);
-//            StorageService storageService = new BookStorageService(BookGenerator.generate(), requestService, property);
-            OrderService orderService = new BookOrderService(storageService, requestService, orderSerialize.load(ORDER_SERIALIZATION_FILE_NAME));
-//            OrderService orderService = new BookOrderService(storageService, requestService);
-            StoreAction action = new StoreAction(orderService, requestService, storageService, viewIn, viewOut);
-            Builder builder = new Builder(action);
-            Navigator navigator = new Navigator();
-            MenuController menuController = new MenuController(builder, navigator);
-            menuController.run();
-        } catch (IOException e) {
-            viewOut.printExceptionMessage("ОШИБКА: Файл отсуствует!\n" + e.getMessage());
-        }
+        String configFileName = "src/resources/config.properties";
+        ISerializationService<Request> requestSerialize = new SerializationService<>();
+        ISerializationService<Order> orderSerialize = new SerializationService<>();
+        ISerializationService<Bookshelf> storageSerialize = new SerializationService<>();
+        RequestService requestService = new BookRequestService(requestSerialize.load(REQUEST_SERIALIZATION_FILE_NAME));
+        StorageService storageService = new BookStorageService(storageSerialize.load(STORAGE_SERIALIZATION_FILE_NAME),
+                requestService, configFileName);
+        OrderService orderService = new BookOrderService(storageService, requestService, orderSerialize.load(ORDER_SERIALIZATION_FILE_NAME));
+        StoreAction action = new StoreAction(orderService, requestService, storageService, viewIn, viewOut);
+        Builder builder = new Builder(action);
+        Navigator navigator = new Navigator();
+        MenuController menuController = new MenuController(builder, navigator);
+        menuController.run();
     }
 
 }

@@ -9,29 +9,31 @@ import java.util.List;
 
 public interface StorageService {
 
-    Bookshelf addBookOnStorage(Book book, int count) throws RepositoryException;
+    Bookshelf addBookOnStorage(Book book, int count);
 
-    Bookshelf addBookOnStorage(Book book, int count, double price) throws RepositoryException;
+    Bookshelf addBookOnStorage(Book book, int count, double price);
 
     double getTotalPrice(List<Book> books) throws RepositoryException;
 
-    List<Book> checkBooksNotInStorage(List<Book> books) throws RepositoryException;
+    List<Book> checkBooksNotInStorage(List<Book> books);
 
     void cancelBookReservation(Order order) throws RepositoryException;
 
-    Bookshelf getBookshelf(Book book) throws RepositoryException;
+    Bookshelf getBookshelf(Book book);
 
-    List<Bookshelf> getBookshelfList() throws RepositoryException;
+    List<Bookshelf> getBookshelfList();
 
-    List<Bookshelf> getSortingBookshelves() throws RepositoryException;
+    List<Bookshelf> getSortingBookshelves();
 
-    List<Bookshelf> getUnsoldBookshelves() throws RepositoryException;
+    List<Bookshelf> getUnsoldBookshelves();
 
-    void readAllFromFile() throws RepositoryException;
+    boolean readAllFromFile();
 
-    void writeAllToFile() throws RepositoryException;
+    boolean writeAllToFile();
 
-    void writeBookshelfToFile(Bookshelf bookshelf) throws RepositoryException;
+    boolean writeBookshelfToFile(Bookshelf bookshelf);
 
-    void updateBookshelfToFile(Bookshelf bookshelf) throws RepositoryException;
+    boolean updateBookshelfToFile(Bookshelf bookshelf);
+
+    boolean save();
 }

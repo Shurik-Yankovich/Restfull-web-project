@@ -8,18 +8,33 @@ import java.util.List;
 
 public interface RequestService {
 
-    Request addRequest(Book book) throws RepositoryException;
-    List<Integer> addRequestList(List<Book> books) throws RepositoryException;
-    List<Request> completeRequestsByBook(Book book) throws RepositoryException;
-    Request completeRequest(Request request) throws RepositoryException;
+    Request addRequest(Book book);
+
+    List<Integer> addRequestList(List<Book> books);
+
+    List<Request> completeRequestsByBook(Book book);
+
+    Request completeRequest(Request request);
+
     Request cancelRequest(int number) throws RepositoryException;
-    boolean checkCompleteRequest(List<Integer> requestNumbers) throws RepositoryException;
-    Request getRequestByNumber(int requestNumber) throws RepositoryException;
-    List<Request> getRequestList() throws RepositoryException;
-    List<Request> getNewRequests() throws RepositoryException;
-    List<Request> getSortingRequestList() throws RepositoryException;
-    void readAllFromFile() throws RepositoryException;
-    void writeAllToFile() throws RepositoryException;
-    void writeRequestToFile(Request request) throws RepositoryException;
-    void updateRequestToFile(Request request) throws RepositoryException;
+
+    boolean checkCompleteRequest(List<Integer> requestNumbers);
+
+    Request getRequestByNumber(int requestNumber);
+
+    List<Request> getRequestList();
+
+    List<Request> getNewRequests();
+
+    List<Request> getSortingRequestList();
+
+    boolean readAllFromFile();
+
+    boolean writeAllToFile();
+
+    boolean writeRequestToFile(Request request);
+
+    boolean updateRequestToFile(Request request);
+
+    boolean save();
 }

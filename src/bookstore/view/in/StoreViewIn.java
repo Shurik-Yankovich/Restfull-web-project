@@ -67,16 +67,21 @@ public class StoreViewIn implements ViewIn {
         printList(list);
         int choice;
         boolean isSelection = false;
-        do {
-            System.out.println("Выбирете пункт из списка:");
-            choice = readIntFromConsole();
-            if (choice >= 0 && choice < list.size()) {
-                isSelection = true;
-            } else {
-                System.err.println("Неверно выбран пункт из списка!");
-            }
-        } while (!isSelection);
-        return list.get(choice);
+        if (list.size() >0) {
+            do {
+                System.out.println("Выбирете пункт из списка:");
+                choice = readIntFromConsole();
+                if (choice >= 0 && choice < list.size()) {
+                    isSelection = true;
+                } else {
+                    System.err.println("Неверно выбран пункт из списка!");
+                }
+            } while (!isSelection);
+            return list.get(choice);
+        } else {
+            System.out.println("Список пуст!");
+            return null;
+        }
     }
 
     @Override
