@@ -1,4 +1,4 @@
-package bookstore.serialize;
+package bookstore.util.serialize;
 
 import java.util.List;
 

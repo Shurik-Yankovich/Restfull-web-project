@@ -7,8 +7,8 @@ import bookstore.entity.book.Book;
 import bookstore.exeption.RepositoryException;
 import bookstore.repository.base.StorageRepository;
 import bookstore.repository.file.FileStorageRepository;
-import bookstore.serialize.ISerializationService;
-import bookstore.serialize.SerializationService;
+import bookstore.util.serialize.ISerializationService;
+import bookstore.util.serialize.SerializationService;
 import bookstore.service.request.RequestService;
 import bookstore.util.comparator.*;
 

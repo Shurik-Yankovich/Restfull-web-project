@@ -6,8 +6,8 @@ import bookstore.exeption.RepositoryException;
 import bookstore.repository.base.RequestRepository;
 import bookstore.repository.file.FileRequestRepository;
 import bookstore.repository.list.BookRequestRepository;
-import bookstore.serialize.ISerializationService;
-import bookstore.serialize.SerializationService;
+import bookstore.util.serialize.ISerializationService;
+import bookstore.util.serialize.SerializationService;
 import bookstore.util.comparator.RequestBookNameComparator;
 import bookstore.util.comparator.RequestCountComparator;
 
