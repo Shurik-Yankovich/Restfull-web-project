@@ -28,9 +28,9 @@ public class BookRequestService implements RequestService {
         fileRequestRepository = new FileRequestRepository();
     }
 
-    public BookRequestService(List<Request> requestList) {
-        requestRepository = new BookRequestRepository(requestList);
-        fileRequestRepository = new FileRequestRepository();
+    public BookRequestService(RequestRepository requestRepository, FileRequestRepository fileRequestRepository) {
+        this.requestRepository = requestRepository;
+        this.fileRequestRepository = fileRequestRepository;
     }
 
     @Override

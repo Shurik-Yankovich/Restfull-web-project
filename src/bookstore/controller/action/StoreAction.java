@@ -43,10 +43,10 @@ public class StoreAction {
         if (!requestService.save()) {
             viewOut.printExceptionMessage("Неудалось сохранить список запросов!");
         }
-        if (orderService.save()) {
+        if (!orderService.save()) {
             viewOut.printExceptionMessage("Неудалось сохранить список заказов!");
         }
-        if (storageService.save()) {
+        if (!storageService.save()) {
             viewOut.printExceptionMessage("Неудалось сохранить список книг!");
         }
         System.exit(1);

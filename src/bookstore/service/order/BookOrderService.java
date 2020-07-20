@@ -38,11 +38,12 @@ public class BookOrderService implements OrderService {
         fileOrderRepository = new FileOrderRepository();
     }
 
-    public BookOrderService(StorageService storageService, RequestService requestService, List<Order> orderList) {
+    public BookOrderService(StorageService storageService, RequestService requestService,
+                            OrderRepository orderRepository, FileOrderRepository fileOrderRepository) {
         this.storageService = storageService;
         this.requestService = requestService;
-        orderRepository = new BookOrderRepository(orderList);
-        fileOrderRepository = new FileOrderRepository();
+        this.orderRepository = orderRepository;
+        this.fileOrderRepository = fileOrderRepository;
     }
 
     @Override

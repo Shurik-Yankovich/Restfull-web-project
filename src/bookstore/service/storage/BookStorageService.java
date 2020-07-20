@@ -7,7 +7,6 @@ import bookstore.entity.book.Book;
 import bookstore.exeption.RepositoryException;
 import bookstore.repository.base.StorageRepository;
 import bookstore.repository.file.FileStorageRepository;
-import bookstore.repository.list.BookStorageRepository;
 import bookstore.serialize.ISerializationService;
 import bookstore.serialize.SerializationService;
 import bookstore.service.request.RequestService;
@@ -21,7 +20,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Properties;
 
-import static bookstore.constant.FileName.*;
+import static bookstore.constant.FileName.STORAGE_SERIALIZATION_FILE_NAME;
 import static bookstore.entity.Status.COMPLETED;
 
 public class BookStorageService implements StorageService {
@@ -34,11 +33,12 @@ public class BookStorageService implements StorageService {
     private FileStorageRepository fileStorageRepository;
 
 
-    public BookStorageService(StorageRepository storageRepository, RequestService requestService, String configFileName) {
+    public BookStorageService(StorageRepository storageRepository, FileStorageRepository fileStorageRepository,
+                              RequestService requestService, String configFileName) {
         this.storageRepository = storageRepository;
         this.requestService = requestService;
-        this.fileStorageRepository = new FileStorageRepository();
-        try (FileInputStream fis =  new FileInputStream(configFileName)) {
+        this.fileStorageRepository = fileStorageRepository;
+        try (FileInputStream fis = new FileInputStream(configFileName)) {
             Properties properties = new Properties();
             properties.load(fis);
             NUMBER_OF_MONTHS_FOR_UNSOLD_BOOKS = Integer.parseInt(properties.getProperty("month_for_unsold_book"));
@@ -47,22 +47,6 @@ public class BookStorageService implements StorageService {
             NUMBER_OF_MONTHS_FOR_UNSOLD_BOOKS = 6;
             MARK_REQUESTS_AS_COMPLETED = true;
             System.err.println("ОШИБКА: Файл отсуствует!\n" + e.getMessage());
-        }
-}
-
-    public BookStorageService(List<Bookshelf> bookshelfList, RequestService requestService, String configFileName) {
-        this.storageRepository = new BookStorageRepository(bookshelfList);
-        this.requestService = requestService;
-        this.fileStorageRepository = new FileStorageRepository();
-        try (FileInputStream fis =  new FileInputStream(configFileName)) {
-            Properties properties = new Properties();
-            properties.load(fis);
-            NUMBER_OF_MONTHS_FOR_UNSOLD_BOOKS = Integer.parseInt(properties.getProperty("month_for_unsold_book"));
-            MARK_REQUESTS_AS_COMPLETED = Boolean.parseBoolean(properties.getProperty("mark_requests_as_completed"));
-        } catch (IOException e) {
-            System.err.println("ОШИБКА: Файл отсуствует!\n" + e.getMessage());
-            NUMBER_OF_MONTHS_FOR_UNSOLD_BOOKS = 6;
-            MARK_REQUESTS_AS_COMPLETED = true;
         }
     }
 

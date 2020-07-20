@@ -16,6 +16,10 @@ public class FileStorageRepository implements Repository<Bookshelf, Integer, Int
         storageCsv = new StorageCsv();
     }
 
+    public FileStorageRepository(StorageCsv storageCsv) {
+        this.storageCsv = storageCsv;
+    }
+
     @Override
     public Bookshelf create(Bookshelf bookshelf) throws RepositoryException {
         try {
