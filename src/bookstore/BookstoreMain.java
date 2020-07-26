@@ -16,8 +16,6 @@ import bookstore.repository.file.FileStorageRepository;
 import bookstore.repository.list.BookOrderRepository;
 import bookstore.repository.list.BookRequestRepository;
 import bookstore.repository.list.BookStorageRepository;
-import bookstore.util.serialize.ISerializationService;
-import bookstore.util.serialize.SerializationService;
 import bookstore.service.order.BookOrderService;
 import bookstore.service.order.OrderService;
 import bookstore.service.request.BookRequestService;
@@ -27,8 +25,11 @@ import bookstore.service.storage.StorageService;
 import bookstore.util.csv.OrderCsv;
 import bookstore.util.csv.RequestCsv;
 import bookstore.util.csv.StorageCsv;
+import bookstore.util.serialize.ISerializationService;
+import bookstore.util.serialize.SerializationService;
 import bookstore.view.in.StoreViewIn;
 import bookstore.view.out.StoreViewOut;
+import com.mapper.Mapper;
 
 import static bookstore.constant.FileName.*;
 
@@ -52,6 +53,7 @@ public class BookstoreMain {
         StorageRepository storageRepository = new BookStorageRepository(storageSerialize.load(STORAGE_SERIALIZATION_FILE_NAME));
         RequestService requestService = new BookRequestService(requestRepository, fileRequestRepository);
         StorageService storageService = new BookStorageService(storageRepository, fileStorageRepository, requestService, configFileName);
+        Mapper.getValue(storageService);
         OrderService orderService = new BookOrderService(storageService, requestService, orderRepository, fileOrderRepository);
         StoreAction action = new StoreAction(orderService, requestService, storageService, viewIn, viewOut);
         Builder builder = new Builder(action);
