@@ -1,5 +1,6 @@
 package com.mapper;
 
+import com.Converter;
 import com.annotation.ConfigProperty;
 
 import java.io.FileInputStream;
@@ -10,7 +11,6 @@ import java.util.Properties;
 public class Mapper {
 
     public static <T> void getValue(T t) {
-//        Class<? extends T> implClass = type;
         Class<? extends Object> implClass = t.getClass();
         for (Field field : implClass.getDeclaredFields()) {
             if (field.isAnnotationPresent(ConfigProperty.class)) {
@@ -34,7 +34,7 @@ public class Mapper {
                                 field.set(t, value);
                                 break;
                             case DEFAULT:
-                                field.set(t, field.getType().cast(value));
+                                Converter.converter(field,t,value);
                         }
                     } catch (IOException e) {
                         System.err.println("ОШИБКА: Файл отсуствует!\n" + e.getMessage());
@@ -42,6 +42,8 @@ public class Mapper {
                         System.err.println("ОШИБКА: Не найден путь к ресурсам!\n" + e.getMessage());
                     } catch (IllegalAccessException e) {
                         System.err.println("ОШИБКА: Неудалось установить значение поля!\n" + e.getMessage());
+                    } catch (Exception e) {
+                        System.err.println("ОШИБКА!\n" + e.getMessage());
                     }
                 }
             }
@@ -49,15 +51,28 @@ public class Mapper {
 
     }
 
-//    private static <T> void converter(Field field, T t, String value) throws IllegalAccessException {
+//    private static <T> void converter(Field field, T t, String value) throws Exception {
 //        Class type = field.getType();
-//        if (type.isArray()) {
-//        } else if (type.isPrimitive()) {
-//
-//        } else if (type.isInterface()) {
-//
+//        if (type.isAssignableFrom(Integer.class) || type.isAssignableFrom(int.class)) {
+//            field.set(t, Integer.parseInt(value));
+//        } else if (type.isAssignableFrom(Long.class) || type.isAssignableFrom(long.class)) {
+//            field.set(t, Long.parseLong(value));
+//        } else if (type.isAssignableFrom(Short.class) || type.isAssignableFrom(short.class)) {
+//            field.set(t, Short.parseShort(value));
+//        } else if (type.isAssignableFrom(Byte.class) || type.isAssignableFrom(byte.class)) {
+//            field.set(t, Byte.parseByte(value));
+//        } else if (type.isAssignableFrom(Float.class) || type.isAssignableFrom(float.class)) {
+//            field.set(t, Float.parseFloat(value));
+//        } else if (type.isAssignableFrom(Double.class) || type.isAssignableFrom(double.class)) {
+//            field.set(t, Double.parseDouble(value));
+//        } else if (type.isAssignableFrom(Character.class) || type.isAssignableFrom(char.class)) {
+//            field.set(t, value.charAt(0));
+//        } else if (type.isAssignableFrom(String.class)) {
+//            field.set(t, value);
+//        } else if (type.isAssignableFrom(Boolean.class) || type.isAssignableFrom(boolean.class)) {
+//            field.set(t, Boolean.parseBoolean(value));
 //        } else {
-//            field.set(t, field.getType().cast(value));
+//            throw new Exception("Неподдерживаемый тип!");
 //        }
 //    }
 }

@@ -27,7 +27,7 @@ public class BookStorageService implements StorageService {
     @ConfigProperty(configName = "config.properties", propertyName = "month_for_unsold_book", type = Types.INTEGER)
     private int NUMBER_OF_MONTHS_FOR_UNSOLD_BOOKS;
     @ConfigProperty (propertyName = "mark_requests_as_completed")
-    private Boolean MARK_REQUESTS_AS_COMPLETED;
+    private boolean MARK_REQUESTS_AS_COMPLETED;
 
     private StorageRepository storageRepository;
     private RequestService requestService;
