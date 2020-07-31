@@ -11,8 +11,7 @@ import bookstore.service.request.RequestService;
 import bookstore.util.comparator.*;
 import bookstore.util.serialize.ISerializationService;
 import bookstore.util.serialize.SerializationService;
-import com.annotation.ConfigProperty;
-import com.annotation.Types;
+import com.annotation.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -22,17 +21,23 @@ import java.util.List;
 import static bookstore.constant.FileName.STORAGE_SERIALIZATION_FILE_NAME;
 import static bookstore.entity.Status.COMPLETED;
 
+@Singleton
 public class BookStorageService implements StorageService {
 
-    @ConfigProperty(configName = "config.properties", propertyName = "month_for_unsold_book", type = Types.INTEGER)
+    @InjectByProperty(configName = "config.properties", propertyName = "month_for_unsold_book", type = Types.INTEGER)
     private int NUMBER_OF_MONTHS_FOR_UNSOLD_BOOKS;
-    @ConfigProperty (propertyName = "mark_requests_as_completed")
+    @InjectByProperty (propertyName = "mark_requests_as_completed")
     private boolean MARK_REQUESTS_AS_COMPLETED;
 
-    private StorageRepository storageRepository;
+    @InjectByType
     private RequestService requestService;
+    @InjectByType
+    private StorageRepository storageRepository;
+    @InjectByType
     private FileStorageRepository fileStorageRepository;
 
+    public BookStorageService() {
+    }
 
     public BookStorageService(StorageRepository storageRepository, FileStorageRepository fileStorageRepository,
                               RequestService requestService, String configFileName) {

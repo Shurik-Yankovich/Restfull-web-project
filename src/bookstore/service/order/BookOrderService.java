@@ -7,14 +7,16 @@ import bookstore.exeption.RepositoryException;
 import bookstore.repository.base.OrderRepository;
 import bookstore.repository.file.FileOrderRepository;
 import bookstore.repository.list.BookOrderRepository;
-import bookstore.util.serialize.ISerializationService;
-import bookstore.util.serialize.SerializationService;
 import bookstore.service.request.RequestService;
 import bookstore.service.storage.StorageService;
 import bookstore.util.comparator.OrderCompletionDateComparator;
 import bookstore.util.comparator.OrderDateComparator;
 import bookstore.util.comparator.OrderPriceComparator;
 import bookstore.util.comparator.OrderStatusComparator;
+import bookstore.util.serialize.ISerializationService;
+import bookstore.util.serialize.SerializationService;
+import com.annotation.InjectByType;
+import com.annotation.Singleton;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -24,12 +26,20 @@ import java.util.List;
 import static bookstore.constant.FileName.ORDER_SERIALIZATION_FILE_NAME;
 import static bookstore.entity.Status.*;
 
+@Singleton
 public class BookOrderService implements OrderService {
 
-    private OrderRepository orderRepository;
+    @InjectByType
     private StorageService storageService;
+    @InjectByType
     private RequestService requestService;
+    @InjectByType
+    private OrderRepository orderRepository;
+    @InjectByType
     private FileOrderRepository fileOrderRepository;
+
+    public BookOrderService() {
+    }
 
     public BookOrderService(StorageService storageService, RequestService requestService) {
         this.storageService = storageService;

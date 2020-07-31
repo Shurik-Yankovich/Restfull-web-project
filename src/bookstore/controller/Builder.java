@@ -17,17 +17,22 @@ import bookstore.constant.storagemenu.StorageMenu;
 import bookstore.constant.storagemenu.StorageMenuTextConst;
 import bookstore.controller.model.Menu;
 import bookstore.controller.model.MenuItem;
+import com.annotation.InjectByType;
 
 public class Builder {
 
     private static final String MENU_TEXT = "%d - %s";
 
     private Menu rootMenu;
+    @InjectByType
     private StoreAction storeAction;
 
-    public Builder(StoreAction storeAction) {
-        this.storeAction = storeAction;
+    public Builder() {
     }
+
+//    public Builder(StoreAction storeAction) {
+//        this.storeAction = storeAction;
+//    }
 
     public Menu getRootMenu() {
         return rootMenu;

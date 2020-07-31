@@ -4,12 +4,14 @@ import bookstore.entity.Bookshelf;
 import bookstore.exeption.RepositoryException;
 import bookstore.repository.base.Repository;
 import bookstore.util.csv.StorageCsv;
+import com.annotation.InjectByType;
 
 import java.io.IOException;
 import java.util.List;
 
 public class FileStorageRepository implements Repository<Bookshelf, Integer, Integer, Bookshelf> {
 
+    @InjectByType
     private StorageCsv storageCsv;
 
     public FileStorageRepository() {

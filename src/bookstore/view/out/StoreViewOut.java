@@ -1,7 +1,10 @@
 package bookstore.view.out;
 
+import com.annotation.Singleton;
+
 import java.util.List;
 
+@Singleton
 public class StoreViewOut implements ViewOut{
 
     private static final String MENU_TEXT = "%d - %s";

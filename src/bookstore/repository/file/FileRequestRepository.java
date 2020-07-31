@@ -4,12 +4,14 @@ import bookstore.entity.Request;
 import bookstore.exeption.RepositoryException;
 import bookstore.repository.base.Repository;
 import bookstore.util.csv.RequestCsv;
+import com.annotation.InjectByType;
 
 import java.io.IOException;
 import java.util.List;
 
 public class FileRequestRepository implements Repository<Request, Integer, Integer, Request> {
 
+    @InjectByType
     private RequestCsv requestCsv;
 
     public FileRequestRepository() {

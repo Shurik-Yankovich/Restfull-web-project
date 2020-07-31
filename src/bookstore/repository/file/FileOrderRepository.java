@@ -5,12 +5,14 @@ import bookstore.entity.Status;
 import bookstore.exeption.RepositoryException;
 import bookstore.repository.base.OrderRepository;
 import bookstore.util.csv.OrderCsv;
+import com.annotation.InjectByType;
 
 import java.io.IOException;
 import java.util.List;
 
 public class FileOrderRepository implements OrderRepository {
 
+    @InjectByType
     private OrderCsv orderCsv;
 
     public FileOrderRepository() {

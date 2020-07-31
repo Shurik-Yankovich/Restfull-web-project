@@ -10,18 +10,29 @@ import bookstore.service.request.RequestService;
 import bookstore.service.storage.StorageService;
 import bookstore.view.in.ViewIn;
 import bookstore.view.out.ViewOut;
+import com.annotation.InjectByType;
+import com.annotation.Singleton;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+@Singleton
 public class StoreAction {
 
-    private OrderService orderService;
-    private RequestService requestService;
-    private StorageService storageService;
+    @InjectByType
     private ViewIn viewIn;
+    @InjectByType
     private ViewOut viewOut;
+    @InjectByType
+    private RequestService requestService;
+    @InjectByType
+    private StorageService storageService;
+    @InjectByType
+    private OrderService orderService;
+
+    public StoreAction() {
+    }
 
     public StoreAction(OrderService orderService, RequestService requestService, StorageService storageService,
                        ViewIn viewIn, ViewOut viewOut) {

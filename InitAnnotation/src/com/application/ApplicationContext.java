@@ -4,12 +4,12 @@ import com.annotation.Singleton;
 import com.config.Config;
 import com.factory.ObjectFactory;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ApplicationContext {
     private ObjectFactory factory;
-    private Map<Class, Object> cache = new HashMap<>();
+    private Map<Class, Object> cache = new ConcurrentHashMap<>();
     private Config config;
 
     public ApplicationContext(Config config) {

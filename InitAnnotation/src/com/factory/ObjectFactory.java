@@ -1,9 +1,11 @@
 package com.factory;
 
 import com.application.ApplicationContext;
+import com.config.ConfigImpl;
 import com.configurator.ObjectConfigurator;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class ObjectFactory {
@@ -12,8 +14,9 @@ public class ObjectFactory {
 
     public ObjectFactory(ApplicationContext context) {
         this.context = context;
+        ConfigImpl config = new ConfigImpl("com", new HashMap<>());
         try {
-            for (Class<? extends ObjectConfigurator> aClass : context.getConfig().getScanner().getSubTypesOf(ObjectConfigurator.class)) {
+            for (Class<? extends ObjectConfigurator> aClass : config.getScanner().getSubTypesOf(ObjectConfigurator.class)) {
                 configurators.add(aClass.getDeclaredConstructor().newInstance());
             }
         } catch (Exception e) {
@@ -22,14 +25,13 @@ public class ObjectFactory {
     }
 
     public <T> T createObject(Class<T> implClass) {
-        T t = null;
         try {
-            t = create(implClass);
+            T t = create(implClass);
             configure(t);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return t;
+        return null;
     }
 
     private <T> void configure(T t) {

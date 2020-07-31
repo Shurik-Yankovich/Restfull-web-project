@@ -5,11 +5,12 @@ import bookstore.entity.book.Book;
 import bookstore.exeption.RepositoryException;
 import bookstore.repository.base.RequestRepository;
 import bookstore.repository.file.FileRequestRepository;
-import bookstore.repository.list.BookRequestRepository;
-import bookstore.util.serialize.ISerializationService;
-import bookstore.util.serialize.SerializationService;
 import bookstore.util.comparator.RequestBookNameComparator;
 import bookstore.util.comparator.RequestCountComparator;
+import bookstore.util.serialize.ISerializationService;
+import bookstore.util.serialize.SerializationService;
+import com.annotation.InjectByType;
+import com.annotation.Singleton;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -18,14 +19,15 @@ import java.util.List;
 import static bookstore.constant.FileName.REQUEST_SERIALIZATION_FILE_NAME;
 import static bookstore.entity.Status.*;
 
+@Singleton
 public class BookRequestService implements RequestService {
 
+    @InjectByType
     private RequestRepository requestRepository;
+    @InjectByType
     private FileRequestRepository fileRequestRepository;
 
     public BookRequestService() {
-        requestRepository = new BookRequestRepository();
-        fileRequestRepository = new FileRequestRepository();
     }
 
     public BookRequestService(RequestRepository requestRepository, FileRequestRepository fileRequestRepository) {
