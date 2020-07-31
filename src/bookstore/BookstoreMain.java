@@ -29,7 +29,7 @@ import bookstore.util.serialize.ISerializationService;
 import bookstore.util.serialize.SerializationService;
 import bookstore.view.in.StoreViewIn;
 import bookstore.view.out.StoreViewOut;
-import com.mapper.Mapper;
+import com.handler.PropertiesAnnotationHandler;
 
 import static bookstore.constant.FileName.*;
 
@@ -53,7 +53,7 @@ public class BookstoreMain {
         StorageRepository storageRepository = new BookStorageRepository(storageSerialize.load(STORAGE_SERIALIZATION_FILE_NAME));
         RequestService requestService = new BookRequestService(requestRepository, fileRequestRepository);
         StorageService storageService = new BookStorageService(storageRepository, fileStorageRepository, requestService, configFileName);
-        Mapper.getValue(storageService);
+        PropertiesAnnotationHandler.setValues(storageService);
         OrderService orderService = new BookOrderService(storageService, requestService, orderRepository, fileOrderRepository);
         StoreAction action = new StoreAction(orderService, requestService, storageService, viewIn, viewOut);
         Builder builder = new Builder(action);

@@ -1,4 +1,4 @@
-package com.mapper;
+package com.handler;
 
 import com.Converter;
 import com.annotation.ConfigProperty;
@@ -8,9 +8,9 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Properties;
 
-public class Mapper {
+public class PropertiesAnnotationHandler {
 
-    public static <T> void getValue(T t) {
+    public static <T> void setValues(T t) {
         Class<? extends Object> implClass = t.getClass();
         for (Field field : implClass.getDeclaredFields()) {
             if (field.isAnnotationPresent(ConfigProperty.class)) {

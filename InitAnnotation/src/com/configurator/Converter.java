@@ -1,11 +1,10 @@
-package com;
+package com.configurator;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
 
 public class Converter {
-
-    public static <T> void converter(Field field, T t, String value) throws Exception {
+    public static <T> void convert(Field field, T t, String value) throws Exception {
         Class type = field.getType();
         boolean isArray = false;
         String[] values;

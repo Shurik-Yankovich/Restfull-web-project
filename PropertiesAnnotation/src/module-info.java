@@ -1,4 +1,4 @@
 module PropertiesAnnotation {
     exports com.annotation;
-    exports com.mapper;
+    exports com.handler;
 }
