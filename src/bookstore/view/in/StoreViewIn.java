@@ -69,7 +69,7 @@ public class StoreViewIn implements ViewIn {
         printList(list);
         int choice;
         boolean isSelection = false;
-        if (list.size() >0) {
+        if (list.size() > 0) {
             do {
                 System.out.println("Выбирете пункт из списка:");
                 choice = readIntFromConsole();

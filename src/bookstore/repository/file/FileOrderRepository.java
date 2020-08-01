@@ -15,13 +15,13 @@ public class FileOrderRepository implements OrderRepository {
     @InjectByType
     private OrderCsv orderCsv;
 
-    public FileOrderRepository() {
-        orderCsv = new OrderCsv();
-    }
+//    public FileOrderRepository() {
+//        orderCsv = new OrderCsv();
+//    }
 
-    public FileOrderRepository(OrderCsv orderCsv) {
-        this.orderCsv = orderCsv;
-    }
+//    public FileOrderRepository(OrderCsv orderCsv) {
+//        this.orderCsv = orderCsv;
+//    }
 
     @Override
     public Order create(Order order) throws RepositoryException {

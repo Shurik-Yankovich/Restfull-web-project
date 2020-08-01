@@ -15,9 +15,9 @@ public class BookRequestRepository implements RequestRepository {
         array = new ArrayList<>();
     }
 
-    public BookRequestRepository(List<Request> array) {
-        this.array = array;
-    }
+//    public BookRequestRepository(List<Request> array) {
+//        this.array = array;
+//    }
 
     @Override
     public String toString() {

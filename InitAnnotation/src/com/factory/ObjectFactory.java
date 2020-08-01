@@ -28,6 +28,7 @@ public class ObjectFactory {
         try {
             T t = create(implClass);
             configure(t);
+            return t;
         } catch (Exception e) {
             e.printStackTrace();
         }

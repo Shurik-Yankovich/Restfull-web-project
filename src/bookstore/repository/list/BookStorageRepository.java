@@ -18,9 +18,9 @@ public class BookStorageRepository implements StorageRepository {
         bookshelves = new ArrayList<>();
     }
 
-    public BookStorageRepository(List<Bookshelf> bookshelves) {
-        this.bookshelves = bookshelves;
-    }
+//    public BookStorageRepository(List<Bookshelf> bookshelves) {
+//        this.bookshelves = bookshelves;
+//    }
 
     @Override
     public Bookshelf create(Bookshelf book) {

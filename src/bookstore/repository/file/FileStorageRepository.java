@@ -14,13 +14,13 @@ public class FileStorageRepository implements Repository<Bookshelf, Integer, Int
     @InjectByType
     private StorageCsv storageCsv;
 
-    public FileStorageRepository() {
-        storageCsv = new StorageCsv();
-    }
+//    public FileStorageRepository() {
+//        storageCsv = new StorageCsv();
+//    }
 
-    public FileStorageRepository(StorageCsv storageCsv) {
-        this.storageCsv = storageCsv;
-    }
+//    public FileStorageRepository(StorageCsv storageCsv) {
+//        this.storageCsv = storageCsv;
+//    }
 
     @Override
     public Bookshelf create(Bookshelf bookshelf) throws RepositoryException {

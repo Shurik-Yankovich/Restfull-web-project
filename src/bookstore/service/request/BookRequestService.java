@@ -27,13 +27,10 @@ public class BookRequestService implements RequestService {
     @InjectByType
     private FileRequestRepository fileRequestRepository;
 
-    public BookRequestService() {
-    }
-
-    public BookRequestService(RequestRepository requestRepository, FileRequestRepository fileRequestRepository) {
-        this.requestRepository = requestRepository;
-        this.fileRequestRepository = fileRequestRepository;
-    }
+//    public BookRequestService(RequestRepository requestRepository, FileRequestRepository fileRequestRepository) {
+//        this.requestRepository = requestRepository;
+//        this.fileRequestRepository = fileRequestRepository;
+//    }
 
     @Override
     public Request addRequest(Book book) {

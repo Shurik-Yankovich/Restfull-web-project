@@ -6,7 +6,6 @@ import bookstore.entity.book.Book;
 import bookstore.exeption.RepositoryException;
 import bookstore.repository.base.OrderRepository;
 import bookstore.repository.file.FileOrderRepository;
-import bookstore.repository.list.BookOrderRepository;
 import bookstore.service.request.RequestService;
 import bookstore.service.storage.StorageService;
 import bookstore.util.comparator.OrderCompletionDateComparator;
@@ -30,31 +29,28 @@ import static bookstore.entity.Status.*;
 public class BookOrderService implements OrderService {
 
     @InjectByType
-    private StorageService storageService;
-    @InjectByType
     private RequestService requestService;
+    @InjectByType
+    private StorageService storageService;
     @InjectByType
     private OrderRepository orderRepository;
     @InjectByType
     private FileOrderRepository fileOrderRepository;
 
-    public BookOrderService() {
-    }
-
-    public BookOrderService(StorageService storageService, RequestService requestService) {
-        this.storageService = storageService;
-        this.requestService = requestService;
-        orderRepository = new BookOrderRepository();
-        fileOrderRepository = new FileOrderRepository();
-    }
-
-    public BookOrderService(StorageService storageService, RequestService requestService,
-                            OrderRepository orderRepository, FileOrderRepository fileOrderRepository) {
-        this.storageService = storageService;
-        this.requestService = requestService;
-        this.orderRepository = orderRepository;
-        this.fileOrderRepository = fileOrderRepository;
-    }
+//    public BookOrderService(StorageService storageService, RequestService requestService) {
+//        this.storageService = storageService;
+//        this.requestService = requestService;
+//        orderRepository = new BookOrderRepository();
+//        fileOrderRepository = new FileOrderRepository();
+//    }
+//
+//    public BookOrderService(StorageService storageService, RequestService requestService,
+//                            OrderRepository orderRepository, FileOrderRepository fileOrderRepository) {
+//        this.storageService = storageService;
+//        this.requestService = requestService;
+//        this.orderRepository = orderRepository;
+//        this.fileOrderRepository = fileOrderRepository;
+//    }
 
     @Override
     public Order addOrder(Customer customer, Book... books) {

@@ -34,14 +34,14 @@ public class StoreAction {
     public StoreAction() {
     }
 
-    public StoreAction(OrderService orderService, RequestService requestService, StorageService storageService,
-                       ViewIn viewIn, ViewOut viewOut) {
-        this.orderService = orderService;
-        this.requestService = requestService;
-        this.storageService = storageService;
-        this.viewIn = viewIn;
-        this.viewOut = viewOut;
-    }
+//    public StoreAction(OrderService orderService, RequestService requestService, StorageService storageService,
+//                       ViewIn viewIn, ViewOut viewOut) {
+//        this.orderService = orderService;
+//        this.requestService = requestService;
+//        this.storageService = storageService;
+//        this.viewIn = viewIn;
+//        this.viewOut = viewOut;
+//    }
 
     public void earnedMoneyAction() {
         LocalDate dateFrom = viewIn.readDateFrom();

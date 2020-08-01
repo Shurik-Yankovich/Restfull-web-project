@@ -18,9 +18,9 @@ public class BookOrderRepository implements OrderRepository {
         array = new ArrayList<>();
     }
 
-    public BookOrderRepository(List<Order> array) {
-        this.array = array;
-    }
+//    public BookOrderRepository(List<Order> array) {
+//        this.array = array;
+//    }
 
     @Override
     public Order create(Order order) {

@@ -14,13 +14,13 @@ public class FileRequestRepository implements Repository<Request, Integer, Integ
     @InjectByType
     private RequestCsv requestCsv;
 
-    public FileRequestRepository() {
-        requestCsv = new RequestCsv();
-    }
+//    public FileRequestRepository() {
+//        requestCsv = new RequestCsv();
+//    }
 
-    public FileRequestRepository(RequestCsv requestCsv) {
-        this.requestCsv = requestCsv;
-    }
+//    public FileRequestRepository(RequestCsv requestCsv) {
+//        this.requestCsv = requestCsv;
+//    }
 
     @Override
     public Request create(Request request) throws RepositoryException {
