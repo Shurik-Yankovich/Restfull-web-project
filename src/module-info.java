@@ -10,5 +10,6 @@ module Senla {
     opens bookstore.service.order to InitAnnotation;
     opens bookstore.service.storage to InitAnnotation;
     opens bookstore.util.csv to InitAnnotation;
+    opens bookstore.util.serialize to InitAnnotation;
     requires InitAnnotation;
 }

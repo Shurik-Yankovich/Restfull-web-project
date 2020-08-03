@@ -5,7 +5,6 @@ import bookstore.entity.book.Book;
 import bookstore.repository.base.StorageRepository;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 public class BookStorageRepository implements StorageRepository {
@@ -13,14 +12,6 @@ public class BookStorageRepository implements StorageRepository {
     private static final String BOOK_NOT_FOUND = "Book not found!";
 
     private List<Bookshelf> bookshelves;
-
-    public BookStorageRepository() {
-        bookshelves = new ArrayList<>();
-    }
-
-//    public BookStorageRepository(List<Bookshelf> bookshelves) {
-//        this.bookshelves = bookshelves;
-//    }
 
     @Override
     public Bookshelf create(Bookshelf book) {

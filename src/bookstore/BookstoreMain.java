@@ -16,29 +16,6 @@ import java.util.Map;
 public class BookstoreMain {
 
     public static void main(String[] args) {
-//        StoreViewIn viewIn = new StoreViewIn();
-//        StoreViewOut viewOut = new StoreViewOut();
-//        OrderCsv orderCsv = new OrderCsv();
-//        RequestCsv requestCsv = new RequestCsv();
-//        StorageCsv storageCsv = new StorageCsv();
-//        FileOrderRepository fileOrderRepository = new FileOrderRepository(orderCsv);
-//        FileRequestRepository fileRequestRepository = new FileRequestRepository(requestCsv);
-//        FileStorageRepository fileStorageRepository = new FileStorageRepository(storageCsv);
-//        String configFileName = "src/resources/config.properties";
-//        ISerializationService<Request> requestSerialize = new SerializationService<>();
-//        ISerializationService<Order> orderSerialize = new SerializationService<>();
-//        ISerializationService<Bookshelf> storageSerialize = new SerializationService<>();
-//        OrderRepository orderRepository = new BookOrderRepository(orderSerialize.load(ORDER_SERIALIZATION_FILE_NAME));
-//        RequestRepository requestRepository = new BookRequestRepository(requestSerialize.load(REQUEST_SERIALIZATION_FILE_NAME));
-//        StorageRepository storageRepository = new BookStorageRepository(storageSerialize.load(STORAGE_SERIALIZATION_FILE_NAME));
-//        RequestService requestService = new BookRequestService(requestRepository, fileRequestRepository);
-//        StorageService storageService = new BookStorageService(storageRepository, fileStorageRepository, requestService, configFileName);
-//        PropertiesAnnotationHandler.setValues(storageService);
-//        OrderService orderService = new BookOrderService(storageService, requestService, orderRepository, fileOrderRepository);
-//        StoreAction action = new StoreAction(orderService, requestService, storageService, viewIn, viewOut);
-//        Builder builder = new Builder(action);
-//        Navigator navigator = new Navigator();
-//        MenuController menuController = new MenuController(builder, navigator);
         Map<Class, Class> cache = new HashMap<>();
         cache.put(OrderRepository.class, BookOrderRepository.class);
         cache.put(RequestRepository.class, BookRequestRepository.class);

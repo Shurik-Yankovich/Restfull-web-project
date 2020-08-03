@@ -8,29 +8,38 @@ import bookstore.repository.file.FileRequestRepository;
 import bookstore.util.comparator.RequestBookNameComparator;
 import bookstore.util.comparator.RequestCountComparator;
 import bookstore.util.serialize.ISerializationService;
-import bookstore.util.serialize.SerializationService;
+import com.annotation.InjectByProperty;
 import com.annotation.InjectByType;
+import com.annotation.PostConstruct;
 import com.annotation.Singleton;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import static bookstore.constant.FileName.REQUEST_SERIALIZATION_FILE_NAME;
 import static bookstore.entity.Status.*;
 
 @Singleton
 public class BookRequestService implements RequestService {
 
+    @InjectByProperty(propertyName = "REQUEST_SERIALIZATION_FILE_NAME")
+    private String REQUEST_SERIALIZATION_FILE_NAME;
+
     @InjectByType
     private RequestRepository requestRepository;
     @InjectByType
     private FileRequestRepository fileRequestRepository;
+    @InjectByType
+    private ISerializationService<Request> requestSerialize;
 
-//    public BookRequestService(RequestRepository requestRepository, FileRequestRepository fileRequestRepository) {
-//        this.requestRepository = requestRepository;
-//        this.fileRequestRepository = fileRequestRepository;
-//    }
+    @PostConstruct
+    public void init() {
+        try {
+            requestRepository.createAll(requestSerialize.load(REQUEST_SERIALIZATION_FILE_NAME));
+        } catch (RepositoryException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public Request addRequest(Book book) {
@@ -208,7 +217,6 @@ public class BookRequestService implements RequestService {
     @Override
     public boolean save() {
         try {
-            ISerializationService<Request> requestSerialize = new SerializationService<>();
             requestSerialize.save(requestRepository.readAll(), REQUEST_SERIALIZATION_FILE_NAME);
             return true;
         } catch (RepositoryException e) {

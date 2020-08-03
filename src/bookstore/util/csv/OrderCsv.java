@@ -5,6 +5,7 @@ import bookstore.entity.Order;
 import bookstore.entity.Status;
 import bookstore.entity.book.Book;
 import bookstore.entity.book.NovelBook;
+import com.annotation.InjectByProperty;
 
 import java.io.*;
 import java.time.LocalDate;
@@ -12,9 +13,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import static bookstore.constant.FileName.ORDER_CSV_FILE_NAME;
-
 public class OrderCsv implements CsvUtil<Order> {
+
+    @InjectByProperty(propertyName = "ORDER_CSV_FILE_NAME")
+    private String ORDER_CSV_FILE_NAME;
 
     @Override
     public void writeToCsv(Order order) throws IOException {

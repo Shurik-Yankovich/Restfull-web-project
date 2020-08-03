@@ -3,6 +3,7 @@ package bookstore.util.csv;
 import bookstore.entity.Bookshelf;
 import bookstore.entity.book.Book;
 import bookstore.entity.book.NovelBook;
+import com.annotation.InjectByProperty;
 
 import java.io.*;
 import java.time.LocalDate;
@@ -10,9 +11,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import static bookstore.constant.FileName.STORAGE_CSV_FILE_NAME;
-
 public class StorageCsv implements CsvUtil<Bookshelf> {
+
+    @InjectByProperty(propertyName = "STORAGE_CSV_FILE_NAME")
+    private String STORAGE_CSV_FILE_NAME;
 
     @Override
     public void writeToCsv(Bookshelf bookshelf) throws IOException {

@@ -4,20 +4,11 @@ import bookstore.entity.Request;
 import bookstore.entity.Status;
 import bookstore.repository.base.RequestRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class BookRequestRepository implements RequestRepository {
 
     private List<Request> array;
-
-    public BookRequestRepository() {
-        array = new ArrayList<>();
-    }
-
-//    public BookRequestRepository(List<Request> array) {
-//        this.array = array;
-//    }
 
     @Override
     public String toString() {

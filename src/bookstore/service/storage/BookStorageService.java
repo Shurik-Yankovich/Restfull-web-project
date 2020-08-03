@@ -10,7 +10,6 @@ import bookstore.repository.file.FileStorageRepository;
 import bookstore.service.request.RequestService;
 import bookstore.util.comparator.*;
 import bookstore.util.serialize.ISerializationService;
-import bookstore.util.serialize.SerializationService;
 import com.annotation.*;
 
 import java.time.LocalDate;
@@ -18,7 +17,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import static bookstore.constant.FileName.STORAGE_SERIALIZATION_FILE_NAME;
 import static bookstore.entity.Status.COMPLETED;
 
 @Singleton
@@ -28,6 +26,8 @@ public class BookStorageService implements StorageService {
     private int NUMBER_OF_MONTHS_FOR_UNSOLD_BOOKS;
     @InjectByProperty (propertyName = "mark_requests_as_completed")
     private boolean MARK_REQUESTS_AS_COMPLETED;
+    @InjectByProperty(propertyName = "STORAGE_SERIALIZATION_FILE_NAME")
+    private String STORAGE_SERIALIZATION_FILE_NAME;
 
     @InjectByType
     private RequestService requestService;
@@ -35,24 +35,18 @@ public class BookStorageService implements StorageService {
     private StorageRepository storageRepository;
     @InjectByType
     private FileStorageRepository fileStorageRepository;
+    @InjectByType
+    private ISerializationService<Bookshelf> storageSerialize;
 
 
-//    public BookStorageService(StorageRepository storageRepository, FileStorageRepository fileStorageRepository,
-//                              RequestService requestService, String configFileName) {
-//        this.storageRepository = storageRepository;
-//        this.requestService = requestService;
-//        this.fileStorageRepository = fileStorageRepository;
-////        try (FileInputStream fis = new FileInputStream(configFileName)) {
-////            Properties properties = new Properties();
-////            properties.load(fis);
-////            NUMBER_OF_MONTHS_FOR_UNSOLD_BOOKS = Integer.parseInt(properties.getProperty("month_for_unsold_book"));
-////            MARK_REQUESTS_AS_COMPLETED = Boolean.parseBoolean(properties.getProperty("mark_requests_as_completed"));
-////        } catch (IOException e) {
-////            NUMBER_OF_MONTHS_FOR_UNSOLD_BOOKS = 6;
-////            MARK_REQUESTS_AS_COMPLETED = true;
-////            System.err.println("ОШИБКА: Файл отсуствует!\n" + e.getMessage());
-////        }
-//    }
+    @PostConstruct
+    public void init() {
+        try {
+            storageRepository.createAll(storageSerialize.load(STORAGE_SERIALIZATION_FILE_NAME));
+        } catch (RepositoryException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public Bookshelf addBookOnStorage(Book book, int count) {
@@ -259,7 +253,6 @@ public class BookStorageService implements StorageService {
     @Override
     public boolean save() {
         try {
-            ISerializationService<Bookshelf> storageSerialize = new SerializationService<>();
             storageSerialize.save(storageRepository.readAll(), STORAGE_SERIALIZATION_FILE_NAME);
             return true;
         } catch (RepositoryException e) {

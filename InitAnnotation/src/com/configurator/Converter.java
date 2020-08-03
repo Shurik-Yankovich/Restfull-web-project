@@ -56,24 +56,18 @@ public class Converter {
                     field.set(t, list);
                 }
             } else {
-                field.set(t, Integer.parseInt(value));
+                field.set(t, Double.parseDouble(value));
             }
-            field.set(t, Double.parseDouble(value));
         } else if (type.isAssignableFrom(String.class)) {
             if (isArray) {
-                Integer[] list = new Integer[length];
+                String[] list = new String[length];
                 for (int i = 0; i < length; i++) {
-                    list[i] = Integer.parseInt(values[i]);
+                    list[i] = values[i];
                 }
-                if (type.isPrimitive()) {
-                    field.set(t, Arrays.stream(list).mapToInt(i -> i).toArray());
-                } else {
-                    field.set(t, list);
-                }
+                field.set(t, list);
             } else {
-                field.set(t, Integer.parseInt(value));
+                field.set(t, value);
             }
-            field.set(t, value);
         } else if (type.isAssignableFrom(Boolean.class) || type.isAssignableFrom(boolean.class)) {
             if (isArray) {
                 if (type.isPrimitive()) {
