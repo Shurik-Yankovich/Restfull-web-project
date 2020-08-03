@@ -22,6 +22,7 @@ public class OrderCsv implements CsvUtil<Order> {
     public void writeToCsv(Order order) throws IOException {
         Writer writer = new FileWriter(ORDER_CSV_FILE_NAME, true);
         writer.write(convertOrderToString(order));
+        writer.close();
     }
 
     @Override
@@ -32,6 +33,7 @@ public class OrderCsv implements CsvUtil<Order> {
             text.append(convertOrderToString(order)).append("\n");
         }
         writer.write(text.toString());
+        writer.close();
     }
 
     @Override
@@ -54,6 +56,7 @@ public class OrderCsv implements CsvUtil<Order> {
             Order order = convertStringToOrder(line);
             orderList.add(order);
         }
+        reader.close();
         return orderList;
     }
 

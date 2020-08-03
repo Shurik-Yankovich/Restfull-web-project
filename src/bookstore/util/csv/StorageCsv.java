@@ -20,6 +20,7 @@ public class StorageCsv implements CsvUtil<Bookshelf> {
     public void writeToCsv(Bookshelf bookshelf) throws IOException {
         Writer writer = new FileWriter(STORAGE_CSV_FILE_NAME, true);
         writer.write(convertBookshelfToString(bookshelf));
+        writer.close();
     }
 
     @Override
@@ -30,6 +31,7 @@ public class StorageCsv implements CsvUtil<Bookshelf> {
             text.append(convertBookshelfToString(bookshelf)).append("\n");
         }
         writer.write(text.toString());
+        writer.close();
     }
 
     @Override
@@ -52,6 +54,7 @@ public class StorageCsv implements CsvUtil<Bookshelf> {
             Bookshelf bookshelf = convertStringToBookshelf(line);
             bookshelves.add(bookshelf);
         }
+        reader.close();
         return bookshelves;
     }
 

@@ -19,6 +19,7 @@ public class RequestCsv implements CsvUtil<Request> {
     public void writeToCsv(Request request) throws IOException {
         Writer writer = new FileWriter(REQUEST_CSV_FILE_NAME, true);
         writer.write(convertRequestToString(request));
+        writer.close();
     }
 
     @Override
@@ -29,6 +30,7 @@ public class RequestCsv implements CsvUtil<Request> {
             text.append(convertRequestToString(request)).append("\n");
         }
         writer.write(text.toString());
+        writer.close();
     }
 
     @Override
@@ -51,6 +53,7 @@ public class RequestCsv implements CsvUtil<Request> {
             Request request = convertStringToRequest(line);
             requestList.add(request);
         }
+        reader.close();
         return requestList;
     }
 
