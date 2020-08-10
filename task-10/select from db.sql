@@ -55,13 +55,13 @@ WHERE maker='B';
 
 /*Задание 8
 Найдите производителя, выпускающего ПК, но не ПК-блокноты.*/
-/*SELECT maker
+SELECT maker
 FROM Product
 WHERE type = 'PC'
 EXCEPT
 SELECT maker
 FROM Product
-WHERE type = 'Laptop';*/
+WHERE type = 'Laptop';
 
 /*Задание 9
 Найдите производителей ПК с процессором не менее 450 Мгц. Вывести: Maker*/
@@ -164,7 +164,7 @@ GROUP BY speed;
 /*Задание 23
 Найдите производителей, которые производили бы как ПК со скоростью не менее 750 МГц,
 так и ПК-блокноты со скоростью не менее 750 МГц. Вывести: Maker*/
-/*SELECT maker
+SELECT maker
 FROM Product JOIN PC
  ON PC.model = Product.model
 WHERE speed >= 750
@@ -172,7 +172,7 @@ INTERSECT
 SELECT maker
 FROM Product JOIN Laptop
  ON Laptop.model = Product.model
-WHERE speed >= 750;*/
+WHERE speed >= 750;
 
 /*Задание 24
 Перечислите номера моделей любых типов,
