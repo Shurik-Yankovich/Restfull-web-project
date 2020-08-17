@@ -1,6 +1,8 @@
 package bookstore.entity.book;
 
-public interface Book {
+import java.io.Serializable;
+
+public interface Book extends Serializable {
 
     String getTitle();
     String getAuthor();

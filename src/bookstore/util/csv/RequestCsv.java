@@ -9,19 +9,19 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RequestCsv implements CsvUtil<Request> {
+import static bookstore.constant.FileName.REQUEST_CSV_FILE_NAME;
 
-    private static final String ROOT_DIR_PATH = ".\\src\\bookstore\\rootdir\\request.csv";
+public class RequestCsv implements CsvUtil<Request> {
 
     @Override
     public void writeToCsv(Request request) throws IOException {
-        Writer writer = new FileWriter(ROOT_DIR_PATH, true);
+        Writer writer = new FileWriter(REQUEST_CSV_FILE_NAME, true);
         writer.write(convertRequestToString(request));
     }
 
     @Override
     public void writeAllToCsv(List<Request> requestList) throws IOException {
-        Writer writer = new FileWriter(ROOT_DIR_PATH, false);
+        Writer writer = new FileWriter(REQUEST_CSV_FILE_NAME, false);
         StringBuilder text = new StringBuilder();
         for (Request request : requestList) {
             text.append(convertRequestToString(request)).append("\n");
@@ -44,7 +44,7 @@ public class RequestCsv implements CsvUtil<Request> {
     public List<Request> readAllFromCsv() throws IOException {
         List<Request> requestList = new ArrayList<>();
         String line;
-        BufferedReader reader = new BufferedReader(new FileReader(ROOT_DIR_PATH));
+        BufferedReader reader = new BufferedReader(new FileReader(REQUEST_CSV_FILE_NAME));
         while ((line = reader.readLine()) != null) {
             Request request = convertStringToRequest(line);
             requestList.add(request);

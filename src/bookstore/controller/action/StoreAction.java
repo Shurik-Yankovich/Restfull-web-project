@@ -5,7 +5,6 @@ import bookstore.entity.Customer;
 import bookstore.entity.Order;
 import bookstore.entity.Request;
 import bookstore.entity.book.Book;
-import bookstore.exeption.RepositoryException;
 import bookstore.service.order.OrderService;
 import bookstore.service.request.RequestService;
 import bookstore.service.storage.StorageService;
@@ -34,35 +33,45 @@ public class StoreAction {
     }
 
     public void earnedMoneyAction() {
-        try {
-            LocalDate dateFrom = viewIn.readDateFrom();
-            LocalDate dateTo = viewIn.readDateTo();
-            double money = orderService.earnedMoney(dateFrom, dateTo);
-            viewOut.earnedMoneyOut(money);
-        } catch (RepositoryException e) {
-            viewOut.printExceptionMessage(e.getMessage());
-        }
-
+        LocalDate dateFrom = viewIn.readDateFrom();
+        LocalDate dateTo = viewIn.readDateTo();
+        double money = orderService.earnedMoney(dateFrom, dateTo);
+        viewOut.earnedMoneyOut(money);
     }
 
     public void exitAction() {
+        if (!requestService.save()) {
+            viewOut.printExceptionMessage("Неудалось сохранить список запросов!");
+        }
+        if (!orderService.save()) {
+            viewOut.printExceptionMessage("Неудалось сохранить список заказов!");
+        }
+        if (!storageService.save()) {
+            viewOut.printExceptionMessage("Неудалось сохранить список книг!");
+        }
         System.exit(1);
     }
 
     public void addOrderAction() {
-        try {
-            Order order = orderService.addOrder(createOrder());
+        Order order = orderService.addOrder(createOrder());
+        if (order != null) {
             if (saveChanging()) {
-                orderService.writeOrderToFile(order);
-                storageService.writeAllToFile();
-                requestService.writeAllToFile();
+                if (!orderService.writeOrderToFile(order)) {
+                    viewOut.printExceptionMessage("Неудалось добавить в файл заказ!");
+                }
+                if (!storageService.writeAllToFile()) {
+                    viewOut.printExceptionMessage("Неудалось записать в файл список книг!");
+                }
+                if (!requestService.writeAllToFile()) {
+                    viewOut.printExceptionMessage("Неудалось записать в файл список запросов!");
+                }
             }
-        } catch (RepositoryException e) {
-            viewOut.printExceptionMessage(e.getMessage());
+        } else {
+            viewOut.printExceptionMessage("Неудалось создать заказ!");
         }
     }
 
-    private Order createOrder() throws RepositoryException {
+    private Order createOrder() {
         Customer customer = viewIn.readCustomer();
         List<Book> booksInOrder = new ArrayList<>();
         List<Bookshelf> bookshelves = storageService.getBookshelfList();
@@ -73,195 +82,244 @@ public class StoreAction {
     }
 
     public void cancelOrderAction() {
-        try {
-            Order order = viewIn.choiceFromList(orderService.getNewOrder());
+        List<Order> orderList = orderService.getNewOrder();
+        if (orderList != null) {
+            Order order = viewIn.choiceFromList(orderList);
             Order cancelOrder = orderService.cancelOrder(order);
             boolean isCanceled = cancelOrder != null;
             viewOut.cancelOrderOut(isCanceled);
             if (isCanceled && saveChanging()) {
-                orderService.updateOrderToFile(cancelOrder);
+                if (!orderService.updateOrderToFile(cancelOrder)) {
+                    viewOut.printExceptionMessage("Неудалось обновить данные по заказу в файле!");
+                }
                 for (int number : cancelOrder.getNumbersRequest()) {
                     Request request = requestService.getRequestByNumber(number);
-                    requestService.updateRequestToFile(request);
+                    if (request == null || !requestService.updateRequestToFile(request)) {
+                        viewOut.printExceptionMessage("Неудалось обновить данные по запросу в файле!");
+                    }
                 }
-                storageService.writeAllToFile();
+                if (!storageService.writeAllToFile()) {
+                    viewOut.printExceptionMessage("Неудалось записать в файл список книг!");
+                }
             }
-        } catch (RepositoryException e) {
-            viewOut.printExceptionMessage(e.getMessage());
+        } else {
+            viewOut.printExceptionMessage("Ошибка вывода списка заказов!");
         }
 
     }
 
     public void completeOrderAction() {
-        try {
-            Order order = viewIn.choiceFromList(orderService.getNewOrder());
-            Order completeOrder = orderService.completeOrder(order);
-            boolean isCompleted = completeOrder != null;
-            viewOut.completeOrderOut(isCompleted);
-            if (isCompleted && saveChanging()) {
-                orderService.updateOrderToFile(completeOrder);
-                storageService.writeAllToFile();
+        List<Order> orderList = orderService.getNewOrder();
+        if (orderList != null) {
+            Order order = viewIn.choiceFromList(orderList);
+            if (order != null) {
+                Order completeOrder = orderService.completeOrder(order);
+                boolean isCompleted = completeOrder != null;
+                viewOut.completeOrderOut(isCompleted);
+                if (isCompleted && saveChanging()) {
+                    if (!orderService.updateOrderToFile(completeOrder)) {
+                        viewOut.printExceptionMessage("Неудалось обновить данные по заказу в файле!");
+                    }
+                    if (!storageService.writeAllToFile()) {
+                        viewOut.printExceptionMessage("Неудалось записать в файл список книг!");
+                    }
+                }
             }
-        } catch (RepositoryException e) {
-            viewOut.printExceptionMessage(e.getMessage());
+        } else {
+            viewOut.printExceptionMessage("Ошибка вывода списка заказов!");
         }
     }
 
     public void countCompletedOrderAction() {
-        try {
-            LocalDate dateFrom = viewIn.readDateFrom();
-            LocalDate dateTo = viewIn.readDateTo();
-            int countCompletedOrder = orderService.getCountCompletedOrder(dateFrom, dateTo);
+        LocalDate dateFrom = viewIn.readDateFrom();
+        LocalDate dateTo = viewIn.readDateTo();
+        int countCompletedOrder = orderService.getCountCompletedOrder(dateFrom, dateTo);
+        if (countCompletedOrder != -1) {
             viewOut.countCompletedOrderOut(countCompletedOrder);
-        } catch (RepositoryException e) {
-            viewOut.printExceptionMessage(e.getMessage());
+        } else {
+            viewOut.printExceptionMessage("Ошибка вывода списка заказов!");
         }
     }
 
     public void showCompletedOrdersAction() {
-        try {
-            LocalDate dateFrom = viewIn.readDateFrom();
-            LocalDate dateTo = viewIn.readDateTo();
-            List<Order> orders = orderService.getCompletedOrder(dateFrom, dateTo);
+        LocalDate dateFrom = viewIn.readDateFrom();
+        LocalDate dateTo = viewIn.readDateTo();
+        List<Order> orders = orderService.getCompletedOrder(dateFrom, dateTo);
+        if (orders != null) {
             viewOut.printList(orders);
-        } catch (RepositoryException e) {
-            viewOut.printExceptionMessage(e.getMessage());
+        } else {
+            viewOut.printExceptionMessage("Ошибка вывода списка заказов!");
         }
     }
 
     public void sortingOrdersAction() {
-        try {
-            viewOut.printList(orderService.getSortingOrderList());
-        } catch (RepositoryException e) {
-            viewOut.printExceptionMessage(e.getMessage());
+        List<Order> orderList = orderService.getSortingOrderList();
+        if (orderList != null) {
+            viewOut.printList(orderList);
+        } else {
+            viewOut.printExceptionMessage("Ошибка вывода списка заказов!");
         }
     }
 
     public void unsortingOrdersAction() {
-        try {
-            viewOut.printList(orderService.getOrderList());
-        } catch (RepositoryException e) {
-            viewOut.printExceptionMessage(e.getMessage());
+        List<Order> orderList = orderService.getOrderList();
+        if (orderList != null) {
+            viewOut.printList(orderList);
+        } else {
+            viewOut.printExceptionMessage("Ошибка вывода списка заказов!");
         }
     }
 
     public void exportOrderAction() {
-        try {
-            orderService.writeAllToFile();
+        if (orderService.writeAllToFile()) {
             viewOut.writeOrderListFromFile();
-        } catch (RepositoryException e) {
-            viewOut.printExceptionMessage(e.getMessage());
+        } else {
+            viewOut.printExceptionMessage("Неудалось записать в файл список заказов!");
         }
     }
 
     public void importOrderAction() {
-        try {
-            orderService.readAllFromFile();
+        if (orderService.readAllFromFile()) {
             viewOut.readOrderListFromFile();
-        } catch (RepositoryException e) {
-            viewOut.printExceptionMessage(e.getMessage());
+        } else {
+            viewOut.printExceptionMessage("Неудалось прочитать файл со списком заказов!");
         }
     }
 
     public void addRequestAction() {
-        try {
-            Book book = viewIn.choiceFromList(storageService.getBookshelfList()).getBook();
-            Request request = requestService.addRequest(book);
+        Book book = viewIn.choiceFromList(storageService.getBookshelfList()).getBook();
+        Request request = requestService.addRequest(book);
+        if (request != null) {
             if (saveChanging()) {
-                requestService.writeRequestToFile(request);
+                if (!requestService.writeRequestToFile(request)) {
+                    viewOut.printExceptionMessage("Неудалось добавить в файл запрос!");
+                }
             }
-        } catch (RepositoryException e) {
-            viewOut.printExceptionMessage(e.getMessage());
+        } else {
+            viewOut.printExceptionMessage("Ошибка добавления запроса!");
+        }
+    }
+
+    public void completeRequestAction() {
+        List<Request> requestList = requestService.getNewRequests();
+        if (requestList != null) {
+            Request request = viewIn.choiceFromList(requestList);
+            List<Book> book = new ArrayList<>();
+            if (request != null) {
+                book.add(request.getBook());
+                book = storageService.checkBooksNotInStorage(book);
+                if (book != null) {
+                    boolean isCompleted = book.size() == 0;
+                    viewOut.completeRequestOut(isCompleted);
+                    if (isCompleted) {
+                        request = requestService.completeRequest(request);
+                        if (saveChanging()) {
+                            requestService.updateRequestToFile(request);
+                            Bookshelf bookshelf = storageService.getBookshelf(request.getBook());
+                            storageService.updateBookshelfToFile(bookshelf);
+                        }
+                    }
+                } else {
+                    viewOut.printExceptionMessage("Ошибка выполнения запроса!");
+                }
+            }
+        } else {
+            viewOut.printExceptionMessage("Ошибка вывода списка запросов!");
         }
     }
 
     public void sortingRequestsAction() {
-        try {
-            viewOut.printList(requestService.getSortingRequestList());
-        } catch (RepositoryException e) {
-            viewOut.printExceptionMessage(e.getMessage());
+        List<Request> requestList = requestService.getSortingRequestList();
+        if (requestList != null) {
+            viewOut.printList(requestList);
+        } else {
+            viewOut.printExceptionMessage("Ошибка вывода списка запросов!");
         }
     }
 
     public void unsortingRequestAction() {
-        try {
-            viewOut.printList(requestService.getRequestList());
-        } catch (RepositoryException e) {
-            viewOut.printExceptionMessage(e.getMessage());
+        List<Request> requestList = requestService.getRequestList();
+        if (requestList != null) {
+            viewOut.printList(requestList);
+        } else {
+            viewOut.printExceptionMessage("Ошибка вывода списка запросов!");
         }
     }
 
     public void exportRequestAction() {
-        try {
-            requestService.writeAllToFile();
+        if (requestService.writeAllToFile()) {
             viewOut.writeRequestListFromFile();
-        } catch (RepositoryException e) {
-            viewOut.printExceptionMessage(e.getMessage());
+        } else {
+            viewOut.printExceptionMessage("Неудалось записать в файл список запросов!");
         }
     }
 
     public void importRequestAction() {
-        try {
-            requestService.readAllFromFile();
+        if (requestService.readAllFromFile()) {
             viewOut.readRequestListFromFile();
-        } catch (RepositoryException e) {
-            viewOut.printExceptionMessage(e.getMessage());
+        } else {
+            viewOut.printExceptionMessage("Неудалось прочитать файл со списком запросов!");
         }
     }
 
     public void addBookAction() {
-        try {
-            Book book = viewIn.choiceFromList(storageService.getBookshelfList()).getBook();
-            int count = viewIn.readCountBook();
-            Bookshelf bookshelf = storageService.addBookOnStorage(book, count);
+        Book book = viewIn.choiceFromList(storageService.getBookshelfList()).getBook();
+        int count = viewIn.readCountBook();
+        Bookshelf bookshelf = storageService.addBookOnStorage(book, count);
+        if (bookshelf != null) {
             if (saveChanging()) {
-                storageService.updateBookshelfToFile(bookshelf);
-                requestService.writeAllToFile();
+                if (!storageService.updateBookshelfToFile(bookshelf)) {
+                    viewOut.printExceptionMessage("Неудалось обновить данные по книге в файле!");
+                }
+                if (!requestService.writeAllToFile()) {
+                    viewOut.printExceptionMessage("Неудалось записать в файл список запросов!");
+                }
             }
-        } catch (RepositoryException e) {
-            viewOut.printExceptionMessage(e.getMessage());
+        } else {
+            viewOut.printExceptionMessage("Ошибка добавления книги!");
         }
     }
 
     public void showUnsoldBooks() {
-        try {
-            viewOut.printList(storageService.getUnsoldBookshelves());
-        } catch (RepositoryException e) {
-            viewOut.printExceptionMessage(e.getMessage());
+        List<Bookshelf> bookshelves = storageService.getUnsoldBookshelves();
+        if (bookshelves != null) {
+            viewOut.printList(bookshelves);
+        } else {
+            viewOut.printExceptionMessage("Ошибка вывода списка книг!");
         }
     }
 
     public void sortingBooksAction() {
-        try {
-            viewOut.printList(storageService.getSortingBookshelves());
-        } catch (RepositoryException e) {
-            viewOut.printExceptionMessage(e.getMessage());
+        List<Bookshelf> bookshelves = storageService.getSortingBookshelves();
+        if (bookshelves != null) {
+            viewOut.printList(bookshelves);
+        } else {
+            viewOut.printExceptionMessage("Ошибка вывода списка книг!");
         }
     }
 
     public void unsortingBooksAction() {
-        try {
-            viewOut.printList(storageService.getBookshelfList());
-        } catch (RepositoryException e) {
-            viewOut.printExceptionMessage(e.getMessage());
+        List<Bookshelf> bookshelves = storageService.getBookshelfList();
+        if (bookshelves != null) {
+            viewOut.printList(bookshelves);
+        } else {
+            viewOut.printExceptionMessage("Ошибка вывода списка книг!");
         }
     }
 
     public void exportBookshelfAction() {
-        try {
-            storageService.writeAllToFile();
+        if (storageService.writeAllToFile()) {
             viewOut.writeBookshelfListFromFile();
-        } catch (RepositoryException e) {
-            viewOut.printExceptionMessage(e.getMessage());
+        } else {
+            viewOut.printExceptionMessage("Неудалось записать в файл список книг!");
         }
     }
 
     public void importBookshelfAction() {
-        try {
-            storageService.readAllFromFile();
+        if (storageService.readAllFromFile()) {
             viewOut.readBookshelfListFromFile();
-        } catch (RepositoryException e) {
-            viewOut.printExceptionMessage(e.getMessage());
+        } else {
+            viewOut.printExceptionMessage("Неудалось прочитать файл со списком книг!");
         }
     }
 

@@ -7,39 +7,68 @@ import bookstore.entity.book.Book;
 import bookstore.exeption.RepositoryException;
 import bookstore.repository.base.StorageRepository;
 import bookstore.repository.file.FileStorageRepository;
+import bookstore.util.serialize.ISerializationService;
+import bookstore.util.serialize.SerializationService;
 import bookstore.service.request.RequestService;
 import bookstore.util.comparator.*;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Properties;
 
+import static bookstore.constant.FileName.STORAGE_SERIALIZATION_FILE_NAME;
 import static bookstore.entity.Status.COMPLETED;
 
 public class BookStorageService implements StorageService {
 
-    private static final int NUMBER_OF_MONTHS_FOR_UNSOLD_BOOKS = 6;
+    private int NUMBER_OF_MONTHS_FOR_UNSOLD_BOOKS;
+    private boolean MARK_REQUESTS_AS_COMPLETED;
 
     private StorageRepository storageRepository;
     private RequestService requestService;
     private FileStorageRepository fileStorageRepository;
 
-    public BookStorageService(StorageRepository storageRepository, RequestService requestService) {
+
+    public BookStorageService(StorageRepository storageRepository, FileStorageRepository fileStorageRepository,
+                              RequestService requestService, String configFileName) {
         this.storageRepository = storageRepository;
         this.requestService = requestService;
-        this.fileStorageRepository = new FileStorageRepository();
+        this.fileStorageRepository = fileStorageRepository;
+        try (FileInputStream fis = new FileInputStream(configFileName)) {
+            Properties properties = new Properties();
+            properties.load(fis);
+            NUMBER_OF_MONTHS_FOR_UNSOLD_BOOKS = Integer.parseInt(properties.getProperty("month_for_unsold_book"));
+            MARK_REQUESTS_AS_COMPLETED = Boolean.parseBoolean(properties.getProperty("mark_requests_as_completed"));
+        } catch (IOException e) {
+            NUMBER_OF_MONTHS_FOR_UNSOLD_BOOKS = 6;
+            MARK_REQUESTS_AS_COMPLETED = true;
+            System.err.println("ОШИБКА: Файл отсуствует!\n" + e.getMessage());
+        }
     }
 
     @Override
-    public Bookshelf addBookOnStorage(Book book, int count) throws RepositoryException {
-        requestService.completeRequest(book);
-        return storageRepository.update(book, count);
+    public Bookshelf addBookOnStorage(Book book, int count) {
+        try {
+            if (MARK_REQUESTS_AS_COMPLETED) {
+                requestService.completeRequestsByBook(book);
+            }
+            return storageRepository.update(book, count);
+        } catch (RepositoryException e) {
+            return null;
+        }
     }
 
     @Override
-    public Bookshelf addBookOnStorage(Book book, int count, double price) throws RepositoryException {
-        return storageRepository.create(new Bookshelf(book, count, price, LocalDate.now()));
+    public Bookshelf addBookOnStorage(Book book, int count, double price) {
+        try {
+            return storageRepository.create(new Bookshelf(book, count, price, LocalDate.now()));
+        } catch (RepositoryException e) {
+            return null;
+        }
     }
 
     @Override
@@ -52,21 +81,24 @@ public class BookStorageService implements StorageService {
     }
 
     @Override
-    public List<Book> checkBooksNotInStorage(List<Book> books) throws RepositoryException {
-        List<Book> result = new ArrayList<>();
-        for (Book book : books) {
-            if (!bookReservation(book)) {
-                result.add(book);
+    public List<Book> checkBooksNotInStorage(List<Book> books) {
+        try {
+            List<Book> result = new ArrayList<>();
+            for (Book book : books) {
+                if (!bookReservation(book)) {
+                    result.add(book);
+                }
             }
+            return result;
+        } catch (RepositoryException e) {
+            return null;
         }
-        return result;
     }
 
     private boolean bookReservation(Book book) throws RepositoryException {
         List<Bookshelf> bookshelves = storageRepository.readAll();
-        int index = searchBook(book, bookshelves);
-        if (index >= 0) {
-            Bookshelf bookshelf = bookshelves.get(index);
+        Bookshelf bookshelf = searchBook(book, bookshelves);
+        if (bookshelf != null) {
             int count = bookshelf.getCount();
             if (count > 0) {
                 bookshelf.setCount(count - 1);
@@ -77,7 +109,7 @@ public class BookStorageService implements StorageService {
     }
 
     @Override
-    public void cancelBookReservation(Order order) throws RepositoryException {
+    public void cancelBookReservation(Order order) {
         List<Request> requestList = getRequestFromOrder(order);
         Request request;
         for (Book book : order.getBooks()) {
@@ -97,7 +129,7 @@ public class BookStorageService implements StorageService {
         return null;
     }
 
-    private List<Request> getRequestFromOrder(Order order) throws RepositoryException {
+    private List<Request> getRequestFromOrder(Order order) {
         List<Request> requests = new ArrayList<>();
         for (Integer requestNumber : order.getNumbersRequest()) {
             requests.add(requestService.getRequestByNumber(requestNumber));
@@ -105,47 +137,67 @@ public class BookStorageService implements StorageService {
         return requests;
     }
 
-    private void changeBookCount(Book book) throws RepositoryException {
-        List<Bookshelf> bookshelves = storageRepository.readAll();
-        int index = searchBook(book, bookshelves);
-        Bookshelf bookshelf = bookshelves.get(index);
+    private void changeBookCount(Book book) {
+        Bookshelf bookshelf = getBookshelf(book);
         int count = bookshelf.getCount();
         bookshelf.setCount(count + 1);
     }
 
-    private int searchBook(Book book, List<Bookshelf> bookshelves) {
-        for (int i = 0; i < bookshelves.size(); i++) {
-            if (bookshelves.get(i).getBook().equals(book)) {
-                return i;
+    private Bookshelf searchBook(Book book, List<Bookshelf> bookshelves) {
+        for (Bookshelf bookshelf : bookshelves) {
+            if (bookshelf.getBook().equals(book)) {
+                return bookshelf;
             }
         }
-        return -1;
+        return null;
     }
 
     @Override
-    public List<Bookshelf> getBookshelfList() throws RepositoryException {
-        return storageRepository.readAll();
-    }
-
-    @Override
-    public List<Bookshelf> getSortingBookshelves() throws RepositoryException {
-        List<Bookshelf> books = new ArrayList<>(storageRepository.readAll());
-        if (books.size() > 0) {
-            Comparator<Bookshelf> bookComp = new BookshelfTitleComparator().thenComparing(new BookshelfPublicationYearComparator())
-                    .thenComparing(new BookshelfPriceComparator()).thenComparing(new BookshelfPresenceComparator());
-            books.sort(bookComp);
+    public Bookshelf getBookshelf(Book book) {
+        try {
+            List<Bookshelf> bookshelves = storageRepository.readAll();
+            return searchBook(book, bookshelves);
+        } catch (RepositoryException e) {
+            return null;
         }
-        return books;
     }
 
     @Override
-    public List<Bookshelf> getUnsoldBookshelves() throws RepositoryException {
-        List<Bookshelf> bookshelves = getBooksBeforeArrivalDate();
-        if (bookshelves.size() > 0) {
-            Comparator<Bookshelf> bookComp = new BookshelfArrivalDateComparator().thenComparing(new BookshelfPriceComparator());
-            bookshelves.sort(bookComp);
+    public List<Bookshelf> getBookshelfList() {
+        try {
+            return storageRepository.readAll();
+        } catch (RepositoryException e) {
+            return null;
         }
-        return bookshelves;
+    }
+
+    @Override
+    public List<Bookshelf> getSortingBookshelves() {
+        try {
+            List<Bookshelf> books = new ArrayList<>(storageRepository.readAll());
+            if (books.size() > 0) {
+                Comparator<Bookshelf> bookComp = new BookshelfTitleComparator().thenComparing(new BookshelfPublicationYearComparator())
+                        .thenComparing(new BookshelfPriceComparator()).thenComparing(new BookshelfPresenceComparator());
+                books.sort(bookComp);
+            }
+            return books;
+        } catch (RepositoryException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public List<Bookshelf> getUnsoldBookshelves() {
+        try {
+            List<Bookshelf> bookshelves = getBooksBeforeArrivalDate();
+            if (bookshelves.size() > 0) {
+                Comparator<Bookshelf> bookComp = new BookshelfArrivalDateComparator().thenComparing(new BookshelfPriceComparator());
+                bookshelves.sort(bookComp);
+            }
+            return bookshelves;
+        } catch (RepositoryException e) {
+            return null;
+        }
     }
 
     private List<Bookshelf> getBooksBeforeArrivalDate() throws RepositoryException {
@@ -160,23 +212,54 @@ public class BookStorageService implements StorageService {
     }
 
     @Override
-    public void readAllFromFile() throws RepositoryException {
-        List<Bookshelf> bookshelves = fileStorageRepository.readAll();
-        storageRepository.createAll(bookshelves);
+    public boolean readAllFromFile() {
+        try {
+            List<Bookshelf> bookshelves = fileStorageRepository.readAll();
+            storageRepository.createAll(bookshelves);
+            return true;
+        } catch (RepositoryException e) {
+            return false;
+        }
     }
 
     @Override
-    public void writeAllToFile() throws RepositoryException {
-        fileStorageRepository.createAll(storageRepository.readAll());
+    public boolean writeAllToFile() {
+        try {
+            fileStorageRepository.createAll(storageRepository.readAll());
+            return true;
+        } catch (RepositoryException e) {
+            return false;
+        }
     }
 
     @Override
-    public void writeBookshelfToFile(Bookshelf bookshelf) throws RepositoryException {
-        fileStorageRepository.create(bookshelf);
+    public boolean writeBookshelfToFile(Bookshelf bookshelf) {
+        try {
+            fileStorageRepository.create(bookshelf);
+            return true;
+        } catch (RepositoryException e) {
+            return false;
+        }
     }
 
     @Override
-    public void updateBookshelfToFile(Bookshelf bookshelf) throws RepositoryException {
-        fileStorageRepository.update(bookshelf, null);
+    public boolean updateBookshelfToFile(Bookshelf bookshelf) {
+        try {
+            fileStorageRepository.update(bookshelf, null);
+            return true;
+        } catch (RepositoryException e) {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean save() {
+        try {
+            ISerializationService<Bookshelf> storageSerialize = new SerializationService<>();
+            storageSerialize.save(storageRepository.readAll(), STORAGE_SERIALIZATION_FILE_NAME);
+            return true;
+        } catch (RepositoryException e) {
+            return false;
+        }
     }
 }

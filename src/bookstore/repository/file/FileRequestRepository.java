@@ -16,6 +16,10 @@ public class FileRequestRepository implements Repository<Request, Integer, Integ
         requestCsv = new RequestCsv();
     }
 
+    public FileRequestRepository(RequestCsv requestCsv) {
+        this.requestCsv = requestCsv;
+    }
+
     @Override
     public Request create(Request request) throws RepositoryException {
         try {

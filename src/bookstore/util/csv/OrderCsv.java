@@ -12,19 +12,19 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OrderCsv implements CsvUtil<Order> {
+import static bookstore.constant.FileName.ORDER_CSV_FILE_NAME;
 
-    private static final String ROOT_DIR_PATH = ".\\src\\bookstore\\rootdir\\order.csv";
+public class OrderCsv implements CsvUtil<Order> {
 
     @Override
     public void writeToCsv(Order order) throws IOException {
-        Writer writer = new FileWriter(ROOT_DIR_PATH, true);
+        Writer writer = new FileWriter(ORDER_CSV_FILE_NAME, true);
         writer.write(convertOrderToString(order));
     }
 
     @Override
     public void writeAllToCsv(List<Order> orderList) throws IOException {
-        Writer writer = new FileWriter(ROOT_DIR_PATH, false);
+        Writer writer = new FileWriter(ORDER_CSV_FILE_NAME, false);
         StringBuilder text = new StringBuilder();
         for (Order order : orderList) {
             text.append(convertOrderToString(order)).append("\n");
@@ -47,7 +47,7 @@ public class OrderCsv implements CsvUtil<Order> {
     public List<Order> readAllFromCsv() throws IOException {
         List<Order> orderList = new ArrayList<>();
         String line;
-        BufferedReader reader = new BufferedReader(new FileReader(ROOT_DIR_PATH));
+        BufferedReader reader = new BufferedReader(new FileReader(ORDER_CSV_FILE_NAME));
         while ((line = reader.readLine()) != null) {
             Order order = convertStringToOrder(line);
             orderList.add(order);

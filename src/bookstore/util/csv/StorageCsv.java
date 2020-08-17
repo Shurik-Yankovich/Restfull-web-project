@@ -10,19 +10,19 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StorageCsv implements CsvUtil<Bookshelf> {
+import static bookstore.constant.FileName.STORAGE_CSV_FILE_NAME;
 
-    private static final String ROOT_DIR_PATH = ".\\src\\bookstore\\rootdir\\storage.csv";
+public class StorageCsv implements CsvUtil<Bookshelf> {
 
     @Override
     public void writeToCsv(Bookshelf bookshelf) throws IOException {
-        Writer writer = new FileWriter(ROOT_DIR_PATH, true);
+        Writer writer = new FileWriter(STORAGE_CSV_FILE_NAME, true);
         writer.write(convertBookshelfToString(bookshelf));
     }
 
     @Override
     public void writeAllToCsv(List<Bookshelf> bookshelves) throws IOException {
-        Writer writer = new FileWriter(ROOT_DIR_PATH, false);
+        Writer writer = new FileWriter(STORAGE_CSV_FILE_NAME, false);
         StringBuilder text = new StringBuilder();
         for (Bookshelf bookshelf : bookshelves) {
             text.append(convertBookshelfToString(bookshelf)).append("\n");
@@ -45,7 +45,7 @@ public class StorageCsv implements CsvUtil<Bookshelf> {
     public List<Bookshelf> readAllFromCsv() throws IOException {
         List<Bookshelf> bookshelves = new ArrayList<>();
         String line;
-        BufferedReader reader = new BufferedReader(new FileReader(ROOT_DIR_PATH));
+        BufferedReader reader = new BufferedReader(new FileReader(STORAGE_CSV_FILE_NAME));
         while ((line = reader.readLine()) != null) {
             Bookshelf bookshelf = convertStringToBookshelf(line);
             bookshelves.add(bookshelf);

@@ -2,9 +2,11 @@ package bookstore.entity;
 
 import bookstore.entity.book.Book;
 
+import java.io.Serializable;
+
 import static bookstore.entity.Status.NEW;
 
-public class Request {
+public class Request implements Serializable {
 
     private int id;
     private Book book;

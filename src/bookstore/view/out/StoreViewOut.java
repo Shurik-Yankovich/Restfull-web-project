@@ -35,6 +35,15 @@ public class StoreViewOut implements ViewOut{
     }
 
     @Override
+    public void completeRequestOut(boolean isCompleted) {
+        if (isCompleted) {
+            System.out.println("Запрос успешно выполнен!");
+        } else {
+            System.out.println("Неудалось выполнить запрос!");
+        }
+    }
+
+    @Override
     public <T> void printList(List<T> list) {
         for (int i = 0; i < list.size(); i++) {
             System.out.print(String.format(MENU_TEXT, i, list.get(i)));
