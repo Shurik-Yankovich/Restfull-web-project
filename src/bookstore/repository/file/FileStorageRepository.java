@@ -4,21 +4,23 @@ import bookstore.entity.Bookshelf;
 import bookstore.exeption.RepositoryException;
 import bookstore.repository.base.Repository;
 import bookstore.util.csv.StorageCsv;
+import com.annotation.InjectByType;
 
 import java.io.IOException;
 import java.util.List;
 
 public class FileStorageRepository implements Repository<Bookshelf, Integer, Integer, Bookshelf> {
 
+    @InjectByType
     private StorageCsv storageCsv;
 
-    public FileStorageRepository() {
-        storageCsv = new StorageCsv();
-    }
+//    public FileStorageRepository() {
+//        storageCsv = new StorageCsv();
+//    }
 
-    public FileStorageRepository(StorageCsv storageCsv) {
-        this.storageCsv = storageCsv;
-    }
+//    public FileStorageRepository(StorageCsv storageCsv) {
+//        this.storageCsv = storageCsv;
+//    }
 
     @Override
     public Bookshelf create(Bookshelf bookshelf) throws RepositoryException {

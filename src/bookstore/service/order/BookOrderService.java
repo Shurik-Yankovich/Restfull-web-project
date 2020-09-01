@@ -6,44 +6,49 @@ import bookstore.entity.book.Book;
 import bookstore.exeption.RepositoryException;
 import bookstore.repository.base.OrderRepository;
 import bookstore.repository.file.FileOrderRepository;
-import bookstore.repository.list.BookOrderRepository;
-import bookstore.util.serialize.ISerializationService;
-import bookstore.util.serialize.SerializationService;
 import bookstore.service.request.RequestService;
 import bookstore.service.storage.StorageService;
 import bookstore.util.comparator.OrderCompletionDateComparator;
 import bookstore.util.comparator.OrderDateComparator;
 import bookstore.util.comparator.OrderPriceComparator;
 import bookstore.util.comparator.OrderStatusComparator;
+import bookstore.util.serialize.ISerializationService;
+import com.annotation.InjectByProperty;
+import com.annotation.InjectByType;
+import com.annotation.PostConstruct;
+import com.annotation.Singleton;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import static bookstore.constant.FileName.ORDER_SERIALIZATION_FILE_NAME;
 import static bookstore.entity.Status.*;
 
+@Singleton
 public class BookOrderService implements OrderService {
 
-    private OrderRepository orderRepository;
-    private StorageService storageService;
+    @InjectByProperty(propertyName = "ORDER_SERIALIZATION_FILE_NAME")
+    private String ORDER_SERIALIZATION_FILE_NAME;
+
+    @InjectByType
     private RequestService requestService;
+    @InjectByType
+    private StorageService storageService;
+    @InjectByType
+    private OrderRepository orderRepository;
+    @InjectByType
     private FileOrderRepository fileOrderRepository;
+    @InjectByType
+    private ISerializationService<Order> orderSerialize;
 
-    public BookOrderService(StorageService storageService, RequestService requestService) {
-        this.storageService = storageService;
-        this.requestService = requestService;
-        orderRepository = new BookOrderRepository();
-        fileOrderRepository = new FileOrderRepository();
-    }
-
-    public BookOrderService(StorageService storageService, RequestService requestService,
-                            OrderRepository orderRepository, FileOrderRepository fileOrderRepository) {
-        this.storageService = storageService;
-        this.requestService = requestService;
-        this.orderRepository = orderRepository;
-        this.fileOrderRepository = fileOrderRepository;
+    @PostConstruct
+    public void init() {
+        try {
+            orderRepository.createAll(orderSerialize.load(ORDER_SERIALIZATION_FILE_NAME));
+        } catch (RepositoryException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -233,7 +238,6 @@ public class BookOrderService implements OrderService {
     @Override
     public boolean save() {
         try {
-            ISerializationService<Order> orderSerialize = new SerializationService<>();
             orderSerialize.save(orderRepository.readAll(), ORDER_SERIALIZATION_FILE_NAME);
             return true;
         } catch (RepositoryException e) {

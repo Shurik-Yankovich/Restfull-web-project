@@ -4,19 +4,22 @@ import bookstore.entity.Request;
 import bookstore.entity.Status;
 import bookstore.entity.book.Book;
 import bookstore.entity.book.NovelBook;
+import com.annotation.InjectByProperty;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static bookstore.constant.FileName.REQUEST_CSV_FILE_NAME;
-
 public class RequestCsv implements CsvUtil<Request> {
+
+    @InjectByProperty(propertyName = "REQUEST_CSV_FILE_NAME")
+    private String REQUEST_CSV_FILE_NAME;
 
     @Override
     public void writeToCsv(Request request) throws IOException {
         Writer writer = new FileWriter(REQUEST_CSV_FILE_NAME, true);
         writer.write(convertRequestToString(request));
+        writer.close();
     }
 
     @Override
@@ -27,6 +30,7 @@ public class RequestCsv implements CsvUtil<Request> {
             text.append(convertRequestToString(request)).append("\n");
         }
         writer.write(text.toString());
+        writer.close();
     }
 
     @Override
@@ -49,6 +53,7 @@ public class RequestCsv implements CsvUtil<Request> {
             Request request = convertStringToRequest(line);
             requestList.add(request);
         }
+        reader.close();
         return requestList;
     }
 

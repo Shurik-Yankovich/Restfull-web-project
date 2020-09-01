@@ -5,7 +5,6 @@ import bookstore.entity.Status;
 import bookstore.repository.base.OrderRepository;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import static bookstore.entity.Status.COMPLETED;
@@ -13,14 +12,6 @@ import static bookstore.entity.Status.COMPLETED;
 public class BookOrderRepository implements OrderRepository {
 
     private List<Order> array;
-
-    public BookOrderRepository() {
-        array = new ArrayList<>();
-    }
-
-    public BookOrderRepository(List<Order> array) {
-        this.array = array;
-    }
 
     @Override
     public Order create(Order order) {
