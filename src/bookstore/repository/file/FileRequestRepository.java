@@ -2,14 +2,14 @@ package bookstore.repository.file;
 
 import bookstore.entity.Request;
 import bookstore.exeption.RepositoryException;
-import bookstore.repository.base.Repository;
+import bookstore.repository.base.RequestRepository;
 import bookstore.util.csv.RequestCsv;
 import com.annotation.InjectByType;
 
 import java.io.IOException;
 import java.util.List;
 
-public class FileRequestRepository implements Repository<Request, Integer, Integer, Request> {
+public class FileRequestRepository implements RequestRepository {
 
     @InjectByType
     private RequestCsv requestCsv;
@@ -39,7 +39,7 @@ public class FileRequestRepository implements Repository<Request, Integer, Integ
     }
 
     @Override
-    public Request update(Request request, Integer integer) throws RepositoryException {
+    public Request update(Request request) throws RepositoryException {
         try {
             List<Request> requestList = requestCsv.readAllFromCsv();
             boolean isPresent = false;

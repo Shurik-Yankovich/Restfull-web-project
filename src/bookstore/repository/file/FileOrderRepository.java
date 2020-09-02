@@ -1,7 +1,6 @@
 package bookstore.repository.file;
 
 import bookstore.entity.Order;
-import bookstore.entity.Status;
 import bookstore.exeption.RepositoryException;
 import bookstore.repository.base.OrderRepository;
 import bookstore.util.csv.OrderCsv;
@@ -40,7 +39,7 @@ public class FileOrderRepository implements OrderRepository {
     }
 
     @Override
-    public Order update(Order order, Status status) throws RepositoryException {
+    public Order update(Order order) throws RepositoryException {
         try {
             List<Order> orderList = orderCsv.readAllFromCsv();
             boolean isPresent = false;

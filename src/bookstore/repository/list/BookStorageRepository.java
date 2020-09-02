@@ -1,66 +1,56 @@
 package bookstore.repository.list;
 
 import bookstore.entity.Bookshelf;
-import bookstore.entity.book.Book;
+import bookstore.entity.Book;
 import bookstore.repository.base.StorageRepository;
 
-import java.time.LocalDate;
 import java.util.List;
 
 public class BookStorageRepository implements StorageRepository {
 
-    private static final String BOOK_NOT_FOUND = "Book not found!";
-
-    private List<Bookshelf> bookshelves;
+    private List<Bookshelf> array;
 
     @Override
-    public Bookshelf create(Bookshelf book) {
-        int index = bookshelves.size();
-        book.setId(index);
-        bookshelves.add(book);
-        return book;
-    }
-
-    @Override
-    public Bookshelf read(Book book) {
-        int index = searchBook(book);
-        return bookshelves.get(index);
-    }
-
-    @Override
-    public void delete(Book book) {
-        int index = searchBook(book);
-        bookshelves.remove(index);
-    }
-
-    @Override
-    public Bookshelf update(Book book, Integer count) {
-        int index = searchBook(book);
-        Bookshelf bookshelf = null;
-        if (index >= 0) {
-            bookshelf = bookshelves.get(index);
-            int currentCount = bookshelf.getCount();
-            bookshelf.setArrivalDate(LocalDate.now());
-            bookshelf.setCount(count + currentCount);
-        } else {
-            System.out.println(BOOK_NOT_FOUND);
-        }
+    public Bookshelf create(Bookshelf bookshelf) {
+        int index = array.size();
+        bookshelf.setId(index);
+        array.add(bookshelf);
         return bookshelf;
     }
 
     @Override
+    public Bookshelf read(Integer index) {
+        return array.get(index);
+    }
+
+    @Override
+    public void delete(Integer index) {
+        array.remove(index);
+    }
+
+    @Override
+    public Bookshelf update(Bookshelf bookshelf) {
+        int index = bookshelf.getId();
+        if (array.get(index) != null) {
+            array.set(index, bookshelf);
+            return bookshelf;
+        }
+        return null;
+    }
+
+    @Override
     public List<Bookshelf> readAll() {
-        return bookshelves;
+        return array;
     }
 
     @Override
     public void createAll(List<Bookshelf> bookshelves) {
-        this.bookshelves = bookshelves;
+        this.array = bookshelves;
     }
 
     private int searchBook(Book book) {
-        for (int i = 0; i < bookshelves.size(); i++) {
-            if (bookshelves.get(i).getBook().equals(book)) {
+        for (int i = 0; i < array.size(); i++) {
+            if (array.get(i).getBook().equals(book)) {
                 return i;
             }
         }

@@ -1,7 +1,5 @@
 package bookstore.entity;
 
-import bookstore.entity.book.Book;
-
 import java.io.Serializable;
 
 import static bookstore.entity.Status.NEW;

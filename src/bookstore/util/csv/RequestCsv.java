@@ -2,8 +2,7 @@ package bookstore.util.csv;
 
 import bookstore.entity.Request;
 import bookstore.entity.Status;
-import bookstore.entity.book.Book;
-import bookstore.entity.book.NovelBook;
+import bookstore.entity.Book;
 import com.annotation.InjectByProperty;
 
 import java.io.*;
@@ -80,7 +79,7 @@ public class RequestCsv implements CsvUtil<Request> {
 
     private Book convertStringToBook(String text) {
         final String regex = ",";
-        Book book = new NovelBook();
+        Book book = new Book();
         String[] values = text.split(regex);
         book.setTitle(values[0]);
         book.setAuthor(values[1]);

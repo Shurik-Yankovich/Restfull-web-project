@@ -1,7 +1,5 @@
 package bookstore.entity;
 
-import bookstore.entity.book.Book;
-
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

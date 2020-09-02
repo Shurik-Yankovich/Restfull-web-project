@@ -4,7 +4,7 @@ import bookstore.entity.Bookshelf;
 import bookstore.entity.Customer;
 import bookstore.entity.Order;
 import bookstore.entity.Request;
-import bookstore.entity.book.Book;
+import bookstore.entity.Book;
 import bookstore.service.order.OrderService;
 import bookstore.service.request.RequestService;
 import bookstore.service.storage.StorageService;

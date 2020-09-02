@@ -3,7 +3,7 @@ package bookstore.service.storage;
 import bookstore.entity.Bookshelf;
 import bookstore.entity.Order;
 import bookstore.entity.Request;
-import bookstore.entity.book.Book;
+import bookstore.entity.Book;
 import bookstore.exeption.RepositoryException;
 import bookstore.repository.base.StorageRepository;
 import bookstore.repository.file.FileStorageRepository;
@@ -54,10 +54,24 @@ public class BookStorageService implements StorageService {
             if (MARK_REQUESTS_AS_COMPLETED) {
                 requestService.completeRequestsByBook(book);
             }
-            return storageRepository.update(book, count);
+            Bookshelf bookshelf = searchBook(book);
+            int currentCount = bookshelf.getCount();
+            bookshelf.setCount(currentCount + count);
+            return storageRepository.update(bookshelf);
         } catch (RepositoryException e) {
             return null;
         }
+    }
+
+    private Bookshelf searchBook(Book book) throws RepositoryException {
+        Bookshelf bookshelf;
+        for (int i = 0; i < getBookshelfList().size(); i++) {
+            bookshelf = storageRepository.read(i);
+            if (bookshelf.getBook().equals(book)) {
+                return bookshelf;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -73,7 +87,8 @@ public class BookStorageService implements StorageService {
     public double getTotalPrice(List<Book> books) throws RepositoryException {
         double price = 0;
         for (Book book : books) {
-            price += storageRepository.read(book).getPrice();
+            //кастыль
+            price += storageRepository.read(searchBook(book).getId()).getPrice();
         }
         return price;
     }
@@ -243,7 +258,7 @@ public class BookStorageService implements StorageService {
     @Override
     public boolean updateBookshelfToFile(Bookshelf bookshelf) {
         try {
-            fileStorageRepository.update(bookshelf, null);
+            fileStorageRepository.update(bookshelf);
             return true;
         } catch (RepositoryException e) {
             return false;

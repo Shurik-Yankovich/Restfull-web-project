@@ -2,14 +2,14 @@ package bookstore.repository.file;
 
 import bookstore.entity.Bookshelf;
 import bookstore.exeption.RepositoryException;
-import bookstore.repository.base.Repository;
+import bookstore.repository.base.StorageRepository;
 import bookstore.util.csv.StorageCsv;
 import com.annotation.InjectByType;
 
 import java.io.IOException;
 import java.util.List;
 
-public class FileStorageRepository implements Repository<Bookshelf, Integer, Integer, Bookshelf> {
+public class FileStorageRepository implements StorageRepository {
 
     @InjectByType
     private StorageCsv storageCsv;
@@ -39,17 +39,17 @@ public class FileStorageRepository implements Repository<Bookshelf, Integer, Int
     }
 
     @Override
-    public Bookshelf update(Bookshelf book, Integer integer) throws RepositoryException {
+    public Bookshelf update(Bookshelf bookshelf) throws RepositoryException {
         try {
             List<Bookshelf> bookshelves = storageCsv.readAllFromCsv();
             for (int i = 0; i < bookshelves.size(); i++) {
-                if (bookshelves.get(i).getId() == book.getId()) {
-                    bookshelves.set(i, book);
+                if (bookshelves.get(i).getId() == bookshelf.getId()) {
+                    bookshelves.set(i, bookshelf);
                     break;
                 }
             }
             storageCsv.writeAllToCsv(bookshelves);
-            return book;
+            return bookshelf;
         } catch (IOException e) {
             throw new RepositoryException("Ошибка обновления данных о книге в файле!");
         }

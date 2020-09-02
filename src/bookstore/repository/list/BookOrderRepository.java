@@ -1,7 +1,6 @@
 package bookstore.repository.list;
 
 import bookstore.entity.Order;
-import bookstore.entity.Status;
 import bookstore.repository.base.OrderRepository;
 
 import java.time.LocalDate;
@@ -22,17 +21,16 @@ public class BookOrderRepository implements OrderRepository {
     }
 
     @Override
-    public Order update(Order bookOrder, Status status) {
-        Order order = null;
-        if (array.contains(bookOrder)) {
-            int index = array.indexOf(bookOrder);
-            order = array.get(index);
-            order.setStatus(status);
-            if (status == COMPLETED) {
-                order.setOrderCompletionDate(LocalDate.now());
+    public Order update(Order bookOrder) {
+        int index = bookOrder.getId();
+        if (array.get(index) != null) {
+            array.set(index, bookOrder);
+            if (bookOrder.getStatus() == COMPLETED) {
+                bookOrder.setOrderCompletionDate(LocalDate.now());
             }
+            return bookOrder;
         }
-        return order;
+        return null;
     }
 
     @Override

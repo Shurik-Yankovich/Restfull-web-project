@@ -1,7 +1,7 @@
 package bookstore.service.storage;
 
 import bookstore.entity.Order;
-import bookstore.entity.book.Book;
+import bookstore.entity.Book;
 import bookstore.entity.Bookshelf;
 import bookstore.exeption.RepositoryException;
 

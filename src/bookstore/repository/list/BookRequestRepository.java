@@ -1,7 +1,6 @@
 package bookstore.repository.list;
 
 import bookstore.entity.Request;
-import bookstore.entity.Status;
 import bookstore.repository.base.RequestRepository;
 
 import java.util.List;
@@ -24,12 +23,13 @@ public class BookRequestRepository implements RequestRepository {
     }
 
     @Override
-    public Request update(Integer numberRequest, Status status) {
-        Request request = read(numberRequest);
-        if (request != null) {
-            request.setStatus(status);
+    public Request update(Request request) {
+        int index = request.getId();
+        if (array.get(index) != null) {
+            array.set(index, request);
+            return request;
         }
-        return request;
+        return null;
     }
 
     @Override

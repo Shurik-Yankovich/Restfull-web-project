@@ -1,7 +1,7 @@
 package bookstore.service.request;
 
 import bookstore.entity.Request;
-import bookstore.entity.book.Book;
+import bookstore.entity.Book;
 import bookstore.exeption.RepositoryException;
 import bookstore.repository.base.RequestRepository;
 import bookstore.repository.file.FileRequestRepository;
@@ -110,8 +110,9 @@ public class BookRequestService implements RequestService {
     }
 
     @Override
-    public Request cancelRequest(int number) throws RepositoryException {
-        return requestRepository.update(number, CANCELED);
+    public Request cancelRequest(Request request) throws RepositoryException {
+        request.setStatus(CANCELED);
+        return requestRepository.update(request);
     }
 
     @Override
@@ -207,7 +208,7 @@ public class BookRequestService implements RequestService {
     @Override
     public boolean updateRequestToFile(Request request) {
         try {
-            fileRequestRepository.update(request, null);
+            fileRequestRepository.update(request);
             return true;
         } catch (RepositoryException e) {
             return false;

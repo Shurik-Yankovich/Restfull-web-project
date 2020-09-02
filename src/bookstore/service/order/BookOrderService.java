@@ -2,7 +2,8 @@ package bookstore.service.order;
 
 import bookstore.entity.Customer;
 import bookstore.entity.Order;
-import bookstore.entity.book.Book;
+import bookstore.entity.Request;
+import bookstore.entity.Book;
 import bookstore.exeption.RepositoryException;
 import bookstore.repository.base.OrderRepository;
 import bookstore.repository.file.FileOrderRepository;
@@ -77,9 +78,11 @@ public class BookOrderService implements OrderService {
         try {
             storageService.cancelBookReservation(bookOrder);
             for (int number : bookOrder.getNumbersRequest()) {
-                requestService.cancelRequest(number);
+                Request request = requestService.getRequestByNumber(number);
+                requestService.cancelRequest(request);
             }
-            return orderRepository.update(bookOrder, CANCELED);
+            bookOrder.setStatus(CANCELED);
+            return orderRepository.update(bookOrder);
         } catch (RepositoryException e) {
             return null;
         }
@@ -91,7 +94,8 @@ public class BookOrderService implements OrderService {
             List<Integer> requestNumbers = bookOrder.getNumbersRequest();
             boolean result = requestService.checkCompleteRequest(requestNumbers);
             if (result) {
-                bookOrder = orderRepository.update(bookOrder, COMPLETED);
+                bookOrder.setStatus(COMPLETED);
+                bookOrder = orderRepository.update(bookOrder);
                 result = bookOrder != null;
             }
             return result ? bookOrder : null;
@@ -228,7 +232,7 @@ public class BookOrderService implements OrderService {
     @Override
     public boolean updateOrderToFile(Order order) {
         try {
-            fileOrderRepository.update(order, null);
+            fileOrderRepository.update(order);
             return true;
         } catch (RepositoryException e) {
             return false;

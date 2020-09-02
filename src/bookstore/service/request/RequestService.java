@@ -1,7 +1,7 @@
 package bookstore.service.request;
 
 import bookstore.entity.Request;
-import bookstore.entity.book.Book;
+import bookstore.entity.Book;
 import bookstore.exeption.RepositoryException;
 
 import java.util.List;
@@ -16,7 +16,7 @@ public interface RequestService {
 
     Request completeRequest(Request request);
 
-    Request cancelRequest(int number) throws RepositoryException;
+    Request cancelRequest(Request request) throws RepositoryException;
 
     boolean checkCompleteRequest(List<Integer> requestNumbers);
 

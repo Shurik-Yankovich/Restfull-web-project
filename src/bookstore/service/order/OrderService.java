@@ -2,7 +2,7 @@ package bookstore.service.order;
 
 import bookstore.entity.Customer;
 import bookstore.entity.Order;
-import bookstore.entity.book.Book;
+import bookstore.entity.Book;
 
 import java.time.LocalDate;
 import java.util.List;

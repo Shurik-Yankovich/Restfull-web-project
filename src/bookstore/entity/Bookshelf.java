@@ -1,8 +1,5 @@
 package bookstore.entity;
 
-import bookstore.entity.book.Book;
-import bookstore.factory.BookFactory;
-
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -15,8 +12,8 @@ public class Bookshelf implements Serializable {
     private double price;
     private LocalDate arrivalDate;
 
-    public Bookshelf(BookFactory bookFactory, String title, String author, int publicationYear, int count, double price, LocalDate arrivalDate) {
-        this.book = bookFactory.createBook();
+    public Bookshelf(String title, String author, int publicationYear, int count, double price, LocalDate arrivalDate) {
+        this.book = new Book();
         this.book.setTitle(title);
         this.book.setAuthor(author);
         this.book.setPublicationYear(publicationYear);
