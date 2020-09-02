@@ -5,8 +5,8 @@ import java.io.Serializable;
 public class Customer implements Serializable {
 
     private String fullName;
-    private String phoneNumber;
     private String address;
+    private String phoneNumber;
 
     public Customer(String fullName, String phoneNumber, String address) {
         this.fullName = fullName;

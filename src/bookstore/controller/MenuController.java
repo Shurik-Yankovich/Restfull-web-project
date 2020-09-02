@@ -14,12 +14,8 @@ public class MenuController {
     public MenuController() {
     }
 
-//    public MenuController(Builder builder, Navigator navigator) {
-//        this.builder = builder;
-//        this.navigator = navigator;
-//    }
-
     public void run() {
+
         int choice;
         Menu currentMenu;
 

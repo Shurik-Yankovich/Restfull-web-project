@@ -11,5 +11,7 @@ module Senla {
     opens bookstore.service.storage to InitAnnotation;
     opens bookstore.util.csv to InitAnnotation;
     opens bookstore.util.serialize to InitAnnotation;
+    opens bookstore.util.connections to InitAnnotation;
     requires InitAnnotation;
+    requires java.sql;
 }
