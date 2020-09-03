@@ -114,7 +114,7 @@ public class DBRequestRepository implements RequestRepository {
     }
 
     @Override
-    public void delete(Integer integer) throws RepositoryException {
+    public void delete(Integer primaryKey) throws RepositoryException {
 
     }
 
@@ -183,8 +183,7 @@ public class DBRequestRepository implements RequestRepository {
 
     private Request addRequestToDB(Connection connection, Request request) throws SQLException {
         PreparedStatement preparedStatement = connection.prepareStatement(SqlConstant.CREATE_REQUEST);
-        int requestId = request.getId();
-        preparedStatement.setInt(1, requestId);
+        preparedStatement.setInt(1, request.getId());
         preparedStatement.setInt(2, request.getBook().getId());
         preparedStatement.setInt(3, request.getCount());
         preparedStatement.setString(4, request.getStatus().toString());
@@ -198,7 +197,7 @@ public class DBRequestRepository implements RequestRepository {
         int bookId = rs.getInt("book_id");
         request.setCount(rs.getInt("count"));
         request.setStatus(Status.valueOf(rs.getString("status")));
-        //получаем список книг для заказа
+        //получаем книгу для запроса
         PreparedStatement preparedStatement = connection.prepareStatement(SqlConstant.READ_BOOK);
         preparedStatement.setInt(1, bookId);
         ResultSet resultSet = preparedStatement.executeQuery();

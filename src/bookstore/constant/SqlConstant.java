@@ -8,7 +8,6 @@ public class SqlConstant {
     public static final String READ_ALL_BOOKSHELVES = "SELECT * FROM Bookshelf";
     public static final String CREATE_BOOK = "INSERT INTO Book value (?,?,?,?)";
     public static final String READ_BOOK = "SELECT * FROM Book WHERE id = ?";
-    public static final String READ_ALL_BOOKS = "SELECT * FROM Book";
     public static final String CREATE_ORDER = "INSERT INTO BookOrder value (?,?,?,?,?,?,?,?)";
     public static final String UPDATE_ORDER = "UPDATE BookOrder SET completion_date = ?, price = ?, status = ? WHERE id = ?";
     public static final String READ_ORDER = "SELECT * FROM BookOrder WHERE id = ?";

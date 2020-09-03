@@ -118,7 +118,7 @@ public class DBOrderRepository implements OrderRepository {
     }
 
     @Override
-    public void delete(Integer integer) throws RepositoryException {
+    public void delete(Integer primaryKey) throws RepositoryException {
 
     }
 
