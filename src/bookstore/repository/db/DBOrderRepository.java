@@ -103,9 +103,9 @@ public class DBOrderRepository implements OrderRepository {
             try {
                 connection.rollback(savepoint); //откат к точке сохранения
                 connection.releaseSavepoint(savepoint); //высвободить ранее определённую точку сохранения
-                throw new RepositoryException("Неудалось завершить транзакцию чтения заказа в бд!");
+                throw new RepositoryException("Неудалось завершить транзакцию чтения заказа из бд!");
             } catch (SQLException ex) {
-                throw new RepositoryException("Неудалось отменить транзакцию чтения заказа в бд!");
+                throw new RepositoryException("Неудалось отменить транзакцию чтения заказа из бд!");
             }
         } finally {
             try {
@@ -127,7 +127,6 @@ public class DBOrderRepository implements OrderRepository {
         Connection connection = null;
         Savepoint savepoint = null;
         List<Order> orderList = new ArrayList<>();
-//        Order order = new Order();
         try {
             connection = connectionUtils.getConnection();
             connection.setAutoCommit(false);
@@ -143,9 +142,9 @@ public class DBOrderRepository implements OrderRepository {
                 orderList = null;
                 connection.rollback(savepoint); //откат к точке сохранения
                 connection.releaseSavepoint(savepoint); //высвободить ранее определённую точку сохранения
-                throw new RepositoryException("Неудалось завершить транзакцию чтения заказа в бд!");
+                throw new RepositoryException("Неудалось завершить транзакцию чтения всех заказов из бд!");
             } catch (SQLException ex) {
-                throw new RepositoryException("Неудалось отменить транзакцию чтения заказа в бд!");
+                throw new RepositoryException("Неудалось отменить транзакцию чтения всех заказов из бд!");
             }
         } finally {
             try {
@@ -164,7 +163,7 @@ public class DBOrderRepository implements OrderRepository {
         try {
             connection = connectionUtils.getConnection();
             connection.setAutoCommit(false);
-            savepoint = connection.setSavepoint(String.valueOf(orderList.hashCode()));
+            savepoint = connection.setSavepoint("OrderRepository.createAll." + LocalDateTime.now().toString());
             for (Order order : orderList) {
                 addOrderToDB(connection, order);
             }
@@ -173,9 +172,9 @@ public class DBOrderRepository implements OrderRepository {
             try {
                 connection.rollback(savepoint);
                 connection.releaseSavepoint(savepoint);
-                throw new RepositoryException("Неудалось завершить транзакцию добавления заказа в бд!");
+                throw new RepositoryException("Неудалось завершить транзакцию добавления заказов в бд!");
             } catch (SQLException ex) {
-                throw new RepositoryException("Неудалось отменить транзакцию добавления заказа в бд!");
+                throw new RepositoryException("Неудалось отменить транзакцию добавления заказов в бд!");
             }
         } finally {
             try {
