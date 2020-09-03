@@ -22,14 +22,16 @@ public class MySqlConnectionUtils implements ConnectionUtils {
     private Connection connection;
 
     @Override
-    public Connection getConnection() throws SQLException, ClassNotFoundException {
+    public Connection getConnection() throws SQLException {
         return getConnection(connectionURL, userName, password);
     }
 
     @Override
-    public Connection getConnection(String connectionURL, String userName, String password) throws SQLException, ClassNotFoundException {
-        Class.forName(sqlDriver);
-        connection = DriverManager.getConnection(connectionURL, userName, password);
+    public Connection getConnection(String connectionURL, String userName, String password) throws SQLException {
+//        Class.forName(sqlDriver);
+        if (connection == null) {
+            connection = DriverManager.getConnection(connectionURL, userName, password);
+        }
         return connection;
     }
 

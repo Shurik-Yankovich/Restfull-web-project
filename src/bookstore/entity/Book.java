@@ -5,6 +5,7 @@ import java.util.Objects;
 
 public class Book implements Serializable {
 
+    private int id;
     private String title;
     private String author;
     private int publicationYear;
@@ -18,6 +19,10 @@ public class Book implements Serializable {
         this.publicationYear = publicationYear;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public String getTitle() {
         return title;
     }
@@ -28,6 +33,10 @@ public class Book implements Serializable {
 
     public int getPublicationYear() {
         return publicationYear;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setTitle(String title) {
