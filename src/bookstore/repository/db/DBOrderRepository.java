@@ -11,6 +11,7 @@ import bookstore.util.connections.ConnectionUtils;
 import com.annotation.InjectByType;
 
 import java.sql.*;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -97,6 +98,7 @@ public class DBOrderRepository implements OrderRepository {
             PreparedStatement preparedStatement = connection.prepareStatement(SqlConstant.READ_ORDER);
             preparedStatement.setInt(1, primaryKey);
             ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
             order = getOrderOnResultSet(connection, resultSet);
             connection.commit();
         } catch (SQLException e) {
@@ -187,26 +189,32 @@ public class DBOrderRepository implements OrderRepository {
 
     private Order addOrderToDB(Connection connection, Order order) throws SQLException {
         PreparedStatement preparedStatement = connection.prepareStatement(SqlConstant.CREATE_ORDER);
-        int orderId = order.getId();
-        preparedStatement.setInt(1, orderId);
+        preparedStatement.setString(1, null);
         preparedStatement.setString(2, order.getCustomer().getFullName());
         preparedStatement.setString(3, order.getCustomer().getAddress());
         preparedStatement.setString(4, order.getCustomer().getPhoneNumber());
         preparedStatement.setDate(5, Date.valueOf(order.getOrderDate()));
-        preparedStatement.setDate(6, Date.valueOf(order.getOrderCompletionDate()));
+        LocalDate arrivelDate = order.getOrderCompletionDate();
+        preparedStatement.setDate(6, arrivelDate == null ? null : Date.valueOf(arrivelDate));
         preparedStatement.setDouble(7, order.getPrice());
         preparedStatement.setString(8, order.getStatus().toString());
         preparedStatement.execute();
         //--------------------------
+        preparedStatement = connection.prepareStatement(SqlConstant.GET_LAST_ORDER_ID);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        resultSet.next();
+        int orderId = resultSet.getInt(1);
+        order.setId(orderId);
+        //--------------------------
+        preparedStatement = connection.prepareStatement(SqlConstant.CREATE_REQUEST_BY_ORDER);
         for (Integer requestId : order.getNumbersRequest()) {
-            preparedStatement = connection.prepareStatement(SqlConstant.CREATE_REQUEST_BY_ORDER);
             preparedStatement.setInt(1, orderId);
             preparedStatement.setInt(2, requestId);
             preparedStatement.execute();
         }
         //--------------------------
+        preparedStatement = connection.prepareStatement(SqlConstant.CREATE_BOOK_BY_ORDER);
         for (Book book : order.getBooks()) {
-            preparedStatement = connection.prepareStatement(SqlConstant.CREATE_BOOK_BY_ORDER);
             preparedStatement.setInt(1, orderId);
             preparedStatement.setInt(2, book.getId());
             preparedStatement.execute();
@@ -249,6 +257,7 @@ public class DBOrderRepository implements OrderRepository {
             preparedStatement = connection.prepareStatement(SqlConstant.READ_BOOK);
             preparedStatement.setInt(1, bookId);
             resultSet = preparedStatement.executeQuery();
+            resultSet.next();
             Book book = new Book();
             book.setId(resultSet.getInt("id"));
             book.setTitle(resultSet.getString("title"));
@@ -261,7 +270,7 @@ public class DBOrderRepository implements OrderRepository {
     }
 
     private LocalDate convertDateToLocalDate(Date dateToConvert) {
-        return dateToConvert.toInstant()
+        return dateToConvert == null ? null : Instant.ofEpochMilli(dateToConvert.getTime())
                 .atZone(ZoneId.systemDefault())
                 .toLocalDate();
     }

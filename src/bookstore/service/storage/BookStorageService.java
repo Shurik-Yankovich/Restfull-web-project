@@ -24,7 +24,7 @@ public class BookStorageService implements StorageService {
 
     @InjectByProperty(configName = "config.properties", propertyName = "month_for_unsold_book", type = Types.INTEGER)
     private int NUMBER_OF_MONTHS_FOR_UNSOLD_BOOKS;
-    @InjectByProperty (propertyName = "mark_requests_as_completed")
+    @InjectByProperty(propertyName = "mark_requests_as_completed")
     private boolean MARK_REQUESTS_AS_COMPLETED;
     @InjectByProperty(propertyName = "STORAGE_SERIALIZATION_FILE_NAME")
     private String STORAGE_SERIALIZATION_FILE_NAME;
@@ -39,14 +39,14 @@ public class BookStorageService implements StorageService {
     private ISerializationService<Bookshelf> storageSerialize;
 
 
-    @PostConstruct
+    /*@PostConstruct
     public void init() {
         try {
             storageRepository.createAll(storageSerialize.load(STORAGE_SERIALIZATION_FILE_NAME));
         } catch (RepositoryException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     @Override
     public Bookshelf addBookOnStorage(Book book, int count) {
@@ -64,9 +64,7 @@ public class BookStorageService implements StorageService {
     }
 
     private Bookshelf searchBook(Book book) throws RepositoryException {
-        Bookshelf bookshelf;
-        for (int i = 0; i < getBookshelfList().size(); i++) {
-            bookshelf = storageRepository.read(i);
+        for (Bookshelf bookshelf : getBookshelfList()) {
             if (bookshelf.getBook().equals(book)) {
                 return bookshelf;
             }
@@ -87,7 +85,6 @@ public class BookStorageService implements StorageService {
     public double getTotalPrice(List<Book> books) throws RepositoryException {
         double price = 0;
         for (Book book : books) {
-            //кастыль
             price += storageRepository.read(searchBook(book).getId()).getPrice();
         }
         return price;
@@ -109,12 +106,12 @@ public class BookStorageService implements StorageService {
     }
 
     private boolean bookReservation(Book book) throws RepositoryException {
-        List<Bookshelf> bookshelves = storageRepository.readAll();
-        Bookshelf bookshelf = searchBook(book, bookshelves);
+        Bookshelf bookshelf = searchBook(book);
         if (bookshelf != null) {
             int count = bookshelf.getCount();
             if (count > 0) {
                 bookshelf.setCount(count - 1);
+                storageRepository.update(bookshelf);
                 return true;
             }
         }
@@ -122,7 +119,7 @@ public class BookStorageService implements StorageService {
     }
 
     @Override
-    public void cancelBookReservation(Order order) {
+    public void cancelBookReservation(Order order) throws RepositoryException {
         List<Request> requestList = getRequestFromOrder(order);
         Request request;
         for (Book book : order.getBooks()) {
@@ -150,26 +147,17 @@ public class BookStorageService implements StorageService {
         return requests;
     }
 
-    private void changeBookCount(Book book) {
+    private void changeBookCount(Book book) throws RepositoryException {
         Bookshelf bookshelf = getBookshelf(book);
         int count = bookshelf.getCount();
         bookshelf.setCount(count + 1);
-    }
-
-    private Bookshelf searchBook(Book book, List<Bookshelf> bookshelves) {
-        for (Bookshelf bookshelf : bookshelves) {
-            if (bookshelf.getBook().equals(book)) {
-                return bookshelf;
-            }
-        }
-        return null;
+        storageRepository.update(bookshelf);
     }
 
     @Override
     public Bookshelf getBookshelf(Book book) {
         try {
-            List<Bookshelf> bookshelves = storageRepository.readAll();
-            return searchBook(book, bookshelves);
+            return searchBook(book);
         } catch (RepositoryException e) {
             return null;
         }

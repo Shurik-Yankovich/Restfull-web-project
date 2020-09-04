@@ -1,7 +1,7 @@
 package bookstore.service.request;
 
-import bookstore.entity.Request;
 import bookstore.entity.Book;
+import bookstore.entity.Request;
 import bookstore.exeption.RepositoryException;
 import bookstore.repository.base.RequestRepository;
 import bookstore.repository.file.FileRequestRepository;
@@ -10,7 +10,6 @@ import bookstore.util.comparator.RequestCountComparator;
 import bookstore.util.serialize.ISerializationService;
 import com.annotation.InjectByProperty;
 import com.annotation.InjectByType;
-import com.annotation.PostConstruct;
 import com.annotation.Singleton;
 
 import java.util.ArrayList;
@@ -32,52 +31,62 @@ public class BookRequestService implements RequestService {
     @InjectByType
     private ISerializationService<Request> requestSerialize;
 
-    @PostConstruct
+    /*@PostConstruct
     public void init() {
         try {
             requestRepository.createAll(requestSerialize.load(REQUEST_SERIALIZATION_FILE_NAME));
         } catch (RepositoryException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     @Override
     public Request addRequest(Book book) {
         try {
-            Request request = createNewRequest(book);
-            return requestRepository.create(request);
+//            Request request = createNewRequest(book);
+            Request request = new Request(book);
+            request = requestRepository.create(request);
+            request.setCount(changeCountByBook(book));
+            return request;
         } catch (RepositoryException e) {
             return null;
         }
     }
 
-    private Request createNewRequest(Book book) throws RepositoryException {
-        Request request = new Request(book);
-//        request.setId(requestRepository.readAll().size());
-        int count = changeCountByBook(book);
-        request.setCount(count);
-        return request;
-    }
+//    private Request createNewRequest(Book book) throws RepositoryException {
+//        Request request = new Request(book);
+////        request.setId(requestRepository.readAll().size());
+//        int count = changeCountByBook(book);
+//        request.setCount(count);
+//        return request;
+//    }
 
     private int changeCountByBook(Book book) throws RepositoryException {
-        int count = getCountRequests(book);
+//        int count = getCountRequests(book);
+        int count = 1;
+        boolean isIncreased = false;
         for (Request request : requestRepository.readAll()) {
             if (request.getBook().equals(book)) {
+                if (!isIncreased) {
+                    isIncreased = true;
+                    count = request.getCount() + 1;
+                }
                 request.setCount(count);
+                requestRepository.update(request);
             }
         }
         return count;
     }
 
-    private int getCountRequests(Book book) throws RepositoryException {
-        int result = 0;
-        for (Request request : requestRepository.readAll()) {
-            if (book.equals(request.getBook())) {
-                result++;
-            }
-        }
-        return result;
-    }
+//    private int getCountRequests(Book book) throws RepositoryException {
+//        int result = 0;
+//        for (Request request : requestRepository.readAll()) {
+//            if (book.equals(request.getBook())) {
+//                result++;
+//            }
+//        }
+//        return result;
+//    }
 
     @Override
     public List<Integer> addRequestList(List<Book> books) {
@@ -95,6 +104,7 @@ public class BookRequestService implements RequestService {
             for (Request request : requestRepository.readAll()) {
                 if (request.getBook().equals(book) && request.getStatus() == NEW) {
                     request.setStatus(COMPLETED);
+                    requestRepository.update(request);
                     requestList.add(request);
                 }
             }
@@ -105,8 +115,12 @@ public class BookRequestService implements RequestService {
     }
 
     public Request completeRequest(Request request) {
-        request.setStatus(COMPLETED);
-        return request;
+        try {
+            request.setStatus(COMPLETED);
+            return requestRepository.update(request);
+        } catch (RepositoryException e) {
+            return null;
+        }
     }
 
     @Override

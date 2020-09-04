@@ -20,6 +20,7 @@ public class MySqlConnectionUtils implements ConnectionUtils {
     private String password;
 
     private Connection connection;
+    private boolean isClosed = true;
 
     @Override
     public Connection getConnection() throws SQLException {
@@ -29,8 +30,9 @@ public class MySqlConnectionUtils implements ConnectionUtils {
     @Override
     public Connection getConnection(String connectionURL, String userName, String password) throws SQLException {
 //        Class.forName(sqlDriver);
-        if (connection == null) {
+        if (isClosed) {
             connection = DriverManager.getConnection(connectionURL, userName, password);
+            isClosed = false;
         }
         return connection;
     }
@@ -39,6 +41,7 @@ public class MySqlConnectionUtils implements ConnectionUtils {
     public void closeConnection() throws SQLException {
         if(connection != null){
             connection.close();
+            isClosed = true;
         }
     }
 

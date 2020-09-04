@@ -6,6 +6,7 @@ module Senla {
     opens bookstore.repository.file to InitAnnotation;
     opens bookstore.repository.list to InitAnnotation;
     opens bookstore.repository.base to InitAnnotation;
+    opens bookstore.repository.db to InitAnnotation;
     opens bookstore.service.request to InitAnnotation;
     opens bookstore.service.order to InitAnnotation;
     opens bookstore.service.storage to InitAnnotation;

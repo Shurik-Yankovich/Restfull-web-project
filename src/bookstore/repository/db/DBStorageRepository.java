@@ -9,6 +9,7 @@ import bookstore.util.connections.ConnectionUtils;
 import com.annotation.InjectByType;
 
 import java.sql.*;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -95,6 +96,7 @@ public class DBStorageRepository implements StorageRepository {
             PreparedStatement preparedStatement = connection.prepareStatement(SqlConstant.READ_BOOKSHELF);
             preparedStatement.setInt(1, primaryKey);
             ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
             bookshelf = getBookshelfOnResultSet(connection, resultSet);
             connection.commit();
         } catch (SQLException e) {
@@ -184,20 +186,28 @@ public class DBStorageRepository implements StorageRepository {
     }
 
     private Bookshelf addBookshelfToDB(Connection connection, Bookshelf bookshelf) throws SQLException {
-        PreparedStatement preparedStatement = connection.prepareStatement(SqlConstant.CREATE_BOOKSHELF);
+        //добавляем книгу
         Book book = bookshelf.getBook();
+        PreparedStatement preparedStatement = connection.prepareStatement(SqlConstant.CREATE_BOOK);
+        preparedStatement.setString(1, null);
+        preparedStatement.setString(2, book.getTitle());
+        preparedStatement.setString(3, book.getAuthor());
+        preparedStatement.setInt(4, book.getPublicationYear());
+        preparedStatement.execute();
+        //--------------------------
+        preparedStatement = connection.prepareStatement(SqlConstant.GET_LAST_BOOK_ID);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        resultSet.next();
+        int bookId = resultSet.getInt(1);
+        book.setId(bookId);
+        bookshelf.setId(bookId);
+        //добавляем книжную полку
+        preparedStatement = connection.prepareStatement(SqlConstant.CREATE_BOOKSHELF);
         preparedStatement.setInt(1, bookshelf.getId());
         preparedStatement.setInt(2, book.getId());
         preparedStatement.setInt(3, bookshelf.getCount());
         preparedStatement.setDouble(4, bookshelf.getPrice());
         preparedStatement.setDate(5, Date.valueOf(bookshelf.getArrivalDate()));
-        preparedStatement.execute();
-        //добавляем книгу
-        preparedStatement = connection.prepareStatement(SqlConstant.CREATE_BOOK);
-        preparedStatement.setInt(1, book.getId());
-        preparedStatement.setString(2, book.getTitle());
-        preparedStatement.setString(3, book.getAuthor());
-        preparedStatement.setInt(4, book.getPublicationYear());
         preparedStatement.execute();
         return bookshelf;
     }
@@ -213,6 +223,7 @@ public class DBStorageRepository implements StorageRepository {
         PreparedStatement preparedStatement = connection.prepareStatement(SqlConstant.READ_BOOK);
         preparedStatement.setInt(1, bookId);
         ResultSet resultSet = preparedStatement.executeQuery();
+        resultSet.next();
         Book book = new Book();
         book.setId(resultSet.getInt("id"));
         book.setTitle(resultSet.getString("title"));
@@ -223,7 +234,7 @@ public class DBStorageRepository implements StorageRepository {
     }
 
     private LocalDate convertDateToLocalDate(Date dateToConvert) {
-        return dateToConvert.toInstant()
+        return dateToConvert == null ? null : Instant.ofEpochMilli(dateToConvert.getTime())
                 .atZone(ZoneId.systemDefault())
                 .toLocalDate();
     }

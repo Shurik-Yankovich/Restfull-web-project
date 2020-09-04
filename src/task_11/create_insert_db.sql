@@ -68,9 +68,9 @@ values
 
 insert into BookRequest
 values 
-(1,6,0,'CANCELED'),
-(2,3,0,'COMPLETED'),
-(3,2,0,'NEW');
+(1,6,1,'CANCELED'),
+(2,3,1,'COMPLETED'),
+(3,2,1,'NEW');
  
 insert into BookOrder
 values 

@@ -93,6 +93,7 @@ public class DBRequestRepository implements RequestRepository {
             PreparedStatement preparedStatement = connection.prepareStatement(SqlConstant.READ_REQUEST);
             preparedStatement.setInt(1, primaryKey);
             ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
             request = getRequestOnResultSet(connection, resultSet);
             connection.commit();
         } catch (SQLException e) {
@@ -183,11 +184,17 @@ public class DBRequestRepository implements RequestRepository {
 
     private Request addRequestToDB(Connection connection, Request request) throws SQLException {
         PreparedStatement preparedStatement = connection.prepareStatement(SqlConstant.CREATE_REQUEST);
-        preparedStatement.setInt(1, request.getId());
+        preparedStatement.setString(1, null);
         preparedStatement.setInt(2, request.getBook().getId());
         preparedStatement.setInt(3, request.getCount());
         preparedStatement.setString(4, request.getStatus().toString());
         preparedStatement.execute();
+        //--------------------------
+        preparedStatement = connection.prepareStatement(SqlConstant.GET_LAST_REQUEST_ID);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        resultSet.next();
+        int requestId = resultSet.getInt(1);
+        request.setId(requestId);
         return request;
     }
 
@@ -201,6 +208,7 @@ public class DBRequestRepository implements RequestRepository {
         PreparedStatement preparedStatement = connection.prepareStatement(SqlConstant.READ_BOOK);
         preparedStatement.setInt(1, bookId);
         ResultSet resultSet = preparedStatement.executeQuery();
+        resultSet.next();
         Book book = new Book();
         book.setId(resultSet.getInt("id"));
         book.setTitle(resultSet.getString("title"));

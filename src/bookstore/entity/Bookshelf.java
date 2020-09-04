@@ -54,7 +54,6 @@ public class Bookshelf implements Serializable {
 
     public void setId(int id) {
         this.id = id;
-        this.book.setId(id);
     }
 
     public void setBook(Book book) {
