@@ -53,16 +53,7 @@ public class BookRequestService implements RequestService {
         }
     }
 
-//    private Request createNewRequest(Book book) throws RepositoryException {
-//        Request request = new Request(book);
-////        request.setId(requestRepository.readAll().size());
-//        int count = changeCountByBook(book);
-//        request.setCount(count);
-//        return request;
-//    }
-
     private int changeCountByBook(Book book) throws RepositoryException {
-//        int count = getCountRequests(book);
         int count = 1;
         boolean isIncreased = false;
         for (Request request : requestRepository.readAll()) {
@@ -77,16 +68,6 @@ public class BookRequestService implements RequestService {
         }
         return count;
     }
-
-//    private int getCountRequests(Book book) throws RepositoryException {
-//        int result = 0;
-//        for (Request request : requestRepository.readAll()) {
-//            if (book.equals(request.getBook())) {
-//                result++;
-//            }
-//        }
-//        return result;
-//    }
 
     @Override
     public List<Integer> addRequestList(List<Book> books) {
