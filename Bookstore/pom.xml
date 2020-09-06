@@ -27,18 +27,6 @@
                     <outputDirectory>
                         ${basedir}/target/resources
                     </outputDirectory>
-<!--                    <resources>-->
-<!--                        <directory>-->
-<!--                            src/main/resources-->
-<!--                        </directory>-->
-<!--                        <resource>-->
-<!--                            <includes>-->
-<!--                                <include>-->
-<!--                                    **/*.properties-->
-<!--                                </include>-->
-<!--                            </includes>-->
-<!--                        </resource>-->
-<!--                    </resources>-->
                 </configuration>
             </plugin>
         </plugins>
@@ -52,27 +40,12 @@
         <module>entity</module>
         <module>view</module>
         <module>core-module</module>
-        <module>bookstore-resources</module>
+        <module>bookstore-log4j2</module>
     </modules>
     <dependencies>
         <dependency>
             <groupId>org.bookstore</groupId>
-            <artifactId>controller</artifactId>
-            <version>1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.bookstore</groupId>
-            <artifactId>service</artifactId>
-            <version>1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.bookstore</groupId>
-            <artifactId>repository</artifactId>
-            <version>1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.bookstore</groupId>
-            <artifactId>view</artifactId>
+            <artifactId>core-module</artifactId>
             <version>1</version>
         </dependency>
     </dependencies>
