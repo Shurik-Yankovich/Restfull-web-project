@@ -33,20 +33,30 @@
     </build>
     <modules>
         <module>init-annotation</module>
-        <module>service</module>
-        <module>repository</module>
-        <module>controller</module>
-        <module>util</module>
-        <module>entity</module>
-        <module>view</module>
+        <module>bookstore-service</module>
+        <module>bookstore-repository</module>
+        <module>bookstore-controller</module>
+        <module>bookstore-util</module>
+        <module>bookstore-entity</module>
+        <module>bookstore-view</module>
         <module>core-module</module>
         <module>bookstore-log4j2</module>
     </modules>
     <dependencies>
+        <!--        <dependency>
+                    <groupId>org.bookstore</groupId>
+                    <artifactId>core-module</artifactId>
+                    <version>1</version>
+                </dependency>-->
         <dependency>
-            <groupId>org.bookstore</groupId>
-            <artifactId>core-module</artifactId>
-            <version>1</version>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>2.13.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.13.3</version>
         </dependency>
     </dependencies>
 

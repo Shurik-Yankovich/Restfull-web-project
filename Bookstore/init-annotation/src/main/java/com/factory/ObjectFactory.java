@@ -4,6 +4,8 @@ import com.annotation.PostConstruct;
 import com.application.ApplicationContext;
 import com.config.ConfigImpl;
 import com.configurator.ObjectConfigurator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -12,8 +14,10 @@ import java.util.HashMap;
 import java.util.List;
 
 public class ObjectFactory {
+
     private final ApplicationContext context;
     private List<ObjectConfigurator> configurators = new ArrayList<>();
+    private final Logger logger = LogManager.getLogger(this.getClass());
 
     public ObjectFactory(ApplicationContext context) {
         this.context = context;
@@ -23,7 +27,7 @@ public class ObjectFactory {
                 configurators.add(aClass.getDeclaredConstructor().newInstance());
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
     }
 
@@ -34,7 +38,8 @@ public class ObjectFactory {
             invokeInitialization(implClass, t);
             return t;
         } catch (Exception e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            logger.error("Неудалось создать объект\n" + e.getMessage());
         }
         return null;
     }
@@ -49,7 +54,7 @@ public class ObjectFactory {
             try {
                 objectConfigurator.configure(t, context);
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error("Неудалось настроить объект\n" + e.getMessage());
             }
         });
     }
