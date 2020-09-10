@@ -3,6 +3,7 @@ package com.configurator;
 import com.application.ApplicationContext;
 import com.annotation.InjectByProperty;
 import com.factory.ObjectFactory;
+import logger.LoggerApp;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -13,11 +14,8 @@ import java.lang.reflect.Field;
 import java.util.Properties;
 
 public class InjectByPropertyObjectConfigurator implements ObjectConfigurator {
-//    private static final Logger logger = LogManager.getLogger(InjectByPropertyObjectConfigurator.class);
 
-    /*public InjectByPropertyObjectConfigurator() {
-        logger = new LoggerApp(InjectByPropertyObjectConfigurator.class);
-    }*/
+    private final LoggerApp logger = new LoggerApp(this.getClass());
 
     @Override
     public void configure(Object t, ApplicationContext context) throws Exception{
@@ -47,17 +45,13 @@ public class InjectByPropertyObjectConfigurator implements ObjectConfigurator {
                                 Converter.convert(field,t,value);
                         }
                     } catch (IOException e) {
-                        System.err.println("ОШИБКА: Файл отсуствует!\n" + e.getMessage());
-//                        logger.error("ОШИБКА: Файл отсуствует!\n" + e.getMessage());
+                        logger.errorLogger("ОШИБКА: Файл отсуствует!\n" + e.getMessage());
                     } catch (NullPointerException e) {
-                        System.err.println("ОШИБКА: Не найден путь к ресурсам!\n" + e.getMessage());
-//                        logger.error("ОШИБКА: Не найден путь к ресурсам!\n" + e.getMessage());
+                        logger.errorLogger("ОШИБКА: Не найден путь к ресурсам!\n" + e.getMessage());
                     } catch (IllegalAccessException e) {
-                        System.err.println("ОШИБКА: Неудалось установить значение поля!\n" + e.getMessage());
-//                        logger.error("ОШИБКА: Неудалось установить значение поля!\n" + e.getMessage());
+                        logger.errorLogger("ОШИБКА: Неудалось установить значение поля!\n" + e.getMessage());
                     } catch (Exception e) {
-                        System.err.println("ОШИБКА!\n" + e.getMessage());
-//                        logger.error("ОШИБКА!\n" + e.getMessage());
+                        logger.errorLogger("ОШИБКА!\n" + e.getMessage());
                     }
                 }
             }

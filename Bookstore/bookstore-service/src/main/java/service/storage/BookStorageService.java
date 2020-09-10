@@ -5,7 +5,7 @@ import entity.Order;
 import entity.Request;
 import entity.Book;
 import exeption.RepositoryException;
-//import logger.LoggerApp;
+import logger.LoggerApp;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import repository.base.StorageRepository;
@@ -42,7 +42,9 @@ public class BookStorageService implements StorageService {
     @InjectByType
     private ISerializationService<Bookshelf> storageSerialize;
 
-    private final Logger logger = LogManager.getLogger(BookStorageService.class);
+
+    private final LoggerApp logger = new LoggerApp(BookStorageService.class);
+//    private final Logger logger = LogManager.getLogger(BookStorageService.class);
 //
 //    public BookStorageService() {
 //        logger = new LoggerApp(BookStorageService.class);
@@ -179,8 +181,8 @@ public class BookStorageService implements StorageService {
     @Override
     public List<Bookshelf> getBookshelfList() {
         try {
-            logger.error("ass");
-            logger.info("Выводим список книг, ну просто так для проверочки!)");
+            logger.errorLogger("ass");
+            logger.infoLogger("Выводим список книг, ну просто так для проверочки!)");
             return storageRepository.readAll();
         } catch (RepositoryException e) {
 //            logger.errorLogger(e.getMessage());

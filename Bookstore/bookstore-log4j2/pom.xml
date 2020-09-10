@@ -12,19 +12,5 @@
     <artifactId>bookstore-log4j2</artifactId>
     <packaging>jar</packaging>
 
- <!--   <build>
-        <resources>
-            <resource>
-                <directory>/src/java/resources</directory>
-                <includes>
-                    <include>**/log4j2.xml</include>
-                </includes>
-            </resource>
-        </resources>
-    </build>-->
-
-    <dependencies>
-
-    </dependencies>
 
 </project>
