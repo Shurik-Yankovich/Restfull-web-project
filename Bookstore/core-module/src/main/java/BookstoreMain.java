@@ -1,4 +1,5 @@
 import controller.MenuController;
+import logger.LoggerApp;
 import repository.base.OrderRepository;
 import repository.base.RequestRepository;
 import repository.base.StorageRepository;
@@ -27,7 +28,10 @@ import java.util.Map;
 
 public class BookstoreMain {
 
+    private static final LoggerApp logger = new LoggerApp(BookstoreMain.class);
+
     public static void main(String[] args) {
+        logger.infoLogger("Старт программы");
         Map<Class, Class> cache = new HashMap<>();
         cache.put(OrderRepository.class, DBOrderRepository.class);
         cache.put(RequestRepository.class, DBRequestRepository.class);
@@ -38,9 +42,12 @@ public class BookstoreMain {
         cache.put(RequestService.class, BookRequestService.class);
         cache.put(StorageService.class, BookStorageService.class);
         cache.put(ConnectionUtils.class, MySqlConnectionUtils.class);
-//        cache.put(ISerializationService.class, SerializationService.class);
+        cache.put(ISerializationService.class, SerializationService.class);
+        logger.infoLogger("Инициализация контекста");
         ApplicationContext context = Application.run("org.bookstore", cache);
+        logger.infoLogger("Инициализация всех классов группы \"org.bookstore\"");
         MenuController menuController = context.getObject(MenuController.class);
+        logger.infoLogger("Запуск меню");
         menuController.run();
     }
 

@@ -3,10 +3,9 @@ package service.request;
 import entity.Book;
 import entity.Request;
 import exeption.RepositoryException;
-//import logger.LoggerApp;
+import logger.LoggerApp;
 import repository.base.RequestRepository;
 import repository.file.FileRequestRepository;
-import service.order.BookOrderService;
 import util.comparator.RequestBookNameComparator;
 import util.comparator.RequestCountComparator;
 import util.serialize.ISerializationService;
@@ -33,31 +32,17 @@ public class BookRequestService implements RequestService {
     @InjectByType
     private ISerializationService<Request> requestSerialize;
 
-//    private LoggerApp logger;
-//
-//    public BookRequestService() {
-//        logger = new LoggerApp(BookRequestService.class);
-//    }
-
-    /*@PostConstruct
-    public void init() {
-        try {
-            requestRepository.createAll(requestSerialize.load(REQUEST_SERIALIZATION_FILE_NAME));
-        } catch (RepositoryException e) {
-            e.printStackTrace();
-        }
-    }*/
+    private final LoggerApp logger = new LoggerApp(this.getClass());
 
     @Override
     public Request addRequest(Book book) {
         try {
-//            Request request = createNewRequest(book);
             Request request = new Request(book);
             request = requestRepository.create(request);
             request.setCount(changeCountByBook(book));
             return request;
         } catch (RepositoryException e) {
-//            logger.errorLogger(e.getMessage());
+            logger.errorLogger(e.getMessage());
             return null;
         }
     }
@@ -100,7 +85,7 @@ public class BookRequestService implements RequestService {
             }
             return requestList;
         } catch (RepositoryException e) {
-//            logger.errorLogger(e.getMessage());
+            logger.errorLogger(e.getMessage());
             return null;
         }
     }
@@ -110,7 +95,7 @@ public class BookRequestService implements RequestService {
             request.setStatus(COMPLETED);
             return requestRepository.update(request);
         } catch (RepositoryException e) {
-//            logger.errorLogger(e.getMessage());
+            logger.errorLogger(e.getMessage());
             return null;
         }
     }
@@ -138,7 +123,7 @@ public class BookRequestService implements RequestService {
         try {
             return requestRepository.read(requestNumber);
         } catch (RepositoryException e) {
-//            logger.errorLogger(e.getMessage());
+            logger.errorLogger(e.getMessage());
             return null;
         }
     }
@@ -148,7 +133,7 @@ public class BookRequestService implements RequestService {
         try {
             return requestRepository.readAll();
         } catch (RepositoryException e) {
-//            logger.errorLogger(e.getMessage());
+            logger.errorLogger(e.getMessage());
             return null;
         }
     }
@@ -164,7 +149,7 @@ public class BookRequestService implements RequestService {
             }
             return newRequests;
         } catch (RepositoryException e) {
-//            logger.errorLogger(e.getMessage());
+            logger.errorLogger(e.getMessage());
             return null;
         }
     }
@@ -179,7 +164,7 @@ public class BookRequestService implements RequestService {
             }
             return requests;
         } catch (RepositoryException e) {
-//            logger.errorLogger(e.getMessage());
+            logger.errorLogger(e.getMessage());
             return null;
         }
     }
@@ -191,7 +176,7 @@ public class BookRequestService implements RequestService {
             requestRepository.createAll(requests);
             return true;
         } catch (RepositoryException e) {
-//            logger.errorLogger(e.getMessage());
+            logger.errorLogger(e.getMessage());
             return false;
         }
     }
@@ -202,7 +187,7 @@ public class BookRequestService implements RequestService {
             fileRequestRepository.createAll(requestRepository.readAll());
             return true;
         } catch (RepositoryException e) {
-//            logger.errorLogger(e.getMessage());
+            logger.errorLogger(e.getMessage());
             return false;
         }
     }
@@ -213,7 +198,7 @@ public class BookRequestService implements RequestService {
             fileRequestRepository.create(request);
             return true;
         } catch (RepositoryException e) {
-//            logger.errorLogger(e.getMessage());
+            logger.errorLogger(e.getMessage());
             return false;
         }
     }
@@ -224,7 +209,7 @@ public class BookRequestService implements RequestService {
             fileRequestRepository.update(request);
             return true;
         } catch (RepositoryException e) {
-//            logger.errorLogger(e.getMessage());
+            logger.errorLogger(e.getMessage());
             return false;
         }
     }
@@ -235,7 +220,7 @@ public class BookRequestService implements RequestService {
             requestSerialize.save(requestRepository.readAll(), REQUEST_SERIALIZATION_FILE_NAME);
             return true;
         } catch (RepositoryException e) {
-//            logger.errorLogger(e.getMessage());
+            logger.errorLogger(e.getMessage());
             return false;
         }
     }

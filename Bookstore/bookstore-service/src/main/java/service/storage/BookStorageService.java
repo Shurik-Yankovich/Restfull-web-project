@@ -43,12 +43,7 @@ public class BookStorageService implements StorageService {
     private ISerializationService<Bookshelf> storageSerialize;
 
 
-    private final LoggerApp logger = new LoggerApp(BookStorageService.class);
-//    private final Logger logger = LogManager.getLogger(BookStorageService.class);
-//
-//    public BookStorageService() {
-//        logger = new LoggerApp(BookStorageService.class);
-//    }
+    private final LoggerApp logger = new LoggerApp(this.getClass());
 
     /*@PostConstruct
     public void init() {
@@ -70,7 +65,7 @@ public class BookStorageService implements StorageService {
             bookshelf.setCount(currentCount + count);
             return storageRepository.update(bookshelf);
         } catch (RepositoryException e) {
-//            logger.errorLogger(e.getMessage());
+            logger.errorLogger(e.getMessage());
             return null;
         }
     }
@@ -89,7 +84,7 @@ public class BookStorageService implements StorageService {
         try {
             return storageRepository.create(new Bookshelf(book, count, price, LocalDate.now()));
         } catch (RepositoryException e) {
-//            logger.errorLogger(e.getMessage());
+            logger.errorLogger(e.getMessage());
             return null;
         }
     }
@@ -114,7 +109,7 @@ public class BookStorageService implements StorageService {
             }
             return result;
         } catch (RepositoryException e) {
-//            logger.errorLogger(e.getMessage());
+            logger.errorLogger(e.getMessage());
             return null;
         }
     }
@@ -173,7 +168,7 @@ public class BookStorageService implements StorageService {
         try {
             return searchBook(book);
         } catch (RepositoryException e) {
-//            logger.errorLogger(e.getMessage());
+            logger.errorLogger(e.getMessage());
             return null;
         }
     }
@@ -181,11 +176,10 @@ public class BookStorageService implements StorageService {
     @Override
     public List<Bookshelf> getBookshelfList() {
         try {
-            logger.errorLogger("ass");
-            logger.infoLogger("Выводим список книг, ну просто так для проверочки!)");
+//            logger.infoLogger("Выводим список книг, ну просто так для проверочки!)");
             return storageRepository.readAll();
         } catch (RepositoryException e) {
-//            logger.errorLogger(e.getMessage());
+            logger.errorLogger(e.getMessage());
             return null;
         }
     }
@@ -201,7 +195,7 @@ public class BookStorageService implements StorageService {
             }
             return books;
         } catch (RepositoryException e) {
-//            logger.errorLogger(e.getMessage());
+            logger.errorLogger(e.getMessage());
             return null;
         }
     }
@@ -216,7 +210,7 @@ public class BookStorageService implements StorageService {
             }
             return bookshelves;
         } catch (RepositoryException e) {
-//            logger.errorLogger(e.getMessage());
+            logger.errorLogger(e.getMessage());
             return null;
         }
     }
@@ -239,7 +233,7 @@ public class BookStorageService implements StorageService {
             storageRepository.createAll(bookshelves);
             return true;
         } catch (RepositoryException e) {
-//            logger.errorLogger(e.getMessage());
+            logger.errorLogger(e.getMessage());
             return false;
         }
     }
@@ -250,7 +244,7 @@ public class BookStorageService implements StorageService {
             fileStorageRepository.createAll(storageRepository.readAll());
             return true;
         } catch (RepositoryException e) {
-//            logger.errorLogger(e.getMessage());
+            logger.errorLogger(e.getMessage());
             return false;
         }
     }
@@ -261,7 +255,7 @@ public class BookStorageService implements StorageService {
             fileStorageRepository.create(bookshelf);
             return true;
         } catch (RepositoryException e) {
-//            logger.errorLogger(e.getMessage());
+            logger.errorLogger(e.getMessage());
             return false;
         }
     }
@@ -272,7 +266,7 @@ public class BookStorageService implements StorageService {
             fileStorageRepository.update(bookshelf);
             return true;
         } catch (RepositoryException e) {
-//            logger.errorLogger(e.getMessage());
+            logger.errorLogger(e.getMessage());
             return false;
         }
     }
@@ -283,7 +277,7 @@ public class BookStorageService implements StorageService {
             storageSerialize.save(storageRepository.readAll(), STORAGE_SERIALIZATION_FILE_NAME);
             return true;
         } catch (RepositoryException e) {
-//            logger.errorLogger(e.getMessage());
+            logger.errorLogger(e.getMessage());
             return false;
         }
     }

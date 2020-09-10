@@ -38,7 +38,7 @@ public class ObjectFactory {
             return t;
         } catch (Exception e) {
 //            e.printStackTrace();
-            logger.errorLogger("Неудалось создать объект\n" + e.getMessage());
+            logger.errorLogger("Неудалось создать объект!\n" + e.getMessage());
         }
         return null;
     }
@@ -53,7 +53,7 @@ public class ObjectFactory {
             try {
                 objectConfigurator.configure(t, context);
             } catch (Exception e) {
-                logger.errorLogger("Неудалось настроить объект\n" + e.getMessage());
+                logger.errorLogger("Неудалось настроить объект!\n" + e.getMessage());
             }
         });
     }

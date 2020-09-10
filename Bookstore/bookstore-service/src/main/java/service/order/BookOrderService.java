@@ -7,6 +7,7 @@ import entity.Order;
 import entity.Request;
 import exeption.RepositoryException;
 /*import logger.LoggerApp;*/
+import logger.LoggerApp;
 import repository.base.OrderRepository;
 import repository.file.FileOrderRepository;
 import service.request.RequestService;
@@ -44,11 +45,7 @@ public class BookOrderService implements OrderService {
     @InjectByType
     private ISerializationService<Order> orderSerialize;
 
-   /* private LoggerApp logger;
-
-    public BookOrderService() {
-        logger = new LoggerApp(BookOrderService.class);
-    }*/
+    private final LoggerApp logger = new LoggerApp(this.getClass());
 
     @Override
     public Order addOrder(Customer customer, Book... books) {
@@ -67,7 +64,7 @@ public class BookOrderService implements OrderService {
             orderRepository.create(bookOrder);
             return bookOrder;
         } catch (RepositoryException e) {
-//
+            logger.errorLogger(e.getMessage());
             return null;
         }
     }
@@ -83,7 +80,7 @@ public class BookOrderService implements OrderService {
             bookOrder.setStatus(CANCELED);
             return orderRepository.update(bookOrder);
         } catch (RepositoryException e) {
-//
+            logger.errorLogger(e.getMessage());
             return null;
         }
     }
@@ -100,7 +97,7 @@ public class BookOrderService implements OrderService {
             }
             return result ? bookOrder : null;
         } catch (RepositoryException e) {
-
+            logger.errorLogger(e.getMessage());
             return null;
         }
     }
@@ -132,7 +129,7 @@ public class BookOrderService implements OrderService {
             }
             return orders;
         } catch (RepositoryException e) {
-
+            logger.errorLogger(e.getMessage());
             return null;
         }
     }
@@ -166,7 +163,7 @@ public class BookOrderService implements OrderService {
         try {
             return orderRepository.readAll();
         } catch (RepositoryException e) {
-
+            logger.errorLogger(e.getMessage());
             return null;
         }
     }
@@ -182,7 +179,7 @@ public class BookOrderService implements OrderService {
             }
             return orders;
         } catch (RepositoryException e) {
-
+            logger.errorLogger(e.getMessage());
             return null;
         }
     }
@@ -198,7 +195,7 @@ public class BookOrderService implements OrderService {
             }
             return orders;
         } catch (RepositoryException e) {
-
+            logger.errorLogger(e.getMessage());
             return null;
         }
     }
@@ -210,7 +207,7 @@ public class BookOrderService implements OrderService {
             orderRepository.createAll(orders);
             return true;
         } catch (RepositoryException e) {
-
+            logger.errorLogger(e.getMessage());
             return false;
         }
     }
@@ -221,7 +218,7 @@ public class BookOrderService implements OrderService {
             fileOrderRepository.createAll(orderRepository.readAll());
             return true;
         } catch (RepositoryException e) {
-
+            logger.errorLogger(e.getMessage());
             return false;
         }
     }
@@ -232,7 +229,7 @@ public class BookOrderService implements OrderService {
             fileOrderRepository.create(order);
             return true;
         } catch (RepositoryException e) {
-
+            logger.errorLogger(e.getMessage());
             return false;
         }
     }
@@ -243,7 +240,7 @@ public class BookOrderService implements OrderService {
             fileOrderRepository.update(order);
             return true;
         } catch (RepositoryException e) {
-
+            logger.errorLogger(e.getMessage());
             return false;
         }
     }
@@ -254,7 +251,7 @@ public class BookOrderService implements OrderService {
             orderSerialize.save(orderRepository.readAll(), ORDER_SERIALIZATION_FILE_NAME);
             return true;
         } catch (RepositoryException e) {
-
+            logger.errorLogger(e.getMessage());
             return false;
         }
     }
