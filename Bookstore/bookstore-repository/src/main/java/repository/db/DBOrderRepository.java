@@ -6,6 +6,7 @@ import entity.Customer;
 import entity.Order;
 import entity.Status;
 import exeption.RepositoryException;
+import logger.LoggerApp;
 import repository.base.OrderRepository;
 import util.connections.ConnectionUtils;
 import com.annotation.InjectByType;
@@ -23,6 +24,8 @@ public class DBOrderRepository implements OrderRepository {
     @InjectByType
     private ConnectionUtils connectionUtils;
 
+    private final LoggerApp logger = new LoggerApp(this.getClass());
+
     @Override
     public Order create(Order order) throws RepositoryException {
         Connection connection = null;
@@ -36,16 +39,19 @@ public class DBOrderRepository implements OrderRepository {
         } catch (SQLException e) {
             try {
                 order = null;
-                connection.rollback(savepoint); //откат к точке сохранения
-                connection.releaseSavepoint(savepoint); //высвободить ранее определённую точку сохранения
+                connection.rollback(savepoint);
+                connection.releaseSavepoint(savepoint);
+                logger.errorLogger(e.getMessage());
                 throw new RepositoryException("Неудалось завершить транзакцию добавления заказа в бд!");
             } catch (SQLException ex) {
+                logger.errorLogger(ex.getMessage());
                 throw new RepositoryException("Неудалось отменить транзакцию добавления заказа в бд!");
             }
         } finally {
             try {
                 connectionUtils.closeConnection();
             } catch (SQLException e) {
+                logger.errorLogger(e.getMessage());
                 throw new RepositoryException("Неудалось закрыть соединение с бд!");
             }
         }
@@ -70,16 +76,19 @@ public class DBOrderRepository implements OrderRepository {
         } catch (SQLException e) {
             try {
                 order = null;
-                connection.rollback(savepoint); //откат к точке сохранения
-                connection.releaseSavepoint(savepoint); //высвободить ранее определённую точку сохранения
+                connection.rollback(savepoint);
+                connection.releaseSavepoint(savepoint);
+                logger.errorLogger(e.getMessage());
                 throw new RepositoryException("Неудалось завершить транзакцию обновления заказа в бд!");
             } catch (SQLException ex) {
+                logger.errorLogger(ex.getMessage());
                 throw new RepositoryException("Неудалось отменить транзакцию обновления заказа в бд!");
             }
         } finally {
             try {
                 connectionUtils.closeConnection();
             } catch (SQLException e) {
+                logger.errorLogger(e.getMessage());
                 throw new RepositoryException("Неудалось закрыть соединение с бд!");
             }
         }
@@ -103,16 +112,19 @@ public class DBOrderRepository implements OrderRepository {
             connection.commit();
         } catch (SQLException e) {
             try {
-                connection.rollback(savepoint); //откат к точке сохранения
-                connection.releaseSavepoint(savepoint); //высвободить ранее определённую точку сохранения
+                connection.rollback(savepoint);
+                connection.releaseSavepoint(savepoint);
+                logger.errorLogger(e.getMessage());
                 throw new RepositoryException("Неудалось завершить транзакцию чтения заказа из бд!");
             } catch (SQLException ex) {
+                logger.errorLogger(ex.getMessage());
                 throw new RepositoryException("Неудалось отменить транзакцию чтения заказа из бд!");
             }
         } finally {
             try {
                 connectionUtils.closeConnection();
             } catch (SQLException e) {
+                logger.errorLogger(e.getMessage());
                 throw new RepositoryException("Неудалось закрыть соединение с бд!");
             }
         }
@@ -142,16 +154,19 @@ public class DBOrderRepository implements OrderRepository {
         } catch (SQLException e) {
             try {
                 orderList = null;
-                connection.rollback(savepoint); //откат к точке сохранения
-                connection.releaseSavepoint(savepoint); //высвободить ранее определённую точку сохранения
+                connection.rollback(savepoint);
+                connection.releaseSavepoint(savepoint);
+                logger.errorLogger(e.getMessage());
                 throw new RepositoryException("Неудалось завершить транзакцию чтения всех заказов из бд!");
             } catch (SQLException ex) {
+                logger.errorLogger(ex.getMessage());
                 throw new RepositoryException("Неудалось отменить транзакцию чтения всех заказов из бд!");
             }
         } finally {
             try {
                 connectionUtils.closeConnection();
             } catch (SQLException e) {
+                logger.errorLogger(e.getMessage());
                 throw new RepositoryException("Неудалось закрыть соединение с бд!");
             }
         }
@@ -174,14 +189,17 @@ public class DBOrderRepository implements OrderRepository {
             try {
                 connection.rollback(savepoint);
                 connection.releaseSavepoint(savepoint);
+                logger.errorLogger(e.getMessage());
                 throw new RepositoryException("Неудалось завершить транзакцию добавления заказов в бд!");
             } catch (SQLException ex) {
+                logger.errorLogger(ex.getMessage());
                 throw new RepositoryException("Неудалось отменить транзакцию добавления заказов в бд!");
             }
         } finally {
             try {
                 connectionUtils.closeConnection();
             } catch (SQLException e) {
+                logger.errorLogger(e.getMessage());
                 throw new RepositoryException("Неудалось закрыть соединение с бд!");
             }
         }

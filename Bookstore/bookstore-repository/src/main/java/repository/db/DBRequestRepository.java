@@ -5,6 +5,7 @@ import entity.Book;
 import entity.Request;
 import entity.Status;
 import exeption.RepositoryException;
+import logger.LoggerApp;
 import repository.base.RequestRepository;
 import util.connections.ConnectionUtils;
 import com.annotation.InjectByType;
@@ -18,6 +19,8 @@ public class DBRequestRepository implements RequestRepository {
 
     @InjectByType
     private ConnectionUtils connectionUtils;
+
+    private final LoggerApp logger = new LoggerApp(this.getClass());
 
     @Override
     public Request create(Request request) throws RepositoryException {
@@ -34,14 +37,17 @@ public class DBRequestRepository implements RequestRepository {
                 request = null;
                 connection.rollback(savepoint);
                 connection.releaseSavepoint(savepoint);
+                logger.errorLogger(e.getMessage());
                 throw new RepositoryException("Неудалось завершить транзакцию добавления запроса в бд!");
             } catch (SQLException ex) {
+                logger.errorLogger(ex.getMessage());
                 throw new RepositoryException("Неудалось отменить транзакцию добавления запроса в бд!");
             }
         } finally {
             try {
                 connectionUtils.closeConnection();
             } catch (SQLException e) {
+                logger.errorLogger(e.getMessage());
                 throw new RepositoryException("Неудалось закрыть соединение с бд!");
             }
         }
@@ -67,14 +73,17 @@ public class DBRequestRepository implements RequestRepository {
                 request = null;
                 connection.rollback(savepoint);
                 connection.releaseSavepoint(savepoint);
+                logger.errorLogger(e.getMessage());
                 throw new RepositoryException("Неудалось завершить транзакцию обновления запроса в бд!");
             } catch (SQLException ex) {
+                logger.errorLogger(ex.getMessage());
                 throw new RepositoryException("Неудалось отменить транзакцию обновления запроса в бд!");
             }
         } finally {
             try {
                 connectionUtils.closeConnection();
             } catch (SQLException e) {
+                logger.errorLogger(e.getMessage());
                 throw new RepositoryException("Неудалось закрыть соединение с бд!");
             }
         }
@@ -100,14 +109,17 @@ public class DBRequestRepository implements RequestRepository {
             try {
                 connection.rollback(savepoint);
                 connection.releaseSavepoint(savepoint);
+                logger.errorLogger(e.getMessage());
                 throw new RepositoryException("Неудалось завершить транзакцию чтения запроса из бд!");
             } catch (SQLException ex) {
+                logger.errorLogger(ex.getMessage());
                 throw new RepositoryException("Неудалось отменить транзакцию чтения запроса из бд!");
             }
         } finally {
             try {
                 connectionUtils.closeConnection();
             } catch (SQLException e) {
+                logger.errorLogger(e.getMessage());
                 throw new RepositoryException("Неудалось закрыть соединение с бд!");
             }
         }
@@ -139,14 +151,17 @@ public class DBRequestRepository implements RequestRepository {
                 requestList = null;
                 connection.rollback(savepoint);
                 connection.releaseSavepoint(savepoint);
+                logger.errorLogger(e.getMessage());
                 throw new RepositoryException("Неудалось завершить транзакцию чтения всех запросов из бд!");
             } catch (SQLException ex) {
+                logger.errorLogger(ex.getMessage());
                 throw new RepositoryException("Неудалось отменить транзакцию чтения всех запросов из бд!");
             }
         } finally {
             try {
                 connectionUtils.closeConnection();
             } catch (SQLException e) {
+                logger.errorLogger(e.getMessage());
                 throw new RepositoryException("Неудалось закрыть соединение с бд!");
             }
         }
@@ -169,14 +184,17 @@ public class DBRequestRepository implements RequestRepository {
             try {
                 connection.rollback(savepoint);
                 connection.releaseSavepoint(savepoint);
+                logger.errorLogger(e.getMessage());
                 throw new RepositoryException("Неудалось завершить транзакцию добавления запросов в бд!");
             } catch (SQLException ex) {
+                logger.errorLogger(ex.getMessage());
                 throw new RepositoryException("Неудалось отменить транзакцию добавления запросов в бд!");
             }
         } finally {
             try {
                 connectionUtils.closeConnection();
             } catch (SQLException e) {
+                logger.errorLogger(e.getMessage());
                 throw new RepositoryException("Неудалось закрыть соединение с бд!");
             }
         }

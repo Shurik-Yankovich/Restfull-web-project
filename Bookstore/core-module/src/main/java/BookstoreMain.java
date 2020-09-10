@@ -38,7 +38,7 @@ public class BookstoreMain {
         cache.put(RequestService.class, BookRequestService.class);
         cache.put(StorageService.class, BookStorageService.class);
         cache.put(ConnectionUtils.class, MySqlConnectionUtils.class);
-        cache.put(ISerializationService.class, SerializationService.class);
+//        cache.put(ISerializationService.class, SerializationService.class);
         ApplicationContext context = Application.run("org.bookstore", cache);
         MenuController menuController = context.getObject(MenuController.class);
         menuController.run();

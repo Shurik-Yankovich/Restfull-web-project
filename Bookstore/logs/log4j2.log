@@ -1,0 +1,20 @@
+2020-09-10 00:56:47,693 ERROR s.s.BookStorageService [main] ass
+2020-09-10 00:59:35,083 ERROR s.s.BookStorageService [main] ass
+2020-09-10 00:59:35,087 INFO s.s.BookStorageService [main] Выводим список книг, ну просто так для проверочки!)
+2020-09-10 22:21:35,494 ERROR s.s.BookStorageService [main] ass
+2020-09-10 22:22:11,348 ERROR s.s.BookStorageService [main] ass
+2020-09-10 22:22:11,352 INFO s.s.BookStorageService [main] Выводим список книг, ну просто так для проверочки!)
+2020-09-10 22:23:49,846 ERROR s.s.BookStorageService [main] ass
+2020-09-10 22:23:49,850 INFO s.s.BookStorageService [main] Выводим список книг, ну просто так для проверочки!)
+2020-09-10 22:27:47,428 ERROR s.s.BookStorageService [main] ass
+2020-09-10 22:27:47,431 INFO s.s.BookStorageService [main] Выводим список книг, ну просто так для проверочки!)
+2020-09-10 22:28:28,764 ERROR s.s.BookStorageService [main] ass
+2020-09-10 22:28:28,768 INFO s.s.BookStorageService [main] Выводим список книг, ну просто так для проверочки!)
+2020-09-10 22:33:38,404 ERROR c.f.ObjectFactory [main] Неудалось настроить объект
+Scanner SubTypesScanner was not configured
+2020-09-10 22:33:38,415 ERROR c.f.ObjectFactory [main] Неудалось настроить объект
+Scanner SubTypesScanner was not configured
+2020-09-10 22:33:38,421 ERROR c.f.ObjectFactory [main] Неудалось настроить объект
+Scanner SubTypesScanner was not configured
+2020-09-10 22:34:03,609 ERROR s.s.BookStorageService [main] ass
+2020-09-10 22:34:03,609 INFO s.s.BookStorageService [main] Выводим список книг, ну просто так для проверочки!)

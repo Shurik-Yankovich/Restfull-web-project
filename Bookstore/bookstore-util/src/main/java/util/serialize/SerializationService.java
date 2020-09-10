@@ -1,10 +1,14 @@
 package util.serialize;
 
+import logger.LoggerApp;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SerializationService <T extends Serializable> implements ISerializationService<T>{
+
+    private final LoggerApp logger = new LoggerApp(this.getClass());
 
     @Override
     public void save(List<T> list, String fileName) {
@@ -13,7 +17,7 @@ public class SerializationService <T extends Serializable> implements ISerializa
             oos.writeObject(list);
         }
         catch(Exception e){
-            System.err.println(e.getMessage());
+            logger.errorLogger(e.getMessage());
         }
     }
 
@@ -25,7 +29,7 @@ public class SerializationService <T extends Serializable> implements ISerializa
             list = (ArrayList<T>)ois.readObject();
         }
         catch(Exception e){
-            System.out.println(e.getMessage());
+            logger.errorLogger(e.getMessage());
         }
         return list;
     }

@@ -2,10 +2,7 @@ package com.configurator;
 
 import com.application.ApplicationContext;
 import com.annotation.InjectByProperty;
-import com.factory.ObjectFactory;
 import logger.LoggerApp;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 
 import java.io.FileInputStream;

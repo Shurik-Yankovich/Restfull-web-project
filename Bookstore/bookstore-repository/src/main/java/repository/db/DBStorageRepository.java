@@ -4,6 +4,7 @@ import constant.SqlConstant;
 import entity.Book;
 import entity.Bookshelf;
 import exeption.RepositoryException;
+import logger.LoggerApp;
 import repository.base.StorageRepository;
 import util.connections.ConnectionUtils;
 import com.annotation.InjectByType;
@@ -21,6 +22,8 @@ public class DBStorageRepository implements StorageRepository {
     @InjectByType
     private ConnectionUtils connectionUtils;
 
+    private final LoggerApp logger = new LoggerApp(this.getClass());
+
     @Override
     public Bookshelf create(Bookshelf bookshelf) throws RepositoryException {
         Connection connection = null;
@@ -36,14 +39,17 @@ public class DBStorageRepository implements StorageRepository {
                 bookshelf = null;
                 connection.rollback(savepoint);
                 connection.releaseSavepoint(savepoint);
+                logger.errorLogger(e.getMessage());
                 throw new RepositoryException("Неудалось завершить транзакцию добавления книжной полки в бд!");
             } catch (SQLException ex) {
+                logger.errorLogger(ex.getMessage());
                 throw new RepositoryException("Неудалось отменить транзакцию добавления книжной полки в бд!");
             }
         } finally {
             try {
                 connectionUtils.closeConnection();
             } catch (SQLException e) {
+                logger.errorLogger(e.getMessage());
                 throw new RepositoryException("Неудалось закрыть соединение с бд!");
             }
         }
@@ -70,14 +76,17 @@ public class DBStorageRepository implements StorageRepository {
                 bookshelf = null;
                 connection.rollback(savepoint);
                 connection.releaseSavepoint(savepoint);
+                logger.errorLogger(e.getMessage());
                 throw new RepositoryException("Неудалось завершить транзакцию обновления книжной полки в бд!");
             } catch (SQLException ex) {
+                logger.errorLogger(ex.getMessage());
                 throw new RepositoryException("Неудалось отменить транзакцию обновления книжной полки в бд!");
             }
         } finally {
             try {
                 connectionUtils.closeConnection();
             } catch (SQLException e) {
+                logger.errorLogger(e.getMessage());
                 throw new RepositoryException("Неудалось закрыть соединение с бд!");
             }
         }
@@ -103,14 +112,17 @@ public class DBStorageRepository implements StorageRepository {
             try {
                 connection.rollback(savepoint);
                 connection.releaseSavepoint(savepoint);
+                logger.errorLogger(e.getMessage());
                 throw new RepositoryException("Неудалось завершить транзакцию чтения книжной полки из бд!");
             } catch (SQLException ex) {
+                logger.errorLogger(ex.getMessage());
                 throw new RepositoryException("Неудалось отменить транзакцию чтения книжной полки из бд!");
             }
         } finally {
             try {
                 connectionUtils.closeConnection();
             } catch (SQLException e) {
+                logger.errorLogger(e.getMessage());
                 throw new RepositoryException("Неудалось закрыть соединение с бд!");
             }
         }
@@ -142,14 +154,17 @@ public class DBStorageRepository implements StorageRepository {
                 bookshelves = null;
                 connection.rollback(savepoint);
                 connection.releaseSavepoint(savepoint);
+                logger.errorLogger(e.getMessage());
                 throw new RepositoryException("Неудалось завершить транзакцию чтения всех книжных полок из бд!");
             } catch (SQLException ex) {
+                logger.errorLogger(ex.getMessage());
                 throw new RepositoryException("Неудалось отменить транзакцию чтения всех книжных полок из бд!");
             }
         } finally {
             try {
                 connectionUtils.closeConnection();
             } catch (SQLException e) {
+                logger.errorLogger(e.getMessage());
                 throw new RepositoryException("Неудалось закрыть соединение с бд!");
             }
         }
@@ -172,14 +187,17 @@ public class DBStorageRepository implements StorageRepository {
             try {
                 connection.rollback(savepoint);
                 connection.releaseSavepoint(savepoint);
+                logger.errorLogger(e.getMessage());
                 throw new RepositoryException("Неудалось завершить транзакцию добавления книжных полок в бд!");
             } catch (SQLException ex) {
+                logger.errorLogger(ex.getMessage());
                 throw new RepositoryException("Неудалось отменить транзакцию добавления книжных полок в бд!");
             }
         } finally {
             try {
                 connectionUtils.closeConnection();
             } catch (SQLException e) {
+                logger.errorLogger(e.getMessage());
                 throw new RepositoryException("Неудалось закрыть соединение с бд!");
             }
         }
