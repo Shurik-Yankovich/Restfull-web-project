@@ -38,8 +38,8 @@ public class BookRequestService implements RequestService {
     public Request addRequest(Book book) {
         try {
             Request request = new Request(book);
-            request = requestRepository.create(request);
             request.setCount(changeCountByBook(book));
+            request = requestRepository.create(request);
             return request;
         } catch (RepositoryException e) {
             logger.errorLogger(e.getMessage());

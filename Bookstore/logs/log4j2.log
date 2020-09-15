@@ -949,3 +949,29 @@ The last packet sent successfully to the server was 0 milliseconds ago. The driv
 2020-09-15 22:59:44,626 INFO o.h.e.j.c.i.DriverManagerConnectionProviderImpl [main] HHH000115: Hibernate connection pool size: 1 (min=1)
 2020-09-15 22:59:45,273 INFO o.h.d.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
 2020-09-15 22:59:46,426 INFO o.h.e.t.j.p.i.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-09-15 23:09:42,692 INFO BookstoreMain [main] Старт программы
+2020-09-15 23:09:42,708 INFO BookstoreMain [main] Инициализация контекста
+2020-09-15 23:09:43,274 INFO BookstoreMain [main] Инициализация всех классов группы "org.bookstore"
+2020-09-15 23:09:43,322 INFO BookstoreMain [main] Запуск меню
+2020-09-15 23:09:52,655 INFO o.h.Version [main] HHH000412: Hibernate ORM core version 5.4.21.Final
+2020-09-15 23:09:53,483 INFO o.h.a.c.Version [main] HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-09-15 23:09:53,777 WARN o.h.o.c.pooling [main] HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-09-15 23:09:53,785 INFO o.h.o.c.pooling [main] HHH10001005: using driver [com.mysql.cj.jdbc.Driver] at URL [jdbc:mysql://127.0.0.1:3306/bookstore?serverTimezone=UTC]
+2020-09-15 23:09:53,785 INFO o.h.o.c.pooling [main] HHH10001001: Connection properties: {password=****, user=root}
+2020-09-15 23:09:53,785 INFO o.h.o.c.pooling [main] HHH10001003: Autocommit mode: false
+2020-09-15 23:09:53,790 INFO o.h.e.j.c.i.DriverManagerConnectionProviderImpl [main] HHH000115: Hibernate connection pool size: 1 (min=1)
+2020-09-15 23:09:54,243 INFO o.h.d.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+2020-09-15 23:09:55,340 INFO o.h.e.t.j.p.i.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-09-15 23:12:58,432 INFO BookstoreMain [main] Старт программы
+2020-09-15 23:12:58,448 INFO BookstoreMain [main] Инициализация контекста
+2020-09-15 23:12:59,157 INFO BookstoreMain [main] Инициализация всех классов группы "org.bookstore"
+2020-09-15 23:12:59,253 INFO BookstoreMain [main] Запуск меню
+2020-09-15 23:13:02,941 INFO o.h.Version [main] HHH000412: Hibernate ORM core version 5.4.21.Final
+2020-09-15 23:13:03,509 INFO o.h.a.c.Version [main] HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-09-15 23:13:03,789 WARN o.h.o.c.pooling [main] HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-09-15 23:13:03,796 INFO o.h.o.c.pooling [main] HHH10001005: using driver [com.mysql.cj.jdbc.Driver] at URL [jdbc:mysql://127.0.0.1:3306/bookstore?serverTimezone=UTC]
+2020-09-15 23:13:03,797 INFO o.h.o.c.pooling [main] HHH10001001: Connection properties: {password=****, user=root}
+2020-09-15 23:13:03,797 INFO o.h.o.c.pooling [main] HHH10001003: Autocommit mode: false
+2020-09-15 23:13:03,803 INFO o.h.e.j.c.i.DriverManagerConnectionProviderImpl [main] HHH000115: Hibernate connection pool size: 1 (min=1)
+2020-09-15 23:13:04,249 INFO o.h.d.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+2020-09-15 23:13:05,595 INFO o.h.e.t.j.p.i.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
