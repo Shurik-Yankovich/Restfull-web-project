@@ -10,7 +10,7 @@ public interface RequestService {
 
     Request addRequest(Book book);
 
-    List<Integer> addRequestList(List<Book> books);
+    List<Request> addRequestList(List<Book> books);
 
     List<Request> completeRequestsByBook(Book book);
 

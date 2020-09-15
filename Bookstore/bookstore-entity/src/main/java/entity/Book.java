@@ -1,13 +1,23 @@
 package entity;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Objects;
 
+@Entity
+@Table(name = "Book")
 public class Book implements Serializable {
 
+    @Id
     private int id;
+    @Column(name = "title")
     private String title;
+    @Column(name = "author")
     private String author;
+    @Column(name = "publication_year")
     private int publicationYear;
 
     public Book() {

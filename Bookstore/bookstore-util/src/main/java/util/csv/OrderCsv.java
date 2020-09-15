@@ -1,9 +1,6 @@
 package util.csv;
 
-import entity.Customer;
-import entity.Order;
-import entity.Status;
-import entity.Book;
+import entity.*;
 import com.annotation.InjectByProperty;
 
 import java.io.*;
@@ -67,7 +64,7 @@ public class OrderCsv implements CsvUtil<Order> {
                 order.getCustomer().getFullName(),
                 order.getCustomer().getAddress(),
                 order.getCustomer().getPhoneNumber(),
-                listIntegerToString(order.getNumbersRequest()),
+                listRequestToString(order.getRequests()),
                 order.getOrderDate().format(DateTimeFormatter.ofPattern("dd MM yyyy")),
                 date != null ? date.format(DateTimeFormatter.ofPattern("dd MM yyyy")) : null,
                 order.getPrice(),
@@ -85,16 +82,28 @@ public class OrderCsv implements CsvUtil<Order> {
         return text.toString();
     }
 
-    public String listIntegerToString(List<Integer> list) {
+    public String listRequestToString(List<Request> list) {
         if (list.size() > 0) {
             StringBuilder text = new StringBuilder();
-            text.append(String.format("%d", list.get(0)));
+//            text.append(String.format("%d", list.get(0)));
+            text.append(convertRequestToString(list.get(0)));
             for (int i = 1; i < list.size(); i++) {
-                text.append(String.format(",%d", list.get(i)));
+//                text.append(String.format(",%d", list.get(i)));
+                text.append(convertRequestToString(list.get(i)));
             }
             return text.toString();
         }
         return null;
+    }
+
+    private String convertRequestToString(Request request) {
+        return String.format("%d,%s,%s,%d,%d,%s",
+                request.getId(),
+                request.getBook().getTitle(),
+                request.getBook().getAuthor(),
+                request.getBook().getPublicationYear(),
+                request.getCount(),
+                request.getStatus());
     }
 
     private Order convertStringToOrder(String text) {
@@ -104,7 +113,7 @@ public class OrderCsv implements CsvUtil<Order> {
         order.setId(Integer.parseInt(values[0]));
         order.setBooks(stringToListBook(values[1]));
         order.setCustomer(convertStringToCustomer(values[2]));
-        order.setNumbersRequest(stringToListInteger(values[3]));
+        order.setRequests(stringToListRequest(values[3]));
         order.setOrderDate(LocalDate.parse(values[4], DateTimeFormatter.ofPattern("dd MM yyyy")));
         if (!values[5].equals("null")) {
             order.setOrderCompletionDate(LocalDate.parse(values[5], DateTimeFormatter.ofPattern("dd MM yyyy")));
@@ -144,16 +153,32 @@ public class OrderCsv implements CsvUtil<Order> {
         return customer;
     }
 
-    public List<Integer> stringToListInteger(String text) {
+    public List<Request> stringToListRequest(String text) {
         if (!text.equals("null")) {
             final String regex = ",";
-            List<Integer> list = new ArrayList<>();
+            List<Request> list = new ArrayList<>();
             String[] values = text.split(regex);
             for (String value : values) {
-                list.add(Integer.parseInt(value));
+//                list.add(Integer.parseInt(value));
+                list.add(convertStringToRequest(value));
             }
             return list;
         }
         return new ArrayList<>();
+    }
+
+    private Request convertStringToRequest(String text) {
+        final String regex = ",";
+        String[] values = text.split(regex);
+        Request request = new Request();
+        Book book = new Book();
+        request.setId(Integer.parseInt(values[0]));
+        book.setTitle(values[1]);
+        book.setAuthor(values[2]);
+        book.setPublicationYear(Integer.parseInt(values[3]));
+        request.setBook(book);
+        request.setCount(Integer.parseInt(values[4]));
+        request.setStatus(Status.valueOf(values[5]));
+        return request;
     }
 }

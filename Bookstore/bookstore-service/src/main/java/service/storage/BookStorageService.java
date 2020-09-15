@@ -6,11 +6,8 @@ import entity.Request;
 import entity.Book;
 import exeption.RepositoryException;
 import logger.LoggerApp;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import repository.base.StorageRepository;
 import repository.file.FileStorageRepository;
-import service.request.BookRequestService;
 import service.request.RequestService;
 import util.comparator.*;
 import util.serialize.ISerializationService;
@@ -129,7 +126,8 @@ public class BookStorageService implements StorageService {
 
     @Override
     public void cancelBookReservation(Order order) throws RepositoryException {
-        List<Request> requestList = getRequestFromOrder(order);
+//        List<Request> requestList = getRequestFromOrder(order);
+        List<Request> requestList = order.getRequests();
         Request request;
         for (Book book : order.getBooks()) {
             request = searchBookInRequest(book, requestList);
@@ -148,13 +146,13 @@ public class BookStorageService implements StorageService {
         return null;
     }
 
-    private List<Request> getRequestFromOrder(Order order) {
+    /*private List<Request> getRequestFromOrder(Order order) {
         List<Request> requests = new ArrayList<>();
         for (Integer requestNumber : order.getNumbersRequest()) {
             requests.add(requestService.getRequestByNumber(requestNumber));
         }
         return requests;
-    }
+    }*/
 
     private void changeBookCount(Book book) throws RepositoryException {
         Bookshelf bookshelf = getBookshelf(book);

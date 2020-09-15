@@ -1,10 +1,7 @@
 package repository.db;
 
 import constant.SqlConstant;
-import entity.Book;
-import entity.Customer;
-import entity.Order;
-import entity.Status;
+import entity.*;
 import exeption.RepositoryException;
 import logger.LoggerApp;
 import repository.base.OrderRepository;
@@ -225,7 +222,7 @@ public class DBOrderRepository implements OrderRepository {
         order.setId(orderId);
         //--------------------------
         preparedStatement = connection.prepareStatement(SqlConstant.CREATE_REQUEST_BY_ORDER);
-        for (Integer requestId : order.getNumbersRequest()) {
+        for (Integer requestId : getIdRequestsFromList(order.getRequests())) {
             preparedStatement.setInt(1, orderId);
             preparedStatement.setInt(2, requestId);
             preparedStatement.execute();
@@ -238,6 +235,14 @@ public class DBOrderRepository implements OrderRepository {
             preparedStatement.execute();
         }
         return order;
+    }
+
+    private List<Integer> getIdRequestsFromList(List<Request> requestList) {
+        List<Integer> requestsID = new ArrayList<>();
+        for (Request request : requestList) {
+            requestsID.add(request.getId());
+        }
+        return requestsID;
     }
 
     private Order getOrderOnResultSet(Connection connection, ResultSet rs) throws SQLException {
@@ -253,7 +258,7 @@ public class DBOrderRepository implements OrderRepository {
         order.setOrderCompletionDate(convertDateToLocalDate(rs.getDate("completion_date")));
         order.setPrice(rs.getDouble("price"));
         order.setStatus(Status.valueOf(rs.getString("status")));
-        //получаем список запросов для заказа
+        //получаем список id запросов для заказа
         PreparedStatement preparedStatement = connection.prepareStatement(SqlConstant.READ_REQUEST_BY_ORDER);
         preparedStatement.setInt(1, orderId);
         ResultSet resultSet = preparedStatement.executeQuery();
@@ -261,7 +266,17 @@ public class DBOrderRepository implements OrderRepository {
         while (resultSet.next()) {
             numbersRequest.add(resultSet.getInt(1));
         }
-        order.setNumbersRequest(numbersRequest);
+        //получаем список запросов для заказа
+        preparedStatement = connection.prepareStatement(SqlConstant.READ_REQUEST);
+        List<Request> requestList = new ArrayList<>();
+        for (int requestID : numbersRequest) {
+            preparedStatement.setInt(1, requestID);
+            resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            Request request = getRequestOnResultSet(connection, resultSet);
+            requestList.add(request);
+        }
+        order.setRequests(requestList);
         //получаем список книг для заказа
         preparedStatement = connection.prepareStatement(SqlConstant.READ_BOOK_BY_ORDER);
         preparedStatement.setInt(1, orderId);
@@ -285,6 +300,26 @@ public class DBOrderRepository implements OrderRepository {
         }
         order.setBooks(books);
         return order;
+    }
+
+    private Request getRequestOnResultSet(Connection connection, ResultSet rs) throws SQLException {
+        Request request = new Request();
+        request.setId(rs.getInt("id"));
+        int bookId = rs.getInt("book_id");
+        request.setCount(rs.getInt("count"));
+        request.setStatus(Status.valueOf(rs.getString("status")));
+        //получаем книгу для запроса
+        PreparedStatement preparedStatement = connection.prepareStatement(SqlConstant.READ_BOOK);
+        preparedStatement.setInt(1, bookId);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        resultSet.next();
+        Book book = new Book();
+        book.setId(resultSet.getInt("id"));
+        book.setTitle(resultSet.getString("title"));
+        book.setAuthor(resultSet.getString("author"));
+        book.setPublicationYear(resultSet.getInt("publicationYear"));
+        request.setBook(book);
+        return request;
     }
 
     private LocalDate convertDateToLocalDate(Date dateToConvert) {

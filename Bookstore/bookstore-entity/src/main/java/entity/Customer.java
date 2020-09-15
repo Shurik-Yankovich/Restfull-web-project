@@ -1,11 +1,22 @@
 package entity;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 
+@Entity
+@Table(name = "Customer")
 public class Customer implements Serializable {
 
+    @Id
+    private int id;
+    @Column(name = "full_name")
     private String fullName;
+    @Column(name = "address")
     private String address;
+    @Column(name = "phone_number")
     private String phoneNumber;
 
     public Customer(String fullName, String phoneNumber, String address) {
@@ -15,6 +26,10 @@ public class Customer implements Serializable {
     }
 
     public Customer() {
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getFullName() {
@@ -27,6 +42,10 @@ public class Customer implements Serializable {
 
     public String getAddress() {
         return address;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setFullName(String fullName) {

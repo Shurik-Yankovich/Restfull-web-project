@@ -90,8 +90,9 @@ public class StoreAction {
                 if (!orderService.updateOrderToFile(cancelOrder)) {
                     viewOut.printExceptionMessage("Неудалось обновить данные по заказу в файле!");
                 }
-                for (int number : cancelOrder.getNumbersRequest()) {
-                    Request request = requestService.getRequestByNumber(number);
+//                for (int number : cancelOrder.getRequests()) {
+                for (Request request : cancelOrder.getRequests()) {
+//                    Request request = requestService.getRequestByNumber(request1);
                     if (request == null || !requestService.updateRequestToFile(request)) {
                         viewOut.printExceptionMessage("Неудалось обновить данные по запросу в файле!");
                     }

@@ -1,8 +1,5 @@
 package com.configurator;
 
-
-import logger.LoggerApp;
-
 import java.lang.reflect.Field;
 import java.util.Arrays;
 

@@ -1,15 +1,24 @@
 package entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+@Entity
+@Table(name = "Bookshelf")
 public class Bookshelf implements Serializable {
 
+    @Id
     private int id;
+    @OneToOne
+    @JoinColumn(name = "book_id")
     private Book book;
+    @Column(name = "count")
     private int count;
+    @Column(name = "price")
     private double price;
+    @Column(name = "arrival_date")
     private LocalDate arrivalDate;
 
     public Bookshelf(String title, String author, int publicationYear, int count, double price, LocalDate arrivalDate) {

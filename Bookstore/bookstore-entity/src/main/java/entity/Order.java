@@ -1,5 +1,9 @@
 package entity;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -8,15 +12,35 @@ import java.util.List;
 
 import static entity.Status.NEW;
 
+@Entity
+@Table(name = "Book_Order")
 public class Order implements Serializable {
 
+    @Id
     private int id;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JoinTable(name = "Order_Book",
+            joinColumns = @JoinColumn(name = "order_id"),
+            inverseJoinColumns = @JoinColumn(name = "book_id"))
     private List<Book> books;
+    @OneToOne
+    @JoinColumn(name = "customer_id")
     private Customer customer;
-    private List<Integer> numbersRequest;
+    @OneToMany(cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JoinTable(name = "Order_Request",
+            joinColumns = @JoinColumn(name = "order_id"),
+            inverseJoinColumns = @JoinColumn(name = "request_id"))
+    private List<Request> requests;
+    @Column(name = "order_date")
     private LocalDate orderDate;
+    @Column(name = "completion_date")
     private LocalDate orderCompletionDate;
+    @Column(name = "price")
     private double price;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
     private Status status;
 
     public Order(Customer customer, Book... books) {
@@ -48,8 +72,8 @@ public class Order implements Serializable {
         return customer;
     }
 
-    public List<Integer> getNumbersRequest() {
-        return numbersRequest;
+    public List<Request> getRequests() {
+        return requests;
     }
 
     public LocalDate getOrderDate() {
@@ -80,8 +104,8 @@ public class Order implements Serializable {
         this.customer = customer;
     }
 
-    public void setNumbersRequest(List<Integer> numbersRequest) {
-        this.numbersRequest = numbersRequest;
+    public void setRequests(List<Request> requests) {
+        this.requests = requests;
     }
 
     public void setOrderDate(LocalDate orderDate) {

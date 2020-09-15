@@ -1,12 +1,10 @@
 package service.order;
 
-import com.annotation.PostConstruct;
 import entity.Book;
 import entity.Customer;
 import entity.Order;
 import entity.Request;
 import exeption.RepositoryException;
-/*import logger.LoggerApp;*/
 import logger.LoggerApp;
 import repository.base.OrderRepository;
 import repository.file.FileOrderRepository;
@@ -59,8 +57,8 @@ public class BookOrderService implements OrderService {
             double price = storageService.getTotalPrice(bookOrder.getBooks());
             bookOrder.setPrice(price);
             List<Book> books = storageService.checkBooksNotInStorage(bookOrder.getBooks());
-            List<Integer> numbersRequest = requestService.addRequestList(books);
-            bookOrder.setNumbersRequest(numbersRequest);
+            List<Request> numbersRequest = requestService.addRequestList(books);
+            bookOrder.setRequests(numbersRequest);
             orderRepository.create(bookOrder);
             return bookOrder;
         } catch (RepositoryException e) {
@@ -73,8 +71,8 @@ public class BookOrderService implements OrderService {
     public Order cancelOrder(Order bookOrder) {
         try {
             storageService.cancelBookReservation(bookOrder);
-            for (int number : bookOrder.getNumbersRequest()) {
-                Request request = requestService.getRequestByNumber(number);
+            for (Request request : bookOrder.getRequests()) {
+//                Request request = requestService.getRequestByNumber(request);
                 requestService.cancelRequest(request);
             }
             bookOrder.setStatus(CANCELED);
@@ -88,8 +86,9 @@ public class BookOrderService implements OrderService {
     @Override
     public Order completeOrder(Order bookOrder) {
         try {
-            List<Integer> requestNumbers = bookOrder.getNumbersRequest();
-            boolean result = requestService.checkCompleteRequest(requestNumbers);
+            List<Request> requestNumbers = bookOrder.getRequests();
+//            boolean result = requestService.checkCompleteRequest(requestNumbers);
+            boolean result = checkCompleteRequest(requestNumbers);
             if (result) {
                 bookOrder.setStatus(COMPLETED);
                 bookOrder = orderRepository.update(bookOrder);
@@ -100,6 +99,17 @@ public class BookOrderService implements OrderService {
             logger.errorLogger(e.getMessage());
             return null;
         }
+    }
+
+    private boolean checkCompleteRequest(List<Request> requestNumbers) {
+        if (requestNumbers != null) {
+            for (Request request : requestNumbers) {
+                if (request.getStatus() != COMPLETED) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     @Override

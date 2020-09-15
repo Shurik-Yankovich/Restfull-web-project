@@ -1,14 +1,25 @@
 package entity;
 
+//import org.hibernate.annotations.Table;
+
+import javax.persistence.*;
 import java.io.Serializable;
 
 import static entity.Status.NEW;
 
+@Entity
+@Table(name = "Book_Request")
 public class Request implements Serializable {
 
+    @Id
     private int id;
+    @ManyToOne
+    @JoinColumn(name = "book_id")
     private Book book;
+    @Column(name = "count")
     private int count;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
     private Status status;
 
     public Request(Book book) {

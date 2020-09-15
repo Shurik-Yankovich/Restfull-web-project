@@ -64,10 +64,10 @@ public class BookRequestService implements RequestService {
     }
 
     @Override
-    public List<Integer> addRequestList(List<Book> books) {
-        List<Integer> requestNumbers = new ArrayList<>();
+    public List<Request> addRequestList(List<Book> books) {
+        List<Request> requestNumbers = new ArrayList<>();
         for (Book book : books) {
-            requestNumbers.add(addRequest(book).getId());
+            requestNumbers.add(addRequest(book));
         }
         return requestNumbers;
     }
