@@ -129,10 +129,12 @@ public class BookStorageService implements StorageService {
 //        List<Request> requestList = getRequestFromOrder(order);
         List<Request> requestList = order.getRequests();
         Request request;
-        for (Book book : order.getBooks()) {
-            request = searchBookInRequest(book, requestList);
-            if (request == null || request.getStatus() == COMPLETED) {
-                changeBookCount(book);
+        if (requestList != null) {
+            for (Book book : order.getBooks()) {
+                request = searchBookInRequest(book, requestList);
+                if (request == null || request.getStatus() == COMPLETED) {
+                    changeBookCount(book);
+                }
             }
         }
     }

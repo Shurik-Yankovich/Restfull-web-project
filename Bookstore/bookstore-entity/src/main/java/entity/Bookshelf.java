@@ -10,6 +10,7 @@ import java.time.format.DateTimeFormatter;
 public class Bookshelf implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @OneToOne
     @JoinColumn(name = "book_id")

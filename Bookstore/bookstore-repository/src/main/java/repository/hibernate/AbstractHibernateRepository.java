@@ -24,7 +24,7 @@ public abstract class AbstractHibernateRepository<E, PK extends Serializable> im
         Transaction transaction = null;
         try {
             transaction = session.beginTransaction();
-            PK pk = (PK) session.save(entity);
+            session.saveOrUpdate(entity);
             transaction.commit();
         } catch (Exception e) {
             transaction.rollback();

@@ -83,22 +83,24 @@ public class StoreAction {
         List<Order> orderList = orderService.getNewOrder();
         if (orderList != null) {
             Order order = viewIn.choiceFromList(orderList);
-            Order cancelOrder = orderService.cancelOrder(order);
-            boolean isCanceled = cancelOrder != null;
-            viewOut.cancelOrderOut(isCanceled);
-            if (isCanceled && saveChanging()) {
-                if (!orderService.updateOrderToFile(cancelOrder)) {
-                    viewOut.printExceptionMessage("Неудалось обновить данные по заказу в файле!");
-                }
-//                for (int number : cancelOrder.getRequests()) {
-                for (Request request : cancelOrder.getRequests()) {
-//                    Request request = requestService.getRequestByNumber(request1);
-                    if (request == null || !requestService.updateRequestToFile(request)) {
-                        viewOut.printExceptionMessage("Неудалось обновить данные по запросу в файле!");
+            if (order != null) {
+                Order cancelOrder = orderService.cancelOrder(order);
+                boolean isCanceled = cancelOrder != null;
+                viewOut.cancelOrderOut(isCanceled);
+                if (isCanceled && saveChanging()) {
+                    if (!orderService.updateOrderToFile(cancelOrder)) {
+                        viewOut.printExceptionMessage("Неудалось обновить данные по заказу в файле!");
                     }
-                }
-                if (!storageService.writeAllToFile()) {
-                    viewOut.printExceptionMessage("Неудалось записать в файл список книг!");
+//                for (int number : cancelOrder.getRequests()) {
+                    for (Request request : cancelOrder.getRequests()) {
+//                    Request request = requestService.getRequestByNumber(request1);
+                        if (request == null || !requestService.updateRequestToFile(request)) {
+                            viewOut.printExceptionMessage("Неудалось обновить данные по запросу в файле!");
+                        }
+                    }
+                    if (!storageService.writeAllToFile()) {
+                        viewOut.printExceptionMessage("Неудалось записать в файл список книг!");
+                    }
                 }
             }
         } else {

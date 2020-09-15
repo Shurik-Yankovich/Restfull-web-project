@@ -12,6 +12,7 @@ import static entity.Status.NEW;
 public class Request implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @ManyToOne
     @JoinColumn(name = "book_id")
