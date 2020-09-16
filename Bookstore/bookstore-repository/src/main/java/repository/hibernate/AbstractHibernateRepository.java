@@ -95,7 +95,6 @@ public abstract class AbstractHibernateRepository<E, PK extends Serializable> im
         } finally {
             session.close();
         }
-//        return HibernateSessionFactoryUtil.getSession().createCriteria(this.entityClass).list();
         return entityList;
     }
 

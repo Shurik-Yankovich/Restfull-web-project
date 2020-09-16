@@ -33,7 +33,6 @@
     </build>
     <modules>
         <module>bookstore-log4j2</module>
-        <module>init-annotation</module>
         <module>bookstore-entity</module>
         <module>bookstore-util</module>
         <module>bookstore-repository</module>

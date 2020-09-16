@@ -28,21 +28,6 @@ public class HibernateSessionFactoryUtil {
     private HibernateSessionFactoryUtil() {}
 
     public static Session getSession() {
-        /*if (sessionFactory == null) {
-            try {
-                Configuration configuration = new Configuration().configure();
-                configuration.addAnnotatedClass(Book.class);
-                configuration.addAnnotatedClass(Bookshelf.class);
-                configuration.addAnnotatedClass(Request.class);
-                configuration.addAnnotatedClass(Customer.class);
-                configuration.addAnnotatedClass(Order.class);
-                StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
-                sessionFactory = configuration.buildSessionFactory(builder.build());
-            } catch (Exception e) {
-                System.out.println("Исключение!" + e);
-            }
-        }
-        return sessionFactory;*/
         return SESSION_FACTORY.openSession();
     }
 }
