@@ -8,7 +8,7 @@ import exeption.RepositoryException;
 import logger.LoggerApp;
 import repository.base.RequestRepository;
 import util.connections.ConnectionUtils;
-import com.annotation.InjectByType;
+//import com.annotation.InjectByType;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -17,7 +17,7 @@ import java.util.List;
 
 public class DBRequestRepository implements RequestRepository {
 
-    @InjectByType
+//    @InjectByType
     private ConnectionUtils connectionUtils;
 
     private final LoggerApp logger = new LoggerApp(this.getClass());

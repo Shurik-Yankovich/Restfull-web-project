@@ -29,3 +29,32 @@
 2020-09-16 21:36:54,287 INFO BookstoreMain [main] Старт программы
 2020-09-16 21:36:54,292 INFO BookstoreMain [main] Инициализация контекста
 2020-09-16 21:36:54,914 WARN o.s.c.a.AnnotationConfigApplicationContext [main] Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'orderService': Unsatisfied dependency expressed through field 'storageService'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'storageService': Unsatisfied dependency expressed through field 'NUMBER_OF_MONTHS_FOR_UNSOLD_BOOKS'; nested exception is org.springframework.beans.TypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'java.lang.Integer'; nested exception is java.lang.NumberFormatException: For input string: "${month_for_unsold_book}"
+2020-09-16 22:11:25,325 INFO BookstoreMain [main] Старт программы
+2020-09-16 22:11:25,349 INFO BookstoreMain [main] Инициализация контекста
+2020-09-16 22:11:26,072 WARN o.s.c.a.AnnotationConfigApplicationContext [main] Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'orderService': Unsatisfied dependency expressed through field 'storageService'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'storageService': Unsatisfied dependency expressed through field 'NUMBER_OF_MONTHS_FOR_UNSOLD_BOOKS'; nested exception is org.springframework.beans.TypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'java.lang.Integer'; nested exception is java.lang.NumberFormatException: For input string: "${month_for_unsold_book}"
+2020-09-16 22:12:20,330 INFO BookstoreMain [main] Старт программы
+2020-09-16 22:12:20,336 INFO BookstoreMain [main] Инициализация контекста
+2020-09-16 22:12:21,163 INFO BookstoreMain [main] Инициализация всех классов группы "org.bookstore"
+2020-09-16 22:12:21,165 INFO BookstoreMain [main] Запуск меню
+2020-09-16 22:12:26,703 INFO o.h.Version [main] HHH000412: Hibernate ORM core version 5.4.21.Final
+2020-09-16 22:12:27,478 INFO o.h.a.c.Version [main] HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-09-16 22:12:27,828 WARN o.h.o.c.pooling [main] HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-09-16 22:12:27,837 INFO o.h.o.c.pooling [main] HHH10001005: using driver [com.mysql.cj.jdbc.Driver] at URL [jdbc:mysql://127.0.0.1:3306/bookstore?serverTimezone=UTC]
+2020-09-16 22:12:27,838 INFO o.h.o.c.pooling [main] HHH10001001: Connection properties: {password=****, user=root}
+2020-09-16 22:12:27,838 INFO o.h.o.c.pooling [main] HHH10001003: Autocommit mode: false
+2020-09-16 22:12:27,843 INFO o.h.e.j.c.i.DriverManagerConnectionProviderImpl [main] HHH000115: Hibernate connection pool size: 1 (min=1)
+2020-09-16 22:12:28,719 INFO o.h.d.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+2020-09-16 22:12:30,222 INFO o.h.e.t.j.p.i.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-09-16 22:26:12,185 INFO BookstoreMain [main] Старт программы
+2020-09-16 22:26:12,190 INFO BookstoreMain [main] Инициализация контекста
+2020-09-16 22:26:12,809 INFO BookstoreMain [main] Инициализация всех классов группы "org.bookstore"
+2020-09-16 22:26:12,810 INFO BookstoreMain [main] Запуск меню
+2020-09-16 22:26:18,325 INFO o.h.Version [main] HHH000412: Hibernate ORM core version 5.4.21.Final
+2020-09-16 22:26:18,922 INFO o.h.a.c.Version [main] HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-09-16 22:26:19,233 WARN o.h.o.c.pooling [main] HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-09-16 22:26:19,241 INFO o.h.o.c.pooling [main] HHH10001005: using driver [com.mysql.cj.jdbc.Driver] at URL [jdbc:mysql://127.0.0.1:3306/bookstore?serverTimezone=UTC]
+2020-09-16 22:26:19,241 INFO o.h.o.c.pooling [main] HHH10001001: Connection properties: {password=****, user=root}
+2020-09-16 22:26:19,242 INFO o.h.o.c.pooling [main] HHH10001003: Autocommit mode: false
+2020-09-16 22:26:19,248 INFO o.h.e.j.c.i.DriverManagerConnectionProviderImpl [main] HHH000115: Hibernate connection pool size: 1 (min=1)
+2020-09-16 22:26:19,978 INFO o.h.d.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+2020-09-16 22:26:21,194 INFO o.h.e.t.j.p.i.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]

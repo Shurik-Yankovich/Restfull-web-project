@@ -17,7 +17,6 @@ import constant.storagemenu.StorageMenu;
 import constant.storagemenu.StorageMenuTextConst;
 import controller.model.Menu;
 import controller.model.MenuItem;
-import com.annotation.InjectByType;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class Builder {
@@ -25,7 +24,6 @@ public class Builder {
     private static final String MENU_TEXT = "%d - %s";
 
     private Menu rootMenu;
-    //    @InjectByType
     @Autowired
     private StoreAction storeAction;
 

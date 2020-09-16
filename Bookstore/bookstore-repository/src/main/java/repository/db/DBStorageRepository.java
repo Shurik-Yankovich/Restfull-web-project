@@ -7,7 +7,7 @@ import exeption.RepositoryException;
 import logger.LoggerApp;
 import repository.base.StorageRepository;
 import util.connections.ConnectionUtils;
-import com.annotation.InjectByType;
+//import com.annotation.InjectByType;
 
 import java.sql.*;
 import java.time.Instant;
@@ -19,7 +19,7 @@ import java.util.List;
 
 public class DBStorageRepository implements StorageRepository {
 
-    @InjectByType
+//    @InjectByType
     private ConnectionUtils connectionUtils;
 
     private final LoggerApp logger = new LoggerApp(this.getClass());

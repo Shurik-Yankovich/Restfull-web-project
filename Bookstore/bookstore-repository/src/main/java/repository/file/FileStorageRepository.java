@@ -5,24 +5,14 @@ import exeption.RepositoryException;
 import org.springframework.beans.factory.annotation.Autowired;
 import repository.base.StorageRepository;
 import util.csv.StorageCsv;
-import com.annotation.InjectByType;
 
 import java.io.IOException;
 import java.util.List;
 
 public class FileStorageRepository implements StorageRepository {
 
-//    @InjectByType
     @Autowired
     private StorageCsv storageCsv;
-
-//    public FileStorageRepository() {
-//        storageCsv = new StorageCsv();
-//    }
-
-//    public FileStorageRepository(StorageCsv storageCsv) {
-//        this.storageCsv = storageCsv;
-//    }
 
     @Override
     public Bookshelf create(Bookshelf bookshelf) throws RepositoryException {

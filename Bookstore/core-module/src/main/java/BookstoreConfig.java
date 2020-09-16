@@ -4,6 +4,7 @@ import controller.Navigator;
 import controller.action.StoreAction;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import repository.base.OrderRepository;
 import repository.base.RequestRepository;
 import repository.base.StorageRepository;
@@ -30,21 +31,37 @@ import view.out.StoreViewOut;
 import view.out.ViewOut;
 
 @Configuration
+@PropertySource("config.properties")
 public class BookstoreConfig {
 
     @Bean
-    public OrderRepository orderRepository() {
-        return new HibernateOrderRepository();
+    public MenuController menuController() {
+        return new MenuController();
     }
 
     @Bean
-    public RequestRepository requestRepository() {
-        return new HibernateRequestRepository();
+    public Navigator navigator() {
+        return new Navigator();
     }
 
     @Bean
-    public StorageRepository storageRepository() {
-        return new HibernateStorageRepository();
+    public Builder builder() {
+        return new Builder();
+    }
+
+    @Bean
+    public StoreAction storeAction() {
+        return new StoreAction();
+    }
+
+    @Bean
+    public ViewIn viewIn() {
+        return new StoreViewIn();
+    }
+
+    @Bean
+    public ViewOut viewOut() {
+        return new StoreViewOut();
     }
 
     @Bean
@@ -63,38 +80,33 @@ public class BookstoreConfig {
     }
 
     @Bean
-    public ViewIn viewIn() {
-        return new StoreViewIn();
+    public OrderRepository orderRepository() {
+        return new HibernateOrderRepository();
     }
 
     @Bean
-    public ViewOut viewOut() {
-        return new StoreViewOut();
+    public RequestRepository requestRepository() {
+        return new HibernateRequestRepository();
     }
 
     @Bean
-    public ISerializationService iSerializationService() {
-        return new SerializationService();
+    public StorageRepository storageRepository() {
+        return new HibernateStorageRepository();
     }
 
     @Bean
-    public MenuController menuController() {
-        return new MenuController();
+    public FileOrderRepository fileOrderRepository() {
+        return new FileOrderRepository();
     }
 
     @Bean
-    public Builder builder() {
-        return new Builder();
+    public FileRequestRepository fileRequestRepository() {
+        return new FileRequestRepository();
     }
 
     @Bean
-    public Navigator navigator() {
-        return new Navigator();
-    }
-
-    @Bean
-    public StoreAction storeAction() {
-        return new StoreAction();
+    public FileStorageRepository fileStorageRepository() {
+        return new FileStorageRepository();
     }
 
     @Bean
@@ -113,17 +125,8 @@ public class BookstoreConfig {
     }
 
     @Bean
-    public FileOrderRepository fileOrderRepository() {
-        return new FileOrderRepository();
+    public ISerializationService iSerializationService() {
+        return new SerializationService();
     }
 
-    @Bean
-    public FileRequestRepository fileRequestRepository() {
-        return new FileRequestRepository();
-    }
-
-    @Bean
-    public FileStorageRepository fileStorageRepository() {
-        return new FileStorageRepository();
-    }
 }

@@ -5,24 +5,14 @@ import exeption.RepositoryException;
 import org.springframework.beans.factory.annotation.Autowired;
 import repository.base.RequestRepository;
 import util.csv.RequestCsv;
-import com.annotation.InjectByType;
 
 import java.io.IOException;
 import java.util.List;
 
 public class FileRequestRepository implements RequestRepository {
 
-//    @InjectByType
     @Autowired
     private RequestCsv requestCsv;
-
-//    public FileRequestRepository() {
-//        requestCsv = new RequestCsv();
-//    }
-
-//    public FileRequestRepository(RequestCsv requestCsv) {
-//        this.requestCsv = requestCsv;
-//    }
 
     @Override
     public Request create(Request request) throws RepositoryException {

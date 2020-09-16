@@ -1,13 +1,11 @@
 package controller;
 
 import controller.model.Menu;
-import com.annotation.InjectByType;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
 public class MenuController {
 
-//    @InjectByType
     @Autowired
     private Builder builder;
     @Autowired

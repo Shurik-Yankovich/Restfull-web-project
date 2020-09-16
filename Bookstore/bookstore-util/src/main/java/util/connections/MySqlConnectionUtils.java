@@ -1,22 +1,22 @@
 package util.connections;
 
-import com.annotation.InjectByProperty;
-import com.annotation.Singleton;
+//import com.annotation.InjectByProperty;
+//import com.annotation.Singleton;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-@Singleton
+//@Singleton
 public class MySqlConnectionUtils implements ConnectionUtils {
 
-    @InjectByProperty(propertyName = "CONNECTION_URL")
+//    @InjectByProperty(propertyName = "CONNECTION_URL")
     private String connectionURL;
-    @InjectByProperty(propertyName = "SQL_DRIVER")
+//    @InjectByProperty(propertyName = "SQL_DRIVER")
     private String sqlDriver;
-    @InjectByProperty(propertyName = "USER_NAME")
+//    @InjectByProperty(propertyName = "USER_NAME")
     private String userName;
-    @InjectByProperty(propertyName = "USER_PASSWORD")
+//    @InjectByProperty(propertyName = "USER_PASSWORD")
     private String password;
 
     private Connection connection;

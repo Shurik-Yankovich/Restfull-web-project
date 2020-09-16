@@ -15,12 +15,12 @@
     <dependencies>
         <dependency>
             <groupId>org.bookstore</groupId>
-            <artifactId>init-annotation</artifactId>
+            <artifactId>bookstore-entity</artifactId>
             <version>1</version>
         </dependency>
         <dependency>
             <groupId>org.bookstore</groupId>
-            <artifactId>bookstore-entity</artifactId>
+            <artifactId>bookstore-log4j2</artifactId>
             <version>1</version>
         </dependency>
     </dependencies>

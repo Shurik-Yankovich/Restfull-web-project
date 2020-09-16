@@ -2,7 +2,6 @@ package view.in;
 
 import entity.Bookshelf;
 import entity.Customer;
-import com.annotation.Singleton;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
@@ -12,7 +11,6 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-@Singleton
 public class StoreViewIn implements ViewIn {
 
     private static final String MENU_TEXT = "%d - %s";

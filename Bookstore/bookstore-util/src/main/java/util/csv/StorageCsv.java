@@ -2,7 +2,6 @@ package util.csv;
 
 import entity.Bookshelf;
 import entity.Book;
-import com.annotation.InjectByProperty;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.io.*;
@@ -13,7 +12,6 @@ import java.util.List;
 
 public class StorageCsv implements CsvUtil<Bookshelf> {
 
-//    @InjectByProperty(propertyName = "STORAGE_CSV_FILE_NAME")
     @Value("${STORAGE_CSV_FILE_NAME}")
     private String STORAGE_CSV_FILE_NAME;
 

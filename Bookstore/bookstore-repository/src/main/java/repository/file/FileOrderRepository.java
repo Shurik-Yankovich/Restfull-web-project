@@ -5,24 +5,14 @@ import util.csv.OrderCsv;
 import entity.Order;
 import exeption.RepositoryException;
 import repository.base.OrderRepository;
-import com.annotation.InjectByType;
 
 import java.io.IOException;
 import java.util.List;
 
 public class FileOrderRepository implements OrderRepository {
 
-//    @InjectByType
     @Autowired
     private OrderCsv orderCsv;
-
-//    public FileOrderRepository() {
-//        orderCsv = new OrderCsv();
-//    }
-
-//    public FileOrderRepository(OrderCsv orderCsv) {
-//        this.orderCsv = orderCsv;
-//    }
 
     @Override
     public Order create(Order order) throws RepositoryException {

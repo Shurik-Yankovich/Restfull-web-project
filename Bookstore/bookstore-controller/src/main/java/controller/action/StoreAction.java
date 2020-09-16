@@ -6,18 +6,14 @@ import service.request.RequestService;
 import service.storage.StorageService;
 import view.in.ViewIn;
 import view.out.ViewOut;
-import com.annotation.InjectByType;
-import com.annotation.Singleton;
 import entity.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-//@Singleton
 public class StoreAction {
 
-//    @InjectByType
     @Autowired
     private ViewIn viewIn;
     @Autowired

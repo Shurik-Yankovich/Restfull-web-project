@@ -3,7 +3,6 @@ package util.csv;
 import entity.Request;
 import entity.Status;
 import entity.Book;
-import com.annotation.InjectByProperty;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.io.*;
@@ -12,7 +11,6 @@ import java.util.List;
 
 public class RequestCsv implements CsvUtil<Request> {
 
-//    @InjectByProperty(propertyName = "REQUEST_CSV_FILE_NAME")
     @Value("${REQUEST_CSV_FILE_NAME}")
     private String REQUEST_CSV_FILE_NAME;
 

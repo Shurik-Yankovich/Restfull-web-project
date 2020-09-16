@@ -13,7 +13,6 @@ import repository.file.FileStorageRepository;
 import service.request.RequestService;
 import util.comparator.*;
 import util.serialize.ISerializationService;
-import com.annotation.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -22,20 +21,15 @@ import java.util.List;
 
 import static entity.Status.COMPLETED;
 
-//@Singleton
 public class BookStorageService implements StorageService {
 
-//    @InjectByProperty(configName = "config.properties", propertyName = "month_for_unsold_book", type = Types.INTEGER)
     @Value("${month_for_unsold_book}")
     private Integer NUMBER_OF_MONTHS_FOR_UNSOLD_BOOKS;
-//    @InjectByProperty(propertyName = "mark_requests_as_completed")
     @Value("${mark_requests_as_completed}")
     private Boolean MARK_REQUESTS_AS_COMPLETED;
-//    @InjectByProperty(propertyName = "STORAGE_SERIALIZATION_FILE_NAME")
     @Value("${STORAGE_SERIALIZATION_FILE_NAME}")
     private String STORAGE_SERIALIZATION_FILE_NAME;
 
-//    @InjectByType
     @Autowired
     private RequestService requestService;
     @Autowired
@@ -47,15 +41,6 @@ public class BookStorageService implements StorageService {
 
 
     private final LoggerApp logger = new LoggerApp(this.getClass());
-
-    /*@PostConstruct
-    public void init() {
-        try {
-            storageRepository.createAll(storageSerialize.load(STORAGE_SERIALIZATION_FILE_NAME));
-        } catch (RepositoryException e) {
-            e.printStackTrace();
-        }
-    }*/
 
     @Override
     public Bookshelf addBookOnStorage(Book book, int count) {
@@ -182,7 +167,6 @@ public class BookStorageService implements StorageService {
     @Override
     public List<Bookshelf> getBookshelfList() {
         try {
-//            logger.infoLogger("Выводим список книг, ну просто так для проверочки!)");
             return storageRepository.readAll();
         } catch (RepositoryException e) {
             logger.errorLogger(e.getMessage());

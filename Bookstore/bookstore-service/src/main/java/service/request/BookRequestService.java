@@ -11,9 +11,6 @@ import repository.file.FileRequestRepository;
 import util.comparator.RequestBookNameComparator;
 import util.comparator.RequestCountComparator;
 import util.serialize.ISerializationService;
-import com.annotation.InjectByProperty;
-import com.annotation.InjectByType;
-import com.annotation.Singleton;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -21,14 +18,11 @@ import java.util.List;
 
 import static entity.Status.*;
 
-//@Singleton
 public class BookRequestService implements RequestService {
 
-//    @InjectByProperty(propertyName = "REQUEST_SERIALIZATION_FILE_NAME")
     @Value("${REQUEST_SERIALIZATION_FILE_NAME}")
     private String REQUEST_SERIALIZATION_FILE_NAME;
 
-//    @InjectByType
     @Autowired
     private RequestRepository requestRepository;
     @Autowired

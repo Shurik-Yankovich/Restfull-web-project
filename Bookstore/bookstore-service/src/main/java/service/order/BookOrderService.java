@@ -17,9 +17,6 @@ import util.comparator.OrderDateComparator;
 import util.comparator.OrderPriceComparator;
 import util.comparator.OrderStatusComparator;
 import util.serialize.ISerializationService;
-import com.annotation.InjectByProperty;
-import com.annotation.InjectByType;
-import com.annotation.Singleton;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -28,14 +25,11 @@ import java.util.List;
 
 import static entity.Status.*;
 
-//@Singleton
 public class BookOrderService implements OrderService {
 
-//    @InjectByProperty(propertyName = "ORDER_SERIALIZATION_FILE_NAME")
     @Value("${ORDER_SERIALIZATION_FILE_NAME}")
     private String ORDER_SERIALIZATION_FILE_NAME;
 
-    //    @InjectByType
     @Autowired
     private RequestService requestService;
     @Autowired
