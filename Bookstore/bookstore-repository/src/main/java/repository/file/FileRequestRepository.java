@@ -2,6 +2,7 @@ package repository.file;
 
 import entity.Request;
 import exeption.RepositoryException;
+import org.springframework.beans.factory.annotation.Autowired;
 import repository.base.RequestRepository;
 import util.csv.RequestCsv;
 import com.annotation.InjectByType;
@@ -11,7 +12,8 @@ import java.util.List;
 
 public class FileRequestRepository implements RequestRepository {
 
-    @InjectByType
+//    @InjectByType
+    @Autowired
     private RequestCsv requestCsv;
 
 //    public FileRequestRepository() {

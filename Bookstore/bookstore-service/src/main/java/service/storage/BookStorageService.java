@@ -6,6 +6,8 @@ import entity.Request;
 import entity.Book;
 import exeption.RepositoryException;
 import logger.LoggerApp;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import repository.base.StorageRepository;
 import repository.file.FileStorageRepository;
 import service.request.RequestService;
@@ -20,23 +22,27 @@ import java.util.List;
 
 import static entity.Status.COMPLETED;
 
-@Singleton
+//@Singleton
 public class BookStorageService implements StorageService {
 
-    @InjectByProperty(configName = "config.properties", propertyName = "month_for_unsold_book", type = Types.INTEGER)
-    private int NUMBER_OF_MONTHS_FOR_UNSOLD_BOOKS;
-    @InjectByProperty(propertyName = "mark_requests_as_completed")
-    private boolean MARK_REQUESTS_AS_COMPLETED;
-    @InjectByProperty(propertyName = "STORAGE_SERIALIZATION_FILE_NAME")
+//    @InjectByProperty(configName = "config.properties", propertyName = "month_for_unsold_book", type = Types.INTEGER)
+    @Value("${month_for_unsold_book}")
+    private Integer NUMBER_OF_MONTHS_FOR_UNSOLD_BOOKS;
+//    @InjectByProperty(propertyName = "mark_requests_as_completed")
+    @Value("${mark_requests_as_completed}")
+    private Boolean MARK_REQUESTS_AS_COMPLETED;
+//    @InjectByProperty(propertyName = "STORAGE_SERIALIZATION_FILE_NAME")
+    @Value("${STORAGE_SERIALIZATION_FILE_NAME}")
     private String STORAGE_SERIALIZATION_FILE_NAME;
 
-    @InjectByType
+//    @InjectByType
+    @Autowired
     private RequestService requestService;
-    @InjectByType
+    @Autowired
     private StorageRepository storageRepository;
-    @InjectByType
+    @Autowired
     private FileStorageRepository fileStorageRepository;
-    @InjectByType
+    @Autowired
     private ISerializationService<Bookshelf> storageSerialize;
 
 

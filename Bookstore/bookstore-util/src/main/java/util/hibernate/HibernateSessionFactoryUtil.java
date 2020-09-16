@@ -8,7 +8,7 @@ import org.hibernate.cfg.Configuration;
 
 public class HibernateSessionFactoryUtil {
 
-    private static SessionFactory sessionFactory;
+    private static SessionFactory SESSION_FACTORY;
 
     static {
         try {
@@ -19,7 +19,7 @@ public class HibernateSessionFactoryUtil {
             configuration.addAnnotatedClass(Customer.class);
             configuration.addAnnotatedClass(Order.class);
             StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
-            sessionFactory = configuration.buildSessionFactory(builder.build());
+            SESSION_FACTORY = configuration.buildSessionFactory(builder.build());
         } catch (Exception e) {
             System.out.println("Исключение!" + e);
         }
@@ -43,6 +43,6 @@ public class HibernateSessionFactoryUtil {
             }
         }
         return sessionFactory;*/
-        return sessionFactory.openSession();
+        return SESSION_FACTORY.openSession();
     }
 }

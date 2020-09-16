@@ -1,5 +1,6 @@
 import controller.MenuController;
 import logger.LoggerApp;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import repository.base.OrderRepository;
 import repository.base.RequestRepository;
 import repository.base.StorageRepository;
@@ -35,21 +36,23 @@ public class BookstoreMain {
 
     public static void main(String[] args) {
         logger.infoLogger("Старт программы");
-        Map<Class, Class> cache = new HashMap<>();
-        cache.put(OrderRepository.class, HibernateOrderRepository.class);
-        cache.put(RequestRepository.class, HibernateRequestRepository.class);
-        cache.put(StorageRepository.class, HibernateStorageRepository.class);
-        cache.put(ViewIn.class, StoreViewIn.class);
-        cache.put(ViewOut.class, StoreViewOut.class);
-        cache.put(OrderService.class, BookOrderService.class);
-        cache.put(RequestService.class, BookRequestService.class);
-        cache.put(StorageService.class, BookStorageService.class);
-//        cache.put(ConnectionUtils.class, MySqlConnectionUtils.class);
-        cache.put(ISerializationService.class, SerializationService.class);
+//        Map<Class, Class> cache = new HashMap<>();
+//        cache.put(OrderRepository.class, HibernateOrderRepository.class);
+//        cache.put(RequestRepository.class, HibernateRequestRepository.class);
+//        cache.put(StorageRepository.class, HibernateStorageRepository.class);
+//        cache.put(ViewIn.class, StoreViewIn.class);
+//        cache.put(ViewOut.class, StoreViewOut.class);
+//        cache.put(OrderService.class, BookOrderService.class);
+//        cache.put(RequestService.class, BookRequestService.class);
+//        cache.put(StorageService.class, BookStorageService.class);
+////        cache.put(ConnectionUtils.class, MySqlConnectionUtils.class);
+//        cache.put(ISerializationService.class, SerializationService.class);
         logger.infoLogger("Инициализация контекста");
-        ApplicationContext context = Application.run("org.bookstore", cache);
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(BookstoreConfig.class);
+//        ApplicationContext context = Application.run("org.bookstore", cache);
         logger.infoLogger("Инициализация всех классов группы \"org.bookstore\"");
-        MenuController menuController = context.getObject(MenuController.class);
+//        MenuController menuController = context.getObject(MenuController.class);
+        MenuController menuController = context.getBean(MenuController.class);
         logger.infoLogger("Запуск меню");
         menuController.run();
     }

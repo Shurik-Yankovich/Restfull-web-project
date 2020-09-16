@@ -1,5 +1,6 @@
 package controller.action;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import service.order.OrderService;
 import service.request.RequestService;
 import service.storage.StorageService;
@@ -13,18 +14,19 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-@Singleton
+//@Singleton
 public class StoreAction {
 
-    @InjectByType
+//    @InjectByType
+    @Autowired
     private ViewIn viewIn;
-    @InjectByType
+    @Autowired
     private ViewOut viewOut;
-    @InjectByType
+    @Autowired
     private RequestService requestService;
-    @InjectByType
+    @Autowired
     private StorageService storageService;
-    @InjectByType
+    @Autowired
     private OrderService orderService;
 
     public StoreAction() {

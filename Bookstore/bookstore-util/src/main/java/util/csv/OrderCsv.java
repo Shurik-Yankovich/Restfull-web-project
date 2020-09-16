@@ -2,6 +2,7 @@ package util.csv;
 
 import entity.*;
 import com.annotation.InjectByProperty;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.io.*;
 import java.time.LocalDate;
@@ -11,7 +12,8 @@ import java.util.List;
 
 public class OrderCsv implements CsvUtil<Order> {
 
-    @InjectByProperty(propertyName = "ORDER_CSV_FILE_NAME")
+//    @InjectByProperty(propertyName = "ORDER_CSV_FILE_NAME")
+    @Value("${ORDER_CSV_FILE_NAME}")
     private String ORDER_CSV_FILE_NAME;
 
     @Override

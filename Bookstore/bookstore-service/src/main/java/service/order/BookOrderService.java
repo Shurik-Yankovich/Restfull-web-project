@@ -6,6 +6,8 @@ import entity.Order;
 import entity.Request;
 import exeption.RepositoryException;
 import logger.LoggerApp;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import repository.base.OrderRepository;
 import repository.file.FileOrderRepository;
 import service.request.RequestService;
@@ -26,21 +28,23 @@ import java.util.List;
 
 import static entity.Status.*;
 
-@Singleton
+//@Singleton
 public class BookOrderService implements OrderService {
 
-    @InjectByProperty(propertyName = "ORDER_SERIALIZATION_FILE_NAME")
+//    @InjectByProperty(propertyName = "ORDER_SERIALIZATION_FILE_NAME")
+    @Value("${ORDER_SERIALIZATION_FILE_NAME}")
     private String ORDER_SERIALIZATION_FILE_NAME;
 
-    @InjectByType
+    //    @InjectByType
+    @Autowired
     private RequestService requestService;
-    @InjectByType
+    @Autowired
     private StorageService storageService;
-    @InjectByType
+    @Autowired
     private OrderRepository orderRepository;
-    @InjectByType
+    @Autowired
     private FileOrderRepository fileOrderRepository;
-    @InjectByType
+    @Autowired
     private ISerializationService<Order> orderSerialize;
 
     private final LoggerApp logger = new LoggerApp(this.getClass());

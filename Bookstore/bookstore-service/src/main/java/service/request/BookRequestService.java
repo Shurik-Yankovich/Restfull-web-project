@@ -4,6 +4,8 @@ import entity.Book;
 import entity.Request;
 import exeption.RepositoryException;
 import logger.LoggerApp;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import repository.base.RequestRepository;
 import repository.file.FileRequestRepository;
 import util.comparator.RequestBookNameComparator;
@@ -19,17 +21,19 @@ import java.util.List;
 
 import static entity.Status.*;
 
-@Singleton
+//@Singleton
 public class BookRequestService implements RequestService {
 
-    @InjectByProperty(propertyName = "REQUEST_SERIALIZATION_FILE_NAME")
+//    @InjectByProperty(propertyName = "REQUEST_SERIALIZATION_FILE_NAME")
+    @Value("${REQUEST_SERIALIZATION_FILE_NAME}")
     private String REQUEST_SERIALIZATION_FILE_NAME;
 
-    @InjectByType
+//    @InjectByType
+    @Autowired
     private RequestRepository requestRepository;
-    @InjectByType
+    @Autowired
     private FileRequestRepository fileRequestRepository;
-    @InjectByType
+    @Autowired
     private ISerializationService<Request> requestSerialize;
 
     private final LoggerApp logger = new LoggerApp(this.getClass());

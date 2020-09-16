@@ -1,5 +1,6 @@
 package repository.file;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import util.csv.OrderCsv;
 import entity.Order;
 import exeption.RepositoryException;
@@ -11,7 +12,8 @@ import java.util.List;
 
 public class FileOrderRepository implements OrderRepository {
 
-    @InjectByType
+//    @InjectByType
+    @Autowired
     private OrderCsv orderCsv;
 
 //    public FileOrderRepository() {
