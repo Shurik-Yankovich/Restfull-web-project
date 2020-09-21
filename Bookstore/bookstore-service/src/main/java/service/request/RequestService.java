@@ -35,6 +35,4 @@ public interface RequestService {
     boolean writeRequestToFile(Request request);
 
     boolean updateRequestToFile(Request request);
-
-    boolean save();
 }

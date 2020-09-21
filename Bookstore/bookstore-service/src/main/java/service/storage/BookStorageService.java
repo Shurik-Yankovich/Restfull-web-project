@@ -12,7 +12,6 @@ import repository.base.StorageRepository;
 import repository.file.FileStorageRepository;
 import service.request.RequestService;
 import util.comparator.*;
-import util.serialize.ISerializationService;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -27,8 +26,6 @@ public class BookStorageService implements StorageService {
     private Integer NUMBER_OF_MONTHS_FOR_UNSOLD_BOOKS;
     @Value("${mark_requests_as_completed}")
     private Boolean MARK_REQUESTS_AS_COMPLETED;
-    @Value("${STORAGE_SERIALIZATION_FILE_NAME}")
-    private String STORAGE_SERIALIZATION_FILE_NAME;
 
     @Autowired
     private RequestService requestService;
@@ -36,9 +33,6 @@ public class BookStorageService implements StorageService {
     private StorageRepository storageRepository;
     @Autowired
     private FileStorageRepository fileStorageRepository;
-    @Autowired
-    private ISerializationService<Bookshelf> storageSerialize;
-
 
     private final LoggerApp logger = new LoggerApp(this.getClass());
 
@@ -254,17 +248,6 @@ public class BookStorageService implements StorageService {
     public boolean updateBookshelfToFile(Bookshelf bookshelf) {
         try {
             fileStorageRepository.update(bookshelf);
-            return true;
-        } catch (RepositoryException e) {
-            logger.errorLogger(e.getMessage());
-            return false;
-        }
-    }
-
-    @Override
-    public boolean save() {
-        try {
-            storageSerialize.save(storageRepository.readAll(), STORAGE_SERIALIZATION_FILE_NAME);
             return true;
         } catch (RepositoryException e) {
             logger.errorLogger(e.getMessage());

@@ -34,6 +34,4 @@ public interface StorageService {
     boolean writeBookshelfToFile(Bookshelf bookshelf);
 
     boolean updateBookshelfToFile(Bookshelf bookshelf);
-
-    boolean save();
 }

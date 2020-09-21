@@ -23,8 +23,6 @@ import service.storage.StorageService;
 import util.csv.OrderCsv;
 import util.csv.RequestCsv;
 import util.csv.StorageCsv;
-import util.serialize.ISerializationService;
-import util.serialize.SerializationService;
 import view.in.StoreViewIn;
 import view.in.ViewIn;
 import view.out.StoreViewOut;
@@ -122,11 +120,6 @@ public class BookstoreConfig {
     @Bean
     public StorageCsv storageCsv() {
         return new StorageCsv();
-    }
-
-    @Bean
-    public ISerializationService iSerializationService() {
-        return new SerializationService();
     }
 
 }

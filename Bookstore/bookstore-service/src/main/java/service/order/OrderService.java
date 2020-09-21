@@ -36,6 +36,4 @@ public interface OrderService {
     boolean writeOrderToFile(Order order);
 
     boolean updateOrderToFile(Order order);
-
-    boolean save();
 }

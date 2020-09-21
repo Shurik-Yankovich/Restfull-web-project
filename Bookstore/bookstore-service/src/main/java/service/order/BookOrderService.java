@@ -7,7 +7,6 @@ import entity.Request;
 import exeption.RepositoryException;
 import logger.LoggerApp;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import repository.base.OrderRepository;
 import repository.file.FileOrderRepository;
 import service.request.RequestService;
@@ -16,7 +15,6 @@ import util.comparator.OrderCompletionDateComparator;
 import util.comparator.OrderDateComparator;
 import util.comparator.OrderPriceComparator;
 import util.comparator.OrderStatusComparator;
-import util.serialize.ISerializationService;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -27,9 +25,6 @@ import static entity.Status.*;
 
 public class BookOrderService implements OrderService {
 
-    @Value("${ORDER_SERIALIZATION_FILE_NAME}")
-    private String ORDER_SERIALIZATION_FILE_NAME;
-
     @Autowired
     private RequestService requestService;
     @Autowired
@@ -38,8 +33,6 @@ public class BookOrderService implements OrderService {
     private OrderRepository orderRepository;
     @Autowired
     private FileOrderRepository fileOrderRepository;
-    @Autowired
-    private ISerializationService<Order> orderSerialize;
 
     private final LoggerApp logger = new LoggerApp(this.getClass());
 
@@ -246,17 +239,6 @@ public class BookOrderService implements OrderService {
     public boolean updateOrderToFile(Order order) {
         try {
             fileOrderRepository.update(order);
-            return true;
-        } catch (RepositoryException e) {
-            logger.errorLogger(e.getMessage());
-            return false;
-        }
-    }
-
-    @Override
-    public boolean save() {
-        try {
-            orderSerialize.save(orderRepository.readAll(), ORDER_SERIALIZATION_FILE_NAME);
             return true;
         } catch (RepositoryException e) {
             logger.errorLogger(e.getMessage());

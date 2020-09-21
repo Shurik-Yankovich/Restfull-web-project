@@ -5,12 +5,10 @@ import entity.Request;
 import exeption.RepositoryException;
 import logger.LoggerApp;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import repository.base.RequestRepository;
 import repository.file.FileRequestRepository;
 import util.comparator.RequestBookNameComparator;
 import util.comparator.RequestCountComparator;
-import util.serialize.ISerializationService;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -20,15 +18,10 @@ import static entity.Status.*;
 
 public class BookRequestService implements RequestService {
 
-    @Value("${REQUEST_SERIALIZATION_FILE_NAME}")
-    private String REQUEST_SERIALIZATION_FILE_NAME;
-
     @Autowired
     private RequestRepository requestRepository;
     @Autowired
     private FileRequestRepository fileRequestRepository;
-    @Autowired
-    private ISerializationService<Request> requestSerialize;
 
     private final LoggerApp logger = new LoggerApp(this.getClass());
 
@@ -205,17 +198,6 @@ public class BookRequestService implements RequestService {
     public boolean updateRequestToFile(Request request) {
         try {
             fileRequestRepository.update(request);
-            return true;
-        } catch (RepositoryException e) {
-            logger.errorLogger(e.getMessage());
-            return false;
-        }
-    }
-
-    @Override
-    public boolean save() {
-        try {
-            requestSerialize.save(requestRepository.readAll(), REQUEST_SERIALIZATION_FILE_NAME);
             return true;
         } catch (RepositoryException e) {
             logger.errorLogger(e.getMessage());
