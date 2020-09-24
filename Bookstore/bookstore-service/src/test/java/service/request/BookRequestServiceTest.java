@@ -30,8 +30,6 @@ public class BookRequestServiceTest {
     private RequestService requestService;
     @Autowired
     private RequestRepository requestRepository;
-    @Autowired
-    private FileRequestRepository fileRequestRepository;
 
     private static Book book;
     private static List<Book> bookList;
