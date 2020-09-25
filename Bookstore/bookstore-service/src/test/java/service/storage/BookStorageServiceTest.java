@@ -7,7 +7,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.internal.matchers.Or;
+import org.mockito.ArgumentCaptor;
+import org.mockito.exceptions.base.MockitoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -60,7 +61,7 @@ public class BookStorageServiceTest {
 
     @Test
     public void addBookOnStorageWithTwoParametersWithExceptionInDatabaseAccessWhenThisBookIsInDatabase() throws RepositoryException {
-        when(storageRepository.readAll()).thenThrow(RepositoryException.class);
+        when(storageRepository.read(anyInt())).thenThrow(RepositoryException.class);
         Bookshelf actualBookshelf = storageService.addBookOnStorage(book, 3);
         assertNull(actualBookshelf);
     }
@@ -103,7 +104,7 @@ public class BookStorageServiceTest {
         List<Book> expectedBookList = new ArrayList<>();
         expectedBookList.add(book);
         List<Book> actualBookList = storageService.checkBooksNotInStorage(expectedBookList);
-        verify(storageRepository, never()).update(any(Bookshelf.class));
+//        verify(storageRepository, never()).update(any(Bookshelf.class));
         assertEquals(expectedBookList, actualBookList);
     }
 
@@ -121,13 +122,18 @@ public class BookStorageServiceTest {
     @Test
     public void cancelBookReservationWithoutAnyRequestForOrder() throws RepositoryException {
         Order order = mock(Order.class);
+        ArgumentCaptor<Bookshelf> valueCapture = ArgumentCaptor.forClass(Bookshelf.class);
         when(order.getRequests()).thenReturn(null);
+        doReturn(expectedBookshelf).when(storageRepository).update(valueCapture.capture());
         storageService.cancelBookReservation(order);
-        verify(storageRepository, never()).update(any(Bookshelf.class));
+//        verify(storageRepository, never()).update(any(Bookshelf.class));
+        assertThrows(MockitoException.class, () -> {
+            Bookshelf bookshelf = valueCapture.getValue();
+        });
     }
 
     @Test
-    public void cancelBookReservation1() throws RepositoryException {
+    public void cancelBookReservationWhenRequestWasMadeForTheBook() throws RepositoryException {
         Order order = mock(Order.class);
         Request request = new Request(book);
         request.setStatus(Status.COMPLETED);
@@ -135,13 +141,15 @@ public class BookStorageServiceTest {
         requestList.add(request);
         List<Book> bookList = new ArrayList<>();
         bookList.add(book);
+        ArgumentCaptor<Bookshelf> valueCapture = ArgumentCaptor.forClass(Bookshelf.class);
         when(order.getRequests()).thenReturn(requestList);
         when(order.getBooks()).thenReturn(bookList);
         doReturn(expectedBookshelf).when(storageRepository).read(anyInt());
-        doReturn(expectedBookshelf).when(storageRepository).update(any(Bookshelf.class));
+        doReturn(expectedBookshelf).when(storageRepository).update(valueCapture.capture());
         storageService.cancelBookReservation(order);
-        verify(storageRepository, times(1)).update(any(Bookshelf.class));
-        verify(storageRepository, times(1)).read(anyInt());
+//        verify(storageRepository, times(1)).update(any(Bookshelf.class));
+//        verify(storageRepository, times(1)).read(anyInt());
+        assertEquals(expectedBookshelf, valueCapture.getValue());
     }
 
     @Test
@@ -216,7 +224,6 @@ public class BookStorageServiceTest {
         List<Bookshelf> actualBookshelfList = storageService.getUnsoldBookshelves();
         assertNull(actualBookshelfList);
     }
-
 
 
 }
