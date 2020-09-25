@@ -12,7 +12,7 @@ import util.csv.RequestCsv;
 import static org.mockito.Mockito.mock;
 
 @Configuration
-public class TestConfig {
+public class RequestServiceTestConfig {
 
     @Bean
     public RequestService requestService() {

@@ -43,9 +43,13 @@ public class BookStorageService implements StorageService {
                 requestService.completeRequestsByBook(book);
             }
             Bookshelf bookshelf = searchBook(book);
-            int currentCount = bookshelf.getCount();
-            bookshelf.setCount(currentCount + count);
-            return storageRepository.update(bookshelf);
+            if(bookshelf!=null) {
+                int currentCount = bookshelf.getCount();
+                bookshelf.setCount(currentCount + count);
+                return storageRepository.update(bookshelf);
+            }
+            logger.warningLogger("Данной книги нет в списках!");
+            return null;
         } catch (RepositoryException e) {
             logger.errorLogger(e.getMessage());
             return null;
@@ -53,12 +57,13 @@ public class BookStorageService implements StorageService {
     }
 
     private Bookshelf searchBook(Book book) throws RepositoryException {
-        for (Bookshelf bookshelf : getBookshelfList()) {
-            if (bookshelf.getBook().equals(book)) {
-                return bookshelf;
-            }
-        }
-        return null;
+//        for (Bookshelf bookshelf : storageRepository.readAll()) {
+//            if (bookshelf.getBook().equals(book)) {
+//                return bookshelf;
+//            }
+//        }
+//        return null;
+        return storageRepository.read(book.getId());
     }
 
     @Override
@@ -75,7 +80,8 @@ public class BookStorageService implements StorageService {
     public double getTotalPrice(List<Book> books) throws RepositoryException {
         double price = 0;
         for (Book book : books) {
-            price += storageRepository.read(searchBook(book).getId()).getPrice();
+//            price += storageRepository.read(searchBook(book).getId()).getPrice();
+            price += storageRepository.read(book.getId()).getPrice();
         }
         return price;
     }
@@ -142,7 +148,7 @@ public class BookStorageService implements StorageService {
     }*/
 
     private void changeBookCount(Book book) throws RepositoryException {
-        Bookshelf bookshelf = getBookshelf(book);
+        Bookshelf bookshelf = searchBook(book);
         int count = bookshelf.getCount();
         bookshelf.setCount(count + 1);
         storageRepository.update(bookshelf);

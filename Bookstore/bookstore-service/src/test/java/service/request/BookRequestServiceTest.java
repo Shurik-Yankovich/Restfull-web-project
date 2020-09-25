@@ -1,6 +1,6 @@
 package service.request;
 
-import config.TestConfig;
+import config.RequestServiceTestConfig;
 import entity.Book;
 import entity.Request;
 import entity.Status;
@@ -13,8 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import repository.base.RequestRepository;
-import repository.file.FileRequestRepository;
-import repository.hibernate.HibernateRequestRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = TestConfig.class)
+@ContextConfiguration(classes = RequestServiceTestConfig.class)
 public class BookRequestServiceTest {
 
     @Autowired
