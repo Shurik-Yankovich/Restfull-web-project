@@ -50,8 +50,7 @@ public class BookOrderService implements OrderService {
             List<Book> books = storageService.checkBooksNotInStorage(bookOrder.getBooks());
             List<Request> numbersRequest = requestService.addRequestList(books);
             bookOrder.setRequests(numbersRequest);
-            orderRepository.create(bookOrder);
-            return bookOrder;
+            return orderRepository.create(bookOrder);
         } catch (RepositoryException e) {
             logger.errorLogger(e.getMessage());
             return null;
@@ -170,7 +169,7 @@ public class BookOrderService implements OrderService {
     }
 
     @Override
-    public List<Order> getNewOrder() {
+    public List<Order> getNewOrders() {
         try {
             List<Order> orders = new ArrayList<>();
             for (Order order : orderRepository.readAll()) {

@@ -69,7 +69,7 @@ public class StoreAction {
     }
 
     public void cancelOrderAction() {
-        List<Order> orderList = orderService.getNewOrder();
+        List<Order> orderList = orderService.getNewOrders();
         if (orderList != null) {
             Order order = viewIn.choiceFromList(orderList);
             if (order != null) {
@@ -99,7 +99,7 @@ public class StoreAction {
     }
 
     public void completeOrderAction() {
-        List<Order> orderList = orderService.getNewOrder();
+        List<Order> orderList = orderService.getNewOrders();
         if (orderList != null) {
             Order order = viewIn.choiceFromList(orderList);
             if (order != null) {

@@ -35,7 +35,6 @@ public class BookStorageServiceTest {
 
     private static Book book;
     private static Bookshelf expectedBookshelf;
-    private static List<Bookshelf> expectedBookshelfList;
 
     @BeforeAll
     public static void init() {
@@ -46,14 +45,12 @@ public class BookStorageServiceTest {
     @BeforeEach
     public void initForEach() {
         expectedBookshelf = new Bookshelf(book, 7, 99.9, LocalDate.parse("2020-01-20"));
-        expectedBookshelfList = new ArrayList<>();
-        expectedBookshelfList.add(expectedBookshelf);
     }
 
     @Test
     public void addBookOnStorageWithTwoParametersWithoutAnyProblemsWhenThisBookIsInDatabase() throws RepositoryException {
         doReturn(expectedBookshelf).when(storageRepository).read(anyInt());
-        when(requestService.completeRequestsByBook(book)).thenReturn(new ArrayList<Request>());
+        when(requestService.completeRequestsByBook(book)).thenReturn(new ArrayList<>());
         when(storageRepository.update(any(Bookshelf.class))).thenReturn(expectedBookshelf);
         Bookshelf actualBookshelf = storageService.addBookOnStorage(book, 3);
         assertEquals(expectedBookshelf.getCount(), actualBookshelf.getCount());
@@ -91,9 +88,7 @@ public class BookStorageServiceTest {
         List<Book> bookList = new ArrayList<>();
         bookList.add(book);
         bookList.add(mock(Book.class));
-        assertThrows(RepositoryException.class, () -> {
-            storageService.getTotalPrice(bookList);
-        });
+        assertThrows(RepositoryException.class, () -> storageService.getTotalPrice(bookList));
     }
 
     @Test
@@ -148,6 +143,7 @@ public class BookStorageServiceTest {
         doReturn(expectedBookshelf).when(storageRepository).update(valueCapture.capture());
         storageService.cancelBookReservation(order);
 //        verify(storageRepository, times(1)).update(any(Bookshelf.class));
+        verify(storageRepository).update(valueCapture.getValue());
 //        verify(storageRepository, times(1)).read(anyInt());
         assertEquals(expectedBookshelf, valueCapture.getValue());
     }
@@ -164,9 +160,7 @@ public class BookStorageServiceTest {
         when(order.getRequests()).thenReturn(requestList);
         when(order.getBooks()).thenReturn(bookList);
         doThrow(RepositoryException.class).when(storageRepository).read(anyInt());
-        assertThrows(RepositoryException.class, () -> {
-            storageService.cancelBookReservation(order);
-        });
+        assertThrows(RepositoryException.class, () -> storageService.cancelBookReservation(order));
     }
 
     @Test
@@ -185,6 +179,8 @@ public class BookStorageServiceTest {
 
     @Test
     public void getBookshelfListWithoutProblemReadFromDatabase() throws RepositoryException {
+        List<Bookshelf> expectedBookshelfList = new ArrayList<>();
+        expectedBookshelfList.add(expectedBookshelf);
         doReturn(expectedBookshelfList).when(storageRepository).readAll();
         List<Bookshelf> actualBookshelfList = storageService.getBookshelfList();
         assertEquals(expectedBookshelfList, actualBookshelfList);
@@ -199,6 +195,8 @@ public class BookStorageServiceTest {
 
     @Test
     public void getSortingBookshelvesWithoutProblemReadFromDatabase() throws RepositoryException {
+        List<Bookshelf> expectedBookshelfList = new ArrayList<>();
+        expectedBookshelfList.add(expectedBookshelf);
         doReturn(expectedBookshelfList).when(storageRepository).readAll();
         List<Bookshelf> actualBookshelfList = storageService.getSortingBookshelves();
         assertEquals(expectedBookshelfList, actualBookshelfList);
@@ -213,6 +211,8 @@ public class BookStorageServiceTest {
 
     @Test
     public void getUnsoldBookshelvesWithoutProblemReadFromDatabase() throws RepositoryException {
+        List<Bookshelf> expectedBookshelfList = new ArrayList<>();
+        expectedBookshelfList.add(expectedBookshelf);
         doReturn(expectedBookshelfList).when(storageRepository).readAll();
         List<Bookshelf> actualBookshelfList = storageService.getUnsoldBookshelves();
         assertEquals(expectedBookshelfList, actualBookshelfList);

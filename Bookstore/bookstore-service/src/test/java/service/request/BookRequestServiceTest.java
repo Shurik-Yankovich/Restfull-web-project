@@ -41,7 +41,6 @@ public class BookRequestServiceTest {
         bookList = new ArrayList<>();
         bookList.add(book);
         expectedRequest = new Request(book);
-        expectedRequest.setCount(1);
     }
 
     @BeforeEach
@@ -94,9 +93,7 @@ public class BookRequestServiceTest {
 
     @Test
     public void completeRequestWhenRequestIsNull() {
-        assertThrows(NullPointerException.class, () -> {
-            requestService.completeRequest(null);
-        });
+        assertThrows(NullPointerException.class, () -> requestService.completeRequest(null));
     }
 
     @Test
@@ -109,9 +106,7 @@ public class BookRequestServiceTest {
 
     @Test
     public void cancelRequestWhenRequestIsNull() {
-        assertThrows(NullPointerException.class, () -> {
-            requestService.cancelRequest(null);
-        });
+        assertThrows(NullPointerException.class, () -> requestService.cancelRequest(null));
     }
 
     @Test

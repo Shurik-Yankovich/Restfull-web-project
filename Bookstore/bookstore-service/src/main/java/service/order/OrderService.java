@@ -25,7 +25,7 @@ public interface OrderService {
 
     List<Order> getOrderList();
 
-    List<Order> getNewOrder();
+    List<Order> getNewOrders();
 
     List<Order> getSortingOrderList();
 
