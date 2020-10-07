@@ -26,7 +26,7 @@ public class RequestController {
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-//    @PutMapping(value = "/cancel/{id}")
+//    @PutMapping(value = "/{id}/cancel")
 //    public ResponseEntity<?> cancel(@PathVariable(name = "id") int id){
 //        Request request = requestService.getRequestByNumber(id);
 //        request = requestService.cancelRequest(request);
@@ -36,7 +36,7 @@ public class RequestController {
 //                : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
 //    }
 
-    @PutMapping(value = "/complete/{id}")
+    @PutMapping(value = "/{id}/complete")
     public ResponseEntity<?> complete(@PathVariable(name = "id") int id){
         Request request = requestService.getRequestByNumber(id);
         request = requestService.completeRequest(request);
