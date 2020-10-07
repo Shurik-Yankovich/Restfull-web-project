@@ -3,12 +3,14 @@ package repository.file;
 import entity.Bookshelf;
 import exeption.RepositoryException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import repository.base.StorageRepository;
 import util.csv.StorageCsv;
 
 import java.io.IOException;
 import java.util.List;
 
+@Repository
 public class FileStorageRepository implements StorageRepository {
 
     @Autowired

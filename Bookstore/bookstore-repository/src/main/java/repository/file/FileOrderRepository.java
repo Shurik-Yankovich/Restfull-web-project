@@ -1,6 +1,7 @@
 package repository.file;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import util.csv.OrderCsv;
 import entity.Order;
 import exeption.RepositoryException;
@@ -9,6 +10,7 @@ import repository.base.OrderRepository;
 import java.io.IOException;
 import java.util.List;
 
+@Repository
 public class FileOrderRepository implements OrderRepository {
 
     @Autowired

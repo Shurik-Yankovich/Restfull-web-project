@@ -8,6 +8,7 @@ import exeption.RepositoryException;
 import logger.LoggerApp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 import repository.base.StorageRepository;
 import repository.file.FileStorageRepository;
 import service.request.RequestService;
@@ -20,6 +21,7 @@ import java.util.List;
 
 import static entity.Status.COMPLETED;
 
+@Service
 public class BookStorageService implements StorageService {
 
     @Value("${month_for_unsold_book:6}")

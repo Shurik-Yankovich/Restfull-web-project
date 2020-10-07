@@ -3,12 +3,14 @@ package repository.file;
 import entity.Request;
 import exeption.RepositoryException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import repository.base.RequestRepository;
 import util.csv.RequestCsv;
 
 import java.io.IOException;
 import java.util.List;
 
+@Repository
 public class FileRequestRepository implements RequestRepository {
 
     @Autowired

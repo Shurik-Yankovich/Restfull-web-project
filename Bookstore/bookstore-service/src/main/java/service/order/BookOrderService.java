@@ -7,6 +7,7 @@ import entity.Request;
 import exeption.RepositoryException;
 import logger.LoggerApp;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import repository.base.OrderRepository;
 import repository.file.FileOrderRepository;
 import service.request.RequestService;
@@ -23,6 +24,7 @@ import java.util.List;
 
 import static entity.Status.*;
 
+@Service
 public class BookOrderService implements OrderService {
 
     @Autowired

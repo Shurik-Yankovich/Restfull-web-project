@@ -5,6 +5,7 @@ import entity.Request;
 import exeption.RepositoryException;
 import logger.LoggerApp;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import repository.base.RequestRepository;
 import repository.file.FileRequestRepository;
 import util.comparator.RequestBookNameComparator;
@@ -16,6 +17,7 @@ import java.util.List;
 
 import static entity.Status.*;
 
+@Service
 public class BookRequestService implements RequestService {
 
     @Autowired
