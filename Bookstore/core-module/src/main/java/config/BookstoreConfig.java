@@ -1,3 +1,5 @@
+package config;
+
 import controller.Builder;
 import controller.MenuController;
 import controller.Navigator;
@@ -29,38 +31,38 @@ import view.out.StoreViewOut;
 import view.out.ViewOut;
 
 @Configuration
-@PropertySource("config.properties")
+@PropertySource("application.properties")
 public class BookstoreConfig {
 
-    @Bean
-    public MenuController menuController() {
-        return new MenuController();
-    }
-
-    @Bean
-    public Navigator navigator() {
-        return new Navigator();
-    }
-
-    @Bean
-    public Builder builder() {
-        return new Builder();
-    }
-
-    @Bean
-    public StoreAction storeAction() {
-        return new StoreAction();
-    }
-
-    @Bean
-    public ViewIn viewIn() {
-        return new StoreViewIn();
-    }
-
-    @Bean
-    public ViewOut viewOut() {
-        return new StoreViewOut();
-    }
+//    @Bean
+//    public MenuController menuController() {
+//        return new MenuController();
+//    }
+//
+//    @Bean
+//    public Navigator navigator() {
+//        return new Navigator();
+//    }
+//
+//    @Bean
+//    public Builder builder() {
+//        return new Builder();
+//    }
+//
+//    @Bean
+//    public StoreAction storeAction() {
+//        return new StoreAction();
+//    }
+//
+//    @Bean
+//    public ViewIn viewIn() {
+//        return new StoreViewIn();
+//    }
+//
+//    @Bean
+//    public ViewOut viewOut() {
+//        return new StoreViewOut();
+//    }
 
     @Bean
     public OrderService orderService() {
