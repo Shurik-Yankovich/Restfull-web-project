@@ -1,5 +1,6 @@
 package dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import entity.Status;
 import java.time.LocalDate;
 import java.util.List;
@@ -10,6 +11,7 @@ public class OrderDto {
     private List<BookDto> books;
     private CustomerDto customer;
     private List<RequestDto> requests;
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
     private LocalDate orderCompletionDate;
     private double price;
     private Status status;

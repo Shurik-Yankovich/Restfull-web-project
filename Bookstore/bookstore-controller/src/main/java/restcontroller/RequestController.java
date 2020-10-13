@@ -1,5 +1,7 @@
 package restcontroller;
 
+import dto.BookDto;
+import dto.RequestDto;
 import entity.Book;
 import entity.Request;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,8 +9,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import service.request.RequestService;
+import util.converter.DtoConverter;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/requests")
@@ -18,10 +22,11 @@ public class RequestController {
     private RequestService requestService;
 
     @PostMapping(value = "/")
-    public ResponseEntity<?> create(@RequestBody Book book){
-        Request request = requestService.addRequest(book);
+    public ResponseEntity<?> create(@RequestBody BookDto bookDto){
+        Book book = DtoConverter.convertDtoToBook(bookDto);
+        RequestDto requestDto = DtoConverter.convertRequestToDto(requestService.addRequest(book));
 
-        return request != null
+        return requestDto != null
                 ? new ResponseEntity<>(HttpStatus.CREATED)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
@@ -29,9 +34,9 @@ public class RequestController {
 //    @PutMapping(value = "/{id}/cancel")
 //    public ResponseEntity<?> cancel(@PathVariable(name = "id") int id){
 //        Request request = requestService.getRequestByNumber(id);
-//        request = requestService.cancelRequest(request);
+//        RequestDto requestDto = DtoConverter.convertRequestToDto(requestService.cancelRequest(request));
 //
-//        return request != null
+//        return requestDto != null
 //                ? new ResponseEntity<>(HttpStatus.OK)
 //                : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
 //    }
@@ -39,25 +44,27 @@ public class RequestController {
     @PutMapping(value = "/{id}/complete")
     public ResponseEntity<?> complete(@PathVariable(name = "id") int id){
         Request request = requestService.getRequestByNumber(id);
-        request = requestService.completeRequest(request);
+        RequestDto requestDto = DtoConverter.convertRequestToDto(requestService.completeRequest(request));
 
-        return request != null
+        return requestDto != null
                 ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
 
     @GetMapping(value = "/")
-    public ResponseEntity<List<Request>> showList(){
-        final List<Request> requestList = requestService.getRequestList();
+    public ResponseEntity<List<RequestDto>> showList(){
+        final List<RequestDto> requestDtoList = requestService.getRequestList()
+                .stream().map(DtoConverter::convertRequestToDto).collect(Collectors.toList());
 
-        return requestList != null && !requestList.isEmpty()
-                ? new ResponseEntity<>(requestList, HttpStatus.OK)
+        return requestDtoList != null && !requestDtoList.isEmpty()
+                ? new ResponseEntity<>(requestDtoList, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping(value = "/sort")
-    public ResponseEntity<List<Request>> showSortList(){
-        final List<Request> requestList = requestService.getSortingRequestList();
+    public ResponseEntity<List<RequestDto>> showSortList(){
+        final List<RequestDto> requestList = requestService.getSortingRequestList()
+                .stream().map(DtoConverter::convertRequestToDto).collect(Collectors.toList());
 
         return requestList != null && !requestList.isEmpty()
                 ? new ResponseEntity<>(requestList, HttpStatus.OK)
@@ -65,8 +72,9 @@ public class RequestController {
     }
 
     @GetMapping(value = "/new")
-    public ResponseEntity<List<Request>> showNewList(){
-        final List<Request> requestList = requestService.getNewRequests();
+    public ResponseEntity<List<RequestDto>> showNewList(){
+        final List<RequestDto> requestList = requestService.getNewRequests()
+                .stream().map(DtoConverter::convertRequestToDto).collect(Collectors.toList());
 
         return requestList != null && !requestList.isEmpty()
                 ? new ResponseEntity<>(requestList, HttpStatus.OK)

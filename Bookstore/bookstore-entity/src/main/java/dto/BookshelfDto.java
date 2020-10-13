@@ -1,5 +1,7 @@
 package dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.time.LocalDate;
 
 public class BookshelfDto {
@@ -8,6 +10,7 @@ public class BookshelfDto {
     private BookDto book;
     private int count;
     private double price;
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
     private LocalDate arrivalDate;
 
     public int getId() {

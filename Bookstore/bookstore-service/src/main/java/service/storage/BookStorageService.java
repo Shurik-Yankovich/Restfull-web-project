@@ -48,6 +48,7 @@ public class BookStorageService implements StorageService {
             if(bookshelf!=null) {
                 int currentCount = bookshelf.getCount();
                 bookshelf.setCount(currentCount + count);
+                bookshelf.setArrivalDate(LocalDate.now());
                 return storageRepository.update(bookshelf);
             }
             logger.warningLogger("Данной книги нет в списках!");
