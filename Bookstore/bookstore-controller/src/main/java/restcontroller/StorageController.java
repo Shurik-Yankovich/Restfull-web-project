@@ -22,7 +22,7 @@ public class StorageController {
     private StorageService storageService;
 
     @PostMapping(value = "/")
-    public ResponseEntity<?> create(@RequestBody BookDto bookDto, @RequestBody Integer count) {
+    public ResponseEntity<?> createBookshelf(@RequestBody BookDto bookDto, @RequestBody Integer count) {
         Book book = DtoConverter.convertDtoToBook(bookDto);
         BookshelfDto bookshelfDto = DtoConverter.convertBookshelfToDto(storageService.addBookOnStorage(book, count));
 
@@ -32,9 +32,11 @@ public class StorageController {
     }
 
     @GetMapping(value = "/")
-    public ResponseEntity<List<BookshelfDto>> showList() {
-        final List<BookshelfDto> bookshelfDtoList = storageService.getBookshelfList()
-                .stream().map(DtoConverter::convertBookshelfToDto).collect(Collectors.toList());
+    public ResponseEntity<List<BookshelfDto>> getBookshelfList() {
+        List<Bookshelf> bookshelves = storageService.getBookshelfList();
+        final List<BookshelfDto> bookshelfDtoList = bookshelves != null ?
+                bookshelves.stream().map(DtoConverter::convertBookshelfToDto).collect(Collectors.toList())
+                : null;
 
         return bookshelfDtoList != null && !bookshelfDtoList.isEmpty()
                 ? new ResponseEntity<>(bookshelfDtoList, HttpStatus.OK)
@@ -42,9 +44,11 @@ public class StorageController {
     }
 
     @GetMapping(value = "/sort")
-    public ResponseEntity<List<BookshelfDto>> showSortList() {
-        final List<BookshelfDto> bookshelfDtoList = storageService.getSortingBookshelves()
-                .stream().map(DtoConverter::convertBookshelfToDto).collect(Collectors.toList());
+    public ResponseEntity<List<BookshelfDto>> getSortBookshelfList() {
+        List<Bookshelf> bookshelves = storageService.getSortingBookshelves();
+        final List<BookshelfDto> bookshelfDtoList = bookshelves != null ?
+                bookshelves.stream().map(DtoConverter::convertBookshelfToDto).collect(Collectors.toList())
+                : null;
 
         return bookshelfDtoList != null && !bookshelfDtoList.isEmpty()
                 ? new ResponseEntity<>(bookshelfDtoList, HttpStatus.OK)
@@ -52,9 +56,11 @@ public class StorageController {
     }
 
     @GetMapping(value = "/unsold")
-    public ResponseEntity<List<BookshelfDto>> showUnsoldList() {
-        final List<BookshelfDto> bookshelfDtoList = storageService.getUnsoldBookshelves()
-                .stream().map(DtoConverter::convertBookshelfToDto).collect(Collectors.toList());
+    public ResponseEntity<List<BookshelfDto>> getUnsoldBookshelfList() {
+        List<Bookshelf> bookshelves = storageService.getUnsoldBookshelves();
+        final List<BookshelfDto> bookshelfDtoList = bookshelves != null ?
+                bookshelves.stream().map(DtoConverter::convertBookshelfToDto).collect(Collectors.toList())
+                : null;
 
         return bookshelfDtoList != null && !bookshelfDtoList.isEmpty()
                 ? new ResponseEntity<>(bookshelfDtoList, HttpStatus.OK)

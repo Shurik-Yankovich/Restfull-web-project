@@ -22,7 +22,7 @@ public class RequestController {
     private RequestService requestService;
 
     @PostMapping(value = "/")
-    public ResponseEntity<?> create(@RequestBody BookDto bookDto){
+    public ResponseEntity<?> createRequest(@RequestBody BookDto bookDto) {
         Book book = DtoConverter.convertDtoToBook(bookDto);
         RequestDto requestDto = DtoConverter.convertRequestToDto(requestService.addRequest(book));
 
@@ -32,7 +32,7 @@ public class RequestController {
     }
 
 //    @PutMapping(value = "/{id}/cancel")
-//    public ResponseEntity<?> cancel(@PathVariable(name = "id") int id){
+//    public ResponseEntity<?> cancelRequest(@PathVariable(name = "id") int id){
 //        Request request = requestService.getRequestByNumber(id);
 //        RequestDto requestDto = DtoConverter.convertRequestToDto(requestService.cancelRequest(request));
 //
@@ -42,7 +42,7 @@ public class RequestController {
 //    }
 
     @PutMapping(value = "/{id}/complete")
-    public ResponseEntity<?> complete(@PathVariable(name = "id") int id){
+    public ResponseEntity<?> completeRequest(@PathVariable(name = "id") int id) {
         Request request = requestService.getRequestByNumber(id);
         RequestDto requestDto = DtoConverter.convertRequestToDto(requestService.completeRequest(request));
 
@@ -52,9 +52,11 @@ public class RequestController {
     }
 
     @GetMapping(value = "/")
-    public ResponseEntity<List<RequestDto>> showList(){
-        final List<RequestDto> requestDtoList = requestService.getRequestList()
-                .stream().map(DtoConverter::convertRequestToDto).collect(Collectors.toList());
+    public ResponseEntity<List<RequestDto>> getRequestList() {
+        List<Request> requests = requestService.getRequestList();
+        final List<RequestDto> requestDtoList = requests != null ?
+                requests.stream().map(DtoConverter::convertRequestToDto).collect(Collectors.toList())
+                : null;
 
         return requestDtoList != null && !requestDtoList.isEmpty()
                 ? new ResponseEntity<>(requestDtoList, HttpStatus.OK)
@@ -62,9 +64,11 @@ public class RequestController {
     }
 
     @GetMapping(value = "/sort")
-    public ResponseEntity<List<RequestDto>> showSortList(){
-        final List<RequestDto> requestList = requestService.getSortingRequestList()
-                .stream().map(DtoConverter::convertRequestToDto).collect(Collectors.toList());
+    public ResponseEntity<List<RequestDto>> getSortRequestList() {
+        List<Request> requests = requestService.getSortingRequestList();
+        final List<RequestDto> requestList = requests != null ?
+                requests.stream().map(DtoConverter::convertRequestToDto).collect(Collectors.toList())
+                : null;
 
         return requestList != null && !requestList.isEmpty()
                 ? new ResponseEntity<>(requestList, HttpStatus.OK)
@@ -72,9 +76,11 @@ public class RequestController {
     }
 
     @GetMapping(value = "/new")
-    public ResponseEntity<List<RequestDto>> showNewList(){
-        final List<RequestDto> requestList = requestService.getNewRequests()
-                .stream().map(DtoConverter::convertRequestToDto).collect(Collectors.toList());
+    public ResponseEntity<List<RequestDto>> getRequestsWithStatusNew() {
+        List<Request> requests = requestService.getNewRequests();
+        final List<RequestDto> requestList = requests != null ?
+                requests.stream().map(DtoConverter::convertRequestToDto).collect(Collectors.toList())
+                : null;
 
         return requestList != null && !requestList.isEmpty()
                 ? new ResponseEntity<>(requestList, HttpStatus.OK)

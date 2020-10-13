@@ -22,7 +22,7 @@ public class OrderController {
     private OrderService orderService;
 
     @PostMapping(value = "/")
-    public ResponseEntity<?> create(@RequestBody CreateOrderRequestBody requestBody) {
+    public ResponseEntity<?> createOrder(@RequestBody CreateOrderRequestBody requestBody) {
         Customer customer = DtoConverter.convertDtoToCustomer(requestBody.getCustomerDto());
         List<Book> books = requestBody.getBookDtoList().stream().map(DtoConverter::convertDtoToBook).collect(Collectors.toList());
         final OrderDto orderDto = DtoConverter.convertOrderToDto(orderService.addOrder(new Order(customer, books)));
@@ -33,7 +33,7 @@ public class OrderController {
     }
 
     @PutMapping(value = "/{id}/cancel")
-    public ResponseEntity<?> cancel(@PathVariable(name = "id") int id, @RequestBody OrderDto orderDto) {
+    public ResponseEntity<?> cancelOrder(@PathVariable(name = "id") int id, @RequestBody OrderDto orderDto) {
         Order order = DtoConverter.convertDtoToOrder(orderDto);
         final OrderDto resultOrderDto = DtoConverter.convertOrderToDto(orderService.cancelOrder(order));
 
@@ -43,7 +43,7 @@ public class OrderController {
     }
 
     @PutMapping(value = "/{id}/complete")
-    public ResponseEntity<?> complete(@PathVariable(name = "id") int id, @RequestBody OrderDto orderDto) {
+    public ResponseEntity<?> completeOrder(@PathVariable(name = "id") int id, @RequestBody OrderDto orderDto) {
         Order order = DtoConverter.convertDtoToOrder(orderDto);
         final OrderDto resultOrderDto = DtoConverter.convertOrderToDto(orderService.completeOrder(order));
 
@@ -53,8 +53,8 @@ public class OrderController {
     }
 
     @GetMapping(value = "/complete/earnedmoney")
-    public ResponseEntity<Double> getMoney(@RequestBody DateIntervalDto dateIntervalDto) {
-        final Double earnedMoney = orderService.earnedMoney(dateIntervalDto.getDateFrom(), dateIntervalDto.getDateTo());
+    public ResponseEntity<?> getEarnedMoneyInPeriodOfTime(@RequestBody DateIntervalDto dateIntervalDto) {
+        final double earnedMoney = orderService.earnedMoney(dateIntervalDto.getDateFrom(), dateIntervalDto.getDateTo());
 
         return earnedMoney != -1
                 ? new ResponseEntity<>(earnedMoney, HttpStatus.OK)
@@ -62,9 +62,11 @@ public class OrderController {
     }
 
     @GetMapping(value = "/")
-    public ResponseEntity<List<OrderDto>> showList() {
-        final List<OrderDto> orderDtoList = orderService.getOrderList()
-                .stream().map(DtoConverter::convertOrderToDto).collect(Collectors.toList());
+    public ResponseEntity<List<OrderDto>> getOrderList() {
+        List<Order> orders = orderService.getOrderList();
+        final List<OrderDto> orderDtoList = orders != null ?
+                orders.stream().map(DtoConverter::convertOrderToDto).collect(Collectors.toList())
+                : null;
 
         return orderDtoList != null && !orderDtoList.isEmpty()
                 ? new ResponseEntity<>(orderDtoList, HttpStatus.OK)
@@ -72,9 +74,11 @@ public class OrderController {
     }
 
     @GetMapping(value = "/sort")
-    public ResponseEntity<List<OrderDto>> showSortList() {
-        final List<OrderDto> orderDtoList = orderService.getSortingOrderList()
-                .stream().map(DtoConverter::convertOrderToDto).collect(Collectors.toList());
+    public ResponseEntity<List<OrderDto>> getSortOrderList() {
+        List<Order> orders = orderService.getSortingOrderList();
+        final List<OrderDto> orderDtoList = orders != null ?
+                orders.stream().map(DtoConverter::convertOrderToDto).collect(Collectors.toList())
+                : null;
 
         return orderDtoList != null && !orderDtoList.isEmpty()
                 ? new ResponseEntity<>(orderDtoList, HttpStatus.OK)
@@ -82,9 +86,11 @@ public class OrderController {
     }
 
     @GetMapping(value = "/complete")
-    public ResponseEntity<List<OrderDto>> showCompletedList(@RequestBody DateIntervalDto dateIntervalDto) {
-        final List<OrderDto> orderDtoList = orderService.getCompletedOrder(dateIntervalDto.getDateFrom(), dateIntervalDto.getDateTo())
-                .stream().map(DtoConverter::convertOrderToDto).collect(Collectors.toList());
+    public ResponseEntity<List<OrderDto>> getOrdersWithStatusCompleted(@RequestBody DateIntervalDto dateIntervalDto) {
+        List<Order> orders = orderService.getCompletedOrder(dateIntervalDto.getDateFrom(), dateIntervalDto.getDateTo());
+        final List<OrderDto> orderDtoList = orders != null ?
+                orders.stream().map(DtoConverter::convertOrderToDto).collect(Collectors.toList())
+                : null;
 
         return orderDtoList != null && !orderDtoList.isEmpty()
                 ? new ResponseEntity<>(orderDtoList, HttpStatus.OK)
@@ -92,8 +98,8 @@ public class OrderController {
     }
 
     @GetMapping(value = "/complete/count")
-    public ResponseEntity<Integer> showCountCompleted(@RequestBody DateIntervalDto dateIntervalDto) {
-        final Integer countCompletedOrders = orderService.getCountCompletedOrder(dateIntervalDto.getDateFrom(), dateIntervalDto.getDateTo());
+    public ResponseEntity<?> getCountCompletedOrders(@RequestBody DateIntervalDto dateIntervalDto) {
+        final int countCompletedOrders = orderService.getCountCompletedOrder(dateIntervalDto.getDateFrom(), dateIntervalDto.getDateTo());
 
         return countCompletedOrders != -1
                 ? new ResponseEntity<>(countCompletedOrders, HttpStatus.OK)
@@ -101,9 +107,11 @@ public class OrderController {
     }
 
     @GetMapping(value = "/new")
-    public ResponseEntity<List<OrderDto>> showNewList() {
-        final List<OrderDto> orderDtoList = orderService.getNewOrders()
-                .stream().map(DtoConverter::convertOrderToDto).collect(Collectors.toList());
+    public ResponseEntity<List<OrderDto>> getOrdersWithStatusNew() {
+        List<Order> orders = orderService.getNewOrders();
+        final List<OrderDto> orderDtoList = orders != null ?
+                orders.stream().map(DtoConverter::convertOrderToDto).collect(Collectors.toList())
+                : null;
 
         return orderDtoList != null && !orderDtoList.isEmpty()
                 ? new ResponseEntity<>(orderDtoList, HttpStatus.OK)
