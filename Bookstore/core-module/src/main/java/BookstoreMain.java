@@ -1,8 +1,3 @@
-import controller.MenuController;
-import logger.LoggerApp;
-import config.BookstoreConfig;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
 public class BookstoreMain {
 
 //    private static final LoggerApp logger = new LoggerApp(BookstoreMain.class);

@@ -33,8 +33,9 @@ public class OrderController {
     }
 
     @PutMapping(value = "/{id}/cancel")
-    public ResponseEntity<?> cancelOrder(@PathVariable(name = "id") int id, @RequestBody OrderDto orderDto) {
-        Order order = DtoConverter.convertDtoToOrder(orderDto);
+    public ResponseEntity<?> cancelOrder(@PathVariable(name = "id") int id /*@RequestBody OrderDto orderDto*/) {
+//        Order order = DtoConverter.convertDtoToOrder(orderDto);
+        Order order = orderService.getOrderById(id);
         final OrderDto resultOrderDto = DtoConverter.convertOrderToDto(orderService.cancelOrder(order));
 
         return resultOrderDto != null
@@ -43,8 +44,9 @@ public class OrderController {
     }
 
     @PutMapping(value = "/{id}/complete")
-    public ResponseEntity<?> completeOrder(@PathVariable(name = "id") int id, @RequestBody OrderDto orderDto) {
-        Order order = DtoConverter.convertDtoToOrder(orderDto);
+    public ResponseEntity<?> completeOrder(@PathVariable(name = "id") int id /*@RequestBody OrderDto orderDto*/) {
+//        Order order = DtoConverter.convertDtoToOrder(orderDto);
+        Order order = orderService.getOrderById(id);
         final OrderDto resultOrderDto = DtoConverter.convertOrderToDto(orderService.completeOrder(order));
 
         return resultOrderDto != null

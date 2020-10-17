@@ -1,6 +1,6 @@
 package util.serialize;
 
-import logger.LoggerApp;
+import util.logger.LoggerApp;
 
 import java.io.*;
 import java.util.ArrayList;

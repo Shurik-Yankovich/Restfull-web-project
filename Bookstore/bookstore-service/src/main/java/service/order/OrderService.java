@@ -23,6 +23,8 @@ public interface OrderService {
 
     int getCountCompletedOrder(LocalDate dateFrom, LocalDate dateTo);
 
+    Order getOrderById(Integer id);
+
     List<Order> getOrderList();
 
     List<Order> getNewOrders();

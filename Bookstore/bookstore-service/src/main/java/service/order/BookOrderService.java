@@ -5,7 +5,7 @@ import entity.Customer;
 import entity.Order;
 import entity.Request;
 import exeption.RepositoryException;
-import logger.LoggerApp;
+import util.logger.LoggerApp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import repository.base.OrderRepository;
@@ -157,6 +157,16 @@ public class BookOrderService implements OrderService {
             return orderList.size();
         } else {
             return -1;
+        }
+    }
+
+    @Override
+    public Order getOrderById(Integer id) {
+        try {
+            return orderRepository.read(id);
+        } catch (RepositoryException e) {
+            logger.errorLogger(e.getMessage());
+            return null;
         }
     }
 

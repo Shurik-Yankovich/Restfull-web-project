@@ -5,25 +5,46 @@
     <parent>
         <artifactId>Bookstore</artifactId>
         <groupId>org.bookstore</groupId>
-        <version>1</version>
+        <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>bookstore-util</artifactId>
+    <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
             <groupId>org.bookstore</groupId>
             <artifactId>bookstore-entity</artifactId>
-            <version>1</version>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
-        <dependency>
-            <groupId>org.bookstore</groupId>
-            <artifactId>bookstore-log4j2</artifactId>
-            <version>1</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.bookstore</groupId>-->
+<!--            <artifactId>bookstore-log4j2</artifactId>-->
+<!--            <version>1</version>-->
+<!--        </dependency>-->
     </dependencies>
+
+    <build>
+        <finalName>${project.artifactId}</finalName>
+        <plugins>
+            <plugin>
+                <groupId>
+                    org.apache.maven.plugins
+                </groupId>
+                <artifactId>
+                    maven-jar-plugin
+                </artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <outputDirectory>
+                        ${basedir}/../commons
+                    </outputDirectory>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 
 
