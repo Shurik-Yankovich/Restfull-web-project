@@ -1,9 +1,5 @@
 package config;
 
-import controller.Builder;
-import controller.MenuController;
-import controller.Navigator;
-import controller.action.StoreAction;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -25,44 +21,11 @@ import service.storage.StorageService;
 import util.csv.OrderCsv;
 import util.csv.RequestCsv;
 import util.csv.StorageCsv;
-import view.in.StoreViewIn;
-import view.in.ViewIn;
-import view.out.StoreViewOut;
-import view.out.ViewOut;
 
 @Configuration
-@PropertySource("application.properties")
+@PropertySource("configuration.properties")
 public class BookstoreConfig {
 
-//    @Bean
-//    public MenuController menuController() {
-//        return new MenuController();
-//    }
-//
-//    @Bean
-//    public Navigator navigator() {
-//        return new Navigator();
-//    }
-//
-//    @Bean
-//    public Builder builder() {
-//        return new Builder();
-//    }
-//
-//    @Bean
-//    public StoreAction storeAction() {
-//        return new StoreAction();
-//    }
-//
-//    @Bean
-//    public ViewIn viewIn() {
-//        return new StoreViewIn();
-//    }
-//
-//    @Bean
-//    public ViewOut viewOut() {
-//        return new StoreViewOut();
-//    }
 
     @Bean
     public OrderService orderService() {

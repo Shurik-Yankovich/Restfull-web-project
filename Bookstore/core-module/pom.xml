@@ -24,6 +24,14 @@
 
     <build>
         <finalName>Bookstore</finalName>
+        <resources>
+            <resource>
+                <directory>${basedir}/src/java/resources</directory>
+                <includes>
+                    <include>**/*.properties</include>
+                </includes>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>
@@ -44,8 +52,21 @@
                             </mainClass>
                         </manifest>
                     </archive>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
             </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.springframework.boot</groupId>-->
+<!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
+<!--                <configuration>-->
+<!--                    <outputDirectory>-->
+<!--                        ${basedir}/../commons-->
+<!--                    </outputDirectory>-->
+<!--                    <mainClass>-->
+<!--                        BookstoreApplication-->
+<!--                    </mainClass>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
         </plugins>
     </build>
 

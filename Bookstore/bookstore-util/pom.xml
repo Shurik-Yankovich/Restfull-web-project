@@ -19,11 +19,6 @@
             <artifactId>bookstore-entity</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.bookstore</groupId>-->
-<!--            <artifactId>bookstore-log4j2</artifactId>-->
-<!--            <version>1</version>-->
-<!--        </dependency>-->
     </dependencies>
 
     <build>
@@ -43,6 +38,15 @@
                     </outputDirectory>
                 </configuration>
             </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.springframework.boot</groupId>-->
+<!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
+<!--                <configuration>-->
+<!--                    <outputDirectory>-->
+<!--                        ${basedir}/../commons-->
+<!--                    </outputDirectory>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
         </plugins>
     </build>
 

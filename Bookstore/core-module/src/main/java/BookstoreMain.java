@@ -1,4 +1,4 @@
-public class BookstoreMain {
+//public class BookstoreMain {
 
 //    private static final LoggerApp logger = new LoggerApp(BookstoreMain.class);
 //
@@ -12,4 +12,4 @@ public class BookstoreMain {
 //        menuController.run();
 //    }
 
-}
+//}
