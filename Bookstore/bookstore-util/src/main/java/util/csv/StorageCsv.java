@@ -12,8 +12,8 @@ import java.util.List;
 
 public class StorageCsv implements CsvUtil<Bookshelf> {
 
-    @Value("${STORAGE_CSV_FILE_NAME}")
-    private String STORAGE_CSV_FILE_NAME;
+//    @Value("${STORAGE_CSV_FILE_NAME}")
+    private String STORAGE_CSV_FILE_NAME = "rootdir/storage.csv";
 
     @Override
     public void writeToCsv(Bookshelf bookshelf) throws IOException {

@@ -11,8 +11,8 @@ import java.util.List;
 
 public class OrderCsv implements CsvUtil<Order> {
 
-    @Value("${ORDER_CSV_FILE_NAME}")
-    private String ORDER_CSV_FILE_NAME;
+//    @Value("${ORDER_CSV_FILE_NAME}")
+    private String ORDER_CSV_FILE_NAME = "rootdir/order.csv";
 
     @Override
     public void writeToCsv(Order order) throws IOException {

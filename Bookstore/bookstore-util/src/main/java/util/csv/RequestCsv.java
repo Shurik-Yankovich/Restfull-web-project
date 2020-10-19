@@ -11,8 +11,8 @@ import java.util.List;
 
 public class RequestCsv implements CsvUtil<Request> {
 
-    @Value("${REQUEST_CSV_FILE_NAME}")
-    private String REQUEST_CSV_FILE_NAME;
+//    @Value("${REQUEST_CSV_FILE_NAME}")
+    private String REQUEST_CSV_FILE_NAME = "rootdir/request.csv";
 
     @Override
     public void writeToCsv(Request request) throws IOException {

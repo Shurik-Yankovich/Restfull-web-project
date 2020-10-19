@@ -24,10 +24,10 @@ import static entity.Status.COMPLETED;
 @Service
 public class BookStorageService implements StorageService {
 
-    @Value("${month_for_unsold_book:6}")
-    private Integer NUMBER_OF_MONTHS_FOR_UNSOLD_BOOKS;
-    @Value("${mark_requests_as_completed:true}")
-    private Boolean MARK_REQUESTS_AS_COMPLETED;
+//    @Value("${month_for_unsold_book:6}")
+    private Integer NUMBER_OF_MONTHS_FOR_UNSOLD_BOOKS = 6;
+//    @Value("${mark_requests_as_completed:true}")
+    private Boolean MARK_REQUESTS_AS_COMPLETED = true;
 
     @Autowired
     private RequestService requestService;
