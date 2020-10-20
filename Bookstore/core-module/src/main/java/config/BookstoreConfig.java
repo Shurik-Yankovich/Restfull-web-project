@@ -23,7 +23,7 @@ import util.csv.RequestCsv;
 import util.csv.StorageCsv;
 
 @Configuration
-//@PropertySource("configuration.properties")
+//@PropertySource("classpath:application.properties")
 public class BookstoreConfig {
 
 
