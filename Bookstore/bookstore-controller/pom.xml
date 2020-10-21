@@ -24,25 +24,29 @@
             <artifactId>bookstore-view</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-rest</artifactId>
+        </dependency>
     </dependencies>
 
-    <build>
-        <finalName>${project.artifactId}</finalName>
-        <plugins>
-            <plugin>
-                <groupId>
-                    org.apache.maven.plugins
-                </groupId>
-                <artifactId>
-                    maven-jar-plugin
-                </artifactId>
-                <version>3.2.0</version>
-                <configuration>
-                    <outputDirectory>
-                        ${basedir}/../commons
-                    </outputDirectory>
-                </configuration>
-            </plugin>
+<!--    <build>-->
+<!--        <finalName>${project.artifactId}</finalName>-->
+<!--        <plugins>-->
+<!--            <plugin>-->
+<!--                <groupId>-->
+<!--                    org.apache.maven.plugins-->
+<!--                </groupId>-->
+<!--                <artifactId>-->
+<!--                    maven-jar-plugin-->
+<!--                </artifactId>-->
+<!--                <version>3.2.0</version>-->
+<!--                <configuration>-->
+<!--                    <outputDirectory>-->
+<!--                        ${basedir}/../commons-->
+<!--                    </outputDirectory>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
 <!--            <plugin>-->
 <!--                <groupId>org.springframework.boot</groupId>-->
 <!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
@@ -52,8 +56,6 @@
 <!--                    </outputDirectory>-->
 <!--                </configuration>-->
 <!--            </plugin>-->
-        </plugins>
-    </build>
-
-
+<!--        </plugins>-->
+<!--    </build>-->
 </project>
