@@ -75,7 +75,18 @@ public abstract class AbstractHibernateRepository<E, PK extends Serializable> im
 
     @Override
     public void delete(PK primaryKey) throws RepositoryException {
-
+        Session session = HibernateSessionFactoryUtil.getSession();
+        Transaction transaction = null;
+        try {
+            transaction = session.beginTransaction();
+            session.delete(primaryKey);
+            transaction.commit();
+        } catch (Exception e) {
+            transaction.rollback();
+            throw new RepositoryException("Не удалось прочитать объект класса " + this.entityClass.getName() + " в базе данных!");
+        } finally {
+            session.close();
+        }
     }
 
     @Override

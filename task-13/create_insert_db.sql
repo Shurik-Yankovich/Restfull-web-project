@@ -41,8 +41,21 @@ order_id int references Book_Order(id),
 request_id int references Book_Request(id));
 
 create table Order_Book (
-order_id int references Book_Order(id),  
+order_id int references Book_Order(id), 
 book_id int references Book(id));
+
+create table Security_User (
+id int primary key auto_increment, 
+username varchar(30) not null,
+password varchar(100) not null);
+
+create table Security_Role (
+id int primary key auto_increment, 
+name varchar(30) not null);
+
+create table Security_User_Roles (
+user_id int references Security_User(id), 
+roles_id int references Security_Role(id));
 
 insert into Book
 values 
@@ -109,3 +122,18 @@ values
 (3,3),
 (3,2),
 (3,7);
+
+insert into Security_User
+values 
+(1,'admin','$2a$10$Y95gYv1s5yVBDHuZo.FlYegHhB26WPfj6QLusSAAI2sE5t8FNMyRy'),
+(2,'user','$2a$10$UntLqHn2kagzdL.oy1F9quosKxzF7nSIJ/0Q0gFkbUzp7T6WebDpy');
+
+insert into Security_Role
+values 
+(1,'ADMIN'),
+(2,'USER');
+
+insert into Security_User_Roles
+values 
+(1,1),
+(2,2);

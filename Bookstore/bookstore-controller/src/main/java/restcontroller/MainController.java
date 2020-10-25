@@ -14,7 +14,7 @@ public class MainController {
     private StorageService storageService;
 
     @GetMapping(value = "/")
-    @PreAuthorize("hasRole('ROLE_')")
+//    @PreAuthorize("hasRole('ROLE_')")
     public String index() {
         return "index";
     }

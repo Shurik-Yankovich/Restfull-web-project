@@ -2,6 +2,7 @@ package util.converter;
 
 import dto.*;
 import entity.*;
+import entity.security.User;
 
 import java.util.stream.Collectors;
 
@@ -127,6 +128,31 @@ public class DtoConverter {
             order.setBooks(orderDto.getBooks().stream().map(DtoConverter::convertDtoToBook).collect(Collectors.toList()));
             order.setRequests(orderDto.getRequests().stream().map(DtoConverter::convertDtoToRequest).collect(Collectors.toList()));
             return order;
+        }
+        return null;
+    }
+
+    public static UserDto convertUserToDto(User user) {
+        if (user != null) {
+            UserDto userDto = new UserDto();
+            userDto.setUsername(user.getUsername());
+            userDto.setPassword(user.getPassword());
+            userDto.setPasswordConfirm(user.getPasswordConfirm());
+            return userDto;
+        }
+        return null;
+    }
+
+    public static User convertDtoToUser(UserDto userDto) {
+        if (userDto != null) {
+            User user = new User();
+            user.setUsername(userDto.getUsername());
+            user.setPassword(userDto.getPassword());
+            user.setPasswordConfirm(userDto.getPasswordConfirm());
+//            Set<Role> roles = new HashSet<>();
+//            roles.add(new Role(2, "ROLE_USER"));
+//            user.setRoles(roles);
+            return user;
         }
         return null;
     }

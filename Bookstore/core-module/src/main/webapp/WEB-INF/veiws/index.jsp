@@ -1,24 +1,8 @@
-<!DOCTYPE html>
-<!--<html lang="en">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <title>index page</title>-->
-<!--</head>-->
-<!--<body>-->
-<!--<h3>Электронный книжный магазин</h3>-->
-<!--<br/>-->
-<!--<a href="/storage/show">Работа со складом книг</a>-->
-<!--<br/>-->
-<!--<a href="/orders/show">Работа с заказами книг</a>-->
-<!--<br/>-->
-<!--<a href="/requests/show">Работа с запросами на книги</a>-->
-<!--</body>-->
-<!--</html>-->
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 
-
+<!DOCTYPE HTML>
 <html>
 <head>
     <title>Главная</title>

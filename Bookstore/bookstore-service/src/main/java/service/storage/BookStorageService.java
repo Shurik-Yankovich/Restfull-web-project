@@ -33,7 +33,7 @@ public class BookStorageService implements StorageService {
     private RequestService requestService;
     @Autowired
     private StorageRepository storageRepository;
-    @Autowired
+//    @Autowired
     private FileStorageRepository fileStorageRepository;
 
     private final LoggerApp logger = new LoggerApp(this.getClass());

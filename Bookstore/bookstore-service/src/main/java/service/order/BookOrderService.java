@@ -33,7 +33,7 @@ public class BookOrderService implements OrderService {
     private StorageService storageService;
     @Autowired
     private OrderRepository orderRepository;
-    @Autowired
+//    @Autowired
     private FileOrderRepository fileOrderRepository;
 
     private final LoggerApp logger = new LoggerApp(this.getClass());

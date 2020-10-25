@@ -1,8 +1,7 @@
 package config;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import repository.base.OrderRepository;
 import repository.base.RequestRepository;
 import repository.base.StorageRepository;
@@ -23,9 +22,7 @@ import util.csv.RequestCsv;
 import util.csv.StorageCsv;
 
 @Configuration
-//@PropertySource("classpath:application.properties")
 public class BookstoreConfig {
-
 
     @Bean
     public OrderService orderService() {

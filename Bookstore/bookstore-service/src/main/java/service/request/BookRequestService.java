@@ -22,7 +22,7 @@ public class BookRequestService implements RequestService {
 
     @Autowired
     private RequestRepository requestRepository;
-    @Autowired
+//    @Autowired
     private FileRequestRepository fileRequestRepository;
 
     private final LoggerApp logger = new LoggerApp(this.getClass());

@@ -1,4 +1,4 @@
-package entity;
+package entity.security;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,11 +9,11 @@ import java.util.Collection;
 import java.util.Set;
 
 @Entity
-@Table(name = "t_user")
+@Table(name = "Security_User")
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
     @Size(min=2, message = "Не меньше 5 знаков")
     private String username;
     @Size(min=2, message = "Не меньше 5 знаков")
@@ -21,16 +21,19 @@ public class User implements UserDetails {
     @Transient
     private String passwordConfirm;
     @ManyToMany(fetch = FetchType.EAGER)
+//    @JoinTable(name = "User_Role",
+//            joinColumns = @JoinColumn(name = "user_id"),
+//            inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
     public User() {
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -56,6 +59,10 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
+        return true;
+    }
+
+    public boolean isPresent() {
         return true;
     }
 
