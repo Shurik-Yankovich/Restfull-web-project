@@ -5,7 +5,7 @@ import entity.security.Role;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface RoleRepository extends JpaRepository<Role, Long> {
+public interface RoleRepository extends JpaRepository<Role, Integer> {
 }
 //public class RoleRepository extends AbstractHibernateRepository<Role, Long>{
 //}

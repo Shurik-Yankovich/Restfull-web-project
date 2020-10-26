@@ -40,14 +40,14 @@ public class UserService implements UserDetailsService {
         return user;
     }
 
-    public User findUserById(Long userId) throws RepositoryException {
+    public User findUserById(Integer userId) {
         Optional<User> userFromDb = userRepository.findById(userId);
         return userFromDb.orElse(new User());
 //        User userFromDb = userRepository.read(userId);
 //        return userFromDb;
     }
 
-    public List<User> allUsers() throws RepositoryException {
+    public List<User> allUsers() {
         return userRepository.findAll();
 //        return userRepository.readAll();
     }
@@ -71,7 +71,7 @@ public class UserService implements UserDetailsService {
         return true;
     }
 
-    public boolean deleteUser(Long userId) throws RepositoryException {
+    public boolean deleteUser(Integer userId) {
         if (userRepository.findById(userId).isPresent()) {
             userRepository.deleteById(userId);
             return true;

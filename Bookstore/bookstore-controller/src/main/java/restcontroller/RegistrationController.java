@@ -2,12 +2,14 @@ package restcontroller;
 
 import dto.UserDto;
 import entity.RequestError;
+import entity.security.Token;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import service.security.UserService;
 import util.converter.DtoConverter;
+import util.security.TokenHandler;
 
 
 @RestController
@@ -15,6 +17,8 @@ public class RegistrationController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private TokenHandler tokenHandler;
 
     @PostMapping("/registration")
     public ResponseEntity<?> addUser(@RequestBody UserDto userForm) {
