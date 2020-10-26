@@ -18,8 +18,8 @@ public class User implements UserDetails {
     private String username;
     @Size(min=2, message = "Не меньше 5 знаков")
     private String password;
-    @Transient
-    private String passwordConfirm;
+//    @Transient
+//    private String passwordConfirm;
     @ManyToMany(fetch = FetchType.EAGER)
 //    @JoinTable(name = "User_Role",
 //            joinColumns = @JoinColumn(name = "user_id"),
@@ -84,13 +84,13 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-    public String getPasswordConfirm() {
-        return passwordConfirm;
-    }
-
-    public void setPasswordConfirm(String passwordConfirm) {
-        this.passwordConfirm = passwordConfirm;
-    }
+//    public String getPasswordConfirm() {
+//        return passwordConfirm;
+//    }
+//
+//    public void setPasswordConfirm(String passwordConfirm) {
+//        this.passwordConfirm = passwordConfirm;
+//    }
 
     public Set<Role> getRoles() {
         return roles;

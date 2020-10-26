@@ -1,6 +1,6 @@
 package restcontroller;
 
-import dto.UserDto;
+import dto.UserRegistrationDto;
 import entity.RequestError;
 import entity.security.Token;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ public class RegistrationController {
     private TokenHandler tokenHandler;
 
     @PostMapping("/registration")
-    public ResponseEntity<?> addUser(@RequestBody UserDto userForm) {
+    public ResponseEntity<?> addUser(@RequestBody UserRegistrationDto userForm) {
 
         if (!userForm.getPassword().equals(userForm.getPasswordConfirm())) {
             return new ResponseEntity<>(new RequestError(400,
@@ -29,7 +29,7 @@ public class RegistrationController {
                     "password and password confirmation do not match"),
                     HttpStatus.BAD_REQUEST);
         }
-        if (!userService.saveUser(DtoConverter.convertDtoToUser(userForm))) {
+        if (!userService.saveUser(DtoConverter.convertRegistrationDtoToUser(userForm))) {
             return new ResponseEntity<>(new RequestError(400,
                     "login isn't unique",
                     "current login is already exist"),
@@ -41,7 +41,7 @@ public class RegistrationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody UserDto userForm){
+    public ResponseEntity<?> login(@RequestBody UserRegistrationDto userForm){
         if(userForm.getUsername() == null || userForm.getPassword() == null) {
             return new ResponseEntity<>(new RequestError(400,
                     "request json error",

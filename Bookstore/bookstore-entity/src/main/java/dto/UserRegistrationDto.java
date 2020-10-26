@@ -1,15 +1,17 @@
 package dto;
 
-public class UserDto {
+public class UserRegistrationDto {
     private String username;
     private String password;
+    private String passwordConfirm;
 
-    public UserDto(String username, String password) {
+    public UserRegistrationDto(String username, String password, String passwordConfirm) {
         this.username = username;
         this.password = password;
+        this.passwordConfirm = passwordConfirm;
     }
 
-    public UserDto() {
+    public UserRegistrationDto() {
     }
 
     public String getUsername() {
@@ -26,5 +28,13 @@ public class UserDto {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getPasswordConfirm() {
+        return passwordConfirm;
+    }
+
+    public void setPasswordConfirm(String passwordConfirm) {
+        this.passwordConfirm = passwordConfirm;
     }
 }

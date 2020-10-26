@@ -132,26 +132,23 @@ public class DtoConverter {
         return null;
     }
 
-    public static UserDto convertUserToDto(User user) {
+    public static UserRegistrationDto convertUserToRegistrationDto(User user) {
         if (user != null) {
-            UserDto userDto = new UserDto();
-            userDto.setUsername(user.getUsername());
-            userDto.setPassword(user.getPassword());
-            userDto.setPasswordConfirm(user.getPasswordConfirm());
-            return userDto;
+            UserRegistrationDto userRegistrationDto = new UserRegistrationDto();
+            userRegistrationDto.setUsername(user.getUsername());
+            userRegistrationDto.setPassword(user.getPassword());
+//            userRegistrationDto.setPasswordConfirm(user.getPasswordConfirm());
+            return userRegistrationDto;
         }
         return null;
     }
 
-    public static User convertDtoToUser(UserDto userDto) {
-        if (userDto != null) {
+    public static User convertRegistrationDtoToUser(UserRegistrationDto userRegistrationDto) {
+        if (userRegistrationDto != null) {
             User user = new User();
-            user.setUsername(userDto.getUsername());
-            user.setPassword(userDto.getPassword());
-            user.setPasswordConfirm(userDto.getPasswordConfirm());
-//            Set<Role> roles = new HashSet<>();
-//            roles.add(new Role(2, "ROLE_USER"));
-//            user.setRoles(roles);
+            user.setUsername(userRegistrationDto.getUsername());
+            user.setPassword(userRegistrationDto.getPassword());
+//            user.setPasswordConfirm(userRegistrationDto.getPasswordConfirm());
             return user;
         }
         return null;
