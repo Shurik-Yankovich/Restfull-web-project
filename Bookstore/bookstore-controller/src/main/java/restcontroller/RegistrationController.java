@@ -52,13 +52,13 @@ public class RegistrationController {
                     HttpStatus.BAD_REQUEST);
         }
         User user = userService.loadUserByUsername(userForm.getUsername());
-        Token token = new Token(tokenHandler.getToken(user.getId().toString()));
-        if (token == null) {
+        if (user == null) {
             return new ResponseEntity<>(new RequestError(404,
                     "current user not found",
                     "current user deleted or not created"),
                     HttpStatus.NOT_FOUND);
         }
+        Token token = new Token(tokenHandler.getToken(user.getId().toString()));
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(tokenHandler.AUTH_HEADER_NAME, token.getValue());
         return new ResponseEntity<>(httpHeaders, HttpStatus.OK);
