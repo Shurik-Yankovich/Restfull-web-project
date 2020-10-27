@@ -1,9 +1,12 @@
 package restcontroller;
 
+import dto.UserDto;
 import dto.UserRegistrationDto;
 import entity.RequestError;
 import entity.security.Token;
+import entity.security.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,23 +44,32 @@ public class RegistrationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody UserRegistrationDto userForm){
+    public ResponseEntity<?> login(@RequestBody UserDto userForm){
         if(userForm.getUsername() == null || userForm.getPassword() == null) {
             return new ResponseEntity<>(new RequestError(400,
                     "request json error",
                     "request json must include existing login and pass"),
                     HttpStatus.BAD_REQUEST);
         }
-        UserCreds userCreds = userCredsService.getUserCredsByLoginAndPass(userForm.getLogin(),
-                userForm.getPass());
-        if(userCreds != null) {
-            Integer userId = userCreds.getUser().getId();
-            return ResponseEntity.ok(new Token(tokenHandler.getToken(userId.toString())));
-        } else {
+        User user = userService.loadUserByUsername(userForm.getUsername());
+        Token token = new Token(tokenHandler.getToken(user.getId().toString()));
+        if (token == null) {
             return new ResponseEntity<>(new RequestError(404,
                     "current user not found",
                     "current user deleted or not created"),
                     HttpStatus.NOT_FOUND);
         }
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(tokenHandler.AUTH_HEADER_NAME, token.getValue());
+        return new ResponseEntity<>(httpHeaders, HttpStatus.OK);
+//        if(user != null) {
+//            Integer userId = user.getUser().getId();
+//            return ResponseEntity.ok(new Token(tokenHandler.getToken(userId.toString())));
+//        } else {
+//            return new ResponseEntity<>(new RequestError(404,
+//                    "current user not found",
+//                    "current user deleted or not created"),
+//                    HttpStatus.NOT_FOUND);
+//        }
     }
 }

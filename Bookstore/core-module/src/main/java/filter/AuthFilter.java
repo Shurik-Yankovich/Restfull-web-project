@@ -1,6 +1,7 @@
 package filter;
 
 import entity.security.User;
+import entity.security.UserAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,9 +23,9 @@ import java.util.Optional;
 @Component
 public class AuthFilter extends GenericFilterBean {
     @Autowired
-    TokenHandler tokenHandler;
+    private TokenHandler tokenHandler;
     @Autowired
-    UserService userService;
+    private UserService userService;
 
 //    @Override
 //    public boolean preHandle(HttpServletRequest request,
@@ -44,12 +45,20 @@ public class AuthFilter extends GenericFilterBean {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
-        Authentication authentication = TokenAuthenticationService.getAuthentication((HttpServletRequest)req);
-        Optional.ofNullable(request.getHeader(AUTH_HEADER_NAME))
-                .flatMap(tokenHandler::exstractUserId)
-                .flatMap(userService::findById)
-                .map(UserAuth::new);
-        SecurityContextHolder.getContext().setAuthentication(tokenService.getAuthentication(request).orElse(null));
+//        Authentication authentication = TokenAuthenticationService.getAuthentication((HttpServletRequest)req);
+//        UserAuthentication userAuth = Optional.ofNullable(httpRequest.getHeader(tokenHandler.AUTH_HEADER_NAME))
+//                .flatMap(tokenHandler::getUserIdFromToken)
+//                .flatMap(userService::findUserById)
+//                .map(UserAuthentication::new)
+//                .orElse(null);
+        String token = httpRequest.getHeader(tokenHandler.AUTH_HEADER_NAME);
+        UserAuthentication userAuth = null;
+        if (tokenHandler.checkToken(token)) {
+            User dbUser = userService.findUserById(tokenHandler.getUserIdFromToken(token));
+            UserKeeper.setLoggedUser(dbUser);
+            userAuth = new UserAuthentication(dbUser);
+        }
+        SecurityContextHolder.getContext().setAuthentication(userAuth);
         chain.doFilter(request, response);
     }
 }

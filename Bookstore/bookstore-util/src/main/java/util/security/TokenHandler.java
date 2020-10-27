@@ -2,9 +2,9 @@ package util.security;
 
 public interface TokenHandler {
 
-    void regenerateKey();
+    String AUTH_HEADER_NAME = "Auth-Token";
 
-    String getToken(String json);
+    String getToken(String userId);
 
     boolean checkToken(String token);
 

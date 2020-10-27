@@ -28,11 +28,6 @@ public class JWTTokenHandler implements TokenHandler {
     }
 
     @Override
-    public void regenerateKey() {
-
-    }
-
-    @Override
     public String getToken(String userId) {
         LocalDateTime expires = LocalDateTime.now().plusDays(7);
         return Jwts.builder()
