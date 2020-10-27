@@ -19,7 +19,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableJpaRepositories ("repository.security")
 @EntityScan("entity.security")
 //@SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
-@SpringBootApplication(scanBasePackages = {"restcontroller", "service.security"})
+@SpringBootApplication(scanBasePackages = {"restcontroller", "service.security", "util.security", "filter"})
 public class BookstoreApplication {
 
     public static void main(String[] args) {

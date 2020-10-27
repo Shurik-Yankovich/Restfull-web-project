@@ -28,7 +28,7 @@ public class JWTTokenHandler implements TokenHandler {
     }
 
     @Override
-    public String getToken(String userId) {
+    public String generateToken(String userId) {
         LocalDateTime expires = LocalDateTime.now().plusDays(7);
         return Jwts.builder()
                 .setSubject(userId)

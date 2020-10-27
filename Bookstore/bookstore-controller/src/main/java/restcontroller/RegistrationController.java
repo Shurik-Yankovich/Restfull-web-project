@@ -58,7 +58,7 @@ public class RegistrationController {
                     "current user deleted or not created"),
                     HttpStatus.NOT_FOUND);
         }
-        Token token = new Token(tokenHandler.getToken(user.getId().toString()));
+        Token token = new Token(tokenHandler.generateToken(user.getId().toString()));
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(tokenHandler.AUTH_HEADER_NAME, token.getValue());
         return new ResponseEntity<>(httpHeaders, HttpStatus.OK);

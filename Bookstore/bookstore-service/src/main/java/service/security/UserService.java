@@ -31,23 +31,23 @@ public class UserService implements UserDetailsService {
     @Override
     public User loadUserByUsername(String username) {
 
-        User user = userRepository.findByUsername(username);
+        return userRepository.findByUsername(username);
 
 //        if (user == null) {
 //            throw new UsernameNotFoundException("User not found");
 //        }
 
-        return user;
+//        return user;
     }
 
-    public User loadUserByUsernameAndPassword(String username, String password) {
-
-        User user = userRepository.findByUsername(username);
-
-        if (user != null) {
-
+    public User findByUsernameAndPassword(String username, String password) {
+        User userEntity = loadUserByUsername(username);
+        if (userEntity != null) {
+            if (bCryptPasswordEncoder.matches(password, userEntity.getPassword())) {
+                return userEntity;
+            }
         }
-        return user;
+        return null;
     }
 
     public User findUserById(Integer userId) {

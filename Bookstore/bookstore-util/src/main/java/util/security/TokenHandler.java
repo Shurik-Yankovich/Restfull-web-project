@@ -4,7 +4,7 @@ public interface TokenHandler {
 
     String AUTH_HEADER_NAME = "Auth-Token";
 
-    String getToken(String userId);
+    String generateToken(String userId);
 
     boolean checkToken(String token);
 
