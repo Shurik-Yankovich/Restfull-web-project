@@ -59,16 +59,16 @@ roles_id int references Security_Role(id));
 
 insert into Book
 values 
-(1,'Алхимик','Пауло Коэльо',2019),
-(2,'Шантарам','Грэгори Дэвид Робертс',2013),
-(3,'Чистый код','Роберт Мартин',2016),
-(4,'Совершенный код','Стив Макконнелл',2016),
-(5,'Гибкая разработка программ на Java и C ++','Роберт Мартин',2019),
-(6,'Идеальный программист','Роберт Мартин',2020),
-(7,'Дневник домового','Евгений ЧеширКо',2019),
-(8,'Точка обмана','Дэн Браун',2014),
-(9,'Код да Винчи','Дэн Браун',2013),
-(10,'Цифровая крепость','Дэн Браун',2014);
+(1,'The Alchemist','Paulo Coelho',2019),
+(2,'Shantaram','Gregory David Roberts',2013),
+(3,'Clean Code: A Handbook of Agile Software Craftsmanship','Robert C. Martin',2016),
+(4,'Code complete','Steve McConnell',2016),
+(5,'Agile Software Development. Principles, Patterns, and Practices','Robert C. Martin',2019),
+(6,'The Clean Coder. A Code of Conduct for Professional Programmers','Robert C. Martin',2020),
+(7,'Brownie diary','Evgeny CheshirKo',2019),
+(8,'Deception Point','Dan Brown',2014),
+(9,'The Da Vinci Code','Dan Brown',2013),
+(10,'Digital Fortress','Dan Brown',2014);
 
 insert into Bookshelf
 values 
@@ -130,10 +130,11 @@ values
 
 insert into Security_Role
 values 
-(1,'ADMIN'),
-(2,'USER');
+(1,'ROLE_ADMIN'),
+(2,'ROLE_USER');
 
 insert into Security_User_Roles
 values 
 (1,1),
+(1,2),
 (2,2);
