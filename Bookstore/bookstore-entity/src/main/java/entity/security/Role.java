@@ -9,7 +9,6 @@ import java.util.Set;
 @Table(name = "Security_Role")
 public class Role implements GrantedAuthority {
     @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
     @Transient
