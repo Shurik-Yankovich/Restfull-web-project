@@ -1,11 +1,9 @@
 package service.security;
 
-import exeption.RepositoryException;
 import entity.security.Role;
 import entity.security.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import repository.security.RoleRepository;
@@ -30,14 +28,7 @@ public class UserService implements UserDetailsService {
 
     @Override
     public User loadUserByUsername(String username) {
-
         return userRepository.findByUsername(username);
-
-//        if (user == null) {
-//            throw new UsernameNotFoundException("User not found");
-//        }
-
-//        return user;
     }
 
     public User findByUsernameAndPassword(String username, String password) {
@@ -53,31 +44,20 @@ public class UserService implements UserDetailsService {
     public User findUserById(Integer userId) {
         Optional<User> userFromDb = userRepository.findById(userId);
         return userFromDb.orElse(new User());
-//        User userFromDb = userRepository.read(userId);
-//        return userFromDb;
     }
 
     public List<User> allUsers() {
         return userRepository.findAll();
-//        return userRepository.readAll();
     }
 
     public boolean saveUser(User user) {
-//        try {
-            User userFromDB = userRepository.findByUsername(user.getUsername());
-
-            if (userFromDB != null) {
-                return false;
-            }
-
-            user.setRoles(Collections.singleton(new Role(2, "ROLE_USER")));
-            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        User userFromDB = userRepository.findByUsername(user.getUsername());
+        if (userFromDB != null) {
+            return false;
+        }
+        user.setRoles(Collections.singleton(new Role(2, "ROLE_USER")));
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
-
-//            userRepository.create(user);
-//        } catch (RepositoryException e) {
-//            return false;
-//        }
         return true;
     }
 
@@ -86,10 +66,6 @@ public class UserService implements UserDetailsService {
             userRepository.deleteById(userId);
             return true;
         }
-//        if (userRepository.read(userId).isPresent()) {
-//            userRepository.delete(userId);
-//            return true;
-//        }
         return false;
     }
 
