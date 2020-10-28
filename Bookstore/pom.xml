@@ -20,7 +20,6 @@
         <module>bookstore-util</module>
         <module>bookstore-repository</module>
         <module>bookstore-service</module>
-        <module>bookstore-view</module>
         <module>bookstore-controller</module>
         <module>core-module</module>
     </modules>

@@ -40,7 +40,6 @@ public class RegistrationController {
         }
 
         return new ResponseEntity<>(HttpStatus.CREATED);
-//        return "redirect:/";
     }
 
     @PostMapping("/login")
@@ -51,7 +50,6 @@ public class RegistrationController {
                     "request json must include existing login and pass"),
                     HttpStatus.BAD_REQUEST);
         }
-//        User user = userService.loadUserByUsername(userForm.getUsername());
         User user = userService.findByUsernameAndPassword(userForm.getUsername(), userForm.getPassword());
         if (user == null) {
             return new ResponseEntity<>(new RequestError(404,
@@ -63,15 +61,6 @@ public class RegistrationController {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(tokenHandler.AUTH_HEADER_NAME, token.getValue());
         return new ResponseEntity<>(httpHeaders, HttpStatus.OK);
-//        if(user != null) {
-//            Integer userId = user.getUser().getId();
-//            return ResponseEntity.ok(new Token(tokenHandler.getToken(userId.toString())));
-//        } else {
-//            return new ResponseEntity<>(new RequestError(404,
-//                    "current user not found",
-//                    "current user deleted or not created"),
-//                    HttpStatus.NOT_FOUND);
-//        }
     }
 
 //    @PostMapping("/logout")
