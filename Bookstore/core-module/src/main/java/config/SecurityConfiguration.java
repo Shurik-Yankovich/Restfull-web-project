@@ -14,7 +14,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
-import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import service.security.UserService;
 
 @Configuration
@@ -35,46 +34,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-//        httpSecurity
-//                .csrf()
-//                .disable()
-//                .authorizeRequests()
-//                //Доступ только для не зарегистрированных пользователей
-////                .antMatchers("/registration").not().fullyAuthenticated()
-//                //Доступ только для пользователей с ролью Администратор
-//                .antMatchers("/requests/**", "/orders/**").hasRole("ADMIN")
-////                .antMatchers("/orders/**").hasRole("USER")
-//                //Доступ разрешен всем пользователей
-//                .antMatchers("/", "/registration/", "/storage/**").permitAll()
-//                //Все остальные страницы требуют аутентификации
-//                .anyRequest().authenticated()
-//                .and()
-//                //Настройка для входа в систему
-//                .formLogin()
-//                .loginPage("/login")
-//                //Перенарпавление на главную страницу после успешного входа
-//                .defaultSuccessUrl("/")
-//                .permitAll()
-//                .and()
-//                .addFilterBefore(new AuthFilter(), UsernamePasswordAuthenticationFilter.class)
-//                .logout()
-//                .permitAll()
-//                .logoutSuccessUrl("/");
-
-//        httpSecurity.httpBasic()
-//                .and()
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                .and()
-//                .csrf().disable()
-//                .authorizeRequests()
-//                .antMatchers("/requests/**", "/orders/**").hasRole("ADMIN")
-//                .antMatchers("/", "/registration/", "/login/", "/storage/**").permitAll()
-//                .anyRequest().authenticated()
-//                .and()
-//                .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
-//                .logout().permitAll();
-//        httpSecurity.headers().disable();
-
         httpSecurity
                 .httpBasic().disable()
                 .csrf().disable()
@@ -82,7 +41,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/requests/**").hasRole("ADMIN")
-//                .antMatchers("/orders/**").hasRole("USER")
                 .antMatchers("/", "/registration/", "/login/", "/storage/**").permitAll()
                 .anyRequest().authenticated()
                 .and()

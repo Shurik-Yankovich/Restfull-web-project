@@ -1,7 +1,6 @@
 package config;
 
 import org.springframework.context.annotation.*;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import repository.base.OrderRepository;
 import repository.base.RequestRepository;
 import repository.base.StorageRepository;
