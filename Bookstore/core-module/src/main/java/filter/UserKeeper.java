@@ -13,4 +13,8 @@ public class UserKeeper {
     public final static void setLoggedUser(User user) {
         threadLocalScope.set(user);
     }
+
+    public final static void deleteLoggedUser() {
+        threadLocalScope.remove();
+    }
 }

@@ -51,7 +51,8 @@ public class RegistrationController {
                     "request json must include existing login and pass"),
                     HttpStatus.BAD_REQUEST);
         }
-        User user = userService.loadUserByUsername(userForm.getUsername());
+//        User user = userService.loadUserByUsername(userForm.getUsername());
+        User user = userService.findByUsernameAndPassword(userForm.getUsername(), userForm.getPassword());
         if (user == null) {
             return new ResponseEntity<>(new RequestError(404,
                     "current user not found",
@@ -72,4 +73,9 @@ public class RegistrationController {
 //                    HttpStatus.NOT_FOUND);
 //        }
     }
+
+//    @PostMapping("/logout")
+//    public ResponseEntity<?> logout(@RequestHeader(tokenHandler.AUTH_HEADER_NAME) String token){
+//
+//    }
 }

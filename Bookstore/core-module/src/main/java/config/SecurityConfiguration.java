@@ -1,10 +1,11 @@
 package config;
 
 import filter.AuthFilter;
+import filter.CustomLogoutHandler;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -12,15 +13,20 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import service.security.UserService;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+
     @Autowired
     private UserService userService;
     @Autowired
     private AuthFilter authFilter;
+    @Autowired
+    private CustomLogoutHandler logoutHandler;
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -76,10 +82,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/requests/**").hasRole("ADMIN")
-                .antMatchers("/orders/**").hasRole("USER")
+//                .antMatchers("/orders/**").hasRole("USER")
                 .antMatchers("/", "/registration/", "/login/", "/storage/**").permitAll()
+                .anyRequest().authenticated()
                 .and()
-                .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
+                .logout()
+                .logoutUrl("/logout")
+                .addLogoutHandler(logoutHandler)
+                .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK))
+                .permitAll();
     }
 
     @Autowired
