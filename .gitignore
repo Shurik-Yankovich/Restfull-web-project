@@ -1,6 +1,8 @@
 /out
 /.idea
-*/.idea
+**/.idea
 **/target
+**/.iml
 Bookstore/out
 Bookstore/.idea
+final/Web/.idea
