@@ -20,4 +20,28 @@ public class Section {
             joinColumns = @JoinColumn(name = "idSection"),
             inverseJoinColumns = @JoinColumn(name = "idTheme"))
     private Theme[] themes;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Theme[] getThemes() {
+        return themes;
+    }
+
+    public void setThemes(Theme[] themes) {
+        this.themes = themes;
+    }
 }
