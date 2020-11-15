@@ -25,9 +25,9 @@ public class Lesson {
     private UserProfile professor;
     @Enumerated(EnumType.STRING)
     @Column(name = "type")
-    private Type lessonType;
+    private Type type;
     @Column(name = "date")
-    private LocalDateTime lessonDate;
+    private LocalDateTime date;
     @Column(name = "price")
     private int price;
     @OneToMany(cascade = CascadeType.ALL)
@@ -61,20 +61,20 @@ public class Lesson {
         this.professor = professor;
     }
 
-    public Type getLessonType() {
-        return lessonType;
+    public Type getType() {
+        return type;
     }
 
-    public void setLessonType(Type lessonType) {
-        this.lessonType = lessonType;
+    public void setType(Type type) {
+        this.type = type;
     }
 
-    public LocalDateTime getLessonDate() {
-        return lessonDate;
+    public LocalDateTime getDate() {
+        return date;
     }
 
-    public void setLessonDate(LocalDateTime lessonDate) {
-        this.lessonDate = lessonDate;
+    public void setDate(LocalDateTime date) {
+        this.date = date;
     }
 
     public int getPrice() {
