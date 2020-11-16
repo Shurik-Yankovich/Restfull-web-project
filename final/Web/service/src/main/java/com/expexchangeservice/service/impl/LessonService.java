@@ -93,7 +93,7 @@ public class LessonService implements ILessonService {
             return lessons;
         } catch (Exception e) {
             transaction.rollback();
-            throw new DBException("Не удалось удалить объект класса " + Lesson.class.getName() + " из базы данных!");
+            throw new DBException("Не удалось получить объекты класса " + Lesson.class.getName() + " из базы данных!");
         }
     }
 
