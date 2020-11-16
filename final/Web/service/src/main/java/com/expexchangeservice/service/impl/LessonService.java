@@ -1,8 +1,8 @@
 package com.expexchangeservice.service.impl;
 
 import com.expexchangeservice.model.entities.Lesson;
+import com.expexchangeservice.model.entities.Review;
 import com.expexchangeservice.model.entities.Theme;
-import com.expexchangeservice.model.entities.User;
 import com.expexchangeservice.model.entities.UserProfile;
 import com.expexchangeservice.model.enums.Type;
 import com.expexchangeservice.model.exception.DBException;
@@ -148,7 +148,30 @@ public class LessonService implements ILessonService {
     }
 
     @Override
-    public void addMemberToTheLesson(Lesson lesson, UserProfile userProfile) {
+    public void addMemberToTheLesson(Integer lessonId, UserProfile userProfile) throws DBException {
+        Transaction transaction = null;
+        try {
+            transaction = sessionFactory.getCurrentSession().beginTransaction();
+            Lesson lesson = lessonRepository.read(lessonId);
+//            lesson.getReviews().add();
+            transaction.commit();
+        } catch (Exception e) {
+            transaction.rollback();
+            throw new DBException("Не удалось получить объекты класса " + Lesson.class.getName() + " из базы данных!");
+        }
+    }
 
+    public void addReview(Integer lessonId, Review review) throws DBException {
+        Transaction transaction = null;
+        try {
+            transaction = sessionFactory.getCurrentSession().beginTransaction();
+            Lesson lesson = lessonRepository.read(lessonId);
+            lesson.getReviews().add(review);
+            lessonRepository.update(lesson);
+            transaction.commit();
+        } catch (Exception e) {
+            transaction.rollback();
+            throw new DBException("Не удалось получить объекты класса " + Lesson.class.getName() + " из базы данных!");
+        }
     }
 }

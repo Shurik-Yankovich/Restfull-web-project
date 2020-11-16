@@ -32,6 +32,12 @@ public class Lesson {
     private int price;
     @OneToMany(cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
+    @JoinTable(name = "LessonMembers",
+            joinColumns = @JoinColumn(name = "idLesson"),
+            inverseJoinColumns = @JoinColumn(name = "idMember"))
+    private Set<UserProfile> members;
+    @OneToMany(cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(name = "LessonReview",
             joinColumns = @JoinColumn(name = "idLesson"),
             inverseJoinColumns = @JoinColumn(name = "idReview"))
@@ -83,6 +89,14 @@ public class Lesson {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public Set<UserProfile> getMembers() {
+        return members;
+    }
+
+    public void setMembers(Set<UserProfile> members) {
+        this.members = members;
     }
 
     public Set<Review> getReviews() {

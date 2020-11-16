@@ -22,5 +22,5 @@ public interface ILessonService {
     List<Lesson> getLessonsOnTheTheme(Theme theme) throws DBException;
     List<Lesson> getLessonsForTheProfessor(UserProfile professor) throws DBException;
     List<Lesson> getLessonsByType(Type lessonType) throws DBException;
-    void addMemberToTheLesson(Lesson lesson, UserProfile userProfile);
+    void addMemberToTheLesson(Integer lessonId, UserProfile userProfile) throws DBException;
 }

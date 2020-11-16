@@ -9,5 +9,5 @@ public interface IProfileService {
     User findUserById(Integer userId);
     boolean saveUser(User user);
     boolean deleteUser(Integer primaryKey);
-    void editProfile();
+    void editProfile(User user);
 }

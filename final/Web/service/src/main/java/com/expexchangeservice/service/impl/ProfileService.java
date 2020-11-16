@@ -71,7 +71,7 @@ public class ProfileService implements IProfileService {
     }
 
     @Override
-    public void editProfile() {
+    public void editProfile(User user) {
 
     }
 }
