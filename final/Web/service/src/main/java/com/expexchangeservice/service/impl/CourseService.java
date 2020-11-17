@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Set;
+import java.util.List;
 
 @Service
 public class CourseService implements ICourseService {
@@ -42,37 +42,37 @@ public class CourseService implements ICourseService {
     }
 
     @Override
-    public Set<Course> getAll() {
+    public List<Course> getAll() {
         return null;
     }
 
     @Override
-    public Set<Course> getCoursesOnTheDate(LocalDate date) {
+    public List<Course> getCoursesOnTheDate(LocalDate date) {
         return null;
     }
 
     @Override
-    public Set<Course> getCoursesAfterDate(LocalDate date) {
+    public List<Course> getCoursesAfterDate(LocalDate date) {
         return null;
     }
 
     @Override
-    public Set<Course> getCoursesForMember(UserProfile member) {
+    public List<Course> getCoursesForMember(UserProfile member) {
         return null;
     }
 
     @Override
-    public Set<Course> getCoursesOnTheTheme(Section section) {
+    public List<Course> getCoursesOnTheTheme(Section section) {
         return null;
     }
 
     @Override
-    public Set<Course> getCoursesForTheProfessor(UserProfile professor) {
+    public List<Course> getCoursesForTheProfessor(UserProfile professor) {
         return null;
     }
 
     @Override
-    public Set<Course> getCoursesByType(Type lessonType) {
+    public List<Course> getCoursesByType(Type lessonType) {
         return null;
     }
 

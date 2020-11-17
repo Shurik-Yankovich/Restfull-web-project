@@ -7,19 +7,19 @@ import com.expexchangeservice.model.entities.UserProfile;
 import com.expexchangeservice.model.enums.Type;
 
 import java.time.LocalDate;
-import java.util.Set;
+import java.util.List;
 
 public interface ICourseService {
 
     void addCourse(Course course);
     void editCourse(Course course);
     void deleteCourse(Integer primaryKey);
-    Set<Course> getAll();
-    Set<Course> getCoursesOnTheDate(LocalDate date);
-    Set<Course> getCoursesAfterDate(LocalDate date);
-    Set<Course> getCoursesForMember(UserProfile member);
-    Set<Course> getCoursesOnTheTheme(Section section);
-    Set<Course> getCoursesForTheProfessor(UserProfile professor);
-    Set<Course> getCoursesByType(Type lessonType);
+    List<Course> getAll();
+    List<Course> getCoursesOnTheDate(LocalDate date);
+    List<Course> getCoursesAfterDate(LocalDate date);
+    List<Course> getCoursesForMember(UserProfile member);
+    List<Course> getCoursesOnTheTheme(Section section);
+    List<Course> getCoursesForTheProfessor(UserProfile professor);
+    List<Course> getCoursesByType(Type lessonType);
     void addMemberToTheCourse(Lesson lesson, UserProfile userProfile);
 }
