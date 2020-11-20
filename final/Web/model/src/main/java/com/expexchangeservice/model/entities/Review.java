@@ -15,7 +15,7 @@ public class Review {
     @OneToOne(cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinColumn(name = "idProfile")
-    private UserProfile userProfile;
+    private String userName;
     @Column(name = "review")
     private String review;
 
@@ -27,12 +27,12 @@ public class Review {
         this.id = id;
     }
 
-    public UserProfile getUserProfile() {
-        return userProfile;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUserProfile(UserProfile userProfile) {
-        this.userProfile = userProfile;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getReview() {

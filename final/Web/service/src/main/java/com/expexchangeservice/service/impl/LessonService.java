@@ -78,7 +78,7 @@ public class LessonService implements ILessonService {
             return lesson;
         } catch (Exception e) {
             transaction.rollback();
-            throw new DBException("Не удалось удалить объект класса " + Lesson.class.getName() + " из базы данных!");
+            throw new DBException("Не удалось получить объект класса " + Lesson.class.getName() + " из базы данных!");
         }
     }
 
@@ -153,14 +153,16 @@ public class LessonService implements ILessonService {
         try {
             transaction = sessionFactory.getCurrentSession().beginTransaction();
             Lesson lesson = lessonRepository.read(lessonId);
-//            lesson.getReviews().add();
+            lesson.getMembers().add(userProfile);
+            lessonRepository.update(lesson);
             transaction.commit();
         } catch (Exception e) {
             transaction.rollback();
-            throw new DBException("Не удалось получить объекты класса " + Lesson.class.getName() + " из базы данных!");
+            throw new DBException("Не удалось добавить участника к " + Lesson.class.getName() + " в базе данных!");
         }
     }
 
+    @Override
     public void addReview(Integer lessonId, Review review) throws DBException {
         Transaction transaction = null;
         try {
@@ -171,7 +173,7 @@ public class LessonService implements ILessonService {
             transaction.commit();
         } catch (Exception e) {
             transaction.rollback();
-            throw new DBException("Не удалось получить объекты класса " + Lesson.class.getName() + " из базы данных!");
+            throw new DBException("Не удалось добавить отзыв на " + Lesson.class.getName() + " в базе данных!");
         }
     }
 }
