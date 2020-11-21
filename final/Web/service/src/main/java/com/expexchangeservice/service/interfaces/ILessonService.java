@@ -9,6 +9,7 @@ import com.expexchangeservice.model.exception.DBException;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 public interface ILessonService {
 
@@ -25,4 +26,5 @@ public interface ILessonService {
     List<Lesson> getLessonsByType(Type lessonType) throws DBException;
     void addMemberToTheLesson(Integer lessonId, UserProfile userProfile) throws DBException;
     void addReview(Integer lessonId, Review review) throws DBException;
+    Set<Review> getReviewOnTheLesson(Integer lessonId) throws DBException;
 }

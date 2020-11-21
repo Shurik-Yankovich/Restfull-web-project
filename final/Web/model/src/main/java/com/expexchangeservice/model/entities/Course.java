@@ -17,32 +17,32 @@ public class Course {
     private int id;
     @OneToOne
     @LazyCollection(LazyCollectionOption.FALSE)
-    @JoinColumn(name = "idSection")
+    @JoinColumn(name = "id_section")
     private Section section;
     @OneToOne
     @LazyCollection(LazyCollectionOption.FALSE)
-    @JoinColumn(name = "idProfessor")
+    @JoinColumn(name = "id_professor")
     private UserProfile professor;
     @Enumerated(EnumType.STRING)
     @Column(name = "type")
     private Type type;
-    @Column(name = "dateStart")
+    @Column(name = "date_start")
     private LocalDate dateStart;
-    @Column(name = "countLesson")
+    @Column(name = "count_lesson")
     private int countLesson;
     @Column(name = "price")
     private int price;
     @OneToMany(cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(name = "CourseMembers",
-            joinColumns = @JoinColumn(name = "idCourse"),
-            inverseJoinColumns = @JoinColumn(name = "idMember"))
+            joinColumns = @JoinColumn(name = "id_course"),
+            inverseJoinColumns = @JoinColumn(name = "id_member"))
     private Set<UserProfile> members;
     @OneToMany(cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(name = "CourseReview",
-            joinColumns = @JoinColumn(name = "idCourse"),
-            inverseJoinColumns = @JoinColumn(name = "idReview"))
+            joinColumns = @JoinColumn(name = "id_course"),
+            inverseJoinColumns = @JoinColumn(name = "id_review"))
     private Set<Review> reviews;
 
     public int getId() {

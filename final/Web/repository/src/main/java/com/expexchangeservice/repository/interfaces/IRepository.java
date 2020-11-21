@@ -1,9 +1,11 @@
 package com.expexchangeservice.repository.interfaces;
 
+import com.expexchangeservice.model.exception.DBException;
+
 import java.util.List;
 
 public interface IRepository<T> {
-    T create(T t);
+    void create(T t);
 
     void update(T t);
 
@@ -11,5 +13,5 @@ public interface IRepository<T> {
 
     void delete(Integer pk);
 
-    List<T> readAll();
+    List<T> readAll() throws DBException;
 }

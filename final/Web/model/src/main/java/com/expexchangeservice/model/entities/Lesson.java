@@ -1,11 +1,12 @@
 package com.expexchangeservice.model.entities;
 
+import com.expexchangeservice.model.enums.Type;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
-import java.lang.reflect.Type;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
@@ -17,30 +18,31 @@ public class Lesson {
     private int id;
     @OneToOne(cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
-    @JoinColumn(name = "idTheme")
+    @JoinColumn(name = "id_theme")
     private Theme theme;
     @OneToOne(cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
-    @JoinColumn(name = "idProfessor")
+    @JoinColumn(name = "id_professor")
     private UserProfile professor;
     @Enumerated(EnumType.STRING)
     @Column(name = "type")
     private Type type;
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
     @Column(name = "date")
-    private LocalDateTime date;
+    private LocalDate date;
     @Column(name = "price")
     private int price;
     @OneToMany(cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(name = "LessonMembers",
-            joinColumns = @JoinColumn(name = "idLesson"),
-            inverseJoinColumns = @JoinColumn(name = "idMember"))
+            joinColumns = @JoinColumn(name = "id_lesson"),
+            inverseJoinColumns = @JoinColumn(name = "id_member"))
     private Set<UserProfile> members;
     @OneToMany(cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(name = "LessonReview",
-            joinColumns = @JoinColumn(name = "idLesson"),
-            inverseJoinColumns = @JoinColumn(name = "idReview"))
+            joinColumns = @JoinColumn(name = "id_lesson"),
+            inverseJoinColumns = @JoinColumn(name = "id_review"))
     private Set<Review> reviews;
 
     public int getId() {
@@ -75,11 +77,11 @@ public class Lesson {
         this.type = type;
     }
 
-    public LocalDateTime getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

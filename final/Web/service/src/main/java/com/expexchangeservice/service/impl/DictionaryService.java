@@ -7,7 +7,7 @@ import com.expexchangeservice.model.exception.DBException;
 import com.expexchangeservice.repository.interfaces.ISectionRepository;
 import com.expexchangeservice.repository.interfaces.IThemeRepository;
 import com.expexchangeservice.service.interfaces.IDictionaryService;
-import org.hibernate.SessionFactory;
+import com.expexchangeservice.utils.HibernateSessionFactoryUtil;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,28 +19,28 @@ public class DictionaryService implements IDictionaryService {
 
     private IThemeRepository themeRepository;
     private ISectionRepository sectionRepository;
-    private SessionFactory sessionFactory;
 
     @Autowired
-    public DictionaryService(IThemeRepository themeRepository, ISectionRepository sectionRepository, SessionFactory sessionFactory) {
+    public DictionaryService(IThemeRepository themeRepository, ISectionRepository sectionRepository) {
         this.themeRepository = themeRepository;
         this.sectionRepository = sectionRepository;
-        this.sessionFactory = sessionFactory;
     }
 
     @Override
     public List<Theme> getThemeDictionary() throws DBException {
-        Transaction transaction = null;
-        List<Theme> themes = null;
-        try {
-            transaction = sessionFactory.getCurrentSession().beginTransaction();
-            themes = themeRepository.readAll();
-            transaction.commit();
-            return themes;
-        } catch (Exception e) {
-            transaction.rollback();
-            throw new DBException("Не удалось получить объекты класса " + Lesson.class.getName() + " из базы данных!");
-        }
+//        Transaction transaction = null;
+//        List<Theme> themes = null;
+//        try {
+//            transaction = HibernateSessionFactoryUtil.getSession().beginTransaction();
+//            themes = themeRepository.readAll();
+//            transaction.commit();
+//            return themes;
+//        } catch (Exception e) {
+//            transaction.rollback();
+//            System.out.println(e.getMessage());
+//            throw new DBException("Не удалось получить объекты класса " + Theme.class.getName() + " из базы данных!");
+//        }
+        return themeRepository.readAll();
     }
 
 //    @Override
@@ -52,13 +52,13 @@ public class DictionaryService implements IDictionaryService {
         Transaction transaction = null;
         List<Section> sections = null;
         try {
-            transaction = sessionFactory.getCurrentSession().beginTransaction();
+            transaction = HibernateSessionFactoryUtil.getSession().beginTransaction();
             sections = sectionRepository.readAll();
             transaction.commit();
             return sections;
         } catch (Exception e) {
             transaction.rollback();
-            throw new DBException("Не удалось получить объекты класса " + Lesson.class.getName() + " из базы данных!");
+            throw new DBException("Не удалось получить объекты класса " + Section.class.getName() + " из базы данных!");
         }
     }
 
@@ -66,12 +66,12 @@ public class DictionaryService implements IDictionaryService {
     public void changeTheme(Theme theme) throws DBException {
         Transaction transaction = null;
         try {
-            transaction = sessionFactory.getCurrentSession().beginTransaction();
+            transaction = HibernateSessionFactoryUtil.getSession().beginTransaction();
             themeRepository.update(theme);
             transaction.commit();
         } catch (Exception e) {
             transaction.rollback();
-            throw new DBException("Не удалось получить объекты класса " + Lesson.class.getName() + " из базы данных!");
+            throw new DBException("Не удалось получить объекты класса " + Theme.class.getName() + " из базы данных!");
         }
     }
 
@@ -79,40 +79,39 @@ public class DictionaryService implements IDictionaryService {
     public void changeSection(Section section) throws DBException {
         Transaction transaction = null;
         try {
-            transaction = sessionFactory.getCurrentSession().beginTransaction();
+            transaction = HibernateSessionFactoryUtil.getSession().beginTransaction();
             sectionRepository.update(section);
             transaction.commit();
         } catch (Exception e) {
             transaction.rollback();
-            throw new DBException("Не удалось получить объекты класса " + Lesson.class.getName() + " из базы данных!");
+            throw new DBException("Не удалось получить объекты класса " + Section.class.getName() + " из базы данных!");
         }
     }
 
     @Override
-    public Theme addTheme(Theme theme) throws DBException {
+    public void addTheme(Theme theme) throws DBException {
         Transaction transaction = null;
         try {
-            transaction = sessionFactory.getCurrentSession().beginTransaction();
-            theme = themeRepository.create(theme);
+            transaction = HibernateSessionFactoryUtil.getSession().beginTransaction();
+            themeRepository.create(theme);
             transaction.commit();
-            return theme;
         } catch (Exception e) {
             transaction.rollback();
-            throw new DBException("Не удалось получить объекты класса " + Lesson.class.getName() + " из базы данных!");
+            System.out.println(e.getMessage());
+            throw new DBException("Не удалось получить объекты класса " + Theme.class.getName() + " из базы данных!");
         }
     }
 
     @Override
-    public Section addSection(Section section) throws DBException {
+    public void addSection(Section section) throws DBException {
         Transaction transaction = null;
         try {
-            transaction = sessionFactory.getCurrentSession().beginTransaction();
-            section = sectionRepository.create(section);
+            transaction = HibernateSessionFactoryUtil.getSession().beginTransaction();
+            sectionRepository.create(section);
             transaction.commit();
-            return section;
         } catch (Exception e) {
             transaction.rollback();
-            throw new DBException("Не удалось получить объекты класса " + Lesson.class.getName() + " из базы данных!");
+            throw new DBException("Не удалось получить объекты класса " + Section.class.getName() + " из базы данных!");
         }
     }
 
@@ -120,12 +119,12 @@ public class DictionaryService implements IDictionaryService {
     public void deleteTheme(Integer themeId) throws DBException {
         Transaction transaction = null;
         try {
-            transaction = sessionFactory.getCurrentSession().beginTransaction();
+            transaction = HibernateSessionFactoryUtil.getSession().beginTransaction();
             themeRepository.delete(themeId);
             transaction.commit();
         } catch (Exception e) {
             transaction.rollback();
-            throw new DBException("Не удалось получить объекты класса " + Lesson.class.getName() + " из базы данных!");
+            throw new DBException("Не удалось получить объекты класса " + Theme.class.getName() + " из базы данных!");
         }
     }
 
@@ -133,12 +132,12 @@ public class DictionaryService implements IDictionaryService {
     public void deleteSection(Integer sectionId) throws DBException {
         Transaction transaction = null;
         try {
-            transaction = sessionFactory.getCurrentSession().beginTransaction();
+            transaction = HibernateSessionFactoryUtil.getSession().beginTransaction();
             sectionRepository.delete(sectionId);
             transaction.commit();
         } catch (Exception e) {
             transaction.rollback();
-            throw new DBException("Не удалось получить объекты класса " + Lesson.class.getName() + " из базы данных!");
+            throw new DBException("Не удалось получить объекты класса " + Section.class.getName() + " из базы данных!");
         }
     }
 }

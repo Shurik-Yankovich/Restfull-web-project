@@ -1,8 +1,5 @@
 package com.expexchangeservice.model.entities;
 
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-
 import javax.persistence.*;
 
 @Entity
@@ -12,10 +9,11 @@ public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @OneToOne(cascade = CascadeType.ALL)
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @JoinColumn(name = "idProfile")
-    private String userName;
+//    @OneToOne(cascade = CascadeType.ALL)
+//    @LazyCollection(LazyCollectionOption.FALSE)
+//    @JoinColumn(name = "idProfile")
+    @Column(name = "username")
+    private String username;
     @Column(name = "review")
     private String review;
 
@@ -27,12 +25,12 @@ public class Review {
         this.id = id;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getReview() {

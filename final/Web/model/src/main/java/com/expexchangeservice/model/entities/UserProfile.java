@@ -14,9 +14,9 @@ public class UserProfile {
     private int id;
     @OneToOne(cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
-    @JoinColumn(name = "idUser")
+    @JoinColumn(name = "id_user")
     private User user;
-    @Column(name = "fullName")
+    @Column(name = "full_name")
     private String fullName;
     @Column(name = "workplace")
     private String placeOfWork;

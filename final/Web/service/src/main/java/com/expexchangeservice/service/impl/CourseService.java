@@ -5,7 +5,7 @@ import com.expexchangeservice.model.enums.Type;
 import com.expexchangeservice.model.exception.DBException;
 import com.expexchangeservice.repository.interfaces.ICourseRepository;
 import com.expexchangeservice.service.interfaces.ICourseService;
-import org.hibernate.SessionFactory;
+import com.expexchangeservice.utils.HibernateSessionFactoryUtil;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,20 +17,18 @@ import java.util.List;
 public class CourseService implements ICourseService {
 
     private ICourseRepository courseRepository;
-    private SessionFactory sessionFactory;
 
     @Autowired
-    public CourseService(ICourseRepository courseRepository, SessionFactory sessionFactory) {
+    public CourseService(ICourseRepository courseRepository) {
         this.courseRepository = courseRepository;
-        this.sessionFactory = sessionFactory;
     }
 
     @Override
     public void addCourse(Course course) throws DBException {
         Transaction transaction = null;
         try {
-            transaction = sessionFactory.getCurrentSession().beginTransaction();
-            course = courseRepository.create(course);
+            transaction = HibernateSessionFactoryUtil.getSession().beginTransaction();
+            courseRepository.create(course);
             transaction.commit();
         } catch (Exception e) {
             transaction.rollback();
@@ -42,7 +40,7 @@ public class CourseService implements ICourseService {
     public void editCourse(Course course) throws DBException {
         Transaction transaction = null;
         try {
-            transaction = sessionFactory.getCurrentSession().beginTransaction();
+            transaction = HibernateSessionFactoryUtil.getSession().beginTransaction();
             courseRepository.update(course);
             transaction.commit();
         } catch (Exception e) {
@@ -55,7 +53,7 @@ public class CourseService implements ICourseService {
     public void deleteCourse(Integer courseId) throws DBException {
         Transaction transaction = null;
         try {
-            transaction = sessionFactory.getCurrentSession().beginTransaction();
+            transaction = HibernateSessionFactoryUtil.getSession().beginTransaction();
             courseRepository.delete(courseId);
             transaction.commit();
         } catch (Exception e) {
@@ -69,7 +67,7 @@ public class CourseService implements ICourseService {
         Transaction transaction = null;
         Course course = null;
         try {
-            transaction = sessionFactory.getCurrentSession().beginTransaction();
+            transaction = HibernateSessionFactoryUtil.getSession().beginTransaction();
             course = courseRepository.read(courseId);
             transaction.commit();
             return course;
@@ -84,7 +82,7 @@ public class CourseService implements ICourseService {
         Transaction transaction = null;
         List<Course> courses = null;
         try {
-            transaction = sessionFactory.getCurrentSession().beginTransaction();
+            transaction = HibernateSessionFactoryUtil.getSession().beginTransaction();
             courses = courseRepository.readAll();
             transaction.commit();
             return courses;
@@ -134,7 +132,7 @@ public class CourseService implements ICourseService {
         Transaction transaction = null;
         List<Course> courses = null;
         try {
-            transaction = sessionFactory.getCurrentSession().beginTransaction();
+            transaction = HibernateSessionFactoryUtil.getSession().beginTransaction();
             courses = courseRepository.findByQuery(query);
             transaction.commit();
             return courses;
@@ -148,7 +146,7 @@ public class CourseService implements ICourseService {
     public void addMemberToTheCourse(Integer courseId, UserProfile userProfile) throws DBException {
         Transaction transaction = null;
         try {
-            transaction = sessionFactory.getCurrentSession().beginTransaction();
+            transaction = HibernateSessionFactoryUtil.getSession().beginTransaction();
             Course course = courseRepository.read(courseId);
             course.getMembers().add(userProfile);
             courseRepository.update(course);
@@ -163,7 +161,7 @@ public class CourseService implements ICourseService {
     public void addReview(Integer courseId, Review review) throws DBException {
         Transaction transaction = null;
         try {
-            transaction = sessionFactory.getCurrentSession().beginTransaction();
+            transaction = HibernateSessionFactoryUtil.getSession().beginTransaction();
             Course course = courseRepository.read(courseId);
             course.getReviews().add(review);
             courseRepository.update(course);

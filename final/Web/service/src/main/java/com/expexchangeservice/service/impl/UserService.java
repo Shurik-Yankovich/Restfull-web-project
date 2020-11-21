@@ -1,31 +1,32 @@
 package com.expexchangeservice.service.impl;
 
 import com.expexchangeservice.model.entities.User;
-import com.expexchangeservice.repository.interfaces.IProfileRepository;
 import com.expexchangeservice.repository.interfaces.IUserRepository;
-import com.expexchangeservice.service.interfaces.IProfileService;
+import com.expexchangeservice.service.interfaces.IUserService;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import static com.expexchangeservice.model.enums.Role.USER;
 
 @Service
-public class ProfileService implements IProfileService {
-
+public class UserService implements IUserService, UserDetailsService {
+    @PersistenceContext
+    private EntityManager em;
     private IUserRepository userRepository;
-    private IProfileRepository profileRepository;
-    private SessionFactory sessionFactory;
+//    private IProfileRepository profileRepository;
+    @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public ProfileService(IUserRepository userRepository, IProfileRepository profileRepository,
-                          SessionFactory sessionFactory, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserService(IUserRepository userRepository) {
         this.userRepository = userRepository;
-        this.profileRepository = profileRepository;
-        this.sessionFactory = sessionFactory;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+//        this.profileRepository = profileRepository;
+//        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @Override
@@ -51,7 +52,7 @@ public class ProfileService implements IProfileService {
 
     @Override
     public boolean saveUser(User user) {
-        User userFromDB = userRepository.findByUsername(user.getLogin());
+        User userFromDB = userRepository.findByUsername(user.getUsername());
         if (userFromDB != null) {
             return false;
         }

@@ -8,32 +8,31 @@ import com.expexchangeservice.model.enums.Type;
 import com.expexchangeservice.model.exception.DBException;
 import com.expexchangeservice.repository.interfaces.ILessonRepository;
 import com.expexchangeservice.service.interfaces.ILessonService;
-import org.hibernate.SessionFactory;
+import com.expexchangeservice.utils.HibernateSessionFactoryUtil;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class LessonService implements ILessonService {
 
     private ILessonRepository lessonRepository;
-    private SessionFactory sessionFactory;
 
     @Autowired
-    public LessonService(ILessonRepository lessonRepository, SessionFactory sessionFactory) {
+    public LessonService(ILessonRepository lessonRepository) {
         this.lessonRepository = lessonRepository;
-        this.sessionFactory = sessionFactory;
     }
 
     @Override
     public void addLesson(Lesson lesson) throws DBException {
         Transaction transaction = null;
         try {
-            transaction = sessionFactory.getCurrentSession().beginTransaction();
-            lesson = lessonRepository.create(lesson);
+            transaction = HibernateSessionFactoryUtil.getSession().beginTransaction();
+            lessonRepository.create(lesson);
             transaction.commit();
         } catch (Exception e) {
             transaction.rollback();
@@ -45,7 +44,7 @@ public class LessonService implements ILessonService {
     public void changeLesson(Lesson lesson) throws DBException {
         Transaction transaction = null;
         try {
-            transaction = sessionFactory.getCurrentSession().beginTransaction();
+            transaction = HibernateSessionFactoryUtil.getSession().beginTransaction();
             lessonRepository.update(lesson);
             transaction.commit();
         } catch (Exception e) {
@@ -58,7 +57,7 @@ public class LessonService implements ILessonService {
     public void deleteLesson(Integer lessonId) throws DBException {
         Transaction transaction = null;
         try {
-            transaction = sessionFactory.getCurrentSession().beginTransaction();
+            transaction = HibernateSessionFactoryUtil.getSession().beginTransaction();
             lessonRepository.delete(lessonId);
             transaction.commit();
         } catch (Exception e) {
@@ -72,7 +71,7 @@ public class LessonService implements ILessonService {
         Transaction transaction = null;
         Lesson lesson = null;
         try {
-            transaction = sessionFactory.getCurrentSession().beginTransaction();
+            transaction = HibernateSessionFactoryUtil.getSession().beginTransaction();
             lesson = lessonRepository.read(lessonId);
             transaction.commit();
             return lesson;
@@ -87,7 +86,7 @@ public class LessonService implements ILessonService {
         Transaction transaction = null;
         List<Lesson> lessons = null;
         try {
-            transaction = sessionFactory.getCurrentSession().beginTransaction();
+            transaction = HibernateSessionFactoryUtil.getSession().beginTransaction();
             lessons = lessonRepository.readAll();
             transaction.commit();
             return lessons;
@@ -137,7 +136,7 @@ public class LessonService implements ILessonService {
         Transaction transaction = null;
         List<Lesson> lessons = null;
         try {
-            transaction = sessionFactory.getCurrentSession().beginTransaction();
+            transaction = HibernateSessionFactoryUtil.getSession().beginTransaction();
             lessons = lessonRepository.findByQuery(query);
             transaction.commit();
             return lessons;
@@ -151,7 +150,7 @@ public class LessonService implements ILessonService {
     public void addMemberToTheLesson(Integer lessonId, UserProfile userProfile) throws DBException {
         Transaction transaction = null;
         try {
-            transaction = sessionFactory.getCurrentSession().beginTransaction();
+            transaction = HibernateSessionFactoryUtil.getSession().beginTransaction();
             Lesson lesson = lessonRepository.read(lessonId);
             lesson.getMembers().add(userProfile);
             lessonRepository.update(lesson);
@@ -166,11 +165,25 @@ public class LessonService implements ILessonService {
     public void addReview(Integer lessonId, Review review) throws DBException {
         Transaction transaction = null;
         try {
-            transaction = sessionFactory.getCurrentSession().beginTransaction();
+            transaction = HibernateSessionFactoryUtil.getSession().beginTransaction();
             Lesson lesson = lessonRepository.read(lessonId);
             lesson.getReviews().add(review);
             lessonRepository.update(lesson);
             transaction.commit();
+        } catch (Exception e) {
+            transaction.rollback();
+            throw new DBException("Не удалось добавить отзыв на " + Lesson.class.getName() + " в базе данных!");
+        }
+    }
+
+    @Override
+    public Set<Review> getReviewOnTheLesson(Integer lessonId) throws DBException {
+        Transaction transaction = null;
+        try {
+            transaction = HibernateSessionFactoryUtil.getSession().beginTransaction();
+            Lesson lesson = lessonRepository.read(lessonId);
+            transaction.commit();
+            return lesson.getReviews();
         } catch (Exception e) {
             transaction.rollback();
             throw new DBException("Не удалось добавить отзыв на " + Lesson.class.getName() + " в базе данных!");

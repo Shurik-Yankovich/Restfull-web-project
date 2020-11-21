@@ -13,8 +13,8 @@ public interface IDictionaryService {
     List<Section> getSectionDictionary() throws DBException;
     void changeTheme(Theme theme) throws DBException;
     void changeSection(Section section) throws DBException;
-    Theme addTheme(Theme theme) throws DBException;
-    Section addSection(Section section) throws DBException;
+    void addTheme(Theme theme) throws DBException;
+    void addSection(Section section) throws DBException;
     void deleteTheme(Integer themeId) throws DBException;
     void deleteSection(Integer sectionId) throws DBException;
 }

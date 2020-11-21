@@ -2,7 +2,7 @@ package com.expexchangeservice.service.interfaces;
 
 import com.expexchangeservice.model.entities.User;
 
-public interface IProfileService {
+public interface IUserService {
 
     User loadUserByUsername(String username);
     User findByUsernameAndPassword(String username, String password);

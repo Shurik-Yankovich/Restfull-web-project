@@ -4,6 +4,7 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "Section")
@@ -17,9 +18,9 @@ public class Section {
     @OneToMany(cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(name = "Section_Themes",
-            joinColumns = @JoinColumn(name = "idSection"),
-            inverseJoinColumns = @JoinColumn(name = "idTheme"))
-    private Theme[] themes;
+            joinColumns = @JoinColumn(name = "id_section"),
+            inverseJoinColumns = @JoinColumn(name = "id_theme"))
+    private List<Theme> themes;
 
     public int getId() {
         return id;
@@ -37,11 +38,11 @@ public class Section {
         this.title = title;
     }
 
-    public Theme[] getThemes() {
+    public List<Theme> getThemes() {
         return themes;
     }
 
-    public void setThemes(Theme[] themes) {
+    public void setThemes(List<Theme> themes) {
         this.themes = themes;
     }
 }
