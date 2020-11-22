@@ -32,7 +32,7 @@ public class Course {
     private int countLesson;
     @Column(name = "price")
     private int price;
-    @OneToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(name = "CourseMembers",
             joinColumns = @JoinColumn(name = "id_course"),

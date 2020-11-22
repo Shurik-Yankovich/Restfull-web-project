@@ -54,7 +54,8 @@ public class CourseService implements ICourseService {
         Transaction transaction = null;
         try {
             transaction = HibernateSessionFactoryUtil.getSession().beginTransaction();
-            courseRepository.delete(courseId);
+            Course course = courseRepository.read(courseId);
+            courseRepository.delete(course);
             transaction.commit();
         } catch (Exception e) {
             transaction.rollback();

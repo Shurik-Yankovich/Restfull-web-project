@@ -1,6 +1,5 @@
 package com.expexchangeservice.service.impl;
 
-import com.expexchangeservice.model.entities.Lesson;
 import com.expexchangeservice.model.entities.Section;
 import com.expexchangeservice.model.entities.Theme;
 import com.expexchangeservice.model.exception.DBException;
@@ -28,32 +27,40 @@ public class DictionaryService implements IDictionaryService {
 
     @Override
     public List<Theme> getThemeDictionary() throws DBException {
-//        Transaction transaction = null;
-//        List<Theme> themes = null;
-//        try {
-//            transaction = HibernateSessionFactoryUtil.getSession().beginTransaction();
-//            themes = themeRepository.readAll();
-//            transaction.commit();
-//            return themes;
-//        } catch (Exception e) {
-//            transaction.rollback();
-//            System.out.println(e.getMessage());
-//            throw new DBException("Не удалось получить объекты класса " + Theme.class.getName() + " из базы данных!");
-//        }
-        return themeRepository.readAll();
+        Transaction transaction = null;
+        try {
+            transaction = HibernateSessionFactoryUtil.getSession().beginTransaction();
+            List<Theme> themes = themeRepository.readAll();
+            transaction.commit();
+            return themes;
+        } catch (Exception e) {
+            transaction.rollback();
+            System.out.println(e.getMessage());
+            throw new DBException("Не удалось получить объекты класса " + Theme.class.getName() + " из базы данных!");
+        }
     }
 
-//    @Override
-//    public List<Theme> getThemeDictionaryOnTheSection(Section section) throws DBException {
-//    }
+    @Override
+    public List<Theme> getThemeDictionaryOnTheSection(Integer sectionId) throws DBException {
+        Transaction transaction = null;
+        try {
+            transaction = HibernateSessionFactoryUtil.getSession().beginTransaction();
+            Section section = sectionRepository.read(sectionId);
+            transaction.commit();
+            return section.getThemes();
+        } catch (Exception e) {
+            transaction.rollback();
+            System.out.println(e.getMessage());
+            throw new DBException("Не удалось получить объекты класса " + Theme.class.getName() + " из базы данных!");
+        }
+    }
 
     @Override
     public List<Section> getSectionDictionary() throws DBException {
         Transaction transaction = null;
-        List<Section> sections = null;
         try {
             transaction = HibernateSessionFactoryUtil.getSession().beginTransaction();
-            sections = sectionRepository.readAll();
+            List<Section> sections = sectionRepository.readAll();
             transaction.commit();
             return sections;
         } catch (Exception e) {
@@ -63,10 +70,40 @@ public class DictionaryService implements IDictionaryService {
     }
 
     @Override
-    public void changeTheme(Theme theme) throws DBException {
+    public Theme getThemeById(Integer themeId) throws DBException {
         Transaction transaction = null;
         try {
             transaction = HibernateSessionFactoryUtil.getSession().beginTransaction();
+            Theme theme = themeRepository.read(themeId);
+            transaction.commit();
+            return theme;
+        } catch (Exception e) {
+            transaction.rollback();
+            throw new DBException("Не удалось получить объекты класса " + Section.class.getName() + " из базы данных!");
+        }
+    }
+
+    @Override
+    public Section getSectionById(Integer sectionId) throws DBException {
+        Transaction transaction = null;
+        try {
+            transaction = HibernateSessionFactoryUtil.getSession().beginTransaction();
+            Section section = sectionRepository.read(sectionId);
+            transaction.commit();
+            return section;
+        } catch (Exception e) {
+            transaction.rollback();
+            throw new DBException("Не удалось получить объекты класса " + Section.class.getName() + " из базы данных!");
+        }
+    }
+
+    @Override
+    public void changeTheme(int id, String title) throws DBException {
+        Transaction transaction = null;
+        try {
+            transaction = HibernateSessionFactoryUtil.getSession().beginTransaction();
+            Theme theme = themeRepository.read(id);
+            theme.setTitle(title);
             themeRepository.update(theme);
             transaction.commit();
         } catch (Exception e) {
@@ -116,15 +153,19 @@ public class DictionaryService implements IDictionaryService {
     }
 
     @Override
-    public void deleteTheme(Integer themeId) throws DBException {
+    public void deleteTheme(Integer sectionId, Integer themeId) throws DBException {
         Transaction transaction = null;
         try {
             transaction = HibernateSessionFactoryUtil.getSession().beginTransaction();
-            themeRepository.delete(themeId);
+            Section section = sectionRepository.read(sectionId);
+            Theme theme = themeRepository.read(themeId);
+            section.getThemes().remove(theme);
+            sectionRepository.update(section);
+            themeRepository.delete(theme);
             transaction.commit();
         } catch (Exception e) {
             transaction.rollback();
-            throw new DBException("Не удалось получить объекты класса " + Theme.class.getName() + " из базы данных!");
+            throw new DBException("Не удалось удалить объект класса " + Theme.class.getName() + " из базы данных!");
         }
     }
 
@@ -133,7 +174,8 @@ public class DictionaryService implements IDictionaryService {
         Transaction transaction = null;
         try {
             transaction = HibernateSessionFactoryUtil.getSession().beginTransaction();
-            sectionRepository.delete(sectionId);
+            Section section = sectionRepository.read(sectionId);
+            sectionRepository.delete(section);
             transaction.commit();
         } catch (Exception e) {
             transaction.rollback();

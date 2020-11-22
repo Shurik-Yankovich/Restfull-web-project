@@ -3,6 +3,7 @@ package com.expexchangeservice.service.impl;
 import com.expexchangeservice.model.entities.User;
 import com.expexchangeservice.repository.interfaces.IUserRepository;
 import com.expexchangeservice.service.interfaces.IUserService;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,8 +65,9 @@ public class UserService implements IUserService, UserDetailsService {
 
     @Override
     public boolean deleteUser(Integer userId) {
-        if (userRepository.read(userId) != null) {
-            userRepository.delete(userId);
+        User user = userRepository.read(userId);
+        if (user != null) {
+            userRepository.delete(user);
             return true;
         }
         return false;

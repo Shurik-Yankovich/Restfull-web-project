@@ -15,8 +15,8 @@ public class Section {
     private int id;
     @Column(name = "title")
     private String title;
-    @OneToMany(cascade = CascadeType.ALL)
-    @LazyCollection(LazyCollectionOption.FALSE)
+//    @OneToMany(mappedBy="section", fetch=FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "Section_Themes",
             joinColumns = @JoinColumn(name = "id_section"),
             inverseJoinColumns = @JoinColumn(name = "id_theme"))

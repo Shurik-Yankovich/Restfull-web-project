@@ -37,26 +37,27 @@ public abstract class AbstractRepository<E> implements IRepository<E> {
     }
 
     @Override
-    public void delete(Integer primaryKey) {
-        HibernateSessionFactoryUtil.getSession().delete(primaryKey);
+    public void delete(E entity) {
+        HibernateSessionFactoryUtil.getSession().delete(entity);
     }
 
     @Override
     public List<E> readAll() throws DBException {
-        Session session = HibernateSessionFactoryUtil.getSession();
-        Transaction transaction = null;
-        List<E> entities = null;
-        try {
-            transaction = session.beginTransaction();
-            String hql = "From " + this.entityClass.getName();
-            entities = session.createQuery(hql).list();
-            transaction.commit();
-            return entities;
-        } catch (Exception e) {
-            transaction.rollback();
-            System.out.println(e.getMessage());
-            throw new DBException("Не удалось получить объекты класса " + Theme.class.getName() + " из базы данных!");
-        }
-
+//        Session session = HibernateSessionFactoryUtil.getSession();
+//        Transaction transaction = null;
+//        List<E> entities = null;
+//        try {
+//            transaction = session.beginTransaction();
+//            String hql = "From " + this.entityClass.getName();
+//            entities = session.createQuery(hql).list();
+//            transaction.commit();
+//            return entities;
+//        } catch (Exception e) {
+//            transaction.rollback();
+//            System.out.println(e.getMessage());
+//            throw new DBException("Не удалось получить объекты класса " + Theme.class.getName() + " из базы данных!");
+//        }
+        String hql = "From " + this.entityClass.getName();
+        return HibernateSessionFactoryUtil.getSession().createQuery(hql).list();
     }
 }

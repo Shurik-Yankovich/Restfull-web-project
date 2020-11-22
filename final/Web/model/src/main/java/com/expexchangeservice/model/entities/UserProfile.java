@@ -4,6 +4,7 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "Profile")
@@ -20,6 +21,18 @@ public class UserProfile {
     private String fullName;
     @Column(name = "workplace")
     private String placeOfWork;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JoinTable(name = "CourseMembers",
+            joinColumns = @JoinColumn(name = "id_member"),
+            inverseJoinColumns = @JoinColumn(name = "id_course"))
+    private List<Course> courses;
+    @OneToMany(cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JoinTable(name = "LessonMembers",
+            joinColumns = @JoinColumn(name = "id_member"),
+            inverseJoinColumns = @JoinColumn(name = "id_lesson"))
+    private List<Lesson> lessons;
 
     public int getId() {
         return id;
@@ -51,5 +64,21 @@ public class UserProfile {
 
     public void setPlaceOfWork(String placeOfWork) {
         this.placeOfWork = placeOfWork;
+    }
+
+    public List<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
+    }
+
+    public List<Lesson> getLessons() {
+        return lessons;
+    }
+
+    public void setLessons(List<Lesson> lessons) {
+        this.lessons = lessons;
     }
 }

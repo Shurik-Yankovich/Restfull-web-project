@@ -58,7 +58,8 @@ public class LessonService implements ILessonService {
         Transaction transaction = null;
         try {
             transaction = HibernateSessionFactoryUtil.getSession().beginTransaction();
-            lessonRepository.delete(lessonId);
+            Lesson lesson = lessonRepository.read(lessonId);
+            lessonRepository.delete(lesson);
             transaction.commit();
         } catch (Exception e) {
             transaction.rollback();

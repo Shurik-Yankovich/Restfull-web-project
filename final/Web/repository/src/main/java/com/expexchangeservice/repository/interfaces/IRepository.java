@@ -11,7 +11,7 @@ public interface IRepository<T> {
 
     T read(Integer pk);
 
-    void delete(Integer pk);
+    void delete(T t);
 
     List<T> readAll() throws DBException;
 }

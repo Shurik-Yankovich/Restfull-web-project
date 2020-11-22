@@ -11,6 +11,9 @@ public class Theme {
     private int id;
     @Column(name = "title")
     private String title;
+//    @ManyToOne (optional=false)
+//    @JoinColumn (name="id_section")
+//    private Section section;
 
     public int getId() {
         return id;
@@ -27,4 +30,12 @@ public class Theme {
     public void setTitle(String title) {
         this.title = title;
     }
+
+//    public Section getSection() {
+//        return section;
+//    }
+//
+//    public void setSection(Section section) {
+//        this.section = section;
+//    }
 }
