@@ -6,8 +6,6 @@ import com.expexchangeservice.model.entities.Theme;
 import com.expexchangeservice.model.entities.UserProfile;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Set;
 
 public class LessonDto {
 

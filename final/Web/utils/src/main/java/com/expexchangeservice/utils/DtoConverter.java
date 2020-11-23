@@ -12,7 +12,6 @@ public class DtoConverter {
         lesson.setProfessor(lessonDto.getProfessor());
         lesson.setType(lessonDto.getType());
         lesson.setDate(lessonDto.getDate());
-        lesson.setReviews(lessonDto.getReviews());
         return lesson;
     }
 }

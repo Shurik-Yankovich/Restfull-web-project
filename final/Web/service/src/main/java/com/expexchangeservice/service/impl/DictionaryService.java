@@ -11,10 +11,12 @@ import com.expexchangeservice.utils.HibernateSessionFactoryUtil;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+//@Transactional
 public class DictionaryService implements IDictionaryService {
 
     private IThemeRepository themeRepository;

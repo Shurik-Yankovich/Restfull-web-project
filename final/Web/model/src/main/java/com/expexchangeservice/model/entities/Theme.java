@@ -1,6 +1,7 @@
 package com.expexchangeservice.model.entities;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "Theme")
@@ -46,4 +47,19 @@ public class Theme {
 //    public void setSection(Section section) {
 //        this.section = section;
 //    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Theme theme = (Theme) o;
+        return id == theme.id &&
+                Objects.equals(title, theme.title);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title);
+    }
 }

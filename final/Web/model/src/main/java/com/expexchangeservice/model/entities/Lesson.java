@@ -38,8 +38,7 @@ public class Lesson {
             joinColumns = @JoinColumn(name = "id_lesson"),
             inverseJoinColumns = @JoinColumn(name = "id_member"))
     private Set<UserProfile> members;
-    @OneToMany(cascade = CascadeType.ALL)
-    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "LessonReview",
             joinColumns = @JoinColumn(name = "id_lesson"),
             inverseJoinColumns = @JoinColumn(name = "id_review"))
