@@ -110,12 +110,6 @@ public class LessonService implements ILessonService {
     }
 
     @Override
-    public List<Lesson> getLessonsForMember(UserProfile member) throws DBException {
-        String hqlQuery = "";
-        return getLessonsByQuery(hqlQuery);
-    }
-
-    @Override
     public List<Lesson> getLessonsOnTheTheme(Theme theme) throws DBException {
         String hqlQuery = "select u from " + Lesson.class.getName() + " u where u.theme = " + theme;
         return getLessonsByQuery(hqlQuery);
@@ -147,20 +141,20 @@ public class LessonService implements ILessonService {
         }
     }
 
-    @Override
-    public void addMemberToTheLesson(Integer lessonId, UserProfile userProfile) throws DBException {
-        Transaction transaction = null;
-        try {
-            transaction = HibernateSessionFactoryUtil.getSession().beginTransaction();
-            Lesson lesson = lessonRepository.read(lessonId);
-            lesson.getMembers().add(userProfile);
-            lessonRepository.update(lesson);
-            transaction.commit();
-        } catch (Exception e) {
-            transaction.rollback();
-            throw new DBException("Не удалось добавить участника к " + Lesson.class.getName() + " в базе данных!");
-        }
-    }
+//    @Override
+//    public void addMemberToTheLesson(Integer lessonId, UserProfile userProfile) throws DBException {
+//        Transaction transaction = null;
+//        try {
+//            transaction = HibernateSessionFactoryUtil.getSession().beginTransaction();
+//            Lesson lesson = lessonRepository.read(lessonId);
+//            lesson.getMembers().add(userProfile);
+//            lessonRepository.update(lesson);
+//            transaction.commit();
+//        } catch (Exception e) {
+//            transaction.rollback();
+//            throw new DBException("Не удалось добавить участника к " + Lesson.class.getName() + " в базе данных!");
+//        }
+//    }
 
     @Override
     public void addReview(Integer lessonId, Review review) throws DBException {

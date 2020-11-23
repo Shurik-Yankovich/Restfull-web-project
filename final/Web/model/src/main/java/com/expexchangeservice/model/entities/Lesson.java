@@ -16,11 +16,11 @@ public class Lesson {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinColumn(name = "id_theme")
     private Theme theme;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinColumn(name = "id_professor")
     private UserProfile professor;

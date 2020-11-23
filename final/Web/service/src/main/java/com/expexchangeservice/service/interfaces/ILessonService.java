@@ -20,11 +20,11 @@ public interface ILessonService {
     List<Lesson> getAll() throws DBException;
     List<Lesson> getLessonsOnTheDate(LocalDate date) throws DBException;
     List<Lesson> getLessonsAfterDate(LocalDate date) throws DBException;
-    List<Lesson> getLessonsForMember(UserProfile member) throws DBException;
+//    List<Lesson> getLessonsForMember(UserProfile member) throws DBException;
     List<Lesson> getLessonsOnTheTheme(Theme theme) throws DBException;
     List<Lesson> getLessonsForTheProfessor(UserProfile professor) throws DBException;
     List<Lesson> getLessonsByType(Type lessonType) throws DBException;
-    void addMemberToTheLesson(Integer lessonId, UserProfile userProfile) throws DBException;
+//    void addMemberToTheLesson(Integer lessonId, UserProfile userProfile) throws DBException;
     void addReview(Integer lessonId, Review review) throws DBException;
     Set<Review> getReviewOnTheLesson(Integer lessonId) throws DBException;
 }

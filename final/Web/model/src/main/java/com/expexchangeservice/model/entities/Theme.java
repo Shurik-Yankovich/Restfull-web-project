@@ -15,6 +15,14 @@ public class Theme {
 //    @JoinColumn (name="id_section")
 //    private Section section;
 
+
+    public Theme(String title) {
+        this.title = title;
+    }
+
+    public Theme() {
+    }
+
     public int getId() {
         return id;
     }

@@ -1,5 +1,6 @@
 package com.expexchangeservice.service.interfaces;
 
+import com.expexchangeservice.model.dto.ThemeDto;
 import com.expexchangeservice.model.entities.Section;
 import com.expexchangeservice.model.entities.Theme;
 import com.expexchangeservice.model.exception.DBException;
@@ -13,9 +14,9 @@ public interface IDictionaryService {
     List<Section> getSectionDictionary() throws DBException;
     Theme getThemeById(Integer themeId) throws DBException;
     Section getSectionById(Integer sectionId) throws DBException;
-    void changeTheme(int id, String theme) throws DBException;
+    void changeTheme(int id, ThemeDto themeDto) throws DBException;
     void changeSection(Section section) throws DBException;
-    void addTheme(Theme theme) throws DBException;
+    void addTheme(int sectionId, ThemeDto themeDto) throws DBException;
     void addSection(Section section) throws DBException;
     void deleteTheme(Integer sectionId, Integer themeId) throws DBException;
     void deleteSection(Integer sectionId) throws DBException;

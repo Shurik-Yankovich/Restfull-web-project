@@ -1,5 +1,6 @@
 package com.expexchangeservice.service.impl;
 
+import com.expexchangeservice.model.dto.ThemeDto;
 import com.expexchangeservice.model.entities.Section;
 import com.expexchangeservice.model.entities.Theme;
 import com.expexchangeservice.model.exception.DBException;
@@ -98,12 +99,12 @@ public class DictionaryService implements IDictionaryService {
     }
 
     @Override
-    public void changeTheme(int id, String title) throws DBException {
+    public void changeTheme(int id, ThemeDto themeDto) throws DBException {
         Transaction transaction = null;
         try {
             transaction = HibernateSessionFactoryUtil.getSession().beginTransaction();
             Theme theme = themeRepository.read(id);
-            theme.setTitle(title);
+            theme.setTitle(themeDto.getTitle());
             themeRepository.update(theme);
             transaction.commit();
         } catch (Exception e) {
@@ -126,11 +127,16 @@ public class DictionaryService implements IDictionaryService {
     }
 
     @Override
-    public void addTheme(Theme theme) throws DBException {
+    public void addTheme(int sectionId, ThemeDto themeDto) throws DBException {
         Transaction transaction = null;
         try {
             transaction = HibernateSessionFactoryUtil.getSession().beginTransaction();
+            Theme theme = new Theme(themeDto.getTitle());
             themeRepository.create(theme);
+//            theme.setId(themeRepository.create(theme));
+            Section section = sectionRepository.read(sectionId);
+            section.getThemes().add(theme);
+            sectionRepository.update(section);
             transaction.commit();
         } catch (Exception e) {
             transaction.rollback();

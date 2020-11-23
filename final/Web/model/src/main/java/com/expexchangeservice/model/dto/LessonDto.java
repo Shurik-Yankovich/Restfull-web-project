@@ -16,7 +16,6 @@ public class LessonDto {
     private UserProfile professor;
     private Type type;
     private LocalDate date;
-    private Set<Review> reviews;
 
     public int getId() {
         return id;
@@ -58,11 +57,4 @@ public class LessonDto {
         this.date = date;
     }
 
-    public Set<Review> getReviews() {
-        return reviews;
-    }
-
-    public void setReviews(Set<Review> reviews) {
-        this.reviews = reviews;
-    }
 }

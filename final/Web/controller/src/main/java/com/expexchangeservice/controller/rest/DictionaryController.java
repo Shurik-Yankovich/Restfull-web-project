@@ -1,6 +1,7 @@
 package com.expexchangeservice.controller.rest;
 
 import com.expexchangeservice.model.dto.RequestError;
+import com.expexchangeservice.model.dto.ThemeDto;
 import com.expexchangeservice.model.entities.Section;
 import com.expexchangeservice.model.entities.Theme;
 import com.expexchangeservice.model.exception.DBException;
@@ -108,10 +109,10 @@ public class DictionaryController {
     }
 
     @PostMapping(value = "/section/{id}/theme")
-    public ResponseEntity<?> createTheme(@PathVariable(name = "id") int id, @RequestBody Theme theme) {
+    public ResponseEntity<?> createTheme(@PathVariable(name = "id") int id, @RequestBody ThemeDto theme) {
         try {
-            Section section = dictionaryService.getSectionById(id);
-            dictionaryService.addTheme(theme);
+//            Section section = dictionaryService.getSectionById(id);
+            dictionaryService.addTheme(id,theme);
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (DBException e) {
             return new ResponseEntity<>(new RequestError(400,
@@ -122,7 +123,7 @@ public class DictionaryController {
     }
 
     @PutMapping(value = "/theme/{id}")
-    public ResponseEntity<?> changeTheme(@PathVariable(name = "id") int id, @RequestBody String theme) {
+    public ResponseEntity<?> changeTheme(@PathVariable(name = "id") int id, @RequestBody ThemeDto theme) {
         try {
             dictionaryService.changeTheme(id, theme);
             return new ResponseEntity<>(HttpStatus.OK);
