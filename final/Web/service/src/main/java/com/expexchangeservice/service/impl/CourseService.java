@@ -38,8 +38,7 @@ public class CourseService implements ICourseService {
 
     @Override
     public void changeCourse(int courseId, CourseDto courseDto) {
-        Course course = courseRepository.read(courseId);
-        course = convertDtoToCourse(course, courseDto);
+        Course course = convertDtoToCourse(courseRepository.read(courseId), courseDto);
         courseRepository.update(course);
     }
 
@@ -96,7 +95,7 @@ public class CourseService implements ICourseService {
         reviewService.addReview(review);
         Course course = courseRepository.read(courseId);
         if (course.getReviews() == null) {
-            course.setReviews(new HashSet<Review>());
+            course.setReviews(new HashSet<>());
         }
         course.getReviews().add(review);
         courseRepository.update(course);

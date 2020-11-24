@@ -6,12 +6,9 @@ import com.expexchangeservice.model.entities.Review;
 import com.expexchangeservice.model.entities.Theme;
 import com.expexchangeservice.model.entities.UserProfile;
 import com.expexchangeservice.model.enums.Type;
-import com.expexchangeservice.model.exception.DBException;
 import com.expexchangeservice.repository.interfaces.ILessonRepository;
 import com.expexchangeservice.service.interfaces.ILessonService;
 import com.expexchangeservice.service.interfaces.IReviewService;
-import com.expexchangeservice.utils.HibernateSessionFactoryUtil;
-import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,8 +41,7 @@ public class LessonService implements ILessonService {
 
     @Override
     public void changeLesson(int lessonId, LessonDto lessonDto) {
-        Lesson lesson = lessonRepository.read(lessonId);
-        lesson = convertDtoToLesson(lesson, lessonDto);
+        Lesson lesson = convertDtoToLesson(lessonRepository.read(lessonId), lessonDto);
         lessonRepository.update(lesson);
     }
 
@@ -102,7 +98,7 @@ public class LessonService implements ILessonService {
         reviewService.addReview(review);
         Lesson lesson = lessonRepository.read(lessonId);
         if (lesson.getReviews() == null) {
-            lesson.setReviews(new HashSet<Review>());
+            lesson.setReviews(new HashSet<>());
         }
         lesson.getReviews().add(review);
         lessonRepository.update(lesson);
