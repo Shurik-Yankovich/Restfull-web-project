@@ -35,7 +35,7 @@ public class LessonController {
         try {
             lessonService.addLesson(lesson);
             return  new ResponseEntity<>(HttpStatus.CREATED);
-        } catch (DBException e) {
+        } catch (Exception e) {
             return new ResponseEntity<>(new RequestError(400,
                     "lesson not added",
                     e.getMessage()),
@@ -46,11 +46,11 @@ public class LessonController {
     @GetMapping(value = "/")
     public ResponseEntity<?> getLessonsList() {
         try {
-            List<Lesson> lessons = lessonService.getAll();
+            List<LessonDto> lessons = lessonService.getAll();
             return lessons != null
                     ? new ResponseEntity<>(lessons, HttpStatus.OK)
                     : new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } catch (DBException e) {
+        } catch (Exception e) {
             return new ResponseEntity<>(new RequestError(400,
                     "lessons not read",
                     e.getMessage()),
@@ -58,12 +58,13 @@ public class LessonController {
         }
     }
 
-    @PutMapping(value = "/{id}")
-    public ResponseEntity<?> changeLesson(@PathVariable(name = "id") int id, @RequestBody LessonDto lesson) {
+    @PutMapping(value = "/{lessonId}")
+    public ResponseEntity<?> changeLesson(@PathVariable(name = "lessonId") int id,
+                                          @RequestBody LessonDto lesson) {
         try {
             lessonService.changeLesson(id, lesson);
             return new ResponseEntity<>(HttpStatus.OK);
-        } catch (DBException e) {
+        } catch (Exception e) {
             return new ResponseEntity<>(new RequestError(400,
                     "lesson not changed",
                     e.getMessage()),
@@ -71,12 +72,12 @@ public class LessonController {
         }
     }
 
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity<?> deleteLesson(@PathVariable(name = "id") int id) {
+    @DeleteMapping(value = "/{lessonId}")
+    public ResponseEntity<?> deleteLesson(@PathVariable(name = "lessonId") int lessonId) {
         try {
-            lessonService.deleteLesson(id);
+            lessonService.deleteLesson(lessonId);
             return new ResponseEntity<>(HttpStatus.OK);
-        } catch (DBException e) {
+        } catch (Exception e) {
             return new ResponseEntity<>(new RequestError(400,
                     "lesson not deleted",
                     e.getMessage()),
@@ -84,12 +85,12 @@ public class LessonController {
         }
     }
 
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<?> getLessonById(@PathVariable(name = "id") int id) {
+    @GetMapping(value = "/{lessonId}")
+    public ResponseEntity<?> getLessonById(@PathVariable(name = "lessonId") int lessonId) {
         try {
-            Lesson lesson = lessonService.getLessonById(id);
+            LessonDto lesson = lessonService.getLessonById(lessonId);
             return new ResponseEntity<>(lesson, HttpStatus.OK);
-        } catch (DBException e) {
+        } catch (Exception e) {
             return new ResponseEntity<>(new RequestError(400,
                     "lesson not read",
                     e.getMessage()),
@@ -102,9 +103,9 @@ public class LessonController {
     public ResponseEntity<?> getLessonsOnTheDate(@RequestBody DateDto dateDto) {
         try {
 //            LocalDate date = LocalDate.parse(stringDate, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-            List<Lesson> lessons = lessonService.getLessonsOnTheDate(dateDto.getDate());
+            List<LessonDto> lessons = lessonService.getLessonsOnTheDate(dateDto.getDate());
             return new ResponseEntity<>(lessons, HttpStatus.OK);
-        } catch (DBException e) {
+        } catch (Exception e) {
             return new ResponseEntity<>(new RequestError(400,
                     "lessons not read",
                     e.getMessage()),
@@ -115,9 +116,9 @@ public class LessonController {
     @GetMapping(value = "/afterdate")
     public ResponseEntity<?> getLessonsAfterDate(@RequestBody DateDto dateDto) {
         try {
-            List<Lesson> lessons = lessonService.getLessonsAfterDate(dateDto.getDate());
+            List<LessonDto> lessons = lessonService.getLessonsAfterDate(dateDto.getDate());
             return new ResponseEntity<>(lessons, HttpStatus.OK);
-        } catch (DBException e) {
+        } catch (Exception e) {
             return new ResponseEntity<>(new RequestError(400,
                     "lessons not read",
                     e.getMessage()),
@@ -128,9 +129,9 @@ public class LessonController {
     @GetMapping(value = "/theme")
     public ResponseEntity<?> getLessonsOnTheTheme(@RequestBody Theme theme) {
         try {
-            List<Lesson> lessons = lessonService.getLessonsOnTheTheme(theme);
+            List<LessonDto> lessons = lessonService.getLessonsOnTheTheme(theme);
             return new ResponseEntity<>(lessons, HttpStatus.OK);
-        } catch (DBException e) {
+        } catch (Exception e) {
             return new ResponseEntity<>(new RequestError(400,
                     "lessons not read",
                     e.getMessage()),
@@ -141,9 +142,9 @@ public class LessonController {
     @GetMapping(value = "/professor")
     public ResponseEntity<?> getLessonsForTheProfessor(@RequestBody UserProfile professor) {
         try {
-            List<Lesson> lessons = lessonService.getLessonsForTheProfessor(professor);
+            List<LessonDto> lessons = lessonService.getLessonsForTheProfessor(professor);
             return new ResponseEntity<>(lessons, HttpStatus.OK);
-        } catch (DBException e) {
+        } catch (Exception e) {
             return new ResponseEntity<>(new RequestError(400,
                     "lessons not read",
                     e.getMessage()),
@@ -151,12 +152,12 @@ public class LessonController {
         }
     }
 
-    @GetMapping(value = "/{type}")
-    public ResponseEntity<?> getLessonsByType(@PathVariable(name = "type") Type type) {
+    @GetMapping(value = "/type/{type}")
+    public ResponseEntity<?> getLessonsByType(@PathVariable(name = "type") String type) {
         try {
-            List<Lesson> lessons = lessonService.getLessonsByType(type);
+            List<LessonDto> lessons = lessonService.getLessonsByType(Type.valueOf(type.toUpperCase()));
             return new ResponseEntity<>(lessons, HttpStatus.OK);
-        } catch (DBException e) {
+        } catch (Exception e) {
             return new ResponseEntity<>(new RequestError(400,
                     "lessons not read",
                     e.getMessage()),
@@ -164,12 +165,12 @@ public class LessonController {
         }
     }
 
-    @GetMapping(value = "/{id}/review")
-    public ResponseEntity<?> getReviewOnTheLesson(@PathVariable(name = "id") int id) {
+    @GetMapping(value = "/{lessonId}/review")
+    public ResponseEntity<?> getReviewOnTheLesson(@PathVariable(name = "lessonId") int lessonId) {
         try {
-            Set<Review> reviews = lessonService.getReviewOnTheLesson(id);
+            Set<Review> reviews = lessonService.getReviewOnTheLesson(lessonId);
             return new ResponseEntity<>(reviews, HttpStatus.OK);
-        } catch (DBException e) {
+        } catch (Exception e) {
             return new ResponseEntity<>(new RequestError(400,
                     "reviews not read",
                     e.getMessage()),
@@ -177,12 +178,13 @@ public class LessonController {
         }
     }
 
-    @PostMapping(value = "/{id}/review")
-    public ResponseEntity<?> addReviewToTheLesson(@PathVariable(name = "id") int id, @RequestBody Review review) {
+    @PostMapping(value = "/{lessonId}/review")
+    public ResponseEntity<?> addReviewToTheLesson(@PathVariable(name = "lessonId") int lessonId,
+                                                  @RequestBody Review review) {
         try {
-            lessonService.addReview(id, review);
+            lessonService.addReview(lessonId, review);
             return new ResponseEntity<>(HttpStatus.OK);
-        } catch (DBException e) {
+        } catch (Exception e) {
             return new ResponseEntity<>(new RequestError(400,
                     "review not added",
                     e.getMessage()),

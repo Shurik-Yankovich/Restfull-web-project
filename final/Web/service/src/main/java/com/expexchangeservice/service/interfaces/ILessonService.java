@@ -14,18 +14,16 @@ import java.util.Set;
 
 public interface ILessonService {
 
-    void addLesson(LessonDto lessonDto) throws DBException;
-    void changeLesson(int lessonId, LessonDto lessonDto) throws DBException;
-    void deleteLesson(Integer lessonId) throws DBException;
-    Lesson getLessonById(Integer lessonId) throws DBException;
-    List<Lesson> getAll() throws DBException;
-    List<Lesson> getLessonsOnTheDate(LocalDate date) throws DBException;
-    List<Lesson> getLessonsAfterDate(LocalDate date) throws DBException;
-//    List<Lesson> getLessonsForMember(UserProfile member) throws DBException;
-    List<Lesson> getLessonsOnTheTheme(Theme theme) throws DBException;
-    List<Lesson> getLessonsForTheProfessor(UserProfile professor) throws DBException;
-    List<Lesson> getLessonsByType(Type lessonType) throws DBException;
-//    void addMemberToTheLesson(Integer lessonId, UserProfile userProfile) throws DBException;
-    void addReview(Integer lessonId, Review review) throws DBException;
-    Set<Review> getReviewOnTheLesson(Integer lessonId) throws DBException;
+    void addLesson(LessonDto lessonDto);
+    void changeLesson(int lessonId, LessonDto lessonDto);
+    void deleteLesson(Integer lessonId);
+    LessonDto getLessonById(Integer lessonId);
+    List<LessonDto> getAll();
+    List<LessonDto> getLessonsOnTheDate(LocalDate date);
+    List<LessonDto> getLessonsAfterDate(LocalDate date);
+    List<LessonDto> getLessonsOnTheTheme(Theme theme);
+    List<LessonDto> getLessonsForTheProfessor(UserProfile professor);
+    List<LessonDto> getLessonsByType(Type lessonType);
+    void addReview(Integer lessonId, Review review);
+    Set<Review> getReviewOnTheLesson(Integer lessonId);
 }

@@ -13,5 +13,5 @@ public interface IRepository<T> {
 
     void delete(T t);
 
-    List<T> readAll() throws DBException;
+    List<T> readAll();
 }

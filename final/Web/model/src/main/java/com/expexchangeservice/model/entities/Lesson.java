@@ -34,12 +34,12 @@ public class Lesson {
     private int price;
     @OneToMany(cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
-    @JoinTable(name = "LessonMembers",
+    @JoinTable(name = "Lesson_Members",
             joinColumns = @JoinColumn(name = "id_lesson"),
             inverseJoinColumns = @JoinColumn(name = "id_member"))
     private Set<UserProfile> members;
     @OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "LessonReview",
+    @JoinTable(name = "Lesson_Review",
             joinColumns = @JoinColumn(name = "id_lesson"),
             inverseJoinColumns = @JoinColumn(name = "id_review"))
     private Set<Review> reviews;

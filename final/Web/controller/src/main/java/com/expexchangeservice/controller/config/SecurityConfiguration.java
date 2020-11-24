@@ -38,7 +38,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/requests/**").hasRole("ADMIN")
                 .antMatchers("/orders/**").hasRole("USER")
-                .antMatchers("/", "/lessons/**", "/login/", "/dictionary/**").permitAll()
+                .antMatchers("/", "/lessons/**", "/login/", "/dictionary/**", "/courses/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)

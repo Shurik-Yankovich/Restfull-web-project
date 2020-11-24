@@ -1,6 +1,7 @@
 package com.expexchangeservice.model.entities;
 
 import com.expexchangeservice.model.enums.Type;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -26,6 +27,7 @@ public class Course {
     @Enumerated(EnumType.STRING)
     @Column(name = "type")
     private Type type;
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
     @Column(name = "date_start")
     private LocalDate dateStart;
     @Column(name = "count_lesson")
@@ -34,13 +36,13 @@ public class Course {
     private int price;
     @ManyToMany(cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
-    @JoinTable(name = "CourseMembers",
+    @JoinTable(name = "Course_Members",
             joinColumns = @JoinColumn(name = "id_course"),
             inverseJoinColumns = @JoinColumn(name = "id_member"))
     private Set<UserProfile> members;
     @OneToMany(cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
-    @JoinTable(name = "CourseReview",
+    @JoinTable(name = "Course_Review",
             joinColumns = @JoinColumn(name = "id_course"),
             inverseJoinColumns = @JoinColumn(name = "id_review"))
     private Set<Review> reviews;

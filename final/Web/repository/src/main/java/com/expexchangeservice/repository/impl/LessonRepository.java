@@ -16,11 +16,6 @@ import java.util.List;
 public class LessonRepository extends AbstractRepository<Lesson> implements ILessonRepository {
 
     @Override
-    public List<Lesson> findByQuery(String hqlQuery) {
-        return HibernateSessionFactoryUtil.getSession().createQuery(hqlQuery).list();
-    }
-
-    @Override
     public List<Lesson> findByDate(LocalDate date) {
         Query query = HibernateSessionFactoryUtil.getSession()
                 .createQuery("select u from Lesson u where u.date =:date");
@@ -53,10 +48,10 @@ public class LessonRepository extends AbstractRepository<Lesson> implements ILes
     }
 
     @Override
-    public List<Lesson> findByUserProfile(UserProfile profile) {
+    public List<Lesson> findByProfessor(UserProfile professor) {
         Query query = HibernateSessionFactoryUtil.getSession()
                 .createQuery("select u from Lesson u where u.professor =:profile");
-        query.setParameter("profile", profile);
+        query.setParameter("profile", professor);
         return query.getResultList();
     }
 }

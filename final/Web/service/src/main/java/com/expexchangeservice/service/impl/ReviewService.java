@@ -22,4 +22,20 @@ public class ReviewService implements IReviewService {
     public void addReview(Review review) {
         reviewRepository.create(review);
     }
+
+    @Override
+    public void updateReview(Review review) {
+        reviewRepository.update(review);
+    }
+
+    @Override
+    public Review readReview(Integer reviewId) {
+        return reviewRepository.read(reviewId);
+    }
+
+    @Override
+    public void deleteReview(Integer reviewId) {
+        Review review = reviewRepository.read(reviewId);
+        reviewRepository.delete(review);
+    }
 }

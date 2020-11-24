@@ -10,10 +10,9 @@ import java.util.List;
 
 public interface ILessonRepository extends IRepository<Lesson>  {
 
-    List<Lesson> findByQuery(String hqlQuery);
     List<Lesson> findByDate(LocalDate date);
     List<Lesson> findAfterDate(LocalDate date);
     List<Lesson> findByTheme(Theme theme);
     List<Lesson> findByType(Type type);
-    List<Lesson> findByUserProfile(UserProfile profile);
+    List<Lesson> findByProfessor(UserProfile profile);
 }

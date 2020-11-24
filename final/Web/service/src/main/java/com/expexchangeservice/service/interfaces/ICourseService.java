@@ -1,25 +1,25 @@
 package com.expexchangeservice.service.interfaces;
 
+import com.expexchangeservice.model.dto.CourseDto;
 import com.expexchangeservice.model.entities.*;
 import com.expexchangeservice.model.enums.Type;
-import com.expexchangeservice.model.exception.DBException;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 public interface ICourseService {
 
-    void addCourse(Course course) throws DBException;
-    void editCourse(Course course) throws DBException;
-    void deleteCourse(Integer courseId) throws DBException;
-    Course getCourseById(Integer courseId) throws DBException;
-    List<Course> getAll() throws DBException;
-    List<Course> getCoursesOnTheDate(LocalDate date) throws DBException;
-    List<Course> getCoursesAfterDate(LocalDate date) throws DBException;
-    List<Course> getCoursesForMember(UserProfile member) throws DBException;
-    List<Course> getCoursesOnTheSection(Section section) throws DBException;
-    List<Course> getCoursesForTheProfessor(UserProfile professor) throws DBException;
-    List<Course> getCoursesByType(Type lessonType) throws DBException;
-    void addMemberToTheCourse(Integer courseId, UserProfile userProfile) throws DBException;
-    void addReview(Integer courseId, Review review) throws DBException;
+    void addCourse(CourseDto courseDto);
+    void changeCourse(int courseId, CourseDto courseDto);
+    void deleteCourse(Integer courseId);
+    CourseDto getCourseById(Integer courseId);
+    List<CourseDto> getAll();
+    List<CourseDto> getCoursesOnTheDate(LocalDate date);
+    List<CourseDto> getCoursesAfterDate(LocalDate date);
+    List<CourseDto> getCoursesOnTheSection(Section section);
+    List<CourseDto> getCoursesForTheProfessor(UserProfile professor);
+    List<CourseDto> getCoursesByType(Type courseType);
+    void addReview(Integer courseId, Review review);
+    Set<Review> getReviewOnTheLesson(Integer courseId);
 }

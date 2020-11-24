@@ -37,7 +37,7 @@ public abstract class AbstractRepository<E> implements IRepository<E> {
     }
 
     @Override
-    public List<E> readAll() throws DBException {
+    public List<E> readAll() {
         String hql = "From " + this.entityClass.getName();
         return HibernateSessionFactoryUtil.getSession().createQuery(hql).list();
     }

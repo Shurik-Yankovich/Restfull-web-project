@@ -23,13 +23,13 @@ public class UserProfile {
     private String placeOfWork;
     @ManyToMany(cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
-    @JoinTable(name = "CourseMembers",
+    @JoinTable(name = "Course_Members",
             joinColumns = @JoinColumn(name = "id_member"),
             inverseJoinColumns = @JoinColumn(name = "id_course"))
     private List<Course> courses;
     @OneToMany(cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
-    @JoinTable(name = "LessonMembers",
+    @JoinTable(name = "Lesson_Members",
             joinColumns = @JoinColumn(name = "id_member"),
             inverseJoinColumns = @JoinColumn(name = "id_lesson"))
     private List<Lesson> lessons;
