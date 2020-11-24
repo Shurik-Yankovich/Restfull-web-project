@@ -1,6 +1,7 @@
 package com.expexchangeservice.controller.rest;
 
 import com.expexchangeservice.model.dto.DateDto;
+import com.expexchangeservice.model.dto.LessonDto;
 import com.expexchangeservice.model.dto.RequestError;
 import com.expexchangeservice.model.entities.*;
 import com.expexchangeservice.model.enums.Type;
@@ -29,7 +30,7 @@ public class LessonController {
     }
 
     @PostMapping(value = "/")
-    public ResponseEntity<?> createLesson(@RequestBody Lesson lesson) {
+    public ResponseEntity<?> createLesson(@RequestBody LessonDto lesson) {
 
         try {
             lessonService.addLesson(lesson);
@@ -58,9 +59,9 @@ public class LessonController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<?> changeLesson(@PathVariable(name = "id") int id, @RequestBody Lesson lesson) {
+    public ResponseEntity<?> changeLesson(@PathVariable(name = "id") int id, @RequestBody LessonDto lesson) {
         try {
-            lessonService.changeLesson(lesson);
+            lessonService.changeLesson(id, lesson);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (DBException e) {
             return new ResponseEntity<>(new RequestError(400,
@@ -150,8 +151,8 @@ public class LessonController {
         }
     }
 
-    @GetMapping(value = "/type")
-    public ResponseEntity<?> getLessonsByType(@RequestBody Type type) {
+    @GetMapping(value = "/{type}")
+    public ResponseEntity<?> getLessonsByType(@PathVariable(name = "type") Type type) {
         try {
             List<Lesson> lessons = lessonService.getLessonsByType(type);
             return new ResponseEntity<>(lessons, HttpStatus.OK);

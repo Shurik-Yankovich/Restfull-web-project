@@ -33,10 +33,12 @@ public class LessonService implements ILessonService {
     }
 
     @Override
-    public void addLesson(Lesson lesson) throws DBException {
+    public void addLesson(LessonDto lessonDto) throws DBException {
         Transaction transaction = null;
         try {
             transaction = HibernateSessionFactoryUtil.getSession().beginTransaction();
+            Lesson lesson = convertDtoToLesson(new Lesson(), lessonDto);
+            lesson.setPrice(100);
             lessonRepository.create(lesson);
             transaction.commit();
         } catch (Exception e) {
@@ -46,10 +48,12 @@ public class LessonService implements ILessonService {
     }
 
     @Override
-    public void changeLesson(Lesson lesson) throws DBException {
+    public void changeLesson(int lessonId, LessonDto lessonDto) throws DBException {
         Transaction transaction = null;
         try {
             transaction = HibernateSessionFactoryUtil.getSession().beginTransaction();
+            Lesson lesson = lessonRepository.read(lessonId);
+            lesson = convertDtoToLesson(lesson,lessonDto);
             lessonRepository.update(lesson);
             transaction.commit();
         } catch (Exception e) {
@@ -233,8 +237,7 @@ public class LessonService implements ILessonService {
         }
     }
 
-    private Lesson convertDtoToLesson(LessonDto lessonDto) {
-        Lesson lesson = new Lesson();
+    private Lesson convertDtoToLesson(Lesson lesson, LessonDto lessonDto) {
         lesson.setId(lessonDto.getId());
         lesson.setTheme(lessonDto.getTheme());
         lesson.setProfessor(lessonDto.getProfessor());
