@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -15,6 +16,7 @@ import javax.persistence.PersistenceContext;
 import static com.expexchangeservice.model.enums.Role.USER;
 
 @Service
+@Transactional
 public class UserService implements IUserService, UserDetailsService {
     @PersistenceContext
     private EntityManager em;
@@ -27,7 +29,6 @@ public class UserService implements IUserService, UserDetailsService {
     public UserService(IUserRepository userRepository) {
         this.userRepository = userRepository;
 //        this.profileRepository = profileRepository;
-//        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @Override
