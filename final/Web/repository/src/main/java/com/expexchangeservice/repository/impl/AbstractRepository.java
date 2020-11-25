@@ -1,8 +1,7 @@
 package com.expexchangeservice.repository.impl;
 
-import com.expexchangeservice.model.exception.DBException;
 import com.expexchangeservice.repository.interfaces.IRepository;
-import com.expexchangeservice.utils.HibernateSessionFactoryUtil;
+import com.expexchangeservice.utils.hibernate.HibernateSessionFactoryUtil;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.List;

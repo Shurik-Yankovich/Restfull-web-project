@@ -5,6 +5,6 @@ import com.expexchangeservice.model.entities.UserProfile;
 
 import java.util.List;
 
-public interface IProfileRepository extends IRepository<UserProfile> {
+public interface IUserProfileRepository extends IRepository<UserProfile> {
     UserProfile findByUser(User user);
 }

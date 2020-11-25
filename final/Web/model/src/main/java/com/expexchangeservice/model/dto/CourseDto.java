@@ -1,7 +1,6 @@
 package com.expexchangeservice.model.dto;
 
 import com.expexchangeservice.model.entities.Section;
-import com.expexchangeservice.model.entities.UserProfile;
 import com.expexchangeservice.model.enums.Type;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -11,8 +10,7 @@ public class CourseDto {
 
     private int id;
     private Section section;
-    //TODO: заменить UserProfile на логин и имя пользователя
-    private UserProfile professor;
+    private ProfileDto professor;
     private Type type;
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
     private LocalDate dateStart;
@@ -34,11 +32,11 @@ public class CourseDto {
         this.section = section;
     }
 
-    public UserProfile getProfessor() {
+    public ProfileDto getProfessor() {
         return professor;
     }
 
-    public void setProfessor(UserProfile professor) {
+    public void setProfessor(ProfileDto professor) {
         this.professor = professor;
     }
 

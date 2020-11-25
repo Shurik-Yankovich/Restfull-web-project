@@ -5,7 +5,7 @@ import com.expexchangeservice.model.entities.Theme;
 import com.expexchangeservice.model.entities.UserProfile;
 import com.expexchangeservice.model.enums.Type;
 import com.expexchangeservice.repository.interfaces.ILessonRepository;
-import com.expexchangeservice.utils.HibernateSessionFactoryUtil;
+import com.expexchangeservice.utils.hibernate.HibernateSessionFactoryUtil;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;

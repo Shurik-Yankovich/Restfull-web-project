@@ -4,6 +4,7 @@ import com.expexchangeservice.model.dto.CourseDto;
 import com.expexchangeservice.model.entities.*;
 import com.expexchangeservice.model.enums.Type;
 import com.expexchangeservice.repository.interfaces.ICourseRepository;
+import com.expexchangeservice.service.converter.DtoConverter;
 import com.expexchangeservice.service.interfaces.ICourseService;
 import com.expexchangeservice.service.interfaces.IReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -31,14 +31,14 @@ public class CourseService implements ICourseService {
 
     @Override
     public void addCourse(CourseDto courseDto) {
-        Course course = convertDtoToCourse(new Course(), courseDto);
+        Course course = DtoConverter.convertDtoToCourse(new Course(), courseDto);
         course.setPrice(100 * course.getCountLesson());
         courseRepository.create(course);
     }
 
     @Override
     public void changeCourse(int courseId, CourseDto courseDto) {
-        Course course = convertDtoToCourse(courseRepository.read(courseId), courseDto);
+        Course course = DtoConverter.convertDtoToCourse(courseRepository.read(courseId), courseDto);
         courseRepository.update(course);
     }
 
@@ -51,43 +51,43 @@ public class CourseService implements ICourseService {
     @Override
     public CourseDto getCourseById(Integer courseId) {
         Course course = courseRepository.read(courseId);
-        return convertCourseToDto(course);
+        return DtoConverter.convertCourseToDto(course);
     }
 
     @Override
     public List<CourseDto> getAll() {
         List<Course> courses = courseRepository.readAll();
-        return convertCourseListToDtoList(courses);
+        return DtoConverter.convertCourseListToDtoList(courses);
     }
 
     @Override
     public List<CourseDto> getCoursesOnTheDate(LocalDate date) {
         List<Course> courses = courseRepository.findByDate(date);
-        return convertCourseListToDtoList(courses);
+        return DtoConverter.convertCourseListToDtoList(courses);
     }
 
     @Override
     public List<CourseDto> getCoursesAfterDate(LocalDate date) {
         List<Course> courses = courseRepository.findAfterDate(date);
-        return convertCourseListToDtoList(courses);
+        return DtoConverter.convertCourseListToDtoList(courses);
     }
 
     @Override
     public List<CourseDto> getCoursesOnTheSection(Section section) {
         List<Course> courses = courseRepository.findBySection(section);
-        return convertCourseListToDtoList(courses);
+        return DtoConverter.convertCourseListToDtoList(courses);
     }
 
     @Override
     public List<CourseDto> getCoursesForTheProfessor(UserProfile professor) {
         List<Course> courses = courseRepository.findByProfessor(professor);
-        return convertCourseListToDtoList(courses);
+        return DtoConverter.convertCourseListToDtoList(courses);
     }
 
     @Override
     public List<CourseDto> getCoursesByType(Type lessonType) {
         List<Course> courses = courseRepository.findByType(lessonType);
-        return convertCourseListToDtoList(courses);
+        return DtoConverter.convertCourseListToDtoList(courses);
     }
 
     @Override
@@ -107,7 +107,7 @@ public class CourseService implements ICourseService {
         return course.getReviews();
     }
 
-    private Course convertDtoToCourse(Course course, CourseDto courseDto) {
+    /*private Course convertDtoToCourse(Course course, CourseDto courseDto) {
         course.setId(courseDto.getId());
         course.setSection(courseDto.getSection());
         course.setProfessor(courseDto.getProfessor());
@@ -134,5 +134,5 @@ public class CourseService implements ICourseService {
             courseDtoList.add(convertCourseToDto(course));
         }
         return courseDtoList;
-    }
+    }*/
 }

@@ -3,7 +3,7 @@ package com.expexchangeservice.repository.impl;
 import com.expexchangeservice.model.entities.*;
 import com.expexchangeservice.model.enums.Type;
 import com.expexchangeservice.repository.interfaces.ICourseRepository;
-import com.expexchangeservice.utils.HibernateSessionFactoryUtil;
+import com.expexchangeservice.utils.hibernate.HibernateSessionFactoryUtil;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;

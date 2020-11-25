@@ -7,6 +7,7 @@ import com.expexchangeservice.model.entities.Theme;
 import com.expexchangeservice.model.entities.UserProfile;
 import com.expexchangeservice.model.enums.Type;
 import com.expexchangeservice.repository.interfaces.ILessonRepository;
+import com.expexchangeservice.service.converter.DtoConverter;
 import com.expexchangeservice.service.interfaces.ILessonService;
 import com.expexchangeservice.service.interfaces.IReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -25,23 +25,25 @@ public class LessonService implements ILessonService {
 
     private ILessonRepository lessonRepository;
     private IReviewService reviewService;
+//    private IProfileService profileService;
 
     @Autowired
     public LessonService(ILessonRepository lessonRepository, IReviewService reviewService) {
         this.lessonRepository = lessonRepository;
         this.reviewService = reviewService;
+//        this.profileService = profileService;
     }
 
     @Override
     public void addLesson(LessonDto lessonDto) {
-        Lesson lesson = convertDtoToLesson(new Lesson(), lessonDto);
+        Lesson lesson = DtoConverter.convertDtoToLesson(new Lesson(), lessonDto);
         lesson.setPrice(100);
         lessonRepository.create(lesson);
     }
 
     @Override
     public void changeLesson(int lessonId, LessonDto lessonDto) {
-        Lesson lesson = convertDtoToLesson(lessonRepository.read(lessonId), lessonDto);
+        Lesson lesson = DtoConverter.convertDtoToLesson(lessonRepository.read(lessonId), lessonDto);
         lessonRepository.update(lesson);
     }
 
@@ -54,43 +56,43 @@ public class LessonService implements ILessonService {
     @Override
     public LessonDto getLessonById(Integer lessonId) {
         Lesson lesson = lessonRepository.read(lessonId);
-        return convertLessonToDto(lesson);
+        return DtoConverter.convertLessonToDto(lesson);
     }
 
     @Override
     public List<LessonDto> getAll() {
         List<Lesson> lessons = lessonRepository.readAll();
-        return convertLessonListToDtoList(lessons);
+        return DtoConverter.convertLessonListToDtoList(lessons);
     }
 
     @Override
     public List<LessonDto> getLessonsOnTheDate(LocalDate date) {
         List<Lesson> lessons = lessonRepository.findByDate(date);
-        return convertLessonListToDtoList(lessons);
+        return DtoConverter.convertLessonListToDtoList(lessons);
     }
 
     @Override
     public List<LessonDto> getLessonsAfterDate(LocalDate date) {
         List<Lesson> lessons = lessonRepository.findAfterDate(date);
-        return convertLessonListToDtoList(lessons);
+        return DtoConverter.convertLessonListToDtoList(lessons);
     }
 
     @Override
     public List<LessonDto> getLessonsOnTheTheme(Theme theme) {
         List<Lesson> lessons = lessonRepository.findByTheme(theme);
-        return convertLessonListToDtoList(lessons);
+        return DtoConverter.convertLessonListToDtoList(lessons);
     }
 
     @Override
     public List<LessonDto> getLessonsForTheProfessor(UserProfile professor) {
         List<Lesson> lessons = lessonRepository.findByProfessor(professor);
-        return convertLessonListToDtoList(lessons);
+        return DtoConverter.convertLessonListToDtoList(lessons);
     }
 
     @Override
     public List<LessonDto> getLessonsByType(Type lessonType) {
         List<Lesson> lessons = lessonRepository.findByType(lessonType);
-        return convertLessonListToDtoList(lessons);
+        return DtoConverter.convertLessonListToDtoList(lessons);
     }
 
     @Override
@@ -110,10 +112,11 @@ public class LessonService implements ILessonService {
         return lesson.getReviews();
     }
 
-    private Lesson convertDtoToLesson(Lesson lesson, LessonDto lessonDto) {
+    /*private Lesson convertDtoToLesson(Lesson lesson, LessonDto lessonDto) {
         lesson.setId(lessonDto.getId());
         lesson.setTheme(lessonDto.getTheme());
-        lesson.setProfessor(lessonDto.getProfessor());
+        UserProfile profile = profileService.findProfileByUsername(lessonDto.getProfessor().getUsername());
+        lesson.setProfessor(profile);
         lesson.setType(lessonDto.getType());
         lesson.setDate(lessonDto.getDate());
         return lesson;
@@ -135,5 +138,5 @@ public class LessonService implements ILessonService {
             lessonDtoList.add(convertLessonToDto(lesson));
         }
         return lessonDtoList;
-    }
+    }*/
 }

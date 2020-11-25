@@ -1,12 +1,12 @@
 use expexchangeservice;
 
--- insert into User
--- values 
--- (1,'admin','$2a$10$Y95gYv1s5yVBDHuZo.FlYegHhB26WPfj6QLusSAAI2sE5t8FNMyRy','ADMIN');
+insert into User
+values 
+(1,'admin','$2a$10$Y95gYv1s5yVBDHuZo.FlYegHhB26WPfj6QLusSAAI2sE5t8FNMyRy','ADMIN');
 
--- insert into Profile
--- values 
--- (1,1,'Abraham Linkoln','Parlament USA');
+insert into Profile
+values 
+(1,1,'Abraham Linkoln','Parlament USA');
 
 insert into Section
 values 

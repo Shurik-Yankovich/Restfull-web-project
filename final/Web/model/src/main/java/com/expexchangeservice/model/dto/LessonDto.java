@@ -1,9 +1,7 @@
 package com.expexchangeservice.model.dto;
 
 import com.expexchangeservice.model.enums.Type;
-import com.expexchangeservice.model.entities.Review;
 import com.expexchangeservice.model.entities.Theme;
-import com.expexchangeservice.model.entities.UserProfile;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDate;
@@ -12,8 +10,7 @@ public class LessonDto {
 
     private int id;
     private Theme theme;
-    //TODO: заменить UserProfile на логин и имя пользователя
-    private UserProfile professor;
+    private ProfileDto professor;
     private Type type;
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
     private LocalDate date;
@@ -34,11 +31,11 @@ public class LessonDto {
         this.theme = theme;
     }
 
-    public UserProfile getProfessor() {
+    public ProfileDto getProfessor() {
         return professor;
     }
 
-    public void setProfessor(UserProfile professor) {
+    public void setProfessor(ProfileDto professor) {
         this.professor = professor;
     }
 

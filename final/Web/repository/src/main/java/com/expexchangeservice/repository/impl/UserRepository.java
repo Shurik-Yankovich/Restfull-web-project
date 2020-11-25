@@ -2,7 +2,7 @@ package com.expexchangeservice.repository.impl;
 
 import com.expexchangeservice.model.entities.User;
 import com.expexchangeservice.repository.interfaces.IUserRepository;
-import com.expexchangeservice.utils.HibernateSessionFactoryUtil;
+import com.expexchangeservice.utils.hibernate.HibernateSessionFactoryUtil;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 

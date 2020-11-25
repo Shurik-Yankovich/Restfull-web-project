@@ -7,11 +7,10 @@ import com.expexchangeservice.model.exception.DBException;
 import com.expexchangeservice.repository.interfaces.ISectionRepository;
 import com.expexchangeservice.repository.interfaces.IThemeRepository;
 import com.expexchangeservice.service.interfaces.IDictionaryService;
-import com.expexchangeservice.utils.HibernateSessionFactoryUtil;
+import com.expexchangeservice.utils.hibernate.HibernateSessionFactoryUtil;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 

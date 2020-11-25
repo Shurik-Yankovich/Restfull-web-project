@@ -1,4 +1,4 @@
-package com.expexchangeservice.utils;
+package com.expexchangeservice.utils.hibernate;
 
 import com.expexchangeservice.model.entities.*;
 import org.hibernate.Session;

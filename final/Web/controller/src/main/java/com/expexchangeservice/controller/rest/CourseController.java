@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
@@ -113,6 +114,19 @@ public class CourseController {
     public ResponseEntity<?> getCoursesAfterDate(@RequestBody DateDto dateDto) {
         try {
             List<CourseDto> courses = courseService.getCoursesAfterDate(dateDto.getDate());
+            return new ResponseEntity<>(courses, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new RequestError(400,
+                    "courses not read",
+                    e.getMessage()),
+                    HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping(value = "/available")
+    public ResponseEntity<?> getListOfAvailableLessons() {
+        try {
+            List<CourseDto> courses = courseService.getCoursesAfterDate(LocalDate.now());
             return new ResponseEntity<>(courses, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(new RequestError(400,

@@ -5,16 +5,13 @@ import com.expexchangeservice.model.dto.LessonDto;
 import com.expexchangeservice.model.dto.RequestError;
 import com.expexchangeservice.model.entities.*;
 import com.expexchangeservice.model.enums.Type;
-import com.expexchangeservice.model.exception.DBException;
 import com.expexchangeservice.service.interfaces.ILessonService;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Set;
 
@@ -34,7 +31,7 @@ public class LessonController {
 
         try {
             lessonService.addLesson(lesson);
-            return  new ResponseEntity<>(HttpStatus.CREATED);
+            return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(new RequestError(400,
                     "lesson not added",
@@ -59,10 +56,10 @@ public class LessonController {
     }
 
     @PutMapping(value = "/{lessonId}")
-    public ResponseEntity<?> changeLesson(@PathVariable(name = "lessonId") int id,
+    public ResponseEntity<?> changeLesson(@PathVariable(name = "lessonId") int lessonId,
                                           @RequestBody LessonDto lesson) {
         try {
-            lessonService.changeLesson(id, lesson);
+            lessonService.changeLesson(lessonId, lesson);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(new RequestError(400,
@@ -117,6 +114,19 @@ public class LessonController {
     public ResponseEntity<?> getLessonsAfterDate(@RequestBody DateDto dateDto) {
         try {
             List<LessonDto> lessons = lessonService.getLessonsAfterDate(dateDto.getDate());
+            return new ResponseEntity<>(lessons, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new RequestError(400,
+                    "lessons not read",
+                    e.getMessage()),
+                    HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping(value = "/available")
+    public ResponseEntity<?> getListOfAvailableLessons() {
+        try {
+            List<LessonDto> lessons = lessonService.getLessonsAfterDate(LocalDate.now());
             return new ResponseEntity<>(lessons, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(new RequestError(400,
