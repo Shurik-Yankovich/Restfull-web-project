@@ -10,8 +10,8 @@ import java.util.Set;
 
 public interface ICourseService {
 
-    void addCourse(CourseDto courseDto);
-    void changeCourse(int courseId, CourseDto courseDto);
+    void createCourse(CourseDto courseDto);
+    void updateCourse(int courseId, CourseDto courseDto);
     void deleteCourse(Integer courseId);
     CourseDto getCourseById(Integer courseId);
     List<CourseDto> getAll();

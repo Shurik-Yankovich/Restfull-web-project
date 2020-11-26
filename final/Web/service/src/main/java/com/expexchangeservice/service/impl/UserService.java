@@ -1,7 +1,8 @@
 package com.expexchangeservice.service.impl;
 
-import com.expexchangeservice.model.dto.UserDto;
+import com.expexchangeservice.model.dto.UserCreds;
 import com.expexchangeservice.model.entities.User;
+import com.expexchangeservice.model.enums.Role;
 import com.expexchangeservice.repository.interfaces.IUserRepository;
 import com.expexchangeservice.service.interfaces.IUserService;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -10,18 +11,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import static com.expexchangeservice.model.enums.Role.USER;
 
 @Service
 @Transactional
 public class UserService implements IUserService, UserDetailsService {
-    @PersistenceContext
-    private EntityManager em;
+    //    @PersistenceContext
+//    private EntityManager em;
     private IUserRepository userRepository;
-//    private IProfileRepository profileRepository;
+    //    private IProfileRepository profileRepository;
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -37,7 +35,7 @@ public class UserService implements IUserService, UserDetailsService {
     }
 
     @Override
-    public User findByUsernameAndPassword(String username, String password) {
+    public User loadUserByUsernameAndPassword(String username, String password) {
         User userEntity = loadUserByUsername(username);
         if (userEntity != null) {
             if (bCryptPasswordEncoder.matches(password, userEntity.getPassword())) {
@@ -48,7 +46,7 @@ public class UserService implements IUserService, UserDetailsService {
     }
 
     @Override
-    public User findUserById(Integer userId) {
+    public User loadUserById(Integer userId) {
         return userRepository.read(userId);
     }
 
@@ -75,8 +73,24 @@ public class UserService implements IUserService, UserDetailsService {
     }
 
     @Override
-    public void changeProfile(UserDto userDto) {
-        User user = userRepository.findByUsername(userDto.getUsername());
+    public boolean changeUserPassword(UserCreds userCreds) {
+        User user = loadUserByUsernameAndPassword(userCreds.getUser().getUsername(), userCreds.getUser().getPassword());
+        if (user == null) {
+            return false;
+        }
+        user.setPassword(bCryptPasswordEncoder.encode(userCreds.getNewPassword()));
+        userRepository.update(user);
+        return true;
+    }
 
+    @Override
+    public boolean changeUserRole(String username, Role role) {
+        User user = loadUserByUsername(username);
+        if (user == null) {
+            return false;
+        }
+        user.setRole(role);
+        userRepository.update(user);
+        return true;
     }
 }

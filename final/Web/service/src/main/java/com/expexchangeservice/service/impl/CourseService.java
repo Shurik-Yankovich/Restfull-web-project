@@ -30,14 +30,14 @@ public class CourseService implements ICourseService {
     }
 
     @Override
-    public void addCourse(CourseDto courseDto) {
+    public void createCourse(CourseDto courseDto) {
         Course course = DtoConverter.convertDtoToCourse(new Course(), courseDto);
         course.setPrice(100 * course.getCountLesson());
         courseRepository.create(course);
     }
 
     @Override
-    public void changeCourse(int courseId, CourseDto courseDto) {
+    public void updateCourse(int courseId, CourseDto courseDto) {
         Course course = DtoConverter.convertDtoToCourse(courseRepository.read(courseId), courseDto);
         courseRepository.update(course);
     }

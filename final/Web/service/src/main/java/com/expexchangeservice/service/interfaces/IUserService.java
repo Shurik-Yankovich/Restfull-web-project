@@ -1,14 +1,17 @@
 package com.expexchangeservice.service.interfaces;
 
+import com.expexchangeservice.model.dto.UserCreds;
 import com.expexchangeservice.model.dto.UserDto;
 import com.expexchangeservice.model.entities.User;
+import com.expexchangeservice.model.enums.Role;
 
 public interface IUserService {
 
     User loadUserByUsername(String username);
-    User findByUsernameAndPassword(String username, String password);
-    User findUserById(Integer userId);
+    User loadUserByUsernameAndPassword(String username, String password);
+    User loadUserById(Integer userId);
     boolean saveUser(User user);
     boolean deleteUser(Integer primaryKey);
-    void changeProfile(UserDto userDto);
+    boolean changeUserPassword(UserCreds userCreds);
+    boolean changeUserRole(String username, Role role);
 }

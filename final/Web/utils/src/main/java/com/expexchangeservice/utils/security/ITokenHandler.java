@@ -1,6 +1,6 @@
-package com.expexchangeservice.service.security;
+package com.expexchangeservice.utils.security;
 
-public interface TokenHandler {
+public interface ITokenHandler {
 
     String AUTH_HEADER_NAME = "Auth-Token";
 

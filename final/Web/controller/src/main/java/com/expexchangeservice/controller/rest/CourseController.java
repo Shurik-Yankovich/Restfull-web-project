@@ -32,7 +32,7 @@ public class CourseController {
     public ResponseEntity<?> createCourse(@RequestBody CourseDto courseDto) {
 
         try {
-            courseService.addCourse(courseDto);
+            courseService.createCourse(courseDto);
             return  new ResponseEntity<>(HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(new RequestError(400,
@@ -61,7 +61,7 @@ public class CourseController {
     public ResponseEntity<?> changeCourse(@PathVariable(name = "courseId") int courseId,
                                           @RequestBody CourseDto lesson) {
         try {
-            courseService.changeCourse(courseId, lesson);
+            courseService.updateCourse(courseId, lesson);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(new RequestError(400,

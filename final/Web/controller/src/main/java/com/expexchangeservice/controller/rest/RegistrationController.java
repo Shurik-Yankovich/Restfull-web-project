@@ -1,13 +1,12 @@
 package com.expexchangeservice.controller.rest;
 
-import com.expexchangeservice.model.dto.NewPassword;
 import com.expexchangeservice.model.dto.RequestError;
 import com.expexchangeservice.model.dto.UserDto;
 import com.expexchangeservice.model.entities.Token;
 import com.expexchangeservice.model.entities.User;
 import com.expexchangeservice.service.converter.DtoConverter;
 import com.expexchangeservice.service.impl.UserService;
-import com.expexchangeservice.service.security.TokenHandler;
+import com.expexchangeservice.utils.security.ITokenHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -20,10 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class RegistrationController {
 
     private UserService userService;
-    private TokenHandler tokenHandler;
+    private ITokenHandler tokenHandler;
 
     @Autowired
-    public RegistrationController(UserService userService, TokenHandler tokenHandler) {
+    public RegistrationController(UserService userService, ITokenHandler tokenHandler) {
         this.userService = userService;
         this.tokenHandler = tokenHandler;
     }
@@ -55,7 +54,7 @@ public class RegistrationController {
                     "request json must include existing login and pass"),
                     HttpStatus.BAD_REQUEST);
         }
-        User user = userService.findByUsernameAndPassword(userForm.getUsername(), userForm.getPassword());
+        User user = userService.loadUserByUsernameAndPassword(userForm.getUsername(), userForm.getPassword());
         if (user == null) {
             return new ResponseEntity<>(new RequestError(404,
                     "current user not found",

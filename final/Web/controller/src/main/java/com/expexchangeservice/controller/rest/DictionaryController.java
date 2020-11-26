@@ -4,7 +4,6 @@ import com.expexchangeservice.model.dto.RequestError;
 import com.expexchangeservice.model.dto.ThemeDto;
 import com.expexchangeservice.model.entities.Section;
 import com.expexchangeservice.model.entities.Theme;
-import com.expexchangeservice.model.exception.DBException;
 import com.expexchangeservice.service.interfaces.IDictionaryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,7 +30,7 @@ public class DictionaryController {
             return themes != null
                     ? new ResponseEntity<>(themes, HttpStatus.OK)
                     : new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } catch (DBException e) {
+        } catch (Exception e) {
             return new ResponseEntity<>(new RequestError(400,
                     "themes not read",
                     e.getMessage()),
@@ -42,9 +41,9 @@ public class DictionaryController {
     @PostMapping(value = "/section")
     public ResponseEntity<?> createSection(@RequestBody Section section) {
         try {
-            dictionaryService.addSection(section);
+            dictionaryService.createSection(section);
             return new ResponseEntity<>(HttpStatus.CREATED);
-        } catch (DBException e) {
+        } catch (Exception e) {
             return new ResponseEntity<>(new RequestError(400,
                     "section not added",
                     e.getMessage()),
@@ -59,7 +58,7 @@ public class DictionaryController {
             return sections != null
                     ? new ResponseEntity<>(sections, HttpStatus.OK)
                     : new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } catch (DBException e) {
+        } catch (Exception e) {
             return new ResponseEntity<>(new RequestError(400,
                     "sections not read",
                     e.getMessage()),
@@ -70,9 +69,9 @@ public class DictionaryController {
     @PutMapping(value = "/section/{id}")
     public ResponseEntity<?> changeSection(@PathVariable(name = "id") int id, @RequestBody Section section) {
         try {
-            dictionaryService.changeSection(section);
+            dictionaryService.updateSection(section);
             return new ResponseEntity<>(HttpStatus.OK);
-        } catch (DBException e) {
+        } catch (Exception e) {
             return new ResponseEntity<>(new RequestError(400,
                     "section not changed",
                     e.getMessage()),
@@ -85,7 +84,7 @@ public class DictionaryController {
         try {
             dictionaryService.deleteSection(id);
             return new ResponseEntity<>(HttpStatus.OK);
-        } catch (DBException e) {
+        } catch (Exception e) {
             return new ResponseEntity<>(new RequestError(400,
                     "section not deleted",
                     e.getMessage()),
@@ -100,7 +99,7 @@ public class DictionaryController {
             return themes != null
                     ? new ResponseEntity<>(themes, HttpStatus.OK)
                     : new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } catch (DBException e) {
+        } catch (Exception e) {
             return new ResponseEntity<>(new RequestError(400,
                     "sections not read",
                     e.getMessage()),
@@ -112,9 +111,9 @@ public class DictionaryController {
     public ResponseEntity<?> createTheme(@PathVariable(name = "id") int id, @RequestBody ThemeDto theme) {
         try {
 //            Section section = dictionaryService.getSectionById(id);
-            dictionaryService.addTheme(id,theme);
+            dictionaryService.createTheme(id,theme);
             return new ResponseEntity<>(HttpStatus.CREATED);
-        } catch (DBException e) {
+        } catch (Exception e) {
             return new ResponseEntity<>(new RequestError(400,
                     "theme not added",
                     e.getMessage()),
@@ -125,9 +124,9 @@ public class DictionaryController {
     @PutMapping(value = "/theme/{id}")
     public ResponseEntity<?> changeTheme(@PathVariable(name = "id") int id, @RequestBody ThemeDto theme) {
         try {
-            dictionaryService.changeTheme(id, theme);
+            dictionaryService.updateTheme(id, theme);
             return new ResponseEntity<>(HttpStatus.OK);
-        } catch (DBException e) {
+        } catch (Exception e) {
             return new ResponseEntity<>(new RequestError(400,
                     "theme not changed",
                     e.getMessage()),
@@ -141,7 +140,7 @@ public class DictionaryController {
         try {
             dictionaryService.deleteTheme(idSection, idTheme);
             return new ResponseEntity<>(HttpStatus.OK);
-        } catch (DBException e) {
+        } catch (Exception e) {
             return new ResponseEntity<>(new RequestError(400,
                     "theme not deleted",
                     e.getMessage()),

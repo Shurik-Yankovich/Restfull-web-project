@@ -1,17 +1,19 @@
-package com.expexchangeservice.service.security;
+package com.expexchangeservice.utils.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 
-public class JwtTokenHandler implements TokenHandler {
+@Component
+public class JwtTokenHandler implements ITokenHandler {
 
     private Key key;
 

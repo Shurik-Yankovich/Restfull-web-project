@@ -1,12 +1,11 @@
 package com.expexchangeservice.controller.rest;
 
-import com.expexchangeservice.model.dto.CourseDto;
-import com.expexchangeservice.model.dto.LessonDto;
-import com.expexchangeservice.model.dto.ProfileDto;
-import com.expexchangeservice.model.dto.RequestError;
+import com.expexchangeservice.model.dto.*;
 import com.expexchangeservice.model.entities.Course;
 import com.expexchangeservice.model.entities.Lesson;
+import com.expexchangeservice.model.enums.Role;
 import com.expexchangeservice.service.interfaces.IUserProfileService;
+import com.expexchangeservice.service.interfaces.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,23 +18,18 @@ import java.util.List;
 public class UserProfileController {
 
     private IUserProfileService profileService;
+    private IUserService userService;
 
     @Autowired
-    public UserProfileController(IUserProfileService profileService) {
+    public UserProfileController(IUserProfileService profileService, IUserService userService) {
         this.profileService = profileService;
+        this.userService = userService;
     }
 
     @PostMapping(value = "/")
     public ResponseEntity<?> createProfile(@RequestBody ProfileDto profile) {
-        try {
-            profileService.addUserProfile(profile);
-            return new ResponseEntity<>(HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(new RequestError(400,
-                    "profile not added",
-                    e.getMessage()),
-                    HttpStatus.BAD_REQUEST);
-        }
+        profileService.addUserProfile(profile);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{profileId}")
@@ -72,7 +66,7 @@ public class UserProfileController {
             return new ResponseEntity<>(profile, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(new RequestError(400,
-                    "profile not read",
+                    "profile not found",
                     e.getMessage()),
                     HttpStatus.BAD_REQUEST);
         }
@@ -145,5 +139,34 @@ public class UserProfileController {
         }
     }
 
+    @PostMapping(value = "/user/password/change")
+    public ResponseEntity<?> changePassword(@RequestBody UserCreds userCreds) {
+        if (!userCreds.getNewPassword().equals(userCreds.getPasswordConfirm())) {
+            return new ResponseEntity<>(new RequestError(400,
+                    "passwords not match",
+                    "New password does not match password confirmation"),
+                    HttpStatus.BAD_REQUEST);
+        }
+        if (userService.changeUserPassword(userCreds)) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(new RequestError(400,
+                    "incorrect username or password",
+                    "Incorrect username or password. Please check your username and password"),
+                    HttpStatus.BAD_REQUEST);
+        }
+    }
 
+    @PostMapping(value = "/user/{username}/role")
+    public ResponseEntity<?> changeRole(@PathVariable(name = "username") String username,
+                                        @RequestParam String role) {
+        if (userService.changeUserRole(username, Role.valueOf(role))) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(new RequestError(400,
+                    "incorrect username",
+                    "Incorrect username. Please check your username"),
+                    HttpStatus.BAD_REQUEST);
+        }
+    }
 }
