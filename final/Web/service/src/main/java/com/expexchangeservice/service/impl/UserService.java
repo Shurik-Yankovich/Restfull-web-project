@@ -1,9 +1,9 @@
 package com.expexchangeservice.service.impl;
 
+import com.expexchangeservice.model.dto.UserDto;
 import com.expexchangeservice.model.entities.User;
 import com.expexchangeservice.repository.interfaces.IUserRepository;
 import com.expexchangeservice.service.interfaces.IUserService;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,7 +75,8 @@ public class UserService implements IUserService, UserDetailsService {
     }
 
     @Override
-    public void editProfile(User user) {
+    public void changeProfile(UserDto userDto) {
+        User user = userRepository.findByUsername(userDto.getUsername());
 
     }
 }
