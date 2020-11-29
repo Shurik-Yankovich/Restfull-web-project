@@ -11,13 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.expexchangeservice.model.enums.Role.USER;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 @Service
 @Transactional
 public class UserService implements IUserService, UserDetailsService {
-    //    @PersistenceContext
-//    private EntityManager em;
+    @PersistenceContext
+    private EntityManager em;
     private IUserRepository userRepository;
     //    private IProfileRepository profileRepository;
     @Autowired
@@ -56,7 +57,7 @@ public class UserService implements IUserService, UserDetailsService {
         if (userFromDB != null) {
             return false;
         }
-        user.setRole(USER);
+        user.setRole(Role.ROLE_USER);
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.create(user);
         return true;
@@ -84,13 +85,17 @@ public class UserService implements IUserService, UserDetailsService {
     }
 
     @Override
-    public boolean changeUserRole(String username, Role role) {
+    public User changeUserRole(String username, boolean isAdmin) {
         User user = loadUserByUsername(username);
         if (user == null) {
-            return false;
+            return null;
         }
-        user.setRole(role);
+        if (isAdmin) {
+            user.setRole(Role.ROLE_ADMIN);
+        } else {
+            user.setRole(Role.ROLE_USER);
+        }
         userRepository.update(user);
-        return true;
+        return user;
     }
 }

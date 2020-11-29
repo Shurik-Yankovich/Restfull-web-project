@@ -112,31 +112,4 @@ public class LessonService implements ILessonService {
         return lesson.getReviews();
     }
 
-    /*private Lesson convertDtoToLesson(Lesson lesson, LessonDto lessonDto) {
-        lesson.setId(lessonDto.getId());
-        lesson.setTheme(lessonDto.getTheme());
-        UserProfile profile = profileService.findProfileByUsername(lessonDto.getProfessor().getUsername());
-        lesson.setProfessor(profile);
-        lesson.setType(lessonDto.getType());
-        lesson.setDate(lessonDto.getDate());
-        return lesson;
-    }
-
-    private LessonDto convertLessonToDto(Lesson lesson) {
-        LessonDto lessonDto = new LessonDto();
-        lessonDto.setId(lesson.getId());
-        lessonDto.setTheme(lesson.getTheme());
-        lessonDto.setProfessor(lesson.getProfessor());
-        lessonDto.setType(lesson.getType());
-        lessonDto.setDate(lesson.getDate());
-        return lessonDto;
-    }
-
-    private List<LessonDto> convertLessonListToDtoList(List<Lesson> lessons) {
-        List<LessonDto> lessonDtoList = new ArrayList<>();
-        for (Lesson lesson : lessons) {
-            lessonDtoList.add(convertLessonToDto(lesson));
-        }
-        return lessonDtoList;
-    }*/
 }

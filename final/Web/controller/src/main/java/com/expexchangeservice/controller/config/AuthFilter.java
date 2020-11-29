@@ -30,7 +30,7 @@ public class AuthFilter extends GenericFilterBean {
         UserAuthentication userAuth = null;
         if (tokenHandler.checkToken(token)) {
             User dbUser = userService.loadUserById(tokenHandler.getUserIdFromToken(token));
-//            UserKeeper.setLoggedUser(dbUser);
+            UserKeeper.setLoggedUser(dbUser);
             userAuth = new UserAuthentication(dbUser);
         }
         SecurityContextHolder.getContext().setAuthentication(userAuth);

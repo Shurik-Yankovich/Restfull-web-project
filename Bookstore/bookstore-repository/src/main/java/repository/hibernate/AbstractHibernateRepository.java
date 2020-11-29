@@ -79,7 +79,8 @@ public abstract class AbstractHibernateRepository<E, PK extends Serializable> im
         Transaction transaction = null;
         try {
             transaction = session.beginTransaction();
-            session.delete(primaryKey);
+            E entity = session.get(this.entityClass, primaryKey);
+            session.delete(entity);
             transaction.commit();
         } catch (Exception e) {
             transaction.rollback();

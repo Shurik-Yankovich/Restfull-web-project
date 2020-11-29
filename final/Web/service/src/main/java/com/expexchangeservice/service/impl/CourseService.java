@@ -107,32 +107,4 @@ public class CourseService implements ICourseService {
         return course.getReviews();
     }
 
-    /*private Course convertDtoToCourse(Course course, CourseDto courseDto) {
-        course.setId(courseDto.getId());
-        course.setSection(courseDto.getSection());
-        course.setProfessor(courseDto.getProfessor());
-        course.setType(courseDto.getType());
-        course.setDateStart(courseDto.getDateStart());
-        course.setCountLesson(courseDto.getCountLesson());
-        return course;
-    }
-
-    private CourseDto convertCourseToDto(Course course) {
-        CourseDto courseDto = new CourseDto();
-        courseDto.setId(course.getId());
-        courseDto.setSection(course.getSection());
-        courseDto.setProfessor(course.getProfessor());
-        courseDto.setType(course.getType());
-        courseDto.setDateStart(course.getDateStart());
-        courseDto.setCountLesson(course.getCountLesson());
-        return courseDto;
-    }
-
-    private List<CourseDto> convertCourseListToDtoList(List<Course> courses) {
-        List<CourseDto> courseDtoList = new ArrayList<>();
-        for (Course course : courses) {
-            courseDtoList.add(convertCourseToDto(course));
-        }
-        return courseDtoList;
-    }*/
 }

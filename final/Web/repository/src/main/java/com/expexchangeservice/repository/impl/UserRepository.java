@@ -14,7 +14,10 @@ public class UserRepository extends AbstractRepository<User> implements IUserRep
         Query query = HibernateSessionFactoryUtil.getSession()
                 .createQuery("select u from User u where u.username =:name");
         query.setParameter("name", username);
-//        User entity = (User) query.uniqueResult();
-        return (User) query.getSingleResult();
+//        Query query = HibernateSessionFactoryUtil.getSession()
+//                .createQuery("select u from " + User.class.getName() + " u where u.username = " + username)
+//            .setMaxResults(1);
+//        return (User) query.uniqueResult();
+        return (User) query.uniqueResult();
     }
 }

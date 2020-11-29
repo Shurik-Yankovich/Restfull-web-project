@@ -21,4 +21,5 @@ public interface IUserProfileService {
     ProfileDto getUserProfileById(Integer profileId);
     List<LessonDto> getLessonListForUser(String username);
     List<CourseDto> getCourseListForUser(String username);
+    boolean changeUserRole(String username, boolean isAdmin);
 }

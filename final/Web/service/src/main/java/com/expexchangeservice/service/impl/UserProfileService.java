@@ -101,6 +101,18 @@ public class UserProfileService implements IUserProfileService {
         return DtoConverter.convertCourseListToDtoList(courses);
     }
 
+    @Override
+    public boolean changeUserRole(String username, boolean isAdmin) {
+        UserProfile profile = findProfileByUsername(username);
+        User user = userService.changeUserRole(username, isAdmin);
+        if (user == null) {
+            return false;
+        }
+        profile.setUser(user);
+        profileRepository.update(profile);
+        return true;
+    }
+
 //    private UserProfile convertDtoToUserProfile(UserProfile userProfile, ProfileDto profileDto) {
 //        userProfile.setId(userProfile.getId());
 //        userProfile.setFullName(profileDto.getFullName());

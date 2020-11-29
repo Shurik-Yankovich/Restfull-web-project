@@ -3,7 +3,6 @@ package com.expexchangeservice.controller.rest;
 import com.expexchangeservice.model.dto.*;
 import com.expexchangeservice.model.entities.Course;
 import com.expexchangeservice.model.entities.Lesson;
-import com.expexchangeservice.model.enums.Role;
 import com.expexchangeservice.service.interfaces.IUserProfileService;
 import com.expexchangeservice.service.interfaces.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -159,8 +158,8 @@ public class UserProfileController {
 
     @PostMapping(value = "/user/{username}/role")
     public ResponseEntity<?> changeRole(@PathVariable(name = "username") String username,
-                                        @RequestParam String role) {
-        if (userService.changeUserRole(username, Role.valueOf(role))) {
+                                        @RequestParam boolean isAdmin) {
+        if (profileService.changeUserRole(username, isAdmin)) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(new RequestError(400,
