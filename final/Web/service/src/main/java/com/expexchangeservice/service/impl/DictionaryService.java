@@ -8,12 +8,13 @@ import com.expexchangeservice.repository.interfaces.IThemeRepository;
 import com.expexchangeservice.service.interfaces.IDictionaryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
-@Transactional
+@Transactional(propagation = Propagation.REQUIRES_NEW)
 public class DictionaryService implements IDictionaryService {
 
     private IThemeRepository themeRepository;

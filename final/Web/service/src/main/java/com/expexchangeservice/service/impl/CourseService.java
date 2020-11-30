@@ -9,6 +9,7 @@ import com.expexchangeservice.service.interfaces.ICourseService;
 import com.expexchangeservice.service.interfaces.IReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-@Transactional
+@Transactional(propagation = Propagation.REQUIRES_NEW)
 public class CourseService implements ICourseService {
 
     private ICourseRepository courseRepository;

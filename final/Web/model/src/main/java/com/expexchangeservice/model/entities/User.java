@@ -1,5 +1,6 @@
 package com.expexchangeservice.model.entities;
 
+import com.expexchangeservice.model.entities.UserProfile;
 import com.expexchangeservice.model.enums.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

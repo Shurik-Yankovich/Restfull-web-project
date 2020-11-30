@@ -22,6 +22,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private UserService userService;
     @Autowired
     private AuthFilter authFilter;
+    @Autowired
+    private CustomLogoutHandler logoutHandler;
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -36,7 +38,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/dictionary/session/").hasRole("ADMIN")
+                .antMatchers("/dictionary/session/**").hasRole("ADMIN")
                 .antMatchers("/orders/**").hasRole("USER")
                 .antMatchers("/", "/lessons/**", "/login/",
                         "/courses/**", "/profile/**", "/registration/").permitAll()
@@ -46,7 +48,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
                 .logout()
                 .logoutUrl("/logout")
-//                .addLogoutHandler(logoutHandler)
+//                .invalidateHttpSession(true)
+//                .deleteCookies("threadLocalScope")
+                .addLogoutHandler(logoutHandler)
                 .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK))
                 .permitAll();
     }
