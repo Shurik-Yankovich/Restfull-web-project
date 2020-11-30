@@ -3,7 +3,6 @@ package com.expexchangeservice.service.interfaces;
 import com.expexchangeservice.model.dto.ThemeDto;
 import com.expexchangeservice.model.entities.Section;
 import com.expexchangeservice.model.entities.Theme;
-import com.expexchangeservice.model.exception.DBException;
 
 import java.util.List;
 

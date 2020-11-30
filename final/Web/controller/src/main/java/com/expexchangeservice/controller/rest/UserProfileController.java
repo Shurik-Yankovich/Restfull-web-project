@@ -73,15 +73,15 @@ public class UserProfileController {
 
     @GetMapping(value = "/user/{username}")
     public ResponseEntity<?> getProfileByUsername(@PathVariable(name = "username") String username) {
-        try {
+//        try {
             ProfileDto profile = profileService.getProfileDtoByUsername(username);
             return new ResponseEntity<>(profile, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(new RequestError(400,
-                    "profile not read",
-                    e.getMessage()),
-                    HttpStatus.BAD_REQUEST);
-        }
+//        } catch (Exception e) {
+//            return new ResponseEntity<>(new RequestError(400,
+//                    "profile not read",
+//                    e.getMessage()),
+//                    HttpStatus.BAD_REQUEST);
+//        }
     }
 
     @GetMapping(value = "/user/{username}/lessons")

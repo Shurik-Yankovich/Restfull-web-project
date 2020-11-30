@@ -1,13 +1,13 @@
 package com.expexchangeservice.service.impl;
 
 import com.expexchangeservice.model.dto.UserCreds;
-import com.expexchangeservice.model.entities.User;
 import com.expexchangeservice.model.enums.Role;
+import com.expexchangeservice.model.entities.User;
 import com.expexchangeservice.repository.interfaces.IUserRepository;
 import com.expexchangeservice.service.interfaces.IUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

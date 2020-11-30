@@ -1,12 +1,10 @@
 package com.expexchangeservice.service.interfaces;
 
 import com.expexchangeservice.model.dto.LessonDto;
-import com.expexchangeservice.model.entities.Lesson;
 import com.expexchangeservice.model.entities.Review;
 import com.expexchangeservice.model.entities.Theme;
 import com.expexchangeservice.model.entities.UserProfile;
 import com.expexchangeservice.model.enums.Type;
-import com.expexchangeservice.model.exception.DBException;
 
 import java.time.LocalDate;
 import java.util.List;

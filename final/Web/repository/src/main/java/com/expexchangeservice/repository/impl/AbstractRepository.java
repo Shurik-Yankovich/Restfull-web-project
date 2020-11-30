@@ -2,8 +2,6 @@ package com.expexchangeservice.repository.impl;
 
 import com.expexchangeservice.repository.interfaces.IRepository;
 import com.expexchangeservice.utils.hibernate.HibernateSessionFactoryUtil;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.List;

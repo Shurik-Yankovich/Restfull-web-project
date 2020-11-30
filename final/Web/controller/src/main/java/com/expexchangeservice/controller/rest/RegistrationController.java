@@ -5,7 +5,7 @@ import com.expexchangeservice.model.dto.UserDto;
 import com.expexchangeservice.model.entities.Token;
 import com.expexchangeservice.model.entities.User;
 import com.expexchangeservice.service.converter.DtoConverter;
-import com.expexchangeservice.service.impl.UserService;
+import com.expexchangeservice.service.interfaces.IUserService;
 import com.expexchangeservice.utils.security.ITokenHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -18,11 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class RegistrationController {
 
-    private UserService userService;
+    private IUserService userService;
     private ITokenHandler tokenHandler;
 
     @Autowired
-    public RegistrationController(UserService userService, ITokenHandler tokenHandler) {
+    public RegistrationController(IUserService userService, ITokenHandler tokenHandler) {
         this.userService = userService;
         this.tokenHandler = tokenHandler;
     }

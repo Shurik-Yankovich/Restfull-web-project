@@ -5,7 +5,6 @@ import com.expexchangeservice.model.dto.LessonDto;
 import com.expexchangeservice.model.dto.ProfileDto;
 import com.expexchangeservice.model.entities.Course;
 import com.expexchangeservice.model.entities.Lesson;
-import com.expexchangeservice.model.entities.UserProfile;
 
 import java.util.List;
 
