@@ -3,6 +3,7 @@ package com.expexchangeservice.controller.config;
 import com.expexchangeservice.model.entities.User;
 import com.expexchangeservice.model.entities.UserAuthentication;
 import com.expexchangeservice.service.impl.UserService;
+import com.expexchangeservice.service.interfaces.ITokenService;
 import com.expexchangeservice.utils.security.ITokenHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,22 +19,26 @@ import java.io.IOException;
 
 @Component
 public class AuthFilter extends GenericFilterBean {
+//    @Autowired
+//    private ITokenHandler tokenHandler;
+//    @Autowired
+//    private UserService userService;
     @Autowired
-    private ITokenHandler tokenHandler;
-    @Autowired
-    private UserService userService;
+    private ITokenService tokenService;
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        HttpServletRequest httpRequest = (HttpServletRequest) request;
-        String token = httpRequest.getHeader(tokenHandler.AUTH_HEADER_NAME);
-        UserAuthentication userAuth = null;
-        if (tokenHandler.checkToken(token)) {
-            User dbUser = userService.loadUserById(tokenHandler.getUserIdFromToken(token));
-            UserKeeper.setLoggedUser(dbUser);
-            userAuth = new UserAuthentication(dbUser);
-        }
-        SecurityContextHolder.getContext().setAuthentication(userAuth);
+//        HttpServletRequest httpRequest = (HttpServletRequest) request;
+//        String token = httpRequest.getHeader(tokenHandler.AUTH_HEADER_NAME);
+//        UserAuthentication userAuth = null;
+//        if (tokenHandler.checkToken(token)) {
+//            User dbUser = userService.loadUserById(tokenHandler.getUserIdFromToken(token));
+//            UserKeeper.setLoggedUser(dbUser);
+//            userAuth = new UserAuthentication(dbUser);
+//        }
+//        SecurityContextHolder.getContext().setAuthentication(userAuth);
+//        chain.doFilter(request, response);
+        SecurityContextHolder.getContext().setAuthentication(tokenService.getAuthentication(request));
         chain.doFilter(request, response);
     }
 }

@@ -10,3 +10,4 @@ select * from Lesson_Review;
 select * from Course_Review;
 select * from User;
 select * from Profile;
+select * from Token;

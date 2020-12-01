@@ -22,8 +22,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private UserService userService;
     @Autowired
     private AuthFilter authFilter;
-    @Autowired
-    private CustomLogoutHandler logoutHandler;
+//    @Autowired
+//    private CustomLogoutHandler logoutHandler;
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -43,14 +43,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/", "/lessons/**", "/login/",
                         "/courses/**", "/profile/**", "/registration/").permitAll()
                 .anyRequest().authenticated()
-//                .anyRequest().permitAll()
                 .and()
                 .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
                 .logout()
                 .logoutUrl("/logout")
-//                .invalidateHttpSession(true)
-//                .deleteCookies("threadLocalScope")
-                .addLogoutHandler(logoutHandler)
+                .invalidateHttpSession(true)
+                .deleteCookies("threadLocalScope")
+//                .addLogoutHandler(logoutHandler)
                 .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK))
                 .permitAll();
     }

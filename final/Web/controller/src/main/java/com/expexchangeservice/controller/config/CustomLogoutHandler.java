@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@Component
+//@Component
 public class CustomLogoutHandler implements LogoutHandler {
 
     public CustomLogoutHandler() {

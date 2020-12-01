@@ -18,6 +18,7 @@ public class HibernateSessionFactoryUtil {
             Configuration configuration = new Configuration().configure();
 //            configuration.addPackage("com.expexchangeservice.model");
             configuration.addAnnotatedClass(User.class);
+            configuration.addAnnotatedClass(Token.class);
             configuration.addAnnotatedClass(UserProfile.class);
             configuration.addAnnotatedClass(Theme.class);
             configuration.addAnnotatedClass(Section.class);
