@@ -11,12 +11,11 @@ import java.util.List;
 public interface IUserProfileService {
 
     void addUserProfile(ProfileDto profileDto);
-    void changeUserProfile(int profileId, ProfileDto profileDto);
-    void deleteUserProfile(int profileId);
+    boolean changeUserProfile(int profileId, ProfileDto profileDto);
+    boolean deleteUserProfile(int profileId);
     ProfileDto getProfileDtoByUsername(String username);
-//    UserProfile findProfileByUsername(String username);
-    void signUpForTheLesson(String username, Lesson lesson);
-    void signUpForTheCourse(String username, Course course);
+    boolean signUpForTheLesson(String username, Lesson lesson);
+    boolean signUpForTheCourse(String username, Course course);
     ProfileDto getUserProfileById(Integer profileId);
     List<LessonDto> getLessonListForUser(String username);
     List<CourseDto> getCourseListForUser(String username);

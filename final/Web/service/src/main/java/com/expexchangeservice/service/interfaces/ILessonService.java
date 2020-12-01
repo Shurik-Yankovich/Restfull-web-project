@@ -13,8 +13,8 @@ import java.util.Set;
 public interface ILessonService {
 
     void addLesson(LessonDto lessonDto);
-    void changeLesson(int lessonId, LessonDto lessonDto);
-    void deleteLesson(Integer lessonId);
+    boolean changeLesson(int lessonId, LessonDto lessonDto);
+    boolean deleteLesson(Integer lessonId);
     LessonDto getLessonById(Integer lessonId);
     List<LessonDto> getAll();
     List<LessonDto> getLessonsOnTheDate(LocalDate date);
@@ -22,6 +22,6 @@ public interface ILessonService {
     List<LessonDto> getLessonsOnTheTheme(Theme theme);
     List<LessonDto> getLessonsForTheProfessor(UserProfile professor);
     List<LessonDto> getLessonsByType(Type lessonType);
-    void addReview(Integer lessonId, Review review);
+    boolean addReview(Integer lessonId, Review review);
     Set<Review> getReviewOnTheLesson(Integer lessonId);
 }

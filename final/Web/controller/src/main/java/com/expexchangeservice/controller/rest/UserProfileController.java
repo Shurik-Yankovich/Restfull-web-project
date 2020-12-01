@@ -5,6 +5,9 @@ import com.expexchangeservice.model.entities.Course;
 import com.expexchangeservice.model.entities.Lesson;
 import com.expexchangeservice.service.interfaces.IUserProfileService;
 import com.expexchangeservice.service.interfaces.IUserService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,108 +37,108 @@ public class UserProfileController {
     @PutMapping(value = "/{profileId}")
     public ResponseEntity<?> changeProfile(@PathVariable(name = "profileId") int profileId,
                                            @RequestBody ProfileDto profile) {
-        try {
-            profileService.changeUserProfile(profileId, profile);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(new RequestError(400,
-                    "profile not changed",
-                    e.getMessage()),
-                    HttpStatus.BAD_REQUEST);
-        }
+        boolean isChanged = profileService.changeUserProfile(profileId, profile);
+        return isChanged ? new ResponseEntity<>(HttpStatus.OK) :
+                new ResponseEntity<>(new RequestError(404,
+                        "profiles not found",
+                        "profile with current username not found"),
+                        HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping(value = "/{profileId}")
     public ResponseEntity<?> deleteProfile(@PathVariable(name = "profileId") int profileId) {
-        try {
-            profileService.deleteUserProfile(profileId);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(new RequestError(400,
-                    "profile not deleted",
-                    e.getMessage()),
-                    HttpStatus.BAD_REQUEST);
-        }
+        boolean isDeleted = profileService.deleteUserProfile(profileId);
+        return isDeleted ? new ResponseEntity<>(HttpStatus.OK) :
+                new ResponseEntity<>(new RequestError(404,
+                        "profiles not found",
+                        "profile with current username not found"),
+                        HttpStatus.NOT_FOUND);
     }
 
+    @ApiOperation(value = "Get profile by id")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Profile received successfully", response = ProfileDto.class),
+            @ApiResponse(code = 400, message = "Invalid path variable", response = RequestError.class),
+            @ApiResponse(code = 404, message = "Can't find profile", response = RequestError.class)
+    })
     @GetMapping(value = "/{profileId}")
     public ResponseEntity<?> getProfileById(@PathVariable(name = "profileId") int profileId) {
-        try {
-            ProfileDto profile = profileService.getUserProfileById(profileId);
-            return new ResponseEntity<>(profile, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(new RequestError(400,
-                    "profile not found",
-                    e.getMessage()),
-                    HttpStatus.BAD_REQUEST);
-        }
+        ProfileDto profile = profileService.getUserProfileById(profileId);
+        return profile != null ? new ResponseEntity<>(profile, HttpStatus.OK) :
+                new ResponseEntity<>(new RequestError(404,
+                        "profile not found",
+                        "profile with current id not found"),
+                        HttpStatus.NOT_FOUND);
     }
 
+    @ApiOperation(value = "Get profile by username")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Profile received successfully", response = ProfileDto.class),
+            @ApiResponse(code = 400, message = "Invalid path variable", response = RequestError.class),
+            @ApiResponse(code = 404, message = "Can't find profile", response = RequestError.class)
+    })
     @GetMapping(value = "/user/{username}")
     public ResponseEntity<?> getProfileByUsername(@PathVariable(name = "username") String username) {
-//        try {
-            ProfileDto profile = profileService.getProfileDtoByUsername(username);
-            return new ResponseEntity<>(profile, HttpStatus.OK);
-//        } catch (Exception e) {
-//            return new ResponseEntity<>(new RequestError(400,
-//                    "profile not read",
-//                    e.getMessage()),
-//                    HttpStatus.BAD_REQUEST);
-//        }
+        ProfileDto profile = profileService.getProfileDtoByUsername(username);
+        return profile != null ? new ResponseEntity<>(profile, HttpStatus.OK) :
+                new ResponseEntity<>(new RequestError(404,
+                        "profile not found",
+                        "profile with current username not found"),
+                        HttpStatus.NOT_FOUND);
     }
 
+    @ApiOperation(value = "Get lessons list for user")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Profile received successfully", response = List.class),
+            @ApiResponse(code = 400, message = "Invalid path variable", response = RequestError.class),
+            @ApiResponse(code = 404, message = "Can't find profile", response = RequestError.class)
+    })
     @GetMapping(value = "/user/{username}/lessons")
     public ResponseEntity<?> getLessonsForUser(@PathVariable(name = "username") String username) {
-        try {
-            List<LessonDto> lessons = profileService.getLessonListForUser(username);
-            return new ResponseEntity<>(lessons, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(new RequestError(400,
-                    "profile not read",
-                    e.getMessage()),
-                    HttpStatus.BAD_REQUEST);
-        }
+        List<LessonDto> lessons = profileService.getLessonListForUser(username);
+        return lessons != null ? new ResponseEntity<>(lessons, HttpStatus.OK) :
+                new ResponseEntity<>(new RequestError(404,
+                        "profiles not found",
+                        "profile with current username not found"),
+                        HttpStatus.NOT_FOUND);
     }
 
+    @ApiOperation(value = "Get courses list for user")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Profile received successfully", response = List.class),
+            @ApiResponse(code = 400, message = "Invalid path variable", response = RequestError.class),
+            @ApiResponse(code = 404, message = "Can't find profile", response = RequestError.class)
+    })
     @GetMapping(value = "/user/{username}/courses")
     public ResponseEntity<?> getCourseForUser(@PathVariable(name = "username") String username) {
-        try {
-            List<CourseDto> courses = profileService.getCourseListForUser(username);
-            return new ResponseEntity<>(courses, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(new RequestError(400,
-                    "profile not read",
-                    e.getMessage()),
-                    HttpStatus.BAD_REQUEST);
-        }
+        List<CourseDto> courses = profileService.getCourseListForUser(username);
+        return courses != null ? new ResponseEntity<>(courses, HttpStatus.OK) :
+                new ResponseEntity<>(new RequestError(404,
+                        "profiles not found",
+                        "profile with current username not found"),
+                        HttpStatus.NOT_FOUND);
     }
 
     @PostMapping(value = "/user/{username}/lessons")
     public ResponseEntity<?> signUpForTheLesson(@PathVariable(name = "username") String username,
                                                 @RequestBody Lesson lessonDto) {
-        try {
-            profileService.signUpForTheLesson(username, lessonDto);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(new RequestError(400,
-                    "profile not read",
-                    e.getMessage()),
-                    HttpStatus.BAD_REQUEST);
-        }
+        boolean isSigned = profileService.signUpForTheLesson(username, lessonDto);
+        return isSigned ? new ResponseEntity<>(HttpStatus.OK) :
+                new ResponseEntity<>(new RequestError(404,
+                        "profiles not found",
+                        "profile with current username not found"),
+                        HttpStatus.NOT_FOUND);
     }
 
     @PostMapping(value = "/user/{username}/courses")
     public ResponseEntity<?> signUpForTheCourse(@PathVariable(name = "username") String username,
                                                 @RequestBody Course courseDto) {
-        try {
-            profileService.signUpForTheCourse(username, courseDto);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(new RequestError(400,
-                    "profile not read",
-                    e.getMessage()),
-                    HttpStatus.BAD_REQUEST);
-        }
+        boolean isSigned = profileService.signUpForTheCourse(username, courseDto);
+        return isSigned ? new ResponseEntity<>(HttpStatus.OK) :
+                new ResponseEntity<>(new RequestError(404,
+                        "profiles not found",
+                        "profile with current username not found"),
+                        HttpStatus.NOT_FOUND);
     }
 
     @PostMapping(value = "/user/password/change")

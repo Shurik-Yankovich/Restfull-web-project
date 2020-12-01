@@ -38,15 +38,23 @@ public class CourseService implements ICourseService {
     }
 
     @Override
-    public void updateCourse(int courseId, CourseDto courseDto) {
+    public boolean updateCourse(int courseId, CourseDto courseDto) {
         Course course = DtoConverter.convertDtoToCourse(courseRepository.read(courseId), courseDto);
+        if (course == null) {
+            return false;
+        }
         courseRepository.update(course);
+        return true;
     }
 
     @Override
-    public void deleteCourse(Integer courseId) {
+    public boolean deleteCourse(Integer courseId) {
         Course course = courseRepository.read(courseId);
+        if (course == null) {
+            return false;
+        }
         courseRepository.delete(course);
+        return true;
     }
 
     @Override
@@ -92,14 +100,18 @@ public class CourseService implements ICourseService {
     }
 
     @Override
-    public void addReview(Integer courseId, Review review) {
+    public boolean addReview(Integer courseId, Review review) {
         reviewService.addReview(review);
         Course course = courseRepository.read(courseId);
+        if (course == null) {
+            return false;
+        }
         if (course.getReviews() == null) {
             course.setReviews(new HashSet<>());
         }
         course.getReviews().add(review);
         courseRepository.update(course);
+        return true;
     }
 
     @Override

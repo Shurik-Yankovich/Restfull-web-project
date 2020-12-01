@@ -30,175 +30,129 @@ public class CourseController {
 
     @PostMapping(value = "/")
     public ResponseEntity<?> createCourse(@RequestBody CourseDto courseDto) {
-
-        try {
-            courseService.createCourse(courseDto);
-            return  new ResponseEntity<>(HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(new RequestError(400,
-                    "course not added",
-                    e.getMessage()),
-                    HttpStatus.BAD_REQUEST);
-        }
+        courseService.createCourse(courseDto);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/")
     public ResponseEntity<?> getCoursesList() {
-        try {
-            List<CourseDto> courses = courseService.getAll();
-            return courses != null
-                    ? new ResponseEntity<>(courses, HttpStatus.OK)
-                    : new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } catch (Exception e) {
-            return new ResponseEntity<>(new RequestError(400,
-                    "courses not read",
-                    e.getMessage()),
-                    HttpStatus.BAD_REQUEST);
-        }
+        List<CourseDto> courses = courseService.getAll();
+        return courses != null ? new ResponseEntity<>(courses, HttpStatus.OK) :
+                new ResponseEntity<>(new RequestError(404,
+                        "courses not found",
+                        "courses not found"),
+                        HttpStatus.NOT_FOUND);
     }
 
     @PutMapping(value = "/{courseId}")
     public ResponseEntity<?> changeCourse(@PathVariable(name = "courseId") int courseId,
                                           @RequestBody CourseDto lesson) {
-        try {
-            courseService.updateCourse(courseId, lesson);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(new RequestError(400,
-                    "course not changed",
-                    e.getMessage()),
-                    HttpStatus.BAD_REQUEST);
-        }
+        boolean isChanged = courseService.updateCourse(courseId, lesson);
+        return isChanged ? new ResponseEntity<>(HttpStatus.OK) :
+                new ResponseEntity<>(new RequestError(404,
+                        "course not found",
+                        "course with current id not found"),
+                        HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping(value = "/{courseId}")
     public ResponseEntity<?> deleteCourse(@PathVariable(name = "courseId") int courseId) {
-        try {
-            courseService.deleteCourse(courseId);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(new RequestError(400,
-                    "course not deleted",
-                    e.getMessage()),
-                    HttpStatus.BAD_REQUEST);
-        }
+        boolean isDeleted = courseService.deleteCourse(courseId);
+        return isDeleted ? new ResponseEntity<>(HttpStatus.OK) :
+                new ResponseEntity<>(new RequestError(404,
+                        "course not found",
+                        "course with current id not found"),
+                        HttpStatus.NOT_FOUND);
     }
 
     @GetMapping(value = "/{courseId}")
     public ResponseEntity<?> getCourseById(@PathVariable(name = "courseId") int courseId) {
-        try {
-            CourseDto course = courseService.getCourseById(courseId);
-            return new ResponseEntity<>(course, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(new RequestError(400,
-                    "course not read",
-                    e.getMessage()),
-                    HttpStatus.BAD_REQUEST);
-        }
+        CourseDto course = courseService.getCourseById(courseId);
+        return course != null ? new ResponseEntity<>(course, HttpStatus.OK) :
+                new ResponseEntity<>(new RequestError(404,
+                        "course not found",
+                        "course with current id not found"),
+                        HttpStatus.NOT_FOUND);
     }
 
     @GetMapping(value = "/date")
     public ResponseEntity<?> getCoursesOnTheDate(@RequestBody DateDto dateDto) {
-        try {
-            List<CourseDto> courses = courseService.getCoursesOnTheDate(dateDto.getDate());
-            return new ResponseEntity<>(courses, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(new RequestError(400,
-                    "courses not read",
-                    e.getMessage()),
-                    HttpStatus.BAD_REQUEST);
-        }
+        List<CourseDto> courses = courseService.getCoursesOnTheDate(dateDto.getDate());
+        return courses != null ? new ResponseEntity<>(courses, HttpStatus.OK) :
+                new ResponseEntity<>(new RequestError(404,
+                        "courses not found",
+                        "courses on the date not found"),
+                        HttpStatus.NOT_FOUND);
     }
 
     @GetMapping(value = "/afterdate")
     public ResponseEntity<?> getCoursesAfterDate(@RequestBody DateDto dateDto) {
-        try {
-            List<CourseDto> courses = courseService.getCoursesAfterDate(dateDto.getDate());
-            return new ResponseEntity<>(courses, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(new RequestError(400,
-                    "courses not read",
-                    e.getMessage()),
-                    HttpStatus.BAD_REQUEST);
-        }
+        List<CourseDto> courses = courseService.getCoursesAfterDate(dateDto.getDate());
+        return courses != null ? new ResponseEntity<>(courses, HttpStatus.OK) :
+                new ResponseEntity<>(new RequestError(404,
+                        "courses not found",
+                        "courses after the date not found"),
+                        HttpStatus.NOT_FOUND);
     }
 
     @GetMapping(value = "/available")
     public ResponseEntity<?> getListOfAvailableLessons() {
-        try {
-            List<CourseDto> courses = courseService.getCoursesAfterDate(LocalDate.now());
-            return new ResponseEntity<>(courses, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(new RequestError(400,
-                    "courses not read",
-                    e.getMessage()),
-                    HttpStatus.BAD_REQUEST);
-        }
+        List<CourseDto> courses = courseService.getCoursesAfterDate(LocalDate.now());
+        return courses != null ? new ResponseEntity<>(courses, HttpStatus.OK) :
+                new ResponseEntity<>(new RequestError(404,
+                        "courses not found",
+                        "available courses not found"),
+                        HttpStatus.NOT_FOUND);
     }
 
     @GetMapping(value = "/section")
     public ResponseEntity<?> getCoursesOnTheTheme(@RequestBody Section section) {
-        try {
-            List<CourseDto> courses = courseService.getCoursesOnTheSection(section);
-            return new ResponseEntity<>(courses, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(new RequestError(400,
-                    "courses not read",
-                    e.getMessage()),
-                    HttpStatus.BAD_REQUEST);
-        }
+        List<CourseDto> courses = courseService.getCoursesOnTheSection(section);
+        return courses != null ? new ResponseEntity<>(courses, HttpStatus.OK) :
+                new ResponseEntity<>(new RequestError(404,
+                        "courses not found",
+                        "courses on the section not found"),
+                        HttpStatus.NOT_FOUND);
     }
 
     @GetMapping(value = "/professor")
     public ResponseEntity<?> getCoursesForTheProfessor(@RequestBody UserProfile professor) {
-        try {
-            List<CourseDto> courses = courseService.getCoursesForTheProfessor(professor);
-            return new ResponseEntity<>(courses, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(new RequestError(400,
-                    "courses not read",
-                    e.getMessage()),
-                    HttpStatus.BAD_REQUEST);
-        }
+        List<CourseDto> courses = courseService.getCoursesForTheProfessor(professor);
+        return courses != null ? new ResponseEntity<>(courses, HttpStatus.OK) :
+                new ResponseEntity<>(new RequestError(404,
+                        "courses not found",
+                        "courses for the professor not found"),
+                        HttpStatus.NOT_FOUND);
     }
 
     @GetMapping(value = "/type/{type}")
     public ResponseEntity<?> getCoursesByType(@PathVariable(name = "type") String type) {
-        try {
-            List<CourseDto> courses = courseService.getCoursesByType(Type.valueOf(type.toUpperCase()));
-            return new ResponseEntity<>(courses, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(new RequestError(400,
-                    "courses not read",
-                    e.getMessage()),
-                    HttpStatus.BAD_REQUEST);
-        }
+        List<CourseDto> courses = courseService.getCoursesByType(Type.valueOf(type.toUpperCase()));
+        return courses != null ? new ResponseEntity<>(courses, HttpStatus.OK) :
+                new ResponseEntity<>(new RequestError(404,
+                        "courses not found",
+                        "courses by type not found"),
+                        HttpStatus.NOT_FOUND);
     }
 
     @GetMapping(value = "/{courseId}/review")
     public ResponseEntity<?> getReviewOnTheCourse(@PathVariable(name = "courseId") int courseId) {
-        try {
-            Set<Review> reviews = courseService.getReviewOnTheLesson(courseId);
-            return new ResponseEntity<>(reviews, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(new RequestError(400,
-                    "reviews not read",
-                    e.getMessage()),
-                    HttpStatus.BAD_REQUEST);
-        }
+        Set<Review> reviews = courseService.getReviewOnTheLesson(courseId);
+        return reviews != null ? new ResponseEntity<>(reviews, HttpStatus.OK) :
+                new ResponseEntity<>(new RequestError(404,
+                        "reviews not found",
+                        "reviews for course with current id not found"),
+                        HttpStatus.NOT_FOUND);
     }
 
     @PostMapping(value = "/{courseId}/review")
     public ResponseEntity<?> addReviewToTheCourse(@PathVariable(name = "courseId") int courseId,
                                                   @RequestBody Review review) {
-        try {
-            courseService.addReview(courseId, review);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(new RequestError(400,
-                    "review not added",
-                    e.getMessage()),
-                    HttpStatus.BAD_REQUEST);
-        }
+        boolean isAdded = courseService.addReview(courseId, review);
+        return isAdded ? new ResponseEntity<>(HttpStatus.CREATED) :
+                new ResponseEntity<>(new RequestError(404,
+                        "course not found",
+                        "course with current id not found"),
+                        HttpStatus.NOT_FOUND);
     }
 }

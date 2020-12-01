@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@Transactional
+//@Transactional
 public class UserProfileService implements IUserProfileService {
 
     private IUserProfileRepository profileRepository;
@@ -39,15 +39,23 @@ public class UserProfileService implements IUserProfileService {
     }
 
     @Override
-    public void changeUserProfile(int profileId, ProfileDto profileDto) {
+    public boolean changeUserProfile(int profileId, ProfileDto profileDto) {
         UserProfile userProfile = DtoConverter.convertDtoToUserProfile(profileRepository.read(profileId), profileDto);
+        if (userProfile == null) {
+            return false;
+        }
         profileRepository.update(DtoConverter.convertDtoToUserProfile(userProfile, profileDto));
+        return true;
     }
 
     @Override
-    public void deleteUserProfile(int profileId) {
+    public boolean deleteUserProfile(int profileId) {
         UserProfile userProfile = profileRepository.read(profileId);
+        if (userProfile == null) {
+            return false;
+        }
         profileRepository.delete(userProfile);
+        return true;
     }
 
     @Override
@@ -58,21 +66,29 @@ public class UserProfileService implements IUserProfileService {
 
     private UserProfile findProfileByUsername(String username) {
         User user = userService.loadUserByUsername(username);
-        return profileRepository.findByUser(user);
+        return user == null ? null : profileRepository.findByUser(user);
     }
 
     @Override
-    public void signUpForTheLesson(String username, Lesson lesson) {
+    public boolean signUpForTheLesson(String username, Lesson lesson) {
         UserProfile profile = findProfileByUsername(username);
+        if (profile == null) {
+            return false;
+        }
         profile.getLessons().add(lesson);
         profileRepository.update(profile);
+        return true;
     }
 
     @Override
-    public void signUpForTheCourse(String username, Course course) {
+    public boolean signUpForTheCourse(String username, Course course) {
         UserProfile profile = findProfileByUsername(username);
+        if (profile == null) {
+            return false;
+        }
         profile.getCourses().add(course);
         profileRepository.update(profile);
+        return true;
     }
 
     @Override
@@ -84,6 +100,9 @@ public class UserProfileService implements IUserProfileService {
     @Override
     public List<LessonDto> getLessonListForUser(String username) {
         UserProfile profile = findProfileByUsername(username);
+        if (profile == null) {
+            return null;
+        }
         List<Lesson> lessons = profile.getLessons();
         if (lessons.size() > 0) {
             lessons.sort(new LessonDateComparator());
@@ -94,6 +113,9 @@ public class UserProfileService implements IUserProfileService {
     @Override
     public List<CourseDto> getCourseListForUser(String username) {
         UserProfile profile = findProfileByUsername(username);
+        if (profile == null) {
+            return null;
+        }
         List<Course> courses = profile.getCourses();
         if (courses.size() > 0) {
             courses.sort(new CourseStartDateComparator());
@@ -112,21 +134,4 @@ public class UserProfileService implements IUserProfileService {
         profileRepository.update(profile);
         return true;
     }
-
-//    private UserProfile convertDtoToUserProfile(UserProfile userProfile, ProfileDto profileDto) {
-//        userProfile.setId(userProfile.getId());
-//        userProfile.setFullName(profileDto.getFullName());
-//        userProfile.setUser(userService.loadUserByUsername(profileDto.getUsername()));
-//        userProfile.setPlaceOfWork(profileDto.getPlaceOfWork());
-//        return userProfile;
-//    }
-//
-//    public ProfileDto convertUserProfileToDto(UserProfile userProfile) {
-//        ProfileDto profileDto = new ProfileDto();
-//        profileDto.setId(userProfile.getId());
-//        profileDto.setFullName(userProfile.getFullName());
-//        profileDto.setUsername(userProfile.getUser().getUsername());
-//        profileDto.setPlaceOfWork(userProfile.getPlaceOfWork());
-//        return profileDto;
-//    }
 }

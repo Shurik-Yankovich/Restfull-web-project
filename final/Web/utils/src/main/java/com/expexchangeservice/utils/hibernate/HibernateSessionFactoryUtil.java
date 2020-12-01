@@ -26,7 +26,7 @@ public class HibernateSessionFactoryUtil {
             configuration.addAnnotatedClass(Course.class);
             StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
             SESSION_FACTORY = configuration.buildSessionFactory(builder.build());
-            SESSION = SESSION_FACTORY.openSession();
+//            SESSION = SESSION_FACTORY.openSession();
         } catch (Exception e) {
             System.out.println("Исключение!" + e);
         }
@@ -35,8 +35,17 @@ public class HibernateSessionFactoryUtil {
     private HibernateSessionFactoryUtil() {
     }
 
+    public static Session openSession() {
+        SESSION = SESSION_FACTORY.openSession();
+        return SESSION;
+    }
+
     public static Session getSession() {
 //        return SESSION_FACTORY.getCurrentSession();
         return SESSION;
+    }
+
+    public static void closeSession() {
+        SESSION.close();
     }
 }

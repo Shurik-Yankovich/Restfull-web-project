@@ -11,8 +11,8 @@ import java.util.Set;
 public interface ICourseService {
 
     void createCourse(CourseDto courseDto);
-    void updateCourse(int courseId, CourseDto courseDto);
-    void deleteCourse(Integer courseId);
+    boolean updateCourse(int courseId, CourseDto courseDto);
+    boolean deleteCourse(Integer courseId);
     CourseDto getCourseById(Integer courseId);
     List<CourseDto> getAll();
     List<CourseDto> getCoursesOnTheDate(LocalDate date);
@@ -20,6 +20,6 @@ public interface ICourseService {
     List<CourseDto> getCoursesOnTheSection(Section section);
     List<CourseDto> getCoursesForTheProfessor(UserProfile professor);
     List<CourseDto> getCoursesByType(Type courseType);
-    void addReview(Integer courseId, Review review);
+    boolean addReview(Integer courseId, Review review);
     Set<Review> getReviewOnTheLesson(Integer courseId);
 }

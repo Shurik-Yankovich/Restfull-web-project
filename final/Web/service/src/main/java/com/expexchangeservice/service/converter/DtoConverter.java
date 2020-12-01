@@ -20,6 +20,9 @@ public class DtoConverter {
     private static IUserService USER_SERVICE;
 
     public static Lesson convertDtoToLesson(Lesson lesson, LessonDto lessonDto) {
+        if (lessonDto == null) {
+            return null;
+        }
         lesson.setId(lessonDto.getId());
         lesson.setTheme(lessonDto.getTheme());
         UserProfile profile = lesson.getProfessor();
@@ -34,6 +37,9 @@ public class DtoConverter {
     }
 
     public static LessonDto convertLessonToDto(Lesson lesson) {
+        if (lesson == null) {
+            return null;
+        }
         LessonDto lessonDto = new LessonDto();
         lessonDto.setId(lesson.getId());
         lessonDto.setTheme(lesson.getTheme());
@@ -45,6 +51,9 @@ public class DtoConverter {
     }
 
     public static List<LessonDto> convertLessonListToDtoList(List<Lesson> lessons) {
+        if (lessons == null) {
+            return null;
+        }
         List<LessonDto> lessonDtoList = new ArrayList<>();
         for (Lesson lesson : lessons) {
             lessonDtoList.add(convertLessonToDto(lesson));
@@ -53,6 +62,9 @@ public class DtoConverter {
     }
 
     public static Course convertDtoToCourse(Course course, CourseDto courseDto) {
+        if (courseDto == null) {
+            return null;
+        }
         course.setId(courseDto.getId());
         course.setSection(courseDto.getSection());
         if (course.getProfessor() == null) {
@@ -67,6 +79,9 @@ public class DtoConverter {
     }
 
     public static CourseDto convertCourseToDto(Course course) {
+        if (course == null) {
+            return null;
+        }
         CourseDto courseDto = new CourseDto();
         courseDto.setId(course.getId());
         courseDto.setSection(course.getSection());
@@ -79,6 +94,9 @@ public class DtoConverter {
     }
 
     public static List<CourseDto> convertCourseListToDtoList(List<Course> courses) {
+        if (courses == null) {
+            return null;
+        }
         List<CourseDto> courseDtoList = new ArrayList<>();
         for (Course course : courses) {
             courseDtoList.add(convertCourseToDto(course));
@@ -87,6 +105,9 @@ public class DtoConverter {
     }
 
     public static UserProfile convertDtoToUserProfile(UserProfile userProfile, ProfileDto profileDto) {
+        if (profileDto == null) {
+            return null;
+        }
         userProfile.setId(userProfile.getId());
         userProfile.setFullName(profileDto.getFullName());
         userProfile.setUser(USER_SERVICE.loadUserByUsername(profileDto.getUsername()));
@@ -95,6 +116,9 @@ public class DtoConverter {
     }
 
     public static ProfileDto convertUserProfileToDto(UserProfile userProfile) {
+        if (userProfile == null) {
+            return null;
+        }
         ProfileDto profileDto = new ProfileDto();
         profileDto.setId(userProfile.getId());
         profileDto.setFullName(userProfile.getFullName());
@@ -104,24 +128,23 @@ public class DtoConverter {
     }
 
     public static UserDto convertUserToDto(User user) {
-        if (user != null) {
-            UserDto userDto = new UserDto();
-            userDto.setUsername(user.getUsername());
-            userDto.setPassword(user.getPassword());
-            return userDto;
+        if (user == null) {
+            return null;
         }
-        return null;
+        UserDto userDto = new UserDto();
+        userDto.setUsername(user.getUsername());
+        userDto.setPassword(user.getPassword());
+        return userDto;
     }
 
     public static User convertDtoToUser(UserDto userDto) {
-        if (userDto != null) {
-            User user = new User();
-            user.setUsername(userDto.getUsername());
-            user.setPassword(userDto.getPassword());
-//            user.setPasswordConfirm(userRegistrationDto.getPasswordConfirm());
-            return user;
+        if (userDto == null) {
+            return null;
         }
-        return null;
+        User user = new User();
+        user.setUsername(userDto.getUsername());
+        user.setPassword(userDto.getPassword());
+        return user;
     }
 
 }

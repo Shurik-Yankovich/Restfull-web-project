@@ -53,15 +53,24 @@ public class DictionaryService implements IDictionaryService {
     }
 
     @Override
-    public void updateTheme(int id, ThemeDto themeDto) {
+    public boolean updateTheme(int id, ThemeDto themeDto) {
         Theme theme = themeRepository.read(id);
+        if (theme == null) {
+            return false;
+        }
         theme.setTitle(themeDto.getTitle());
         themeRepository.update(theme);
+        return true;
     }
 
+    //TODO: просмотреть обновление секции, может какие изменения внести нужно!
     @Override
-    public void updateSection(Section section) {
+    public boolean updateSection(Section section) {
+        if (section == null) {
+            return false;
+        }
         sectionRepository.update(section);
+        return true;
     }
 
     @Override
@@ -79,17 +88,25 @@ public class DictionaryService implements IDictionaryService {
     }
 
     @Override
-    public void deleteTheme(Integer sectionId, Integer themeId) {
+    public boolean deleteTheme(Integer sectionId, Integer themeId) {
         Section section = sectionRepository.read(sectionId);
         Theme theme = themeRepository.read(themeId);
+        if (section == null || theme == null) {
+            return false;
+        }
         section.getThemes().remove(theme);
         sectionRepository.update(section);
         themeRepository.delete(theme);
+        return true;
     }
 
     @Override
-    public void deleteSection(Integer sectionId) {
+    public boolean deleteSection(Integer sectionId) {
         Section section = sectionRepository.read(sectionId);
+        if (section == null) {
+            return false;
+        }
         sectionRepository.delete(section);
+        return true;
     }
 }

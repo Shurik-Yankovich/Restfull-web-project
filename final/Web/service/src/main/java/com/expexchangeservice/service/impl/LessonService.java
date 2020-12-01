@@ -42,15 +42,23 @@ public class LessonService implements ILessonService {
     }
 
     @Override
-    public void changeLesson(int lessonId, LessonDto lessonDto) {
+    public boolean changeLesson(int lessonId, LessonDto lessonDto) {
         Lesson lesson = DtoConverter.convertDtoToLesson(lessonRepository.read(lessonId), lessonDto);
+        if (lesson == null) {
+            return false;
+        }
         lessonRepository.update(lesson);
+        return true;
     }
 
     @Override
-    public void deleteLesson(Integer lessonId) {
+    public boolean deleteLesson(Integer lessonId) {
         Lesson lesson = lessonRepository.read(lessonId);
+        if (lesson == null) {
+            return false;
+        }
         lessonRepository.delete(lesson);
+        return true;
     }
 
     @Override
@@ -96,14 +104,18 @@ public class LessonService implements ILessonService {
     }
 
     @Override
-    public void addReview(Integer lessonId, Review review) {
+    public boolean addReview(Integer lessonId, Review review) {
         reviewService.addReview(review);
         Lesson lesson = lessonRepository.read(lessonId);
+        if (lesson == null) {
+            return false;
+        }
         if (lesson.getReviews() == null) {
             lesson.setReviews(new HashSet<>());
         }
         lesson.getReviews().add(review);
         lessonRepository.update(lesson);
+        return true;
     }
 
     @Override

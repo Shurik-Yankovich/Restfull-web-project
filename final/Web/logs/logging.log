@@ -1,0 +1,25 @@
+2020-12-01 11:35:12 ERROR UserProfileService:27 - No entity found for query; nested exception is javax.persistence.NoResultException: No entity found for query
+Call method 'getProfileDtoByUsername' with 1 args:
+[ "user" ]
+2020-12-01 11:36:50 ERROR UserProfileService:31 - No entity found for query; nested exception is javax.persistence.NoResultException: No entity found for query
+Call method 'getProfileDtoByUsername' with 1 args:
+[ "user" ]
+2020-12-01 11:44:54 ERROR UserProfileController:27 - No entity found for query; nested exception is javax.persistence.NoResultException: No entity found for query
+Call method 'getProfileByUsername' with 1 args:
+[ "user" ]
+2020-12-01 11:47:12 ERROR UserProfileController:27 - No entity found for query; nested exception is javax.persistence.NoResultException: No entity found for query
+Call method 'getProfileByUsername' with 1 args:
+[ "user" ]
+2020-12-01 14:39:06 ERROR RegistrationController:27 - rawPassword cannot be null
+Call method 'registration' with 1 args:
+[ {
+  "username" : null,
+  "password" : null
+} ]
+2020-12-01 16:02:30 ERROR DictionaryController:27 - could not execute statement; nested exception is org.hibernate.exception.GenericJDBCException: could not execute statement
+Call method 'createSection' with 1 args:
+[ {
+  "id" : 0,
+  "title" : "admin",
+  "themes" : null
+} ]

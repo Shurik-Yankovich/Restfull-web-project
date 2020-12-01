@@ -13,10 +13,10 @@ public interface IDictionaryService {
     List<Section> getSectionDictionary();
     Theme getThemeById(Integer themeId);
     Section getSectionById(Integer sectionId);
-    void updateTheme(int id, ThemeDto themeDto);
-    void updateSection(Section section);
+    boolean updateTheme(int id, ThemeDto themeDto);
+    boolean updateSection(Section section);
     void createTheme(int sectionId, ThemeDto themeDto);
     void createSection(Section section);
-    void deleteTheme(Integer sectionId, Integer themeId);
-    void deleteSection(Integer sectionId);
+    boolean deleteTheme(Integer sectionId, Integer themeId);
+    boolean deleteSection(Integer sectionId);
 }

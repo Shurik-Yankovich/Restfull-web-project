@@ -28,178 +28,132 @@ public class LessonController {
 
     @PostMapping(value = "/")
     public ResponseEntity<?> createLesson(@RequestBody LessonDto lesson) {
-
-        try {
-            lessonService.addLesson(lesson);
-            return new ResponseEntity<>(HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(new RequestError(400,
-                    "lesson not added",
-                    e.getMessage()),
-                    HttpStatus.BAD_REQUEST);
-        }
+        lessonService.addLesson(lesson);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/")
     public ResponseEntity<?> getLessonsList() {
-        try {
-            List<LessonDto> lessons = lessonService.getAll();
-            return lessons != null
-                    ? new ResponseEntity<>(lessons, HttpStatus.OK)
-                    : new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } catch (Exception e) {
-            return new ResponseEntity<>(new RequestError(400,
-                    "lessons not read",
-                    e.getMessage()),
-                    HttpStatus.BAD_REQUEST);
-        }
+        List<LessonDto> lessons = lessonService.getAll();
+        return lessons != null ? new ResponseEntity<>(lessons, HttpStatus.OK) :
+                new ResponseEntity<>(new RequestError(404,
+                        "lessons not found",
+                        "lessons not found"),
+                        HttpStatus.NOT_FOUND);
     }
 
     @PutMapping(value = "/{lessonId}")
     public ResponseEntity<?> changeLesson(@PathVariable(name = "lessonId") int lessonId,
                                           @RequestBody LessonDto lesson) {
-        try {
-            lessonService.changeLesson(lessonId, lesson);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(new RequestError(400,
-                    "lesson not changed",
-                    e.getMessage()),
-                    HttpStatus.BAD_REQUEST);
-        }
+        boolean isChanged = lessonService.changeLesson(lessonId, lesson);
+        return isChanged ? new ResponseEntity<>(HttpStatus.OK) :
+                new ResponseEntity<>(new RequestError(404,
+                        "lesson not found",
+                        "lesson with current id not found"),
+                        HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping(value = "/{lessonId}")
     public ResponseEntity<?> deleteLesson(@PathVariable(name = "lessonId") int lessonId) {
-        try {
-            lessonService.deleteLesson(lessonId);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(new RequestError(400,
-                    "lesson not deleted",
-                    e.getMessage()),
-                    HttpStatus.BAD_REQUEST);
-        }
+        boolean isDeleted = lessonService.deleteLesson(lessonId);
+        return isDeleted ? new ResponseEntity<>(HttpStatus.OK) :
+                new ResponseEntity<>(new RequestError(404,
+                        "lesson not found",
+                        "lesson with current id not found"),
+                        HttpStatus.NOT_FOUND);
     }
 
     @GetMapping(value = "/{lessonId}")
     public ResponseEntity<?> getLessonById(@PathVariable(name = "lessonId") int lessonId) {
-        try {
-            LessonDto lesson = lessonService.getLessonById(lessonId);
-            return new ResponseEntity<>(lesson, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(new RequestError(400,
-                    "lesson not read",
-                    e.getMessage()),
-                    HttpStatus.BAD_REQUEST);
-        }
+        LessonDto lesson = lessonService.getLessonById(lessonId);
+        return lesson != null ? new ResponseEntity<>(lesson, HttpStatus.OK) :
+                new ResponseEntity<>(new RequestError(404,
+                        "lesson not found",
+                        "lesson with current id not found"),
+                        HttpStatus.NOT_FOUND);
     }
 
     @GetMapping(value = "/date")
 //    public ResponseEntity<?> getLessonsOnTheDate(@PathVariable(name = "date") String stringDate) {
     public ResponseEntity<?> getLessonsOnTheDate(@RequestBody DateDto dateDto) {
-        try {
 //            LocalDate date = LocalDate.parse(stringDate, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-            List<LessonDto> lessons = lessonService.getLessonsOnTheDate(dateDto.getDate());
-            return new ResponseEntity<>(lessons, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(new RequestError(400,
-                    "lessons not read",
-                    e.getMessage()),
-                    HttpStatus.BAD_REQUEST);
-        }
+        List<LessonDto> lessons = lessonService.getLessonsOnTheDate(dateDto.getDate());
+        return lessons != null ? new ResponseEntity<>(lessons, HttpStatus.OK) :
+                new ResponseEntity<>(new RequestError(404,
+                        "lessons not found",
+                        "lessons on the date not found"),
+                        HttpStatus.NOT_FOUND);
     }
 
     @GetMapping(value = "/afterdate")
     public ResponseEntity<?> getLessonsAfterDate(@RequestBody DateDto dateDto) {
-        try {
-            List<LessonDto> lessons = lessonService.getLessonsAfterDate(dateDto.getDate());
-            return new ResponseEntity<>(lessons, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(new RequestError(400,
-                    "lessons not read",
-                    e.getMessage()),
-                    HttpStatus.BAD_REQUEST);
-        }
+        List<LessonDto> lessons = lessonService.getLessonsAfterDate(dateDto.getDate());
+        return lessons != null ? new ResponseEntity<>(lessons, HttpStatus.OK) :
+                new ResponseEntity<>(new RequestError(404,
+                        "lessons not found",
+                        "lessons after the date not found"),
+                        HttpStatus.NOT_FOUND);
     }
 
     @GetMapping(value = "/available")
     public ResponseEntity<?> getListOfAvailableLessons() {
-        try {
-            List<LessonDto> lessons = lessonService.getLessonsAfterDate(LocalDate.now());
-            return new ResponseEntity<>(lessons, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(new RequestError(400,
-                    "lessons not read",
-                    e.getMessage()),
-                    HttpStatus.BAD_REQUEST);
-        }
+        List<LessonDto> lessons = lessonService.getLessonsAfterDate(LocalDate.now());
+        return lessons != null ? new ResponseEntity<>(lessons, HttpStatus.OK) :
+                new ResponseEntity<>(new RequestError(404,
+                        "lessons not found",
+                        "available lessons not found"),
+                        HttpStatus.NOT_FOUND);
     }
 
     @GetMapping(value = "/theme")
     public ResponseEntity<?> getLessonsOnTheTheme(@RequestBody Theme theme) {
-        try {
-            List<LessonDto> lessons = lessonService.getLessonsOnTheTheme(theme);
-            return new ResponseEntity<>(lessons, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(new RequestError(400,
-                    "lessons not read",
-                    e.getMessage()),
-                    HttpStatus.BAD_REQUEST);
-        }
+        List<LessonDto> lessons = lessonService.getLessonsOnTheTheme(theme);
+        return lessons != null ? new ResponseEntity<>(lessons, HttpStatus.OK) :
+                new ResponseEntity<>(new RequestError(404,
+                        "lessons not found",
+                        "lessons on the theme not found"),
+                        HttpStatus.NOT_FOUND);
     }
 
     @GetMapping(value = "/professor")
     public ResponseEntity<?> getLessonsForTheProfessor(@RequestBody UserProfile professor) {
-        try {
-            List<LessonDto> lessons = lessonService.getLessonsForTheProfessor(professor);
-            return new ResponseEntity<>(lessons, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(new RequestError(400,
-                    "lessons not read",
-                    e.getMessage()),
-                    HttpStatus.BAD_REQUEST);
-        }
+        List<LessonDto> lessons = lessonService.getLessonsForTheProfessor(professor);
+        return lessons != null ? new ResponseEntity<>(lessons, HttpStatus.OK) :
+                new ResponseEntity<>(new RequestError(404,
+                        "lessons not found",
+                        "lessons for the professor not found"),
+                        HttpStatus.NOT_FOUND);
     }
 
     @GetMapping(value = "/type/{type}")
     public ResponseEntity<?> getLessonsByType(@PathVariable(name = "type") String type) {
-        try {
-            List<LessonDto> lessons = lessonService.getLessonsByType(Type.valueOf(type.toUpperCase()));
-            return new ResponseEntity<>(lessons, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(new RequestError(400,
-                    "lessons not read",
-                    e.getMessage()),
-                    HttpStatus.BAD_REQUEST);
-        }
+        List<LessonDto> lessons = lessonService.getLessonsByType(Type.valueOf(type.toUpperCase()));
+        return lessons != null ? new ResponseEntity<>(lessons, HttpStatus.OK) :
+                new ResponseEntity<>(new RequestError(404,
+                        "lessons not found",
+                        "lessons by type not found"),
+                        HttpStatus.NOT_FOUND);
     }
 
     @GetMapping(value = "/{lessonId}/review")
     public ResponseEntity<?> getReviewOnTheLesson(@PathVariable(name = "lessonId") int lessonId) {
-        try {
-            Set<Review> reviews = lessonService.getReviewOnTheLesson(lessonId);
-            return new ResponseEntity<>(reviews, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(new RequestError(400,
-                    "reviews not read",
-                    e.getMessage()),
-                    HttpStatus.BAD_REQUEST);
-        }
+        Set<Review> reviews = lessonService.getReviewOnTheLesson(lessonId);
+        return reviews != null ? new ResponseEntity<>(reviews, HttpStatus.OK) :
+                new ResponseEntity<>(new RequestError(404,
+                        "reviews not found",
+                        "reviews for lesson with current id not found"),
+                        HttpStatus.NOT_FOUND);
     }
 
     @PostMapping(value = "/{lessonId}/review")
     public ResponseEntity<?> addReviewToTheLesson(@PathVariable(name = "lessonId") int lessonId,
                                                   @RequestBody Review review) {
-        try {
-            lessonService.addReview(lessonId, review);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(new RequestError(400,
-                    "review not added",
-                    e.getMessage()),
-                    HttpStatus.BAD_REQUEST);
-        }
+        boolean isAdded = lessonService.addReview(lessonId, review);
+        return isAdded ? new ResponseEntity<>(HttpStatus.CREATED) :
+                new ResponseEntity<>(new RequestError(404,
+                        "lesson not found",
+                        "lesson with current id not found"),
+                        HttpStatus.NOT_FOUND);
     }
 
 }
