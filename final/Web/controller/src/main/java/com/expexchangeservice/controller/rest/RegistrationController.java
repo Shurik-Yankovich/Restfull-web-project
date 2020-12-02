@@ -71,8 +71,8 @@ public class RegistrationController {
         return new ResponseEntity<>(httpHeaders, HttpStatus.OK);
     }
 
-    @GetMapping("/logout")
-    public ResponseEntity<?> logout(@RequestHeader("Auth-Token") String token){
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+//    @GetMapping("/logout")
+//    public ResponseEntity<?> logout(@RequestHeader("Auth-Token") String token){
+//        return new ResponseEntity<>(HttpStatus.OK);
+//    }
 }

@@ -3,6 +3,7 @@ package com.expexchangeservice.controller.rest;
 import com.expexchangeservice.model.dto.*;
 import com.expexchangeservice.model.entities.Course;
 import com.expexchangeservice.model.entities.Lesson;
+import com.expexchangeservice.service.interfaces.ITokenService;
 import com.expexchangeservice.service.interfaces.IUserProfileService;
 import com.expexchangeservice.service.interfaces.IUserService;
 import io.swagger.annotations.ApiOperation;
@@ -13,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -21,22 +23,39 @@ public class UserProfileController {
 
     private IUserProfileService profileService;
     private IUserService userService;
+    private ITokenService tokenService;
 
     @Autowired
-    public UserProfileController(IUserProfileService profileService, IUserService userService) {
+    public UserProfileController(IUserProfileService profileService,
+                                 IUserService userService, ITokenService tokenService) {
         this.profileService = profileService;
         this.userService = userService;
+        this.tokenService = tokenService;
     }
 
     @PostMapping(value = "/")
-    public ResponseEntity<?> createProfile(@RequestBody ProfileDto profile) {
+    public ResponseEntity<?> createProfile(@RequestBody ProfileDto profile,
+                                           HttpServletRequest httpRequest) {
+        if (!tokenService.checkUser(httpRequest, profile.getUsername())) {
+            return new ResponseEntity<>(new RequestError(403,
+                    "Hasn't access",
+                    "Hasn't access with this user"),
+                    HttpStatus.FORBIDDEN);
+        }
         profileService.addUserProfile(profile);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{profileId}")
     public ResponseEntity<?> changeProfile(@PathVariable(name = "profileId") int profileId,
-                                           @RequestBody ProfileDto profile) {
+                                           @RequestBody ProfileDto profile,
+                                           HttpServletRequest httpRequest) {
+        if (!tokenService.checkUser(httpRequest, profileId)) {
+            return new ResponseEntity<>(new RequestError(403,
+                    "Hasn't access",
+                    "Hasn't access with this user"),
+                    HttpStatus.FORBIDDEN);
+        }
         boolean isChanged = profileService.changeUserProfile(profileId, profile);
         return isChanged ? new ResponseEntity<>(HttpStatus.OK) :
                 new ResponseEntity<>(new RequestError(404,
@@ -46,7 +65,20 @@ public class UserProfileController {
     }
 
     @DeleteMapping(value = "/{profileId}")
-    public ResponseEntity<?> deleteProfile(@PathVariable(name = "profileId") int profileId) {
+    public ResponseEntity<?> deleteProfile(@PathVariable(name = "profileId") int profileId,
+                                           HttpServletRequest httpRequest) {
+        if (!tokenService.checkUser(httpRequest, profileId)) {
+            return new ResponseEntity<>(new RequestError(403,
+                    "Hasn't access",
+                    "Hasn't access with this user"),
+                    HttpStatus.FORBIDDEN);
+        }
+        if (!tokenService.checkUser(httpRequest, profileId)) {
+            return new ResponseEntity<>(new RequestError(403,
+                    "Hasn't access",
+                    "Hasn't access with this user"),
+                    HttpStatus.FORBIDDEN);
+        }
         boolean isDeleted = profileService.deleteUserProfile(profileId);
         return isDeleted ? new ResponseEntity<>(HttpStatus.OK) :
                 new ResponseEntity<>(new RequestError(404,
@@ -94,7 +126,14 @@ public class UserProfileController {
             @ApiResponse(code = 404, message = "Can't find profile", response = RequestError.class)
     })
     @GetMapping(value = "/user/{username}/lessons")
-    public ResponseEntity<?> getLessonsForUser(@PathVariable(name = "username") String username) {
+    public ResponseEntity<?> getLessonsForUser(@PathVariable(name = "username") String username,
+                                               HttpServletRequest httpRequest) {
+        if (!tokenService.checkUser(httpRequest, username)) {
+            return new ResponseEntity<>(new RequestError(403,
+                    "Hasn't access",
+                    "Hasn't access with this user"),
+                    HttpStatus.FORBIDDEN);
+        }
         List<LessonDto> lessons = profileService.getLessonListForUser(username);
         return lessons != null ? new ResponseEntity<>(lessons, HttpStatus.OK) :
                 new ResponseEntity<>(new RequestError(404,
@@ -110,7 +149,14 @@ public class UserProfileController {
             @ApiResponse(code = 404, message = "Can't find profile", response = RequestError.class)
     })
     @GetMapping(value = "/user/{username}/courses")
-    public ResponseEntity<?> getCourseForUser(@PathVariable(name = "username") String username) {
+    public ResponseEntity<?> getCoursesForUser(@PathVariable(name = "username") String username,
+                                               HttpServletRequest httpRequest) {
+        if (!tokenService.checkUser(httpRequest, username)) {
+            return new ResponseEntity<>(new RequestError(403,
+                    "Hasn't access",
+                    "Hasn't access with this user"),
+                    HttpStatus.FORBIDDEN);
+        }
         List<CourseDto> courses = profileService.getCourseListForUser(username);
         return courses != null ? new ResponseEntity<>(courses, HttpStatus.OK) :
                 new ResponseEntity<>(new RequestError(404,
@@ -121,7 +167,14 @@ public class UserProfileController {
 
     @PostMapping(value = "/user/{username}/lessons")
     public ResponseEntity<?> signUpForTheLesson(@PathVariable(name = "username") String username,
-                                                @RequestBody Lesson lessonDto) {
+                                                @RequestBody Lesson lessonDto,
+                                                HttpServletRequest httpRequest) {
+        if (!tokenService.checkUser(httpRequest, username)) {
+            return new ResponseEntity<>(new RequestError(403,
+                    "Hasn't access",
+                    "Hasn't access with this user"),
+                    HttpStatus.FORBIDDEN);
+        }
         boolean isSigned = profileService.signUpForTheLesson(username, lessonDto);
         return isSigned ? new ResponseEntity<>(HttpStatus.OK) :
                 new ResponseEntity<>(new RequestError(404,
@@ -132,7 +185,14 @@ public class UserProfileController {
 
     @PostMapping(value = "/user/{username}/courses")
     public ResponseEntity<?> signUpForTheCourse(@PathVariable(name = "username") String username,
-                                                @RequestBody Course courseDto) {
+                                                @RequestBody Course courseDto,
+                                                HttpServletRequest httpRequest) {
+        if (!tokenService.checkUser(httpRequest, username)) {
+            return new ResponseEntity<>(new RequestError(403,
+                    "Hasn't access",
+                    "Hasn't access with this user"),
+                    HttpStatus.FORBIDDEN);
+        }
         boolean isSigned = profileService.signUpForTheCourse(username, courseDto);
         return isSigned ? new ResponseEntity<>(HttpStatus.OK) :
                 new ResponseEntity<>(new RequestError(404,
@@ -142,12 +202,19 @@ public class UserProfileController {
     }
 
     @PostMapping(value = "/user/password/change")
-    public ResponseEntity<?> changePassword(@RequestBody UserCreds userCreds) {
+    public ResponseEntity<?> changePassword(@RequestBody UserCreds userCreds,
+                                            HttpServletRequest httpRequest) {
         if (!userCreds.getNewPassword().equals(userCreds.getPasswordConfirm())) {
             return new ResponseEntity<>(new RequestError(400,
                     "passwords not match",
                     "New password does not match password confirmation"),
                     HttpStatus.BAD_REQUEST);
+        }
+        if (!tokenService.checkUser(httpRequest, userCreds.getUser().getUsername())) {
+            return new ResponseEntity<>(new RequestError(403,
+                    "Hasn't access",
+                    "Hasn't access with this user"),
+                    HttpStatus.FORBIDDEN);
         }
         if (userService.changeUserPassword(userCreds)) {
             return new ResponseEntity<>(HttpStatus.OK);

@@ -6,11 +6,13 @@ import com.expexchangeservice.model.dto.RequestError;
 import com.expexchangeservice.model.entities.*;
 import com.expexchangeservice.model.enums.Type;
 import com.expexchangeservice.service.interfaces.ILessonService;
+import com.expexchangeservice.service.interfaces.ITokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
@@ -20,15 +22,24 @@ import java.util.Set;
 public class LessonController {
 
     private ILessonService lessonService;
+    private ITokenService tokenService;
 
     @Autowired
-    public LessonController(ILessonService lessonService) {
+    public LessonController(ILessonService lessonService, ITokenService tokenService) {
         this.lessonService = lessonService;
+        this.tokenService = tokenService;
     }
 
     @PostMapping(value = "/")
-    public ResponseEntity<?> createLesson(@RequestBody LessonDto lesson) {
-        lessonService.addLesson(lesson);
+    public ResponseEntity<?> createLesson(@RequestBody LessonDto lessonDto,
+                                          HttpServletRequest httpRequest) {
+        if (!tokenService.checkUser(httpRequest, lessonDto.getProfessor().getUsername())) {
+            return new ResponseEntity<>(new RequestError(403,
+                    "Hasn't access",
+                    "Hasn't access with this user"),
+                    HttpStatus.FORBIDDEN);
+        }
+        lessonService.addLesson(lessonDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -44,8 +55,15 @@ public class LessonController {
 
     @PutMapping(value = "/{lessonId}")
     public ResponseEntity<?> changeLesson(@PathVariable(name = "lessonId") int lessonId,
-                                          @RequestBody LessonDto lesson) {
-        boolean isChanged = lessonService.changeLesson(lessonId, lesson);
+                                          @RequestBody LessonDto lessonDto,
+                                          HttpServletRequest httpRequest) {
+        if (!tokenService.checkUser(httpRequest, lessonDto.getProfessor().getUsername())) {
+            return new ResponseEntity<>(new RequestError(403,
+                    "Hasn't access",
+                    "Hasn't access with this user"),
+                    HttpStatus.FORBIDDEN);
+        }
+        boolean isChanged = lessonService.changeLesson(lessonId, lessonDto);
         return isChanged ? new ResponseEntity<>(HttpStatus.OK) :
                 new ResponseEntity<>(new RequestError(404,
                         "lesson not found",
@@ -54,7 +72,15 @@ public class LessonController {
     }
 
     @DeleteMapping(value = "/{lessonId}")
-    public ResponseEntity<?> deleteLesson(@PathVariable(name = "lessonId") int lessonId) {
+    public ResponseEntity<?> deleteLesson(@PathVariable(name = "lessonId") int lessonId,
+                                          HttpServletRequest httpRequest) {
+        LessonDto lessonDto = lessonService.getLessonById(lessonId);
+        if (!tokenService.checkUser(httpRequest, lessonDto.getProfessor().getUsername())) {
+            return new ResponseEntity<>(new RequestError(403,
+                    "Hasn't access",
+                    "Hasn't access with this user"),
+                    HttpStatus.FORBIDDEN);
+        }
         boolean isDeleted = lessonService.deleteLesson(lessonId);
         return isDeleted ? new ResponseEntity<>(HttpStatus.OK) :
                 new ResponseEntity<>(new RequestError(404,

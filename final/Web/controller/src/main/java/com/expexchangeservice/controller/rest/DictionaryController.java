@@ -5,11 +5,13 @@ import com.expexchangeservice.model.dto.ThemeDto;
 import com.expexchangeservice.model.entities.Section;
 import com.expexchangeservice.model.entities.Theme;
 import com.expexchangeservice.service.interfaces.IDictionaryService;
+import com.expexchangeservice.service.interfaces.ITokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -40,7 +42,7 @@ public class DictionaryController {
     }
 
     @GetMapping(value = "/section")
-    public ResponseEntity<?> getSectionsList() {
+    public ResponseEntity<?> getSectionsList(HttpServletRequest httpRequest) {
         List<Section> sections = dictionaryService.getSectionDictionary();
         return sections != null ? new ResponseEntity<>(sections, HttpStatus.OK) :
                 new ResponseEntity<>(new RequestError(404,

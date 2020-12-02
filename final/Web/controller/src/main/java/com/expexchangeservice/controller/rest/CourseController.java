@@ -8,11 +8,13 @@ import com.expexchangeservice.model.entities.Section;
 import com.expexchangeservice.model.entities.UserProfile;
 import com.expexchangeservice.model.enums.Type;
 import com.expexchangeservice.service.interfaces.ICourseService;
+import com.expexchangeservice.service.interfaces.ITokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
@@ -22,14 +24,23 @@ import java.util.Set;
 public class CourseController {
 
     private ICourseService courseService;
+    private ITokenService tokenService;
 
     @Autowired
-    public CourseController(ICourseService courseService) {
+    public CourseController(ICourseService courseService, ITokenService tokenService) {
         this.courseService = courseService;
+        this.tokenService = tokenService;
     }
 
     @PostMapping(value = "/")
-    public ResponseEntity<?> createCourse(@RequestBody CourseDto courseDto) {
+    public ResponseEntity<?> createCourse(@RequestBody CourseDto courseDto,
+                                          HttpServletRequest httpRequest) {
+        if (!tokenService.checkUser(httpRequest, courseDto.getProfessor().getUsername())) {
+            return new ResponseEntity<>(new RequestError(403,
+                    "Hasn't access",
+                    "Hasn't access with this user"),
+                    HttpStatus.FORBIDDEN);
+        }
         courseService.createCourse(courseDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -46,8 +57,15 @@ public class CourseController {
 
     @PutMapping(value = "/{courseId}")
     public ResponseEntity<?> changeCourse(@PathVariable(name = "courseId") int courseId,
-                                          @RequestBody CourseDto lesson) {
-        boolean isChanged = courseService.updateCourse(courseId, lesson);
+                                          @RequestBody CourseDto courseDto,
+                                          HttpServletRequest httpRequest) {
+        if (!tokenService.checkUser(httpRequest, courseDto.getProfessor().getUsername())) {
+            return new ResponseEntity<>(new RequestError(403,
+                    "Hasn't access",
+                    "Hasn't access with this user"),
+                    HttpStatus.FORBIDDEN);
+        }
+        boolean isChanged = courseService.updateCourse(courseId, courseDto);
         return isChanged ? new ResponseEntity<>(HttpStatus.OK) :
                 new ResponseEntity<>(new RequestError(404,
                         "course not found",
@@ -56,7 +74,15 @@ public class CourseController {
     }
 
     @DeleteMapping(value = "/{courseId}")
-    public ResponseEntity<?> deleteCourse(@PathVariable(name = "courseId") int courseId) {
+    public ResponseEntity<?> deleteCourse(@PathVariable(name = "courseId") int courseId,
+                                          HttpServletRequest httpRequest) {
+        CourseDto courseDto = courseService.getCourseById(courseId);
+        if (!tokenService.checkUser(httpRequest, courseDto.getProfessor().getUsername())) {
+            return new ResponseEntity<>(new RequestError(403,
+                    "Hasn't access",
+                    "Hasn't access with this user"),
+                    HttpStatus.FORBIDDEN);
+        }
         boolean isDeleted = courseService.deleteCourse(courseId);
         return isDeleted ? new ResponseEntity<>(HttpStatus.OK) :
                 new ResponseEntity<>(new RequestError(404,

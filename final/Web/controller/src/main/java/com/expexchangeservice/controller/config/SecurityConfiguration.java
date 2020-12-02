@@ -25,14 +25,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private AuthFilter authFilter;
     @Autowired
-    private DataSource dataSource;
-    //    @Autowired
-//    private CustomLogoutHandler logoutHandler;
+    private CustomLogoutHandler logoutHandler;
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
@@ -43,25 +39,23 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/dictionary/session/**").hasRole("ADMIN")
-                .antMatchers("/orders/**").hasRole("USER")
-                .antMatchers("/", "/lessons/**", "/login/",
-                        "/courses/**", "/profile/**", "/registration/").permitAll()
+                .antMatchers("/", "/login/", "/registration/").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
                 .logout()
                 .logoutUrl("/logout")
-                .invalidateHttpSession(true)
-                .deleteCookies("threadLocalScope")
-//                .addLogoutHandler(logoutHandler)
+//                .invalidateHttpSession(true)
+//                .deleteCookies("threadLocalScope")
+                .addLogoutHandler(logoutHandler)
                 .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK))
                 .permitAll();
     }
 
     @Autowired
     protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService).passwordEncoder(bCryptPasswordEncoder());
-        auth.jdbcAuthentication().dataSource(dataSource).passwordEncoder(bCryptPasswordEncoder())
-                .usersByUsernameQuery("");
+        auth.userDetailsService(userService).passwordEncoder(bCryptPasswordEncoder);
+//        auth.jdbcAuthentication().dataSource(dataSource).passwordEncoder(bCryptPasswordEncoder())
+//                .usersByUsernameQuery("");
     }
 }

@@ -17,8 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 @Service
 public class TokenService implements ITokenService {
 
-//    private static final String AUTH_HEADER_NAME = "Auth-Token";
-
     private final ITokenRepository tokenRepository;
     private final ITokenHandler tokenHandler;
     private final UserService userService;
@@ -33,9 +31,9 @@ public class TokenService implements ITokenService {
     @Override
     public Authentication getAuthentication(ServletRequest servletRequest) {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
-        String token = request.getHeader(AUTH_HEADER_NAME);
-        if (tokenHandler.checkToken(token)) {
-            User user = userService.loadUserById(tokenHandler.getUserIdFromToken(token));
+        String tokenValue = request.getHeader(AUTH_HEADER_NAME);
+        if (tokenHandler.checkToken(tokenValue) && checkTokenInDatabase(tokenValue)) {
+            User user = userService.loadUserById(tokenHandler.getUserIdFromToken(tokenValue));
             return new UserAuthentication(user);
         }
         return null;
@@ -52,7 +50,37 @@ public class TokenService implements ITokenService {
         return null;
     }
 
+    @Override
+    public boolean deleteToken(HttpServletRequest request) {
+        String tokenValue = request.getHeader(AUTH_HEADER_NAME);
+        Token token = tokenRepository.findByValue(tokenValue);
+        if (token == null) {
+            return false;
+        }
+        tokenRepository.delete(token);
+        return true;
+    }
+
+    @Override
+    public boolean checkUser(HttpServletRequest request, String username) {
+        String tokenValue = request.getHeader(AUTH_HEADER_NAME);
+        User user = userService.loadUserById(tokenHandler.getUserIdFromToken(tokenValue));
+        return user.getUsername().equals(username);
+    }
+
+    @Override
+    public boolean checkUser(HttpServletRequest request, int userId) {
+        String tokenValue = request.getHeader(AUTH_HEADER_NAME);
+        int id = tokenHandler.getUserIdFromToken(tokenValue);
+        return id == userId;
+    }
+
     private Token createToken(User user) {
         return new Token(tokenHandler.generateToken(user.getId()), user);
+    }
+
+    private boolean checkTokenInDatabase(String value) {
+        Token token = tokenRepository.findByValue(value);
+        return token != null;
     }
 }

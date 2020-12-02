@@ -5,6 +5,7 @@ import com.expexchangeservice.model.entities.Token;
 import org.springframework.security.core.Authentication;
 
 import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 
 public interface ITokenService {
 
@@ -12,4 +13,7 @@ public interface ITokenService {
 
     Authentication getAuthentication(ServletRequest servletRequest);
     Token generateToken(UserDto userDto);
+    boolean checkUser(HttpServletRequest request, String username);
+    boolean checkUser(HttpServletRequest request, int userId);
+    boolean deleteToken(HttpServletRequest request);
 }

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-//@Component
+@Component
 public class CustomLogoutHandler implements LogoutHandler {
 
     @Autowired
@@ -25,7 +25,6 @@ public class CustomLogoutHandler implements LogoutHandler {
     public void logout(HttpServletRequest request, HttpServletResponse response,
                        Authentication authentication) {
 //        Authentication userName = tokenService.getAuthentication(request);
-        SecurityContextHolder.getContext().getAuthentication();
-        UserKeeper.deleteLoggedUser();
+       tokenService.deleteToken(request);
     }
 }
