@@ -1,6 +1,7 @@
 package com.expexchangeservice.service.impl;
 
 import com.expexchangeservice.model.dto.UserCreds;
+import com.expexchangeservice.model.dto.UserDto;
 import com.expexchangeservice.model.enums.Role;
 import com.expexchangeservice.model.entities.User;
 import com.expexchangeservice.repository.interfaces.IUserRepository;
@@ -52,11 +53,12 @@ public class UserService implements IUserService, UserDetailsService {
     }
 
     @Override
-    public boolean saveUser(User user) {
-        User userFromDB = userRepository.findByUsername(user.getUsername());
+    public boolean saveUser(UserDto userDto) {
+        User userFromDB = userRepository.findByUsername(userDto.getUsername());
         if (userFromDB != null) {
             return false;
         }
+        User user = convertDtoToUser(userDto);
         user.setRole(Role.ROLE_USER);
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.create(user);
@@ -98,4 +100,14 @@ public class UserService implements IUserService, UserDetailsService {
         userRepository.update(user);
         return user;
     }
+    private User convertDtoToUser(UserDto userDto) {
+        if (userDto == null) {
+            return null;
+        }
+        User user = new User();
+        user.setUsername(userDto.getUsername());
+        user.setPassword(userDto.getPassword());
+        return user;
+    }
+
 }

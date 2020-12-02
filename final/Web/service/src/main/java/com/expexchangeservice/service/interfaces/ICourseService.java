@@ -1,6 +1,7 @@
 package com.expexchangeservice.service.interfaces;
 
 import com.expexchangeservice.model.dto.CourseDto;
+import com.expexchangeservice.model.dto.ProfileDto;
 import com.expexchangeservice.model.entities.*;
 import com.expexchangeservice.model.enums.Type;
 
@@ -18,7 +19,7 @@ public interface ICourseService {
     List<CourseDto> getCoursesOnTheDate(LocalDate date);
     List<CourseDto> getCoursesAfterDate(LocalDate date);
     List<CourseDto> getCoursesOnTheSection(Section section);
-    List<CourseDto> getCoursesForTheProfessor(UserProfile professor);
+    List<CourseDto> getCoursesForTheProfessor(ProfileDto profileDto);
     List<CourseDto> getCoursesByType(Type courseType);
     boolean addReview(Integer courseId, Review review);
     Set<Review> getReviewOnTheLesson(Integer courseId);

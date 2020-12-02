@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@Transactional(propagation = Propagation.REQUIRES_NEW)
 public class DictionaryService implements IDictionaryService {
 
     private IThemeRepository themeRepository;

@@ -38,7 +38,7 @@ public class RegistrationController {
 //                    "password and password confirmation do not match"),
 //                    HttpStatus.BAD_REQUEST);
 //        }
-        if (!userService.saveUser(DtoConverter.convertDtoToUser(userForm))) {
+        if (!userService.saveUser(userForm)) {
             return new ResponseEntity<>(new RequestError(400,
                     "login isn't unique",
                     "current login is already exist"),

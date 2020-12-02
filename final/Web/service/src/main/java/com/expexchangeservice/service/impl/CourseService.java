@@ -1,12 +1,14 @@
 package com.expexchangeservice.service.impl;
 
 import com.expexchangeservice.model.dto.CourseDto;
+import com.expexchangeservice.model.dto.ProfileDto;
 import com.expexchangeservice.model.entities.*;
 import com.expexchangeservice.model.enums.Type;
 import com.expexchangeservice.repository.interfaces.ICourseRepository;
 import com.expexchangeservice.service.converter.DtoConverter;
 import com.expexchangeservice.service.interfaces.ICourseService;
 import com.expexchangeservice.service.interfaces.IReviewService;
+import com.expexchangeservice.service.interfaces.IUserProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -18,28 +20,32 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-@Transactional(propagation = Propagation.REQUIRES_NEW)
 public class CourseService implements ICourseService {
 
     private ICourseRepository courseRepository;
     private IReviewService reviewService;
+    private IUserProfileService profileService;
+    private DtoConverter converter;
 
     @Autowired
-    public CourseService(ICourseRepository courseRepository, IReviewService reviewService) {
+    public CourseService(ICourseRepository courseRepository, IReviewService reviewService,
+                         IUserProfileService profileService, DtoConverter converter) {
         this.courseRepository = courseRepository;
         this.reviewService = reviewService;
+        this.profileService = profileService;
+        this.converter = converter;
     }
 
     @Override
     public void createCourse(CourseDto courseDto) {
-        Course course = DtoConverter.convertDtoToCourse(new Course(), courseDto);
+        Course course = converter.convertDtoToCourse(new Course(), courseDto);
         course.setPrice(100 * course.getCountLesson());
         courseRepository.create(course);
     }
 
     @Override
     public boolean updateCourse(int courseId, CourseDto courseDto) {
-        Course course = DtoConverter.convertDtoToCourse(courseRepository.read(courseId), courseDto);
+        Course course = converter.convertDtoToCourse(courseRepository.read(courseId), courseDto);
         if (course == null) {
             return false;
         }
@@ -60,43 +66,44 @@ public class CourseService implements ICourseService {
     @Override
     public CourseDto getCourseById(Integer courseId) {
         Course course = courseRepository.read(courseId);
-        return DtoConverter.convertCourseToDto(course);
+        return converter.convertCourseToDto(course);
     }
 
     @Override
     public List<CourseDto> getAll() {
         List<Course> courses = courseRepository.readAll();
-        return DtoConverter.convertCourseListToDtoList(courses);
+        return converter.convertCourseListToDtoList(courses);
     }
 
     @Override
     public List<CourseDto> getCoursesOnTheDate(LocalDate date) {
         List<Course> courses = courseRepository.findByDate(date);
-        return DtoConverter.convertCourseListToDtoList(courses);
+        return converter.convertCourseListToDtoList(courses);
     }
 
     @Override
     public List<CourseDto> getCoursesAfterDate(LocalDate date) {
         List<Course> courses = courseRepository.findAfterDate(date);
-        return DtoConverter.convertCourseListToDtoList(courses);
+        return converter.convertCourseListToDtoList(courses);
     }
 
     @Override
     public List<CourseDto> getCoursesOnTheSection(Section section) {
         List<Course> courses = courseRepository.findBySection(section);
-        return DtoConverter.convertCourseListToDtoList(courses);
+        return converter.convertCourseListToDtoList(courses);
     }
 
     @Override
-    public List<CourseDto> getCoursesForTheProfessor(UserProfile professor) {
+    public List<CourseDto> getCoursesForTheProfessor(ProfileDto profileDto) {
+        UserProfile professor = profileService.findProfileByUsername(profileDto.getUsername());
         List<Course> courses = courseRepository.findByProfessor(professor);
-        return DtoConverter.convertCourseListToDtoList(courses);
+        return converter.convertCourseListToDtoList(courses);
     }
 
     @Override
     public List<CourseDto> getCoursesByType(Type lessonType) {
         List<Course> courses = courseRepository.findByType(lessonType);
-        return DtoConverter.convertCourseListToDtoList(courses);
+        return converter.convertCourseListToDtoList(courses);
     }
 
     @Override

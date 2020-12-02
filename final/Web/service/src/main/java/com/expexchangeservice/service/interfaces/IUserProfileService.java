@@ -5,6 +5,7 @@ import com.expexchangeservice.model.dto.LessonDto;
 import com.expexchangeservice.model.dto.ProfileDto;
 import com.expexchangeservice.model.entities.Course;
 import com.expexchangeservice.model.entities.Lesson;
+import com.expexchangeservice.model.entities.UserProfile;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ public interface IUserProfileService {
     boolean changeUserProfile(int profileId, ProfileDto profileDto);
     boolean deleteUserProfile(int profileId);
     ProfileDto getProfileDtoByUsername(String username);
+    UserProfile findProfileByUsername(String username);
     boolean signUpForTheLesson(String username, Lesson lesson);
     boolean signUpForTheCourse(String username, Course course);
     ProfileDto getUserProfileById(Integer profileId);

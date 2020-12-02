@@ -73,12 +73,7 @@ public class UserProfileController {
                     "Hasn't access with this user"),
                     HttpStatus.FORBIDDEN);
         }
-        if (!tokenService.checkUser(httpRequest, profileId)) {
-            return new ResponseEntity<>(new RequestError(403,
-                    "Hasn't access",
-                    "Hasn't access with this user"),
-                    HttpStatus.FORBIDDEN);
-        }
+        tokenService.deleteToken(httpRequest);
         boolean isDeleted = profileService.deleteUserProfile(profileId);
         return isDeleted ? new ResponseEntity<>(HttpStatus.OK) :
                 new ResponseEntity<>(new RequestError(404,
@@ -201,7 +196,7 @@ public class UserProfileController {
                         HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping(value = "/user/password/change")
+    @PutMapping(value = "/user/password/change")
     public ResponseEntity<?> changePassword(@RequestBody UserCreds userCreds,
                                             HttpServletRequest httpRequest) {
         if (!userCreds.getNewPassword().equals(userCreds.getPasswordConfirm())) {
@@ -226,7 +221,7 @@ public class UserProfileController {
         }
     }
 
-    @PostMapping(value = "/user/{username}/role")
+    @PutMapping(value = "/user/{username}/role")
     public ResponseEntity<?> changeRole(@PathVariable(name = "username") String username,
                                         @RequestParam boolean isAdmin) {
         if (profileService.changeUserRole(username, isAdmin)) {

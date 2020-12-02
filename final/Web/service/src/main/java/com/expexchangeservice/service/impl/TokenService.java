@@ -57,7 +57,7 @@ public class TokenService implements ITokenService {
         if (token == null) {
             return false;
         }
-        tokenRepository.delete(token);
+        tokenRepository.deleteByUser(token.getUser());
         return true;
     }
 

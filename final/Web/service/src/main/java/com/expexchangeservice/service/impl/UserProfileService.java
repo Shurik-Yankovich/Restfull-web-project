@@ -15,36 +15,37 @@ import com.expexchangeservice.utils.comparators.CourseStartDateComparator;
 import com.expexchangeservice.utils.comparators.LessonDateComparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
-//@Transactional
 public class UserProfileService implements IUserProfileService {
 
     private IUserProfileRepository profileRepository;
     private IUserService userService;
+    private DtoConverter converter;
 
     @Autowired
-    public UserProfileService(IUserProfileRepository profileRepository, IUserService userService) {
+    public UserProfileService(IUserProfileRepository profileRepository, IUserService userService,
+                              DtoConverter converter) {
         this.profileRepository = profileRepository;
         this.userService = userService;
+        this.converter = converter;
     }
 
     @Override
     public void addUserProfile(ProfileDto profileDto) {
-        UserProfile userProfile = DtoConverter.convertDtoToUserProfile(new UserProfile(), profileDto);
+        UserProfile userProfile = converter.convertDtoToUserProfile(new UserProfile(), profileDto);
         profileRepository.create(userProfile);
     }
 
     @Override
     public boolean changeUserProfile(int profileId, ProfileDto profileDto) {
-        UserProfile userProfile = DtoConverter.convertDtoToUserProfile(profileRepository.read(profileId), profileDto);
+        UserProfile userProfile = converter.convertDtoToUserProfile(profileRepository.read(profileId), profileDto);
         if (userProfile == null) {
             return false;
         }
-        profileRepository.update(DtoConverter.convertDtoToUserProfile(userProfile, profileDto));
+        profileRepository.update(converter.convertDtoToUserProfile(userProfile, profileDto));
         return true;
     }
 
@@ -61,10 +62,11 @@ public class UserProfileService implements IUserProfileService {
     @Override
     public ProfileDto getProfileDtoByUsername(String username) {
         UserProfile userProfile = findProfileByUsername(username);
-        return DtoConverter.convertUserProfileToDto(userProfile);
+        return converter.convertUserProfileToDto(userProfile);
     }
 
-    private UserProfile findProfileByUsername(String username) {
+    @Override
+    public UserProfile findProfileByUsername(String username) {
         User user = userService.loadUserByUsername(username);
         return user == null ? null : profileRepository.findByUser(user);
     }
@@ -94,7 +96,7 @@ public class UserProfileService implements IUserProfileService {
     @Override
     public ProfileDto getUserProfileById(Integer profileId) {
         UserProfile profile = profileRepository.read(profileId);
-        return DtoConverter.convertUserProfileToDto(profile);
+        return converter.convertUserProfileToDto(profile);
     }
 
     @Override
@@ -107,7 +109,7 @@ public class UserProfileService implements IUserProfileService {
         if (lessons.size() > 0) {
             lessons.sort(new LessonDateComparator());
         }
-        return DtoConverter.convertLessonListToDtoList(lessons);
+        return converter.convertLessonListToDtoList(lessons);
     }
 
     @Override
@@ -120,7 +122,7 @@ public class UserProfileService implements IUserProfileService {
         if (courses.size() > 0) {
             courses.sort(new CourseStartDateComparator());
         }
-        return DtoConverter.convertCourseListToDtoList(courses);
+        return converter.convertCourseListToDtoList(courses);
     }
 
     @Override

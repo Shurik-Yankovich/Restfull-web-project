@@ -2,6 +2,7 @@ package com.expexchangeservice.controller.rest;
 
 import com.expexchangeservice.model.dto.DateDto;
 import com.expexchangeservice.model.dto.LessonDto;
+import com.expexchangeservice.model.dto.ProfileDto;
 import com.expexchangeservice.model.dto.RequestError;
 import com.expexchangeservice.model.entities.*;
 import com.expexchangeservice.model.enums.Type;
@@ -142,7 +143,7 @@ public class LessonController {
     }
 
     @GetMapping(value = "/professor")
-    public ResponseEntity<?> getLessonsForTheProfessor(@RequestBody UserProfile professor) {
+    public ResponseEntity<?> getLessonsForTheProfessor(@RequestBody ProfileDto professor) {
         List<LessonDto> lessons = lessonService.getLessonsForTheProfessor(professor);
         return lessons != null ? new ResponseEntity<>(lessons, HttpStatus.OK) :
                 new ResponseEntity<>(new RequestError(404,
