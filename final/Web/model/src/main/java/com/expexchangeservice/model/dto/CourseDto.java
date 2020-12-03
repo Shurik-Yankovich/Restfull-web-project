@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 public class CourseDto {
 
-    private int id;
+    private long id;
     private Section section;
     private ProfileDto professor;
     private Type type;
@@ -16,11 +16,11 @@ public class CourseDto {
     private LocalDate dateStart;
     private int countLesson;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

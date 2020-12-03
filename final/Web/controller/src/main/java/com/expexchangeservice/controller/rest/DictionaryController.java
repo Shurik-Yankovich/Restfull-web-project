@@ -5,7 +5,6 @@ import com.expexchangeservice.model.dto.ThemeDto;
 import com.expexchangeservice.model.entities.Section;
 import com.expexchangeservice.model.entities.Theme;
 import com.expexchangeservice.service.interfaces.IDictionaryService;
-import com.expexchangeservice.service.interfaces.ITokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,7 +51,8 @@ public class DictionaryController {
     }
 
     @PutMapping(value = "/section/{sectionId}")
-    public ResponseEntity<?> changeSection(@PathVariable(name = "sectionId") int sectionId, @RequestBody Section section) {
+    public ResponseEntity<?> changeSection(@PathVariable(name = "sectionId") long sectionId,
+                                           @RequestBody Section section) {
         boolean isChanged = dictionaryService.updateSection(section);
         return isChanged ? new ResponseEntity<>(HttpStatus.OK) :
                 new ResponseEntity<>(new RequestError(404,
@@ -62,7 +62,7 @@ public class DictionaryController {
     }
 
     @DeleteMapping(value = "/section/{sectionId}")
-    public ResponseEntity<?> deleteSection(@PathVariable(name = "sectionId") int sectionId) {
+    public ResponseEntity<?> deleteSection(@PathVariable(name = "sectionId") long sectionId) {
         boolean isDeleted = dictionaryService.deleteSection(sectionId);
         return isDeleted ? new ResponseEntity<>(HttpStatus.OK) :
                 new ResponseEntity<>(new RequestError(404,
@@ -72,7 +72,7 @@ public class DictionaryController {
     }
 
     @GetMapping(value = "/section/{sectionId}/themes")
-    public ResponseEntity<?> getThemesListBySection(@PathVariable(name = "sectionId") int sectionId) {
+    public ResponseEntity<?> getThemesListBySection(@PathVariable(name = "sectionId") long sectionId) {
         List<Theme> themes = dictionaryService.getThemeDictionaryOnTheSection(sectionId);
         return themes != null ? new ResponseEntity<>(themes, HttpStatus.OK) :
                 new ResponseEntity<>(new RequestError(404,
@@ -82,13 +82,13 @@ public class DictionaryController {
     }
 
     @PostMapping(value = "/section/{sectionId}/theme")
-    public ResponseEntity<?> createTheme(@PathVariable(name = "sectionId") int sectionId, @RequestBody ThemeDto theme) {
+    public ResponseEntity<?> createTheme(@PathVariable(name = "sectionId") long sectionId, @RequestBody ThemeDto theme) {
         dictionaryService.createTheme(sectionId, theme);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/theme/{themeId}")
-    public ResponseEntity<?> changeTheme(@PathVariable(name = "themeId") int themeId, @RequestBody ThemeDto theme) {
+    public ResponseEntity<?> changeTheme(@PathVariable(name = "themeId") long themeId, @RequestBody ThemeDto theme) {
         boolean isChanged = dictionaryService.updateTheme(themeId, theme);
         return isChanged ? new ResponseEntity<>(HttpStatus.OK) :
                 new ResponseEntity<>(new RequestError(404,
@@ -98,8 +98,8 @@ public class DictionaryController {
     }
 
     @DeleteMapping(value = "/section/{idSection}/theme/{id}")
-    public ResponseEntity<?> deleteTheme(@PathVariable(name = "idSection") int idSection,
-                                         @PathVariable(name = "id") int idTheme) {
+    public ResponseEntity<?> deleteTheme(@PathVariable(name = "idSection") long idSection,
+                                         @PathVariable(name = "id") long idTheme) {
         boolean isDeleted = dictionaryService.deleteTheme(idSection, idTheme);
         return isDeleted ? new ResponseEntity<>(HttpStatus.OK) :
                 new ResponseEntity<>(new RequestError(404,

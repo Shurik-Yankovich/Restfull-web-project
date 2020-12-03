@@ -9,13 +9,12 @@ public class Theme {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
     @Column(name = "title")
     private String title;
 //    @ManyToOne (optional=false)
 //    @JoinColumn (name="id_section")
 //    private Section section;
-
 
     public Theme(String title) {
         this.title = title;
@@ -24,11 +23,11 @@ public class Theme {
     public Theme() {
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -39,15 +38,6 @@ public class Theme {
     public void setTitle(String title) {
         this.title = title;
     }
-
-//    public Section getSection() {
-//        return section;
-//    }
-//
-//    public void setSection(Section section) {
-//        this.section = section;
-//    }
-
 
     @Override
     public boolean equals(Object o) {

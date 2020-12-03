@@ -8,7 +8,6 @@ import java.security.Key;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
-import java.util.Optional;
 
 @Component
 public class JwtTokenHandler implements ITokenHandler {
@@ -20,7 +19,7 @@ public class JwtTokenHandler implements ITokenHandler {
     }
 
     @Override
-    public String generateToken(Integer userId) {
+    public String generateToken(Long userId) {
         LocalDateTime expires = LocalDateTime.now().plusDays(7);
         return Jwts.builder()
                 .setSubject(userId.toString())
@@ -41,26 +40,13 @@ public class JwtTokenHandler implements ITokenHandler {
     }
 
     @Override
-    public Integer getUserIdFromToken(String token) {
+    public Long getUserIdFromToken(String token) {
         Claims claims = Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody();
         String userId = claims.getSubject();
         try {
-            return Integer.parseInt(userId);
+            return Long.parseLong(userId);
         } catch (Exception e) {
             return null;
         }
     }
-
-//    @Override
-//    public Optional<Integer> getUserIdFromToken(String token) {
-//        try {
-//            Jws<Claims> claimsJws = Jwts.parser().setSigningKey(key).parseClaimsJws(token);
-//            Claims body = claimsJws.getBody();
-//            return Optional
-//                    .ofNullable(body.getId())
-//                    .map(Integer::valueOf);
-//        } catch (RuntimeException e) {
-//            return Optional.empty();
-//        }
-//    }
 }

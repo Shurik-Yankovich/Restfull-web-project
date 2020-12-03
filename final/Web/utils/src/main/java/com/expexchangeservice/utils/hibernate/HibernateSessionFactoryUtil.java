@@ -16,7 +16,6 @@ public class HibernateSessionFactoryUtil {
     static {
         try {
             Configuration configuration = new Configuration().configure();
-//            configuration.addPackage("com.expexchangeservice.model");
             configuration.addAnnotatedClass(User.class);
             configuration.addAnnotatedClass(Token.class);
             configuration.addAnnotatedClass(UserProfile.class);
@@ -27,7 +26,6 @@ public class HibernateSessionFactoryUtil {
             configuration.addAnnotatedClass(Course.class);
             StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
             SESSION_FACTORY = configuration.buildSessionFactory(builder.build());
-//            SESSION = SESSION_FACTORY.openSession();
         } catch (Exception e) {
             System.out.println("Исключение!" + e);
         }
@@ -42,7 +40,6 @@ public class HibernateSessionFactoryUtil {
     }
 
     public static Session getSession() {
-//        return SESSION_FACTORY.getCurrentSession();
         return SESSION;
     }
 

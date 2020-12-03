@@ -26,7 +26,7 @@ public abstract class AbstractRepository<E> implements IRepository<E> {
     }
 
     @Override
-    public E read(Integer primaryKey) {
+    public E read(Long primaryKey) {
         return (E) HibernateSessionFactoryUtil.getSession().get(this.entityClass, primaryKey);
     }
 

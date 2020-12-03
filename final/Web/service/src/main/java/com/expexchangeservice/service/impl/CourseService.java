@@ -27,7 +27,7 @@ public class CourseService implements ICourseService {
     private DtoConverter converter;
 
     @Value("${reward_for_lesson:100}")
-    private static int REWARD_FOR_LESSON;
+    private int REWARD_FOR_LESSON;
 
     @Autowired
     public CourseService(ICourseRepository courseRepository, IReviewService reviewService,
@@ -46,7 +46,7 @@ public class CourseService implements ICourseService {
     }
 
     @Override
-    public boolean updateCourse(int courseId, CourseDto courseDto) {
+    public boolean updateCourse(Long courseId, CourseDto courseDto) {
         Course course = converter.convertDtoToCourse(courseRepository.read(courseId), courseDto);
         if (course == null) {
             return false;
@@ -56,7 +56,7 @@ public class CourseService implements ICourseService {
     }
 
     @Override
-    public boolean deleteCourse(Integer courseId) {
+    public boolean deleteCourse(Long courseId) {
         Course course = courseRepository.read(courseId);
         if (course == null) {
             return false;
@@ -66,7 +66,7 @@ public class CourseService implements ICourseService {
     }
 
     @Override
-    public CourseDto getCourseById(Integer courseId) {
+    public CourseDto getCourseById(Long courseId) {
         Course course = courseRepository.read(courseId);
         return converter.convertCourseToDto(course);
     }
@@ -109,7 +109,7 @@ public class CourseService implements ICourseService {
     }
 
     @Override
-    public boolean addReview(Integer courseId, Review review) {
+    public boolean addReview(Long courseId, Review review) {
         reviewService.addReview(review);
         Course course = courseRepository.read(courseId);
         if (course == null) {
@@ -124,7 +124,7 @@ public class CourseService implements ICourseService {
     }
 
     @Override
-    public Set<Review> getReviewOnTheLesson(Integer courseId) {
+    public Set<Review> getReviewOnTheLesson(Long courseId) {
         Course course = courseRepository.read(courseId);
         return course.getReviews();
     }
@@ -141,8 +141,8 @@ public class CourseService implements ICourseService {
     }
 
     @Override
-    public boolean changeRewardByCourseId(int lessonId, int reward) {
-        Course course = courseRepository.read(lessonId);
+    public boolean changeRewardByCourseId(Long courseId, int reward) {
+        Course course = courseRepository.read(courseId);
         if (course == null) {
             return false;
         }

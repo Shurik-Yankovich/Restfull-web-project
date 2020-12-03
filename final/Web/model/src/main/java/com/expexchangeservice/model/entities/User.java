@@ -1,6 +1,5 @@
 package com.expexchangeservice.model.entities;
 
-import com.expexchangeservice.model.entities.UserProfile;
 import com.expexchangeservice.model.enums.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,7 +14,7 @@ public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
     @Column(name = "username")
     private String username;
     @Column(name = "password")
@@ -28,11 +27,11 @@ public class User implements UserDetails {
     @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE)
     private UserProfile profile;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

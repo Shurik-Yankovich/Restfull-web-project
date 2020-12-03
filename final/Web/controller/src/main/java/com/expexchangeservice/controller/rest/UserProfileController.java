@@ -47,7 +47,7 @@ public class UserProfileController {
     }
 
     @PutMapping(value = "/{profileId}")
-    public ResponseEntity<?> changeProfile(@PathVariable(name = "profileId") int profileId,
+    public ResponseEntity<?> changeProfile(@PathVariable(name = "profileId") long profileId,
                                            @RequestBody ProfileDto profile,
                                            HttpServletRequest httpRequest) {
         if (!tokenService.checkUser(httpRequest, profileId)) {
@@ -65,7 +65,7 @@ public class UserProfileController {
     }
 
     @DeleteMapping(value = "/{profileId}")
-    public ResponseEntity<?> deleteProfile(@PathVariable(name = "profileId") int profileId,
+    public ResponseEntity<?> deleteProfile(@PathVariable(name = "profileId") long profileId,
                                            HttpServletRequest httpRequest) {
         if (!tokenService.checkUser(httpRequest, profileId)) {
             return new ResponseEntity<>(new RequestError(403,
@@ -89,7 +89,7 @@ public class UserProfileController {
             @ApiResponse(code = 404, message = "Can't find profile", response = RequestError.class)
     })
     @GetMapping(value = "/{profileId}")
-    public ResponseEntity<?> getProfileById(@PathVariable(name = "profileId") int profileId) {
+    public ResponseEntity<?> getProfileById(@PathVariable(name = "profileId") long profileId) {
         ProfileDto profile = profileService.getUserProfileById(profileId);
         return profile != null ? new ResponseEntity<>(profile, HttpStatus.OK) :
                 new ResponseEntity<>(new RequestError(404,

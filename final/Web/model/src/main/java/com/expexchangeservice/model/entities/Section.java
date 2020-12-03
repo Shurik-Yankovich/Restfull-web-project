@@ -1,8 +1,5 @@
 package com.expexchangeservice.model.entities;
 
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-
 import javax.persistence.*;
 import java.util.List;
 
@@ -12,21 +9,20 @@ public class Section {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
     @Column(name = "title")
     private String title;
-//    @OneToMany(mappedBy="section", fetch=FetchType.EAGER, cascade = CascadeType.ALL)
     @OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "Section_Themes",
             joinColumns = @JoinColumn(name = "id_section"),
             inverseJoinColumns = @JoinColumn(name = "id_theme"))
     private List<Theme> themes;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

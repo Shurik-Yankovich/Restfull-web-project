@@ -10,25 +10,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 @Service
-@Transactional
 public class UserService implements IUserService, UserDetailsService {
     @PersistenceContext
     private EntityManager em;
     private IUserRepository userRepository;
-    //    private IProfileRepository profileRepository;
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
     public UserService(IUserRepository userRepository) {
         this.userRepository = userRepository;
-//        this.profileRepository = profileRepository;
     }
 
     @Override
@@ -48,7 +44,7 @@ public class UserService implements IUserService, UserDetailsService {
     }
 
     @Override
-    public User loadUserById(Integer userId) {
+    public User loadUserById(Long userId) {
         return userRepository.read(userId);
     }
 
@@ -66,7 +62,7 @@ public class UserService implements IUserService, UserDetailsService {
     }
 
     @Override
-    public boolean deleteUser(Integer userId) {
+    public boolean deleteUser(Long userId) {
         User user = userRepository.read(userId);
         if (user != null) {
             userRepository.delete(user);

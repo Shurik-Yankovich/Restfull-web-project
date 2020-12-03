@@ -40,7 +40,7 @@ public class UserProfileService implements IUserProfileService {
     }
 
     @Override
-    public boolean changeUserProfile(int profileId, ProfileDto profileDto) {
+    public boolean changeUserProfile(Long profileId, ProfileDto profileDto) {
         UserProfile userProfile = converter.convertDtoToUserProfile(profileRepository.read(profileId), profileDto);
         if (userProfile == null) {
             return false;
@@ -50,7 +50,7 @@ public class UserProfileService implements IUserProfileService {
     }
 
     @Override
-    public boolean deleteUserProfile(int profileId) {
+    public boolean deleteUserProfile(Long profileId) {
         UserProfile userProfile = profileRepository.read(profileId);
         if (userProfile == null) {
             return false;
@@ -94,7 +94,7 @@ public class UserProfileService implements IUserProfileService {
     }
 
     @Override
-    public ProfileDto getUserProfileById(Integer profileId) {
+    public ProfileDto getUserProfileById(Long profileId) {
         UserProfile profile = profileRepository.read(profileId);
         return converter.convertUserProfileToDto(profile);
     }

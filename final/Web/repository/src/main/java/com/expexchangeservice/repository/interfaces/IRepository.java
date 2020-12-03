@@ -9,7 +9,7 @@ public interface IRepository<T> {
 
     void update(T t);
 
-    T read(Integer pk);
+    T read(Long pk);
 
     void delete(T t);
 

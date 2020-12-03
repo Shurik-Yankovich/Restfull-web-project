@@ -15,7 +15,7 @@ public class Lesson {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
     @OneToOne
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinColumn(name = "id_theme")
@@ -30,7 +30,7 @@ public class Lesson {
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
     @Column(name = "date")
     private LocalDate date;
-    @Column(name = "price")
+    @Column(name = "reward")
     private int reward;
     @OneToMany(cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
@@ -44,11 +44,11 @@ public class Lesson {
             inverseJoinColumns = @JoinColumn(name = "id_review"))
     private Set<Review> reviews;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

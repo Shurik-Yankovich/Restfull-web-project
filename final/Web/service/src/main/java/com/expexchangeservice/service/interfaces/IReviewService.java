@@ -5,6 +5,6 @@ import com.expexchangeservice.model.entities.Review;
 public interface IReviewService {
     void addReview(Review review);
     void updateReview(Review review);
-    Review readReview(Integer reviewId);
-    void deleteReview(Integer reviewId);
+    Review readReview(Long reviewId);
+    void deleteReview(Long reviewId);
 }

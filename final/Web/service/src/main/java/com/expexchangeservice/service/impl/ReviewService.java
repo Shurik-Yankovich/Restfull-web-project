@@ -5,7 +5,6 @@ import com.expexchangeservice.repository.interfaces.IReviewRepository;
 import com.expexchangeservice.service.interfaces.IReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ReviewService implements IReviewService {
@@ -28,12 +27,12 @@ public class ReviewService implements IReviewService {
     }
 
     @Override
-    public Review readReview(Integer reviewId) {
+    public Review readReview(Long reviewId) {
         return reviewRepository.read(reviewId);
     }
 
     @Override
-    public void deleteReview(Integer reviewId) {
+    public void deleteReview(Long reviewId) {
         Review review = reviewRepository.read(reviewId);
         reviewRepository.delete(review);
     }

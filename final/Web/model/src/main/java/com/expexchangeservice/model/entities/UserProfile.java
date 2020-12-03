@@ -5,6 +5,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "Profile")
@@ -12,7 +13,7 @@ public class UserProfile {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
     @OneToOne(cascade = CascadeType.REMOVE)
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinColumn(name = "id_user")
@@ -34,11 +35,11 @@ public class UserProfile {
             inverseJoinColumns = @JoinColumn(name = "id_lesson"))
     private List<Lesson> lessons;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -80,5 +81,21 @@ public class UserProfile {
 
     public void setLessons(List<Lesson> lessons) {
         this.lessons = lessons;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserProfile profile = (UserProfile) o;
+        return id == profile.id &&
+                Objects.equals(user, profile.user) &&
+                Objects.equals(fullName, profile.fullName) &&
+                Objects.equals(placeOfWork, profile.placeOfWork);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, user, fullName, placeOfWork);
     }
 }

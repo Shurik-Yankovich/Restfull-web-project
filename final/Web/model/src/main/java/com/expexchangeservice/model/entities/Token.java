@@ -8,7 +8,7 @@ public class Token {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
     @Column(name = "value")
     private String value;
 
@@ -28,11 +28,11 @@ public class Token {
         return value;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -48,22 +48,3 @@ public class Token {
         this.user = user;
     }
 }
-
-//public class Token {
-//
-//    private String token;
-//
-//    public Token(){}
-//
-//    public Token(String tokenBody){
-//        this.token = tokenBody;
-//    }
-//
-//    public String getValue() {
-//        return token;
-//    }
-//
-//    public void setValue(String token) {
-//        this.token = token;
-//    }
-//}

@@ -5,7 +5,6 @@ import org.aspectj.lang.annotation.*;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Component;
 
-
 @Aspect
 @Component
 public class TransactionAspect {

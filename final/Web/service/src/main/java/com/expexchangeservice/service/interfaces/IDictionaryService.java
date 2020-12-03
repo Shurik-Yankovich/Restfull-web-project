@@ -9,14 +9,14 @@ import java.util.List;
 public interface IDictionaryService {
 
     List<Theme> getThemeDictionary();
-    List<Theme> getThemeDictionaryOnTheSection(Integer sectionId);
+    List<Theme> getThemeDictionaryOnTheSection(Long sectionId);
     List<Section> getSectionDictionary();
-    Theme getThemeById(Integer themeId);
-    Section getSectionById(Integer sectionId);
-    boolean updateTheme(int id, ThemeDto themeDto);
+    Theme getThemeById(Long themeId);
+    Section getSectionById(Long sectionId);
+    boolean updateTheme(Long themeId, ThemeDto themeDto);
     boolean updateSection(Section section);
-    void createTheme(int sectionId, ThemeDto themeDto);
+    void createTheme(Long sectionId, ThemeDto themeDto);
     void createSection(Section section);
-    boolean deleteTheme(Integer sectionId, Integer themeId);
-    boolean deleteSection(Integer sectionId);
+    boolean deleteTheme(Long sectionId, Long themeId);
+    boolean deleteSection(Long sectionId);
 }

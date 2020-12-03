@@ -30,7 +30,7 @@ public class LessonService implements ILessonService {
     private DtoConverter converter;
 
     @Value("${reward_for_lesson:100}")
-    private static int REWARD_FOR_LESSON;
+    private int REWARD_FOR_LESSON;
 
     @Autowired
     public LessonService(ILessonRepository lessonRepository, IReviewService reviewService,
@@ -49,7 +49,7 @@ public class LessonService implements ILessonService {
     }
 
     @Override
-    public boolean changeLesson(int lessonId, LessonDto lessonDto) {
+    public boolean changeLesson(Long lessonId, LessonDto lessonDto) {
         Lesson lesson = converter.convertDtoToLesson(lessonRepository.read(lessonId), lessonDto);
         if (lesson == null) {
             return false;
@@ -59,7 +59,7 @@ public class LessonService implements ILessonService {
     }
 
     @Override
-    public boolean deleteLesson(Integer lessonId) {
+    public boolean deleteLesson(Long lessonId) {
         Lesson lesson = lessonRepository.read(lessonId);
         if (lesson == null) {
             return false;
@@ -69,7 +69,7 @@ public class LessonService implements ILessonService {
     }
 
     @Override
-    public LessonDto getLessonById(Integer lessonId) {
+    public LessonDto getLessonById(Long lessonId) {
         Lesson lesson = lessonRepository.read(lessonId);
         return converter.convertLessonToDto(lesson);
     }
@@ -112,7 +112,7 @@ public class LessonService implements ILessonService {
     }
 
     @Override
-    public boolean addReview(Integer lessonId, Review review) {
+    public boolean addReview(Long lessonId, Review review) {
         reviewService.addReview(review);
         Lesson lesson = lessonRepository.read(lessonId);
         if (lesson == null) {
@@ -127,7 +127,7 @@ public class LessonService implements ILessonService {
     }
 
     @Override
-    public Set<Review> getReviewOnTheLesson(Integer lessonId) {
+    public Set<Review> getReviewOnTheLesson(Long lessonId) {
         Lesson lesson = lessonRepository.read(lessonId);
         return lesson.getReviews();
     }
@@ -144,7 +144,7 @@ public class LessonService implements ILessonService {
     }
 
     @Override
-    public boolean changeRewardByLessonId(int lessonId, int reward) {
+    public boolean changeRewardByLessonId(Long lessonId, int reward) {
         Lesson lesson = lessonRepository.read(lessonId);
         if (lesson == null) {
             return false;

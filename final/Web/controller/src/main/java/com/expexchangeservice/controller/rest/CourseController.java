@@ -6,7 +6,6 @@ import com.expexchangeservice.model.dto.ProfileDto;
 import com.expexchangeservice.model.dto.RequestError;
 import com.expexchangeservice.model.entities.Review;
 import com.expexchangeservice.model.entities.Section;
-import com.expexchangeservice.model.entities.UserProfile;
 import com.expexchangeservice.model.enums.Type;
 import com.expexchangeservice.service.interfaces.ICourseService;
 import com.expexchangeservice.service.interfaces.ITokenService;
@@ -57,7 +56,7 @@ public class CourseController {
     }
 
     @PutMapping(value = "/{courseId}")
-    public ResponseEntity<?> changeCourse(@PathVariable(name = "courseId") int courseId,
+    public ResponseEntity<?> changeCourse(@PathVariable(name = "courseId") long courseId,
                                           @RequestBody CourseDto courseDto,
                                           HttpServletRequest httpRequest) {
         if (!tokenService.checkUser(httpRequest, courseDto.getProfessor().getUsername())) {
@@ -75,7 +74,7 @@ public class CourseController {
     }
 
     @DeleteMapping(value = "/{courseId}")
-    public ResponseEntity<?> deleteCourse(@PathVariable(name = "courseId") int courseId,
+    public ResponseEntity<?> deleteCourse(@PathVariable(name = "courseId") long courseId,
                                           HttpServletRequest httpRequest) {
         CourseDto courseDto = courseService.getCourseById(courseId);
         if (!tokenService.checkUser(httpRequest, courseDto.getProfessor().getUsername())) {
@@ -93,7 +92,7 @@ public class CourseController {
     }
 
     @GetMapping(value = "/{courseId}")
-    public ResponseEntity<?> getCourseById(@PathVariable(name = "courseId") int courseId) {
+    public ResponseEntity<?> getCourseById(@PathVariable(name = "courseId") long courseId) {
         CourseDto course = courseService.getCourseById(courseId);
         return course != null ? new ResponseEntity<>(course, HttpStatus.OK) :
                 new ResponseEntity<>(new RequestError(404,
@@ -163,7 +162,7 @@ public class CourseController {
     }
 
     @GetMapping(value = "/{courseId}/review")
-    public ResponseEntity<?> getReviewOnTheCourse(@PathVariable(name = "courseId") int courseId) {
+    public ResponseEntity<?> getReviewOnTheCourse(@PathVariable(name = "courseId") long courseId) {
         Set<Review> reviews = courseService.getReviewOnTheLesson(courseId);
         return reviews != null ? new ResponseEntity<>(reviews, HttpStatus.OK) :
                 new ResponseEntity<>(new RequestError(404,
@@ -173,7 +172,7 @@ public class CourseController {
     }
 
     @PostMapping(value = "/{courseId}/review")
-    public ResponseEntity<?> addReviewToTheCourse(@PathVariable(name = "courseId") int courseId,
+    public ResponseEntity<?> addReviewToTheCourse(@PathVariable(name = "courseId") long courseId,
                                                   @RequestBody Review review,
                                                   HttpServletRequest httpRequest) {
         if (!tokenService.checkUser(httpRequest, review.getUsername())) {
@@ -191,7 +190,7 @@ public class CourseController {
     }
 
     @PutMapping(value = "/{courseId}/reward")
-    public ResponseEntity<?> changeRewardForCourse(@PathVariable(name = "courseId") int courseId,
+    public ResponseEntity<?> changeRewardForCourse(@PathVariable(name = "courseId") long courseId,
                                                    @RequestParam int reward) {
         boolean isChanged = courseService.changeRewardByCourseId(courseId, reward);
         return isChanged ? new ResponseEntity<>(HttpStatus.CREATED) :

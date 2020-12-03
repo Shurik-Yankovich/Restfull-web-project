@@ -55,7 +55,7 @@ public class LessonController {
     }
 
     @PutMapping(value = "/{lessonId}")
-    public ResponseEntity<?> changeLesson(@PathVariable(name = "lessonId") int lessonId,
+    public ResponseEntity<?> changeLesson(@PathVariable(name = "lessonId") long lessonId,
                                           @RequestBody LessonDto lessonDto,
                                           HttpServletRequest httpRequest) {
         if (!tokenService.checkUser(httpRequest, lessonDto.getProfessor().getUsername())) {
@@ -73,7 +73,7 @@ public class LessonController {
     }
 
     @DeleteMapping(value = "/{lessonId}")
-    public ResponseEntity<?> deleteLesson(@PathVariable(name = "lessonId") int lessonId,
+    public ResponseEntity<?> deleteLesson(@PathVariable(name = "lessonId") long lessonId,
                                           HttpServletRequest httpRequest) {
         LessonDto lessonDto = lessonService.getLessonById(lessonId);
         if (!tokenService.checkUser(httpRequest, lessonDto.getProfessor().getUsername())) {
@@ -91,7 +91,7 @@ public class LessonController {
     }
 
     @GetMapping(value = "/{lessonId}")
-    public ResponseEntity<?> getLessonById(@PathVariable(name = "lessonId") int lessonId) {
+    public ResponseEntity<?> getLessonById(@PathVariable(name = "lessonId") long lessonId) {
         LessonDto lesson = lessonService.getLessonById(lessonId);
         return lesson != null ? new ResponseEntity<>(lesson, HttpStatus.OK) :
                 new ResponseEntity<>(new RequestError(404,
@@ -101,9 +101,7 @@ public class LessonController {
     }
 
     @GetMapping(value = "/date")
-//    public ResponseEntity<?> getLessonsOnTheDate(@PathVariable(name = "date") String stringDate) {
     public ResponseEntity<?> getLessonsOnTheDate(@RequestBody DateDto dateDto) {
-//            LocalDate date = LocalDate.parse(stringDate, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
         List<LessonDto> lessons = lessonService.getLessonsOnTheDate(dateDto.getDate());
         return lessons != null ? new ResponseEntity<>(lessons, HttpStatus.OK) :
                 new ResponseEntity<>(new RequestError(404,
@@ -163,7 +161,7 @@ public class LessonController {
     }
 
     @GetMapping(value = "/{lessonId}/review")
-    public ResponseEntity<?> getReviewOnTheLesson(@PathVariable(name = "lessonId") int lessonId) {
+    public ResponseEntity<?> getReviewOnTheLesson(@PathVariable(name = "lessonId") long lessonId) {
         Set<Review> reviews = lessonService.getReviewOnTheLesson(lessonId);
         return reviews != null ? new ResponseEntity<>(reviews, HttpStatus.OK) :
                 new ResponseEntity<>(new RequestError(404,
@@ -173,7 +171,7 @@ public class LessonController {
     }
 
     @PostMapping(value = "/{lessonId}/review")
-    public ResponseEntity<?> addReviewToTheLesson(@PathVariable(name = "lessonId") int lessonId,
+    public ResponseEntity<?> addReviewToTheLesson(@PathVariable(name = "lessonId") long lessonId,
                                                   @RequestBody Review review,
                                                   HttpServletRequest httpRequest) {
         if (!tokenService.checkUser(httpRequest, review.getUsername())) {
@@ -191,7 +189,7 @@ public class LessonController {
     }
 
     @PutMapping(value = "/{lessonId}/reward")
-    public ResponseEntity<?> changeRewardForLesson(@PathVariable(name = "lessonId") int lessonId,
+    public ResponseEntity<?> changeRewardForLesson(@PathVariable(name = "lessonId") long lessonId,
                                                    @RequestParam int reward) {
         boolean isChanged = lessonService.changeRewardByLessonId(lessonId, reward);
         return isChanged ? new ResponseEntity<>(HttpStatus.CREATED) :
