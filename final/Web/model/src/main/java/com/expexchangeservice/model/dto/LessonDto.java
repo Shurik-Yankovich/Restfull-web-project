@@ -8,18 +8,18 @@ import java.time.LocalDate;
 
 public class LessonDto {
 
-    private int id;
+    private long id;
     private Theme theme;
     private ProfileDto professor;
     private Type type;
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
     private LocalDate date;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

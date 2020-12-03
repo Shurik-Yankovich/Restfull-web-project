@@ -1,6 +1,7 @@
 package com.expexchangeservice.service.impl;
 
 import com.expexchangeservice.model.dto.UserCreds;
+import com.expexchangeservice.model.dto.UserDto;
 import com.expexchangeservice.model.enums.Role;
 import com.expexchangeservice.model.entities.User;
 import com.expexchangeservice.repository.interfaces.IUserRepository;
@@ -9,25 +10,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 @Service
-@Transactional
 public class UserService implements IUserService, UserDetailsService {
     @PersistenceContext
     private EntityManager em;
     private IUserRepository userRepository;
-    //    private IProfileRepository profileRepository;
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
     public UserService(IUserRepository userRepository) {
         this.userRepository = userRepository;
-//        this.profileRepository = profileRepository;
     }
 
     @Override
@@ -47,16 +44,17 @@ public class UserService implements IUserService, UserDetailsService {
     }
 
     @Override
-    public User loadUserById(Integer userId) {
+    public User loadUserById(Long userId) {
         return userRepository.read(userId);
     }
 
     @Override
-    public boolean saveUser(User user) {
-        User userFromDB = userRepository.findByUsername(user.getUsername());
+    public boolean saveUser(UserDto userDto) {
+        User userFromDB = userRepository.findByUsername(userDto.getUsername());
         if (userFromDB != null) {
             return false;
         }
+        User user = convertDtoToUser(userDto);
         user.setRole(Role.ROLE_USER);
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.create(user);
@@ -64,7 +62,7 @@ public class UserService implements IUserService, UserDetailsService {
     }
 
     @Override
-    public boolean deleteUser(Integer userId) {
+    public boolean deleteUser(Long userId) {
         User user = userRepository.read(userId);
         if (user != null) {
             userRepository.delete(user);
@@ -98,4 +96,14 @@ public class UserService implements IUserService, UserDetailsService {
         userRepository.update(user);
         return user;
     }
+    private User convertDtoToUser(UserDto userDto) {
+        if (userDto == null) {
+            return null;
+        }
+        User user = new User();
+        user.setUsername(userDto.getUsername());
+        user.setPassword(userDto.getPassword());
+        return user;
+    }
+
 }

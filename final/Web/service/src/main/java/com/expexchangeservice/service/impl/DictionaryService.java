@@ -8,13 +8,10 @@ import com.expexchangeservice.repository.interfaces.IThemeRepository;
 import com.expexchangeservice.service.interfaces.IDictionaryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
-@Transactional(propagation = Propagation.REQUIRES_NEW)
 public class DictionaryService implements IDictionaryService {
 
     private IThemeRepository themeRepository;
@@ -32,7 +29,7 @@ public class DictionaryService implements IDictionaryService {
     }
 
     @Override
-    public List<Theme> getThemeDictionaryOnTheSection(Integer sectionId) {
+    public List<Theme> getThemeDictionaryOnTheSection(Long sectionId) {
         Section section = sectionRepository.read(sectionId);
         return section.getThemes();
     }
@@ -43,18 +40,18 @@ public class DictionaryService implements IDictionaryService {
     }
 
     @Override
-    public Theme getThemeById(Integer themeId) {
+    public Theme getThemeById(Long themeId) {
         return themeRepository.read(themeId);
     }
 
     @Override
-    public Section getSectionById(Integer sectionId) {
+    public Section getSectionById(Long sectionId) {
         return sectionRepository.read(sectionId);
     }
 
     @Override
-    public boolean updateTheme(int id, ThemeDto themeDto) {
-        Theme theme = themeRepository.read(id);
+    public boolean updateTheme(Long themeId, ThemeDto themeDto) {
+        Theme theme = themeRepository.read(themeId);
         if (theme == null) {
             return false;
         }
@@ -74,7 +71,7 @@ public class DictionaryService implements IDictionaryService {
     }
 
     @Override
-    public void createTheme(int sectionId, ThemeDto themeDto) {
+    public void createTheme(Long sectionId, ThemeDto themeDto) {
         Theme theme = new Theme(themeDto.getTitle());
         themeRepository.create(theme);
         Section section = sectionRepository.read(sectionId);
@@ -88,7 +85,7 @@ public class DictionaryService implements IDictionaryService {
     }
 
     @Override
-    public boolean deleteTheme(Integer sectionId, Integer themeId) {
+    public boolean deleteTheme(Long sectionId, Long themeId) {
         Section section = sectionRepository.read(sectionId);
         Theme theme = themeRepository.read(themeId);
         if (section == null || theme == null) {
@@ -101,7 +98,7 @@ public class DictionaryService implements IDictionaryService {
     }
 
     @Override
-    public boolean deleteSection(Integer sectionId) {
+    public boolean deleteSection(Long sectionId) {
         Section section = sectionRepository.read(sectionId);
         if (section == null) {
             return false;

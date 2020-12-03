@@ -1,20 +1,50 @@
 package com.expexchangeservice.model.entities;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "Token")
 public class Token {
 
-    private String token;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+    @Column(name = "value")
+    private String value;
 
-    public Token(){}
+    @OneToOne
+    @JoinColumn(name = "id_user", referencedColumnName = "id")
+    private User user;
 
-    public Token(String tokenBody){
-        this.token = tokenBody;
+    public Token(String tokenKey, User user) {
+        this.value = tokenKey;
+        this.user = user;
+    }
+
+    public Token() {
     }
 
     public String getValue() {
-        return token;
+        return value;
     }
 
-    public void setValue(String token) {
-        this.token = token;
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

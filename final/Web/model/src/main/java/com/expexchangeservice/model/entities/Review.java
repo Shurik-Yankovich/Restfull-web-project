@@ -9,20 +9,17 @@ public class Review {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-//    @OneToOne(cascade = CascadeType.ALL)
-//    @LazyCollection(LazyCollectionOption.FALSE)
-//    @JoinColumn(name = "idProfile")
+    private long id;
     @Column(name = "username")
     private String username;
     @Column(name = "review")
     private String review;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

@@ -9,8 +9,6 @@ import java.util.List;
 public abstract class AbstractRepository<E> implements IRepository<E> {
 
     private final Class<E> entityClass;
-//    @Autowired
-//    private SessionFactory sessionFactory;
 
     public AbstractRepository() {
         this.entityClass = (Class<E>) ((ParameterizedType) this.getClass().getGenericSuperclass())
@@ -19,35 +17,27 @@ public abstract class AbstractRepository<E> implements IRepository<E> {
 
     @Override
     public void create(E entity) {
-//        Session session = HibernateSessionFactoryUtil.getSession();
-//        session.save(entity);
-//        session.close();
         HibernateSessionFactoryUtil.getSession().save(entity);
-//        sessionFactory.getCurrentSession().save(entity);
     }
 
     @Override
     public void update(E entity) {
-//        sessionFactory.getCurrentSession().saveOrUpdate(entity);
         HibernateSessionFactoryUtil.getSession().saveOrUpdate(entity);
     }
 
     @Override
-    public E read(Integer primaryKey) {
-//        return (E) sessionFactory.getCurrentSession().get(this.entityClass, primaryKey);
+    public E read(Long primaryKey) {
         return (E) HibernateSessionFactoryUtil.getSession().get(this.entityClass, primaryKey);
     }
 
     @Override
     public void delete(E entity) {
-//        sessionFactory.getCurrentSession().delete(entity);
         HibernateSessionFactoryUtil.getSession().delete(entity);
     }
 
     @Override
     public List<E> readAll() {
         String hql = "From " + this.entityClass.getName();
-//        return sessionFactory.getCurrentSession().createQuery(hql).list();
         return HibernateSessionFactoryUtil.getSession().createQuery(hql).list();
     }
 }

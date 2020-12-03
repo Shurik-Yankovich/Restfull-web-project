@@ -1,21 +1,17 @@
 package com.expexchangeservice.model.dto;
 
-import javax.persistence.*;
-
 public class ProfileDto {
 
-    private int id;
+    private long id;
     private String username;
-    @Column(name = "full_name")
     private String fullName;
-    @Column(name = "workplace")
     private String placeOfWork;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

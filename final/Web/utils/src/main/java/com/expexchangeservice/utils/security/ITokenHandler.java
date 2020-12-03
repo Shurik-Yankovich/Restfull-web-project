@@ -4,9 +4,9 @@ public interface ITokenHandler {
 
     String AUTH_HEADER_NAME = "Auth-Token";
 
-    String generateToken(String userId);
+    String generateToken(Long userId);
 
     boolean checkToken(String token);
 
-    Integer getUserIdFromToken(String token);
+    Long getUserIdFromToken(String token);
 }

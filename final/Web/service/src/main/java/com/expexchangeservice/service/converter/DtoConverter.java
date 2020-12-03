@@ -10,16 +10,18 @@ import com.expexchangeservice.model.entities.User;
 import com.expexchangeservice.model.entities.UserProfile;
 import com.expexchangeservice.service.interfaces.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class DtoConverter {
 
     @Autowired
-    private static IUserService USER_SERVICE;
+    private IUserService userService;
 
-    public static Lesson convertDtoToLesson(Lesson lesson, LessonDto lessonDto) {
+    public Lesson convertDtoToLesson(Lesson lesson, LessonDto lessonDto) {
         if (lessonDto == null) {
             return null;
         }
@@ -36,7 +38,7 @@ public class DtoConverter {
         return lesson;
     }
 
-    public static LessonDto convertLessonToDto(Lesson lesson) {
+    public LessonDto convertLessonToDto(Lesson lesson) {
         if (lesson == null) {
             return null;
         }
@@ -50,7 +52,7 @@ public class DtoConverter {
         return lessonDto;
     }
 
-    public static List<LessonDto> convertLessonListToDtoList(List<Lesson> lessons) {
+    public List<LessonDto> convertLessonListToDtoList(List<Lesson> lessons) {
         if (lessons == null) {
             return null;
         }
@@ -61,7 +63,7 @@ public class DtoConverter {
         return lessonDtoList;
     }
 
-    public static Course convertDtoToCourse(Course course, CourseDto courseDto) {
+    public Course convertDtoToCourse(Course course, CourseDto courseDto) {
         if (courseDto == null) {
             return null;
         }
@@ -78,7 +80,7 @@ public class DtoConverter {
         return course;
     }
 
-    public static CourseDto convertCourseToDto(Course course) {
+    public CourseDto convertCourseToDto(Course course) {
         if (course == null) {
             return null;
         }
@@ -93,7 +95,7 @@ public class DtoConverter {
         return courseDto;
     }
 
-    public static List<CourseDto> convertCourseListToDtoList(List<Course> courses) {
+    public List<CourseDto> convertCourseListToDtoList(List<Course> courses) {
         if (courses == null) {
             return null;
         }
@@ -104,18 +106,18 @@ public class DtoConverter {
         return courseDtoList;
     }
 
-    public static UserProfile convertDtoToUserProfile(UserProfile userProfile, ProfileDto profileDto) {
+    public UserProfile convertDtoToUserProfile(UserProfile userProfile, ProfileDto profileDto) {
         if (profileDto == null) {
             return null;
         }
-        userProfile.setId(userProfile.getId());
+        userProfile.setId(profileDto.getId());
         userProfile.setFullName(profileDto.getFullName());
-        userProfile.setUser(USER_SERVICE.loadUserByUsername(profileDto.getUsername()));
+        userProfile.setUser(userService.loadUserByUsername(profileDto.getUsername()));
         userProfile.setPlaceOfWork(profileDto.getPlaceOfWork());
         return userProfile;
     }
 
-    public static ProfileDto convertUserProfileToDto(UserProfile userProfile) {
+    public ProfileDto convertUserProfileToDto(UserProfile userProfile) {
         if (userProfile == null) {
             return null;
         }
@@ -127,7 +129,7 @@ public class DtoConverter {
         return profileDto;
     }
 
-    public static UserDto convertUserToDto(User user) {
+    public UserDto convertUserToDto(User user) {
         if (user == null) {
             return null;
         }
@@ -137,7 +139,7 @@ public class DtoConverter {
         return userDto;
     }
 
-    public static User convertDtoToUser(UserDto userDto) {
+    public User convertDtoToUser(UserDto userDto) {
         if (userDto == null) {
             return null;
         }
