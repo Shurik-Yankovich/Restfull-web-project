@@ -1,4 +1,4 @@
-package com.expexchangeservice.controller.config;
+package com.expexchangeservice.rest.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;

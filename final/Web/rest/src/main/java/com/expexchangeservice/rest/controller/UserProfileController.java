@@ -1,4 +1,4 @@
-package com.expexchangeservice.controller.rest;
+package com.expexchangeservice.rest.controller;
 
 import com.expexchangeservice.model.dto.*;
 import com.expexchangeservice.model.entities.Course;

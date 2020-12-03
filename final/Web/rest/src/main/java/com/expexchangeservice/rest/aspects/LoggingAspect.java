@@ -1,4 +1,4 @@
-package com.expexchangeservice.controller.aspects;
+package com.expexchangeservice.rest.aspects;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

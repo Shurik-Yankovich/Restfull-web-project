@@ -1,4 +1,4 @@
-package com.expexchangeservice.controller.rest;
+package com.expexchangeservice.rest.controller;
 
 import com.expexchangeservice.model.dto.RequestError;
 import com.expexchangeservice.model.dto.ThemeDto;

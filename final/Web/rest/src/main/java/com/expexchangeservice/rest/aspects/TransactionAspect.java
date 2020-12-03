@@ -1,4 +1,4 @@
-package com.expexchangeservice.controller.aspects;
+package com.expexchangeservice.rest.aspects;
 
 import com.expexchangeservice.utils.hibernate.HibernateSessionFactoryUtil;
 import org.aspectj.lang.annotation.*;

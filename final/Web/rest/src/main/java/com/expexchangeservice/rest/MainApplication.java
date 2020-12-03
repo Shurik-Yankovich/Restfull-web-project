@@ -1,6 +1,6 @@
-package com.expexchangeservice.controller;
+package com.expexchangeservice.rest;
 
-import com.expexchangeservice.controller.config.SecurityConfiguration;
+import com.expexchangeservice.rest.config.SecurityConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -13,7 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EntityScan("com.expexchangeservice.model.entities")
 @SpringBootApplication(scanBasePackages = {"com.expexchangeservice.repository",
         "com.expexchangeservice.service",
-        "com.expexchangeservice.controller",
+        "com.expexchangeservice.rest",
         "com.expexchangeservice.utils"})
 @EnableAspectJAutoProxy
 public class MainApplication {

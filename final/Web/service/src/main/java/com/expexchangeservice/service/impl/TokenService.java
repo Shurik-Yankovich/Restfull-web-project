@@ -72,7 +72,7 @@ public class TokenService implements ITokenService {
     public boolean checkUser(HttpServletRequest request, Long userId) {
         String tokenValue = request.getHeader(AUTH_HEADER_NAME);
         Long id = tokenHandler.getUserIdFromToken(tokenValue);
-        return id == userId;
+        return id.equals(userId);
     }
 
     @Override
