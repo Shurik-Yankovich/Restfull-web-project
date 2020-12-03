@@ -25,4 +25,6 @@ public interface ILessonService {
     List<LessonDto> getLessonsByType(Type lessonType);
     boolean addReview(Integer lessonId, Review review);
     Set<Review> getReviewOnTheLesson(Integer lessonId);
+    int getRewardForLessonsByProfessor(String username);
+    boolean changeRewardByLessonId(int lessonId, int reward);
 }

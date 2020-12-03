@@ -10,9 +10,8 @@ import com.expexchangeservice.service.interfaces.ICourseService;
 import com.expexchangeservice.service.interfaces.IReviewService;
 import com.expexchangeservice.service.interfaces.IUserProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -27,6 +26,9 @@ public class CourseService implements ICourseService {
     private IUserProfileService profileService;
     private DtoConverter converter;
 
+    @Value("${reward_for_lesson:100}")
+    private static int REWARD_FOR_LESSON;
+
     @Autowired
     public CourseService(ICourseRepository courseRepository, IReviewService reviewService,
                          IUserProfileService profileService, DtoConverter converter) {
@@ -39,7 +41,7 @@ public class CourseService implements ICourseService {
     @Override
     public void createCourse(CourseDto courseDto) {
         Course course = converter.convertDtoToCourse(new Course(), courseDto);
-        course.setPrice(100 * course.getCountLesson());
+        course.setReward(REWARD_FOR_LESSON * course.getCountLesson());
         courseRepository.create(course);
     }
 
@@ -125,6 +127,28 @@ public class CourseService implements ICourseService {
     public Set<Review> getReviewOnTheLesson(Integer courseId) {
         Course course = courseRepository.read(courseId);
         return course.getReviews();
+    }
+
+    @Override
+    public int getRewardForCoursesByProfessor(String username) {
+        UserProfile professor = profileService.findProfileByUsername(username);
+        List<Course> courses = courseRepository.findByProfessor(professor);
+        int sum = 0;
+        for (Course course : courses) {
+            sum += course.getReward();
+        }
+        return sum;
+    }
+
+    @Override
+    public boolean changeRewardByCourseId(int lessonId, int reward) {
+        Course course = courseRepository.read(lessonId);
+        if (course == null) {
+            return false;
+        }
+        course.setReward(reward);
+        courseRepository.update(course);
+        return true;
     }
 
 }

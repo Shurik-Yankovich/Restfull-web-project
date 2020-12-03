@@ -1,7 +1,6 @@
 package com.expexchangeservice.controller.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import com.expexchangeservice.service.impl.UserService;
 import org.springframework.http.HttpStatus;
@@ -13,8 +12,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
-
-import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
@@ -38,15 +35,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/profile/user/*/role").hasRole("ADMIN")
+                .antMatchers("/profile/user/*/role", "/lessons/*/reward", "/course/*/reward").hasRole("ADMIN")
                 .antMatchers("/", "/login/", "/registration/").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
                 .logout()
                 .logoutUrl("/logout")
-//                .invalidateHttpSession(true)
-//                .deleteCookies("threadLocalScope")
                 .addLogoutHandler(logoutHandler)
                 .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK))
                 .permitAll();
@@ -55,7 +50,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userService).passwordEncoder(bCryptPasswordEncoder);
-//        auth.jdbcAuthentication().dataSource(dataSource).passwordEncoder(bCryptPasswordEncoder())
-//                .usersByUsernameQuery("");
     }
 }

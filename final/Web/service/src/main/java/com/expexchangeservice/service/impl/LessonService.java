@@ -13,6 +13,7 @@ import com.expexchangeservice.service.interfaces.ILessonService;
 import com.expexchangeservice.service.interfaces.IReviewService;
 import com.expexchangeservice.service.interfaces.IUserProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -28,6 +29,9 @@ public class LessonService implements ILessonService {
     private IUserProfileService profileService;
     private DtoConverter converter;
 
+    @Value("${reward_for_lesson:100}")
+    private static int REWARD_FOR_LESSON;
+
     @Autowired
     public LessonService(ILessonRepository lessonRepository, IReviewService reviewService,
                          IUserProfileService profileService, DtoConverter converter) {
@@ -40,7 +44,7 @@ public class LessonService implements ILessonService {
     @Override
     public void addLesson(LessonDto lessonDto) {
         Lesson lesson = converter.convertDtoToLesson(new Lesson(), lessonDto);
-        lesson.setPrice(100);
+        lesson.setReward(REWARD_FOR_LESSON);
         lessonRepository.create(lesson);
     }
 
@@ -126,6 +130,28 @@ public class LessonService implements ILessonService {
     public Set<Review> getReviewOnTheLesson(Integer lessonId) {
         Lesson lesson = lessonRepository.read(lessonId);
         return lesson.getReviews();
+    }
+
+    @Override
+    public int getRewardForLessonsByProfessor(String username) {
+        UserProfile professor = profileService.findProfileByUsername(username);
+        List<Lesson> lessons = lessonRepository.findByProfessor(professor);
+        int sum = 0;
+        for (Lesson lesson : lessons) {
+            sum += lesson.getReward();
+        }
+        return sum;
+    }
+
+    @Override
+    public boolean changeRewardByLessonId(int lessonId, int reward) {
+        Lesson lesson = lessonRepository.read(lessonId);
+        if (lesson == null) {
+            return false;
+        }
+        lesson.setReward(reward);
+        lessonRepository.update(lesson);
+        return true;
     }
 
 }

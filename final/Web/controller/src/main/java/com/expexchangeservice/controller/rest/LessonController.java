@@ -174,13 +174,38 @@ public class LessonController {
 
     @PostMapping(value = "/{lessonId}/review")
     public ResponseEntity<?> addReviewToTheLesson(@PathVariable(name = "lessonId") int lessonId,
-                                                  @RequestBody Review review) {
+                                                  @RequestBody Review review,
+                                                  HttpServletRequest httpRequest) {
+        if (!tokenService.checkUser(httpRequest, review.getUsername())) {
+            return new ResponseEntity<>(new RequestError(406,
+                    "can't add review",
+                    "cannot add a review not under your username"),
+                    HttpStatus.FORBIDDEN);
+        }
         boolean isAdded = lessonService.addReview(lessonId, review);
         return isAdded ? new ResponseEntity<>(HttpStatus.CREATED) :
                 new ResponseEntity<>(new RequestError(404,
                         "lesson not found",
                         "lesson with current id not found"),
                         HttpStatus.NOT_FOUND);
+    }
+
+    @PutMapping(value = "/{lessonId}/reward")
+    public ResponseEntity<?> changeRewardForLesson(@PathVariable(name = "lessonId") int lessonId,
+                                                   @RequestParam int reward) {
+        boolean isChanged = lessonService.changeRewardByLessonId(lessonId, reward);
+        return isChanged ? new ResponseEntity<>(HttpStatus.CREATED) :
+                new ResponseEntity<>(new RequestError(404,
+                        "lesson not found",
+                        "lesson with current id not found"),
+                        HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping(value = "/reward")
+    public ResponseEntity<?> getRewardForLessonsForProfessor(HttpServletRequest httpRequest) {
+        String username = tokenService.getUsernameByRequest(httpRequest);
+        int reward = lessonService.getRewardForLessonsByProfessor(username);
+        return new ResponseEntity<>(reward, HttpStatus.CREATED);
     }
 
 }

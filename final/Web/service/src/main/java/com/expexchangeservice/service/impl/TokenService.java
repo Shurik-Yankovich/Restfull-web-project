@@ -75,6 +75,13 @@ public class TokenService implements ITokenService {
         return id == userId;
     }
 
+    @Override
+    public String getUsernameByRequest(HttpServletRequest request) {
+        String tokenValue = request.getHeader(AUTH_HEADER_NAME);
+        User user = userService.loadUserById(tokenHandler.getUserIdFromToken(tokenValue));
+        return user.getUsername();
+    }
+
     private Token createToken(User user) {
         return new Token(tokenHandler.generateToken(user.getId()), user);
     }

@@ -23,4 +23,6 @@ public interface ICourseService {
     List<CourseDto> getCoursesByType(Type courseType);
     boolean addReview(Integer courseId, Review review);
     Set<Review> getReviewOnTheLesson(Integer courseId);
+    int getRewardForCoursesByProfessor(String username);
+    boolean changeRewardByCourseId(int lessonId, int reward);
 }

@@ -31,7 +31,7 @@ public class Lesson {
     @Column(name = "date")
     private LocalDate date;
     @Column(name = "price")
-    private int price;
+    private int reward;
     @OneToMany(cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(name = "Lesson_Members",
@@ -84,12 +84,12 @@ public class Lesson {
         this.date = date;
     }
 
-    public int getPrice() {
-        return price;
+    public int getReward() {
+        return reward;
     }
 
-    public void setPrice(int price) {
-        this.price = price;
+    public void setReward(int reward) {
+        this.reward = reward;
     }
 
     public Set<UserProfile> getMembers() {

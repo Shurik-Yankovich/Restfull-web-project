@@ -33,7 +33,7 @@ public class Course {
     @Column(name = "count_lesson")
     private int countLesson;
     @Column(name = "price")
-    private int price;
+    private int reward;
     @ManyToMany(cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(name = "Course_Members",
@@ -95,12 +95,12 @@ public class Course {
         this.countLesson = countLesson;
     }
 
-    public int getPrice() {
-        return price;
+    public int getReward() {
+        return reward;
     }
 
-    public void setPrice(int price) {
-        this.price = price;
+    public void setReward(int reward) {
+        this.reward = reward;
     }
 
     public Set<UserProfile> getMembers() {

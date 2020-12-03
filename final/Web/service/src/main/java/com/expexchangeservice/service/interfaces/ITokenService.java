@@ -2,6 +2,7 @@ package com.expexchangeservice.service.interfaces;
 
 import com.expexchangeservice.model.dto.UserDto;
 import com.expexchangeservice.model.entities.Token;
+import com.expexchangeservice.model.entities.User;
 import org.springframework.security.core.Authentication;
 
 import javax.servlet.ServletRequest;
@@ -16,4 +17,5 @@ public interface ITokenService {
     boolean checkUser(HttpServletRequest request, String username);
     boolean checkUser(HttpServletRequest request, int userId);
     boolean deleteToken(HttpServletRequest request);
+    String getUsernameByRequest(HttpServletRequest request);
 }
