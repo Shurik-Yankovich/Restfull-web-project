@@ -1,8 +1,8 @@
 package com.expexchangeservice.rest.controller;
 
 import com.expexchangeservice.model.dto.RequestError;
+import com.expexchangeservice.model.dto.SectionDto;
 import com.expexchangeservice.model.dto.ThemeDto;
-import com.expexchangeservice.model.entities.Section;
 import com.expexchangeservice.model.entities.Theme;
 import com.expexchangeservice.service.interfaces.IDictionaryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -35,14 +34,14 @@ public class DictionaryController {
     }
 
     @PostMapping(value = "/section")
-    public ResponseEntity<?> createSection(@RequestBody Section section) {
-        dictionaryService.createSection(section);
+    public ResponseEntity<?> createSection(@RequestBody SectionDto sectionDto) {
+        dictionaryService.createSection(sectionDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/section")
-    public ResponseEntity<?> getSectionsList(HttpServletRequest httpRequest) {
-        List<Section> sections = dictionaryService.getSectionDictionary();
+    public ResponseEntity<?> getSectionsList() {
+        List<SectionDto> sections = dictionaryService.getSectionDictionary();
         return sections != null ? new ResponseEntity<>(sections, HttpStatus.OK) :
                 new ResponseEntity<>(new RequestError(404,
                         "sections not found",
@@ -52,8 +51,8 @@ public class DictionaryController {
 
     @PutMapping(value = "/section/{sectionId}")
     public ResponseEntity<?> changeSection(@PathVariable(name = "sectionId") long sectionId,
-                                           @RequestBody Section section) {
-        boolean isChanged = dictionaryService.updateSection(section);
+                                           @RequestBody SectionDto sectionDto) {
+        boolean isChanged = dictionaryService.updateSection(sectionDto);
         return isChanged ? new ResponseEntity<>(HttpStatus.OK) :
                 new ResponseEntity<>(new RequestError(404,
                         "section not found",

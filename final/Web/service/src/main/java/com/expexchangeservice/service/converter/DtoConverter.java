@@ -1,13 +1,7 @@
 package com.expexchangeservice.service.converter;
 
-import com.expexchangeservice.model.dto.CourseDto;
-import com.expexchangeservice.model.dto.LessonDto;
-import com.expexchangeservice.model.dto.ProfileDto;
-import com.expexchangeservice.model.dto.UserDto;
-import com.expexchangeservice.model.entities.Course;
-import com.expexchangeservice.model.entities.Lesson;
-import com.expexchangeservice.model.entities.User;
-import com.expexchangeservice.model.entities.UserProfile;
+import com.expexchangeservice.model.dto.*;
+import com.expexchangeservice.model.entities.*;
 import com.expexchangeservice.service.interfaces.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -68,7 +62,7 @@ public class DtoConverter {
             return null;
         }
         course.setId(courseDto.getId());
-        course.setSection(courseDto.getSection());
+        course.setSection(convertDtoToSection(new Section(), courseDto.getSection()));
         if (course.getProfessor() == null) {
             course.setProfessor(convertDtoToUserProfile(new UserProfile(), courseDto.getProfessor()));
         } else {
@@ -86,7 +80,7 @@ public class DtoConverter {
         }
         CourseDto courseDto = new CourseDto();
         courseDto.setId(course.getId());
-        courseDto.setSection(course.getSection());
+        courseDto.setSection(convertSectionToDto(course.getSection()));
         ProfileDto profileDto = convertUserProfileToDto(course.getProfessor());
         courseDto.setProfessor(profileDto);
         courseDto.setType(course.getType());
@@ -147,6 +141,30 @@ public class DtoConverter {
         user.setUsername(userDto.getUsername());
         user.setPassword(userDto.getPassword());
         return user;
+    }
+
+    public SectionDto convertSectionToDto(Section section){
+        SectionDto sectionDto = new SectionDto();
+        sectionDto.setId(section.getId());
+        sectionDto.setTitle(section.getTitle());
+        return sectionDto;
+    }
+
+    public Section convertDtoToSection(Section section, SectionDto sectionDto){
+        section.setId(sectionDto.getId());
+        section.setTitle(sectionDto.getTitle());
+        return section;
+    }
+
+    public List<SectionDto> convertSectionListToDtoList(List<Section> sections) {
+        if (sections == null) {
+            return null;
+        }
+        List<SectionDto> sectionDtoList = new ArrayList<>();
+        for (Section section : sections) {
+            sectionDtoList.add(convertSectionToDto(section));
+        }
+        return sectionDtoList;
     }
 
 }

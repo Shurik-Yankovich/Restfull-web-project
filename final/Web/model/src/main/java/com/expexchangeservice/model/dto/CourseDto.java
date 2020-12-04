@@ -1,6 +1,5 @@
 package com.expexchangeservice.model.dto;
 
-import com.expexchangeservice.model.entities.Section;
 import com.expexchangeservice.model.enums.Type;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -9,7 +8,7 @@ import java.time.LocalDate;
 public class CourseDto {
 
     private long id;
-    private Section section;
+    private SectionDto section;
     private ProfileDto professor;
     private Type type;
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
@@ -24,11 +23,11 @@ public class CourseDto {
         this.id = id;
     }
 
-    public Section getSection() {
+    public SectionDto getSection() {
         return section;
     }
 
-    public void setSection(Section section) {
+    public void setSection(SectionDto section) {
         this.section = section;
     }
 
