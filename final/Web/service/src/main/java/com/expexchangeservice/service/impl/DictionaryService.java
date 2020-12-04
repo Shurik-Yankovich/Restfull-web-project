@@ -1,10 +1,12 @@
 package com.expexchangeservice.service.impl;
 
+import com.expexchangeservice.model.dto.SectionDto;
 import com.expexchangeservice.model.dto.ThemeDto;
 import com.expexchangeservice.model.entities.Section;
 import com.expexchangeservice.model.entities.Theme;
 import com.expexchangeservice.repository.interfaces.ISectionRepository;
 import com.expexchangeservice.repository.interfaces.IThemeRepository;
+import com.expexchangeservice.service.converter.DtoConverter;
 import com.expexchangeservice.service.interfaces.IDictionaryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,11 +18,14 @@ public class DictionaryService implements IDictionaryService {
 
     private IThemeRepository themeRepository;
     private ISectionRepository sectionRepository;
+    private DtoConverter converter;
 
     @Autowired
-    public DictionaryService(IThemeRepository themeRepository, ISectionRepository sectionRepository) {
+    public DictionaryService(IThemeRepository themeRepository, ISectionRepository sectionRepository,
+                             DtoConverter converter) {
         this.themeRepository = themeRepository;
         this.sectionRepository = sectionRepository;
+        this.converter = converter;
     }
 
     @Override
@@ -35,8 +40,8 @@ public class DictionaryService implements IDictionaryService {
     }
 
     @Override
-    public List<Section> getSectionDictionary() {
-        return sectionRepository.readAll();
+    public List<SectionDto> getSectionDictionary() {
+        return converter.convertSectionListToDtoList(sectionRepository.readAll());
     }
 
     @Override
@@ -45,8 +50,8 @@ public class DictionaryService implements IDictionaryService {
     }
 
     @Override
-    public Section getSectionById(Long sectionId) {
-        return sectionRepository.read(sectionId);
+    public SectionDto getSectionById(Long sectionId) {
+        return converter.convertSectionToDto(sectionRepository.read(sectionId));
     }
 
     @Override
@@ -60,12 +65,12 @@ public class DictionaryService implements IDictionaryService {
         return true;
     }
 
-    //TODO: просмотреть обновление секции, может какие изменения внести нужно!
     @Override
-    public boolean updateSection(Section section) {
-        if (section == null) {
+    public boolean updateSection(SectionDto sectionDto) {
+        if (sectionDto == null) {
             return false;
         }
+        Section section = converter.convertDtoToSection(sectionRepository.read(sectionDto.getId()), sectionDto);
         sectionRepository.update(section);
         return true;
     }
@@ -80,7 +85,8 @@ public class DictionaryService implements IDictionaryService {
     }
 
     @Override
-    public void createSection(Section section) {
+    public void createSection(SectionDto sectionDto) {
+        Section section = converter.convertDtoToSection(new Section(), sectionDto);
         sectionRepository.create(section);
     }
 
