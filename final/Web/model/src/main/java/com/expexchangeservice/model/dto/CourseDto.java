@@ -4,6 +4,7 @@ import com.expexchangeservice.model.enums.Type;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class CourseDto {
 
@@ -61,5 +62,23 @@ public class CourseDto {
 
     public void setCountLesson(int countLesson) {
         this.countLesson = countLesson;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CourseDto courseDto = (CourseDto) o;
+        return id == courseDto.id &&
+                countLesson == courseDto.countLesson &&
+                Objects.equals(section, courseDto.section) &&
+                Objects.equals(professor, courseDto.professor) &&
+                type == courseDto.type &&
+                Objects.equals(dateStart, courseDto.dateStart);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, section, professor, type, dateStart, countLesson);
     }
 }

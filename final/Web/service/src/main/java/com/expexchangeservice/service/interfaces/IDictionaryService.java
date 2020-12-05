@@ -15,8 +15,8 @@ public interface IDictionaryService {
     SectionDto getSectionById(Long sectionId);
     boolean updateTheme(Long themeId, ThemeDto themeDto);
     boolean updateSection(SectionDto section);
-    void createTheme(Long sectionId, ThemeDto themeDto);
-    void createSection(SectionDto section);
+    boolean createTheme(Long sectionId, ThemeDto themeDto);
+    boolean createSection(SectionDto section);
     boolean deleteTheme(Long sectionId, Long themeId);
     boolean deleteSection(Long sectionId);
 }

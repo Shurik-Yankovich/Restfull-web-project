@@ -42,7 +42,7 @@ public class UserProfileController {
                     "Hasn't access with this user"),
                     HttpStatus.FORBIDDEN);
         }
-        profileService.addUserProfile(profile);
+        profileService.createUserProfile(profile);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -56,7 +56,7 @@ public class UserProfileController {
                     "Hasn't access with this user"),
                     HttpStatus.FORBIDDEN);
         }
-        boolean isChanged = profileService.changeUserProfile(profileId, profile);
+        boolean isChanged = profileService.updateUserProfile(profileId, profile);
         return isChanged ? new ResponseEntity<>(HttpStatus.OK) :
                 new ResponseEntity<>(new RequestError(404,
                         "profiles not found",

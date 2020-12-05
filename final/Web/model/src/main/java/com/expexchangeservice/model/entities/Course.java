@@ -7,6 +7,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -117,5 +118,26 @@ public class Course {
 
     public void setReviews(Set<Review> reviews) {
         this.reviews = reviews;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Course course = (Course) o;
+        return id == course.id &&
+                countLesson == course.countLesson &&
+                reward == course.reward &&
+                Objects.equals(section, course.section) &&
+                Objects.equals(professor, course.professor) &&
+                type == course.type &&
+                Objects.equals(dateStart, course.dateStart) &&
+                Objects.equals(members, course.members) &&
+                Objects.equals(reviews, course.reviews);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, section, professor, type, dateStart, countLesson, reward, members, reviews);
     }
 }

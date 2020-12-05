@@ -5,6 +5,7 @@ import com.expexchangeservice.model.entities.Theme;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class LessonDto {
 
@@ -55,4 +56,20 @@ public class LessonDto {
         this.date = date;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        LessonDto lessonDto = (LessonDto) o;
+        return id == lessonDto.id &&
+                Objects.equals(theme, lessonDto.theme) &&
+                Objects.equals(professor, lessonDto.professor) &&
+                type == lessonDto.type &&
+                Objects.equals(date, lessonDto.date);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, theme, professor, type, date);
+    }
 }

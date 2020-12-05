@@ -9,7 +9,7 @@ public interface IUserService {
     User loadUserByUsername(String username);
     User loadUserByUsernameAndPassword(String username, String password);
     User loadUserById(Long userId);
-    boolean saveUser(UserDto userDto);
+    boolean createUser(UserDto userDto);
     boolean deleteUser(Long primaryKey);
     boolean changeUserPassword(UserCreds userCreds);
     User changeUserRole(String username, boolean isAdmin);

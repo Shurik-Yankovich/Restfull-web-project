@@ -1,5 +1,7 @@
 package com.expexchangeservice.model.dto;
 
+import java.util.Objects;
+
 public class SectionDto {
 
     private long id;
@@ -19,5 +21,19 @@ public class SectionDto {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SectionDto that = (SectionDto) o;
+        return id == that.id &&
+                Objects.equals(title, that.title);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title);
     }
 }

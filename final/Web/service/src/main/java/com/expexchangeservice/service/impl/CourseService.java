@@ -110,11 +110,11 @@ public class CourseService implements ICourseService {
 
     @Override
     public boolean addReview(Long courseId, Review review) {
-        reviewService.addReview(review);
         Course course = courseRepository.read(courseId);
-        if (course == null) {
+        if (course == null || review == null) {
             return false;
         }
+        reviewService.createReview(review);
         if (course.getReviews() == null) {
             course.setReviews(new HashSet<>());
         }
@@ -124,9 +124,9 @@ public class CourseService implements ICourseService {
     }
 
     @Override
-    public Set<Review> getReviewOnTheLesson(Long courseId) {
+    public Set<Review> getReviewOnTheCourse(Long courseId) {
         Course course = courseRepository.read(courseId);
-        return course.getReviews();
+        return course != null ? course.getReviews() : null;
     }
 
     @Override

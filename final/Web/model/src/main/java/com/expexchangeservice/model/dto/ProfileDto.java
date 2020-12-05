@@ -1,5 +1,7 @@
 package com.expexchangeservice.model.dto;
 
+import java.util.Objects;
+
 public class ProfileDto {
 
     private long id;
@@ -37,5 +39,21 @@ public class ProfileDto {
 
     public void setPlaceOfWork(String placeOfWork) {
         this.placeOfWork = placeOfWork;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProfileDto that = (ProfileDto) o;
+        return id == that.id &&
+                Objects.equals(username, that.username) &&
+                Objects.equals(fullName, that.fullName) &&
+                Objects.equals(placeOfWork, that.placeOfWork);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, username, fullName, placeOfWork);
     }
 }

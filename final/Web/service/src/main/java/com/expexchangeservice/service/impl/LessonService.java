@@ -42,14 +42,14 @@ public class LessonService implements ILessonService {
     }
 
     @Override
-    public void addLesson(LessonDto lessonDto) {
+    public void createLesson(LessonDto lessonDto) {
         Lesson lesson = converter.convertDtoToLesson(new Lesson(), lessonDto);
         lesson.setReward(REWARD_FOR_LESSON);
         lessonRepository.create(lesson);
     }
 
     @Override
-    public boolean changeLesson(Long lessonId, LessonDto lessonDto) {
+    public boolean updateLesson(Long lessonId, LessonDto lessonDto) {
         Lesson lesson = converter.convertDtoToLesson(lessonRepository.read(lessonId), lessonDto);
         if (lesson == null) {
             return false;
@@ -113,11 +113,11 @@ public class LessonService implements ILessonService {
 
     @Override
     public boolean addReview(Long lessonId, Review review) {
-        reviewService.addReview(review);
         Lesson lesson = lessonRepository.read(lessonId);
-        if (lesson == null) {
+        if (lesson == null || review == null) {
             return false;
         }
+        reviewService.createReview(review);
         if (lesson.getReviews() == null) {
             lesson.setReviews(new HashSet<>());
         }
@@ -129,7 +129,7 @@ public class LessonService implements ILessonService {
     @Override
     public Set<Review> getReviewOnTheLesson(Long lessonId) {
         Lesson lesson = lessonRepository.read(lessonId);
-        return lesson.getReviews();
+        return lesson != null ? lesson.getReviews() : null;
     }
 
     @Override

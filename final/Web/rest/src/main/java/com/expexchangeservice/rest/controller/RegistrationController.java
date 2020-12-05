@@ -26,7 +26,7 @@ public class RegistrationController {
 
     @PostMapping("/registration")
     public ResponseEntity<?> registration(@RequestBody UserDto userForm) {
-        if (!userService.saveUser(userForm)) {
+        if (!userService.createUser(userForm)) {
             return new ResponseEntity<>(new RequestError(400,
                     "login isn't unique",
                     "current login is already exist"),

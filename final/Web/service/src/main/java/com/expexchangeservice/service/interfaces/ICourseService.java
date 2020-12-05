@@ -22,7 +22,7 @@ public interface ICourseService {
     List<CourseDto> getCoursesForTheProfessor(ProfileDto profileDto);
     List<CourseDto> getCoursesByType(Type courseType);
     boolean addReview(Long courseId, Review review);
-    Set<Review> getReviewOnTheLesson(Long courseId);
+    Set<Review> getReviewOnTheCourse(Long courseId);
     int getRewardForCoursesByProfessor(String username);
     boolean changeRewardByCourseId(Long courseId, int reward);
 }

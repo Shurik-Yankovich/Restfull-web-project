@@ -17,13 +17,21 @@ public class ReviewService implements IReviewService {
     }
 
     @Override
-    public void addReview(Review review) {
+    public boolean createReview(Review review) {
+        if (review == null) {
+            return false;
+        }
         reviewRepository.create(review);
+        return true;
     }
 
     @Override
-    public void updateReview(Review review) {
+    public boolean updateReview(Review review) {
+        if (review == null) {
+            return false;
+        }
         reviewRepository.update(review);
+        return true;
     }
 
     @Override
@@ -32,8 +40,12 @@ public class ReviewService implements IReviewService {
     }
 
     @Override
-    public void deleteReview(Long reviewId) {
+    public boolean deleteReview(Long reviewId) {
         Review review = reviewRepository.read(reviewId);
+        if (review == null) {
+            return false;
+        }
         reviewRepository.delete(review);
+        return true;
     }
 }

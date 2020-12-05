@@ -2,6 +2,7 @@ package com.expexchangeservice.model.entities;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "Section")
@@ -17,6 +18,13 @@ public class Section {
             joinColumns = @JoinColumn(name = "id_section"),
             inverseJoinColumns = @JoinColumn(name = "id_theme"))
     private List<Theme> themes;
+
+    public Section(String title) {
+        this.title = title;
+    }
+
+    public Section() {
+    }
 
     public long getId() {
         return id;
@@ -40,5 +48,20 @@ public class Section {
 
     public void setThemes(List<Theme> themes) {
         this.themes = themes;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Section section = (Section) o;
+        return id == section.id &&
+                Objects.equals(title, section.title) &&
+                Objects.equals(themes, section.themes);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, themes);
     }
 }

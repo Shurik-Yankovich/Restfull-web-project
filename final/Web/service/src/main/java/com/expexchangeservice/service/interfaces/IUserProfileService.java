@@ -11,8 +11,8 @@ import java.util.List;
 
 public interface IUserProfileService {
 
-    void addUserProfile(ProfileDto profileDto);
-    boolean changeUserProfile(Long profileId, ProfileDto profileDto);
+    void createUserProfile(ProfileDto profileDto);
+    boolean updateUserProfile(Long profileId, ProfileDto profileDto);
     boolean deleteUserProfile(Long profileId);
     ProfileDto getProfileDtoByUsername(String username);
     UserProfile findProfileByUsername(String username);

@@ -163,7 +163,7 @@ public class CourseController {
 
     @GetMapping(value = "/{courseId}/review")
     public ResponseEntity<?> getReviewOnTheCourse(@PathVariable(name = "courseId") long courseId) {
-        Set<Review> reviews = courseService.getReviewOnTheLesson(courseId);
+        Set<Review> reviews = courseService.getReviewOnTheCourse(courseId);
         return reviews != null ? new ResponseEntity<>(reviews, HttpStatus.OK) :
                 new ResponseEntity<>(new RequestError(404,
                         "reviews not found",

@@ -57,7 +57,7 @@ public class DictionaryService implements IDictionaryService {
     @Override
     public boolean updateTheme(Long themeId, ThemeDto themeDto) {
         Theme theme = themeRepository.read(themeId);
-        if (theme == null) {
+        if (theme == null || themeDto == null) {
             return false;
         }
         theme.setTitle(themeDto.getTitle());
@@ -76,18 +76,26 @@ public class DictionaryService implements IDictionaryService {
     }
 
     @Override
-    public void createTheme(Long sectionId, ThemeDto themeDto) {
+    public boolean createTheme(Long sectionId, ThemeDto themeDto) {
+        Section section = sectionRepository.read(sectionId);
+        if (section == null || themeDto == null) {
+            return false;
+        }
         Theme theme = new Theme(themeDto.getTitle());
         themeRepository.create(theme);
-        Section section = sectionRepository.read(sectionId);
         section.getThemes().add(theme);
         sectionRepository.update(section);
+        return true;
     }
 
     @Override
-    public void createSection(SectionDto sectionDto) {
+    public boolean createSection(SectionDto sectionDto) {
+        if (sectionDto == null) {
+            return false;
+        }
         Section section = converter.convertDtoToSection(new Section(), sectionDto);
         sectionRepository.create(section);
+        return true;
     }
 
     @Override

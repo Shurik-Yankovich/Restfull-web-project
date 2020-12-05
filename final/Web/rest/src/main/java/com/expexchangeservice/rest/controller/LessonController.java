@@ -40,7 +40,7 @@ public class LessonController {
                     "Hasn't access with this user"),
                     HttpStatus.FORBIDDEN);
         }
-        lessonService.addLesson(lessonDto);
+        lessonService.createLesson(lessonDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -64,7 +64,7 @@ public class LessonController {
                     "Hasn't access with this user"),
                     HttpStatus.FORBIDDEN);
         }
-        boolean isChanged = lessonService.changeLesson(lessonId, lessonDto);
+        boolean isChanged = lessonService.updateLesson(lessonId, lessonDto);
         return isChanged ? new ResponseEntity<>(HttpStatus.OK) :
                 new ResponseEntity<>(new RequestError(404,
                         "lesson not found",

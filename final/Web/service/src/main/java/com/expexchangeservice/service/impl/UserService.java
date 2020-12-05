@@ -16,8 +16,8 @@ import javax.persistence.PersistenceContext;
 
 @Service
 public class UserService implements IUserService, UserDetailsService {
-    @PersistenceContext
-    private EntityManager em;
+//    @PersistenceContext
+//    private EntityManager em;
     private IUserRepository userRepository;
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -49,7 +49,7 @@ public class UserService implements IUserService, UserDetailsService {
     }
 
     @Override
-    public boolean saveUser(UserDto userDto) {
+    public boolean createUser(UserDto userDto) {
         User userFromDB = userRepository.findByUsername(userDto.getUsername());
         if (userFromDB != null) {
             return false;

@@ -34,13 +34,13 @@ public class UserProfileService implements IUserProfileService {
     }
 
     @Override
-    public void addUserProfile(ProfileDto profileDto) {
+    public void createUserProfile(ProfileDto profileDto) {
         UserProfile userProfile = converter.convertDtoToUserProfile(new UserProfile(), profileDto);
         profileRepository.create(userProfile);
     }
 
     @Override
-    public boolean changeUserProfile(Long profileId, ProfileDto profileDto) {
+    public boolean updateUserProfile(Long profileId, ProfileDto profileDto) {
         UserProfile userProfile = converter.convertDtoToUserProfile(profileRepository.read(profileId), profileDto);
         if (userProfile == null) {
             return false;

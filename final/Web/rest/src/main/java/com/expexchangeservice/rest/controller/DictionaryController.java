@@ -35,8 +35,12 @@ public class DictionaryController {
 
     @PostMapping(value = "/section")
     public ResponseEntity<?> createSection(@RequestBody SectionDto sectionDto) {
-        dictionaryService.createSection(sectionDto);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        boolean isCreated = dictionaryService.createSection(sectionDto);
+        return isCreated ? new ResponseEntity<>(HttpStatus.OK) :
+                new ResponseEntity<>(new RequestError(400,
+                        "section not created",
+                        "section can not be null"),
+                        HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping(value = "/section")
@@ -82,8 +86,12 @@ public class DictionaryController {
 
     @PostMapping(value = "/section/{sectionId}/theme")
     public ResponseEntity<?> createTheme(@PathVariable(name = "sectionId") long sectionId, @RequestBody ThemeDto theme) {
-        dictionaryService.createTheme(sectionId, theme);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        boolean isCreated = dictionaryService.createTheme(sectionId, theme);
+        return isCreated ? new ResponseEntity<>(HttpStatus.OK) :
+                new ResponseEntity<>(new RequestError(400,
+                        "theme not created",
+                        "check request body"),
+                        HttpStatus.BAD_REQUEST);
     }
 
     @PutMapping(value = "/theme/{themeId}")

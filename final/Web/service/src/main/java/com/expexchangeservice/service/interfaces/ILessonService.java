@@ -12,8 +12,8 @@ import java.util.Set;
 
 public interface ILessonService {
 
-    void addLesson(LessonDto lessonDto);
-    boolean changeLesson(Long lessonId, LessonDto lessonDto);
+    void createLesson(LessonDto lessonDto);
+    boolean updateLesson(Long lessonId, LessonDto lessonDto);
     boolean deleteLesson(Long lessonId);
     LessonDto getLessonById(Long lessonId);
     List<LessonDto> getAll();
