@@ -17,29 +17,27 @@ public class Lesson {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @OneToOne
-    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_theme")
     private Theme theme;
-    @OneToOne
-    @LazyCollection(LazyCollectionOption.FALSE)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_professor")
     private UserProfile professor;
     @Enumerated(EnumType.STRING)
     @Column(name = "type")
     private Type type;
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     @Column(name = "date")
     private LocalDate date;
     @Column(name = "reward")
     private int reward;
-    @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.PERSIST})
-    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(fetch = FetchType.EAGER,
+            cascade = {CascadeType.REFRESH, CascadeType.PERSIST})
     @JoinTable(name = "Lesson_Members",
             joinColumns = @JoinColumn(name = "id_lesson"),
             inverseJoinColumns = @JoinColumn(name = "id_member"))
     private Set<UserProfile> members;
-    @OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "Lesson_Review",
             joinColumns = @JoinColumn(name = "id_lesson"),
             inverseJoinColumns = @JoinColumn(name = "id_review"))

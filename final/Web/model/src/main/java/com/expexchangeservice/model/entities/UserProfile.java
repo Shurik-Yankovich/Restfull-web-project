@@ -14,7 +14,7 @@ public class UserProfile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne(cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinColumn(name = "id_user")
     private User user;
@@ -22,7 +22,13 @@ public class UserProfile {
     private String fullName;
     @Column(name = "workplace")
     private String placeOfWork;
-    @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.PERSIST})
+
+    @OneToMany(mappedBy = "professor", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Course> professorOnCourses;
+    @OneToMany(mappedBy = "professor", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Lesson> professorOnLessons;
+
+    @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.PERSIST})
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(name = "Course_Members",
             joinColumns = @JoinColumn(name = "id_member"),
@@ -81,6 +87,22 @@ public class UserProfile {
 
     public void setLessons(List<Lesson> lessons) {
         this.lessons = lessons;
+    }
+
+    public List<Course> getProfessorOnCourses() {
+        return professorOnCourses;
+    }
+
+    public void setProfessorOnCourses(List<Course> professorOnCourses) {
+        this.professorOnCourses = professorOnCourses;
+    }
+
+    public List<Lesson> getProfessorOnLessons() {
+        return professorOnLessons;
+    }
+
+    public void setProfessorOnLessons(List<Lesson> professorOnLessons) {
+        this.professorOnLessons = professorOnLessons;
     }
 
     @Override

@@ -13,6 +13,7 @@ public class Section {
     private long id;
     @Column(name = "title")
     private String title;
+
     @OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "Section_Themes",
             joinColumns = @JoinColumn(name = "id_section"),
