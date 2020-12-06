@@ -46,6 +46,7 @@ public class CourseServiceTest {
     private static User EXPECTED_USER;
     private static UserProfile EXPECTED_USER_PROFILE;
     private static final long ID = 1L;
+    private static final String USERNAME = "user";
     private static final int EXPECTED_REWARD = 100;
 
     @BeforeAll
@@ -58,14 +59,14 @@ public class CourseServiceTest {
         sectionDto.setTitle(section.getTitle());
         EXPECTED_USER = new User();
         EXPECTED_USER.setId(ID);
-        EXPECTED_USER.setUsername("user");
+        EXPECTED_USER.setUsername(USERNAME);
         EXPECTED_USER.setPassword("123");
         EXPECTED_USER.setRole(Role.ROLE_USER);
         EXPECTED_USER_PROFILE = new UserProfile();
         EXPECTED_USER_PROFILE.setId(ID);
+        EXPECTED_USER_PROFILE.setUser(EXPECTED_USER);
         EXPECTED_USER_PROFILE.setFullName("Name");
         EXPECTED_USER_PROFILE.setPlaceOfWork("Place of work");
-        EXPECTED_USER_PROFILE.setUser(EXPECTED_USER);
         ProfileDto profileDto = new ProfileDto();
         profileDto.setId(EXPECTED_USER_PROFILE.getId());
         profileDto.setUsername(EXPECTED_USER_PROFILE.getUser().getUsername());
@@ -103,8 +104,8 @@ public class CourseServiceTest {
         actualCourse.setMembers(EXPECTED_COURSE.getMembers());
         actualCourse.setReviews(EXPECTED_COURSE.getReviews());
 
-        doReturn(actualCourse).when(courseRepository).read(anyLong());
-        doReturn(EXPECTED_USER).when(userService).loadUserByUsername(anyString());
+        doReturn(actualCourse).when(courseRepository).read(ID);
+        doReturn(EXPECTED_USER).when(userService).loadUserByUsername(USERNAME);
         doNothing().when(courseRepository).update(any(Course.class));
 
         assertTrue(courseService.updateCourse(ID, EXPECTED_COURSE_DTO));
@@ -113,22 +114,22 @@ public class CourseServiceTest {
 
     @Test
     public void updateCourseWhenCourseDtoIsNull() {
-        doReturn(EXPECTED_COURSE).when(courseRepository).read(anyLong());
+        doReturn(EXPECTED_COURSE).when(courseRepository).read(ID);
 
         assertFalse(courseService.updateCourse(ID, null));
     }
 
     @Test
     public void deleteCourseWithoutErrors() {
-        doReturn(EXPECTED_COURSE).when(courseRepository).read(anyLong());
-        doNothing().when(courseRepository).delete(any(Course.class));
+        doReturn(EXPECTED_COURSE).when(courseRepository).read(ID);
+        doNothing().when(courseRepository).delete(EXPECTED_COURSE);
 
         assertTrue(courseService.deleteCourse(ID));
     }
 
     @Test
     public void deleteCourseWhenCourseNotInDatabase() {
-        doReturn(null).when(courseRepository).read(anyLong());
+        doReturn(null).when(courseRepository).read(ID);
         doNothing().when(courseRepository).delete(any(Course.class));
 
         assertFalse(courseService.deleteCourse(ID));
@@ -136,7 +137,7 @@ public class CourseServiceTest {
 
     @Test
     public void getCourseByIdWithoutErrors() {
-        doReturn(EXPECTED_COURSE).when(courseRepository).read(anyLong());
+        doReturn(EXPECTED_COURSE).when(courseRepository).read(ID);
 
         CourseDto actualCourseDto = courseService.getCourseById(ID);
         assertEquals(EXPECTED_COURSE_DTO, actualCourseDto);
@@ -152,11 +153,11 @@ public class CourseServiceTest {
 
     @Test
     public void addReviewWithoutErrors() {
-        Course actualCourse = getCourse();
-        actualCourse.setReward(EXPECTED_REWARD);
+        Course actualCourse = copyCourse();
+        actualCourse.setReviews(new HashSet<>());
 
-        doNothing().when(reviewService).createReview(any(Review.class));
-        doReturn(actualCourse).when(courseRepository).read(anyLong());
+        doReturn(true).when(reviewService).createReview(EXPECTED_REVIEW);
+        doReturn(actualCourse).when(courseRepository).read(ID);
         doNothing().when(courseRepository).update(any(Course.class));
 
         assertTrue(courseService.addReview(ID, EXPECTED_REVIEW));
@@ -165,14 +166,14 @@ public class CourseServiceTest {
 
     @Test
     public void addReviewWhenCourseNotInDatabase() {
-        doReturn(null).when(courseRepository).read(anyLong());
+        doReturn(null).when(courseRepository).read(ID);
 
         assertFalse(courseService.addReview(ID, EXPECTED_REVIEW));
     }
 
     @Test
     public void getReviewOnTheCourseWithoutErrors() {
-        doReturn(EXPECTED_COURSE).when(courseRepository).read(anyLong());
+        doReturn(EXPECTED_COURSE).when(courseRepository).read(ID);
 
         Set<Review> actualReviewSet = courseService.getReviewOnTheCourse(ID);
         assertEquals(EXPECTED_REVIEW_SET, actualReviewSet);
@@ -180,7 +181,7 @@ public class CourseServiceTest {
 
     @Test
     public void getReviewOnTheCourseWhenCourseNotInDatabase() {
-        doReturn(null).when(courseRepository).read(anyLong());
+        doReturn(null).when(courseRepository).read(ID);
 
         Set<Review> actualReviewSet = courseService.getReviewOnTheCourse(ID);
         assertNull(actualReviewSet);
@@ -188,21 +189,20 @@ public class CourseServiceTest {
 
     @Test
     public void getRewardForCoursesByProfessorWithoutErrors() {
-        doReturn(EXPECTED_USER_PROFILE).when(profileService).findProfileByUsername(anyString());
+        doReturn(EXPECTED_USER_PROFILE).when(profileService).getProfileByUsername(USERNAME);
         doReturn(Arrays.asList(EXPECTED_COURSE)).when(courseRepository).findByProfessor(EXPECTED_USER_PROFILE);
 
-        int actualReward = courseService.getRewardForCoursesByProfessor("user");
+        int actualReward = courseService.getRewardForCoursesByProfessor(USERNAME);
         assertEquals(EXPECTED_REWARD, actualReward);
     }
 
     @Test
     public void changeRewardByCourseIdWithoutErrors() {
-        Course actualCourse = getCourse();
-        actualCourse.setReviews(EXPECTED_COURSE.getReviews());
+        Course actualCourse = copyCourse();
         actualCourse.setReward(200);
 
-        doReturn(actualCourse).when(courseRepository).read(anyLong());
-        doReturn(EXPECTED_USER).when(userService).loadUserByUsername(anyString());
+        doReturn(actualCourse).when(courseRepository).read(ID);
+        doReturn(EXPECTED_USER).when(userService).loadUserByUsername(USERNAME);
         doNothing().when(courseRepository).update(any(Course.class));
 
         assertTrue(courseService.changeRewardByCourseId(ID, EXPECTED_REWARD));
@@ -216,7 +216,28 @@ public class CourseServiceTest {
         assertFalse(courseService.changeRewardByCourseId(ID, EXPECTED_REWARD));
     }
 
-    private Course getCourse() {
+    @Test
+    public void signUpForTheCourseWithoutErrors() {
+        Course actualCourse = copyCourse();
+        actualCourse.setMembers(new HashSet<>());
+
+        doReturn(EXPECTED_USER_PROFILE).when(profileService).getProfileByUsername(USERNAME);
+        doReturn(actualCourse).when(courseRepository).read(ID);
+        doNothing().when(courseRepository).update(actualCourse);
+
+        assertTrue(courseService.signUpForTheCourse(ID, USERNAME));
+        assertEquals(EXPECTED_COURSE, actualCourse);
+    }
+
+    @Test
+    public void signUpForTheCourseWhenUserProfileWithCurrentUsernameNotInDatabase() {
+        doReturn(null).when(profileService).getProfileByUsername(USERNAME);
+        doReturn(EXPECTED_COURSE).when(courseRepository).read(ID);
+
+        assertFalse(courseService.signUpForTheCourse(ID, USERNAME));
+    }
+
+    private Course copyCourse() {
         Course course = new Course();
         course.setId(EXPECTED_COURSE.getId());
         course.setSection(EXPECTED_COURSE.getSection());
@@ -225,6 +246,8 @@ public class CourseServiceTest {
         course.setDateStart(EXPECTED_COURSE.getDateStart());
         course.setCountLesson(EXPECTED_COURSE.getCountLesson());
         course.setMembers(EXPECTED_COURSE.getMembers());
+        course.setReviews(EXPECTED_COURSE.getReviews());
+        course.setReward(EXPECTED_COURSE.getReward());
         return course;
     }
 }

@@ -26,4 +26,5 @@ public interface ILessonService {
     Set<Review> getReviewOnTheLesson(Long lessonId);
     int getRewardForLessonsByProfessor(String username);
     boolean changeRewardByLessonId(Long lessonId, int reward);
+    boolean signUpForTheLesson(Long lessonId, String username);
 }

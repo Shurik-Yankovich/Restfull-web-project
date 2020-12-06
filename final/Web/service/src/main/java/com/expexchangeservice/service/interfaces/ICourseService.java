@@ -25,4 +25,5 @@ public interface ICourseService {
     Set<Review> getReviewOnTheCourse(Long courseId);
     int getRewardForCoursesByProfessor(String username);
     boolean changeRewardByCourseId(Long courseId, int reward);
+    boolean signUpForTheCourse(Long courseId, String username);
 }

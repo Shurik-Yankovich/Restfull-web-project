@@ -11,7 +11,7 @@ public interface ITokenService {
 
     String AUTH_HEADER_NAME = "Auth-Token";
 
-    Authentication getAuthentication(ServletRequest servletRequest);
+    Authentication getAuthentication(HttpServletRequest servletRequest);
     Token generateToken(UserDto userDto);
     boolean checkUser(HttpServletRequest request, String username);
     boolean checkUser(HttpServletRequest request, Long userId);

@@ -83,10 +83,10 @@ public class UserService implements IUserService, UserDetailsService {
     }
 
     @Override
-    public User changeUserRole(String username, boolean isAdmin) {
+    public boolean changeUserRole(String username, boolean isAdmin) {
         User user = loadUserByUsername(username);
         if (user == null) {
-            return null;
+            return false;
         }
         if (isAdmin) {
             user.setRole(Role.ROLE_ADMIN);
@@ -94,8 +94,9 @@ public class UserService implements IUserService, UserDetailsService {
             user.setRole(Role.ROLE_USER);
         }
         userRepository.update(user);
-        return user;
+        return true;
     }
+
     private User convertDtoToUser(UserDto userDto) {
         if (userDto == null) {
             return null;

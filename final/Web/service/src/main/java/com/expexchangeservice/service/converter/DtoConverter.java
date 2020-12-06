@@ -16,7 +16,7 @@ public class DtoConverter {
     private IUserService userService;
 
     public Lesson convertDtoToLesson(Lesson lesson, LessonDto lessonDto) {
-        if (lessonDto == null) {
+        if (lessonDto == null || lesson == null) {
             return null;
         }
         lesson.setId(lessonDto.getId());
@@ -58,7 +58,7 @@ public class DtoConverter {
     }
 
     public Course convertDtoToCourse(Course course, CourseDto courseDto) {
-        if (courseDto == null) {
+        if (courseDto == null || course == null) {
             return null;
         }
         course.setId(courseDto.getId());
@@ -101,7 +101,7 @@ public class DtoConverter {
     }
 
     public UserProfile convertDtoToUserProfile(UserProfile userProfile, ProfileDto profileDto) {
-        if (profileDto == null) {
+        if (profileDto == null || userProfile == null) {
             return null;
         }
         userProfile.setId(profileDto.getId());
@@ -123,34 +123,17 @@ public class DtoConverter {
         return profileDto;
     }
 
-    public UserDto convertUserToDto(User user) {
-        if (user == null) {
-            return null;
-        }
-        UserDto userDto = new UserDto();
-        userDto.setUsername(user.getUsername());
-        userDto.setPassword(user.getPassword());
-        return userDto;
-    }
-
-    public User convertDtoToUser(UserDto userDto) {
-        if (userDto == null) {
-            return null;
-        }
-        User user = new User();
-        user.setUsername(userDto.getUsername());
-        user.setPassword(userDto.getPassword());
-        return user;
-    }
-
-    public SectionDto convertSectionToDto(Section section){
+    public SectionDto convertSectionToDto(Section section) {
         SectionDto sectionDto = new SectionDto();
         sectionDto.setId(section.getId());
         sectionDto.setTitle(section.getTitle());
         return sectionDto;
     }
 
-    public Section convertDtoToSection(Section section, SectionDto sectionDto){
+    public Section convertDtoToSection(Section section, SectionDto sectionDto) {
+        if (section == null || sectionDto == null) {
+            return null;
+        }
         section.setId(sectionDto.getId());
         section.setTitle(sectionDto.getTitle());
         return section;

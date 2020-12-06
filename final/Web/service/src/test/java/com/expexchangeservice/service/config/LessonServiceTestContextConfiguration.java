@@ -1,8 +1,10 @@
 package com.expexchangeservice.service.config;
 
 import com.expexchangeservice.repository.impl.LessonRepository;
+import com.expexchangeservice.repository.impl.UserProfileRepository;
 import com.expexchangeservice.repository.impl.UserRepository;
 import com.expexchangeservice.repository.interfaces.ILessonRepository;
+import com.expexchangeservice.repository.interfaces.IUserProfileRepository;
 import com.expexchangeservice.repository.interfaces.IUserRepository;
 import com.expexchangeservice.service.converter.DtoConverter;
 import com.expexchangeservice.service.impl.LessonService;
@@ -39,6 +41,11 @@ public class LessonServiceTestContextConfiguration {
     @Bean
     public IUserProfileService profileService() {
         return Mockito.mock(UserProfileService.class);
+    }
+
+    @Bean
+    public IUserProfileRepository profileRepository() {
+        return Mockito.mock(UserProfileRepository.class);
     }
 
     @Bean

@@ -2,7 +2,6 @@ package com.expexchangeservice.service.impl;
 
 import com.expexchangeservice.model.dto.LessonDto;
 import com.expexchangeservice.model.dto.ProfileDto;
-import com.expexchangeservice.model.dto.ThemeDto;
 import com.expexchangeservice.model.entities.*;
 import com.expexchangeservice.model.enums.Role;
 import com.expexchangeservice.model.enums.Type;
@@ -51,6 +50,7 @@ public class LessonServiceTest {
     private static User EXPECTED_USER;
     private static UserProfile EXPECTED_USER_PROFILE;
     private static final long ID = 1L;
+    private static final String USERNAME = "user";
     private static final int EXPECTED_REWARD = 100;
 
     @BeforeAll
@@ -59,7 +59,7 @@ public class LessonServiceTest {
         theme.setId(ID);
         EXPECTED_USER = new User();
         EXPECTED_USER.setId(ID);
-        EXPECTED_USER.setUsername("user");
+        EXPECTED_USER.setUsername(USERNAME);
         EXPECTED_USER.setPassword("123");
         EXPECTED_USER.setRole(Role.ROLE_USER);
         EXPECTED_USER_PROFILE = new UserProfile();
@@ -102,8 +102,8 @@ public class LessonServiceTest {
         actualLesson.setReviews(EXPECTED_LESSON.getReviews());
         actualLesson.setReward(EXPECTED_REWARD);
 
-        doReturn(actualLesson).when(lessonRepository).read(anyLong());
-        doReturn(EXPECTED_USER).when(userService).loadUserByUsername(anyString());
+        doReturn(actualLesson).when(lessonRepository).read(ID);
+        doReturn(EXPECTED_USER).when(userService).loadUserByUsername(USERNAME);
         doNothing().when(lessonRepository).update(any(Lesson.class));
 
         assertTrue(lessonService.updateLesson(ID, EXPECTED_LESSON_DTO));
@@ -112,14 +112,14 @@ public class LessonServiceTest {
 
     @Test
     public void updateLessonWhenLessonDtoIsNull() {
-        doReturn(EXPECTED_LESSON).when(lessonRepository).read(anyLong());
+        doReturn(EXPECTED_LESSON).when(lessonRepository).read(ID);
 
         assertFalse(lessonService.updateLesson(ID, null));
     }
 
     @Test
     public void deleteLessonWithoutErrors() {
-        doReturn(EXPECTED_LESSON).when(lessonRepository).read(anyLong());
+        doReturn(EXPECTED_LESSON).when(lessonRepository).read(ID);
         doNothing().when(lessonRepository).delete(any(Lesson.class));
 
         assertTrue(lessonService.deleteLesson(ID));
@@ -127,7 +127,7 @@ public class LessonServiceTest {
 
     @Test
     public void deleteLessonWhenLessonNotInDatabase() {
-        doReturn(null).when(lessonRepository).read(anyLong());
+        doReturn(null).when(lessonRepository).read(ID);
         doNothing().when(lessonRepository).delete(any(Lesson.class));
 
         assertFalse(lessonService.deleteLesson(ID));
@@ -135,7 +135,7 @@ public class LessonServiceTest {
 
     @Test
     public void getLessonByIdWithoutErrors() {
-        doReturn(EXPECTED_LESSON).when(lessonRepository).read(anyLong());
+        doReturn(EXPECTED_LESSON).when(lessonRepository).read(ID);
 
         LessonDto actualLessonDto = lessonService.getLessonById(ID);
         assertEquals(EXPECTED_LESSON_DTO, actualLessonDto);
@@ -151,11 +151,11 @@ public class LessonServiceTest {
 
     @Test
     public void addReviewWithoutErrors() {
-        Lesson actualLesson = getLesson();
-        actualLesson.setReward(EXPECTED_REWARD);
+        Lesson actualLesson = copyLesson();
+        actualLesson.setReviews(new HashSet<>());
 
-        doNothing().when(reviewService).createReview(any(Review.class));
-        doReturn(actualLesson).when(lessonRepository).read(anyLong());
+        doReturn(true).when(reviewService).createReview(EXPECTED_REVIEW);
+        doReturn(actualLesson).when(lessonRepository).read(ID);
         doNothing().when(lessonRepository).update(any(Lesson.class));
 
         assertTrue(lessonService.addReview(ID, EXPECTED_REVIEW));
@@ -164,14 +164,14 @@ public class LessonServiceTest {
 
     @Test
     public void addReviewWhenLessonNotInDatabase() {
-        doReturn(null).when(lessonRepository).read(anyLong());
+        doReturn(null).when(lessonRepository).read(ID);
 
         assertFalse(lessonService.addReview(ID, EXPECTED_REVIEW));
     }
 
     @Test
     public void getReviewOnTheLessonWithoutErrors() {
-        doReturn(EXPECTED_LESSON).when(lessonRepository).read(anyLong());
+        doReturn(EXPECTED_LESSON).when(lessonRepository).read(ID);
 
         Set<Review> actualReviewSet = lessonService.getReviewOnTheLesson(ID);
         assertEquals(EXPECTED_REVIEW_SET, actualReviewSet);
@@ -179,7 +179,7 @@ public class LessonServiceTest {
 
     @Test
     public void getReviewOnTheLessonWhenLessonNotInDatabase() {
-        doReturn(null).when(lessonRepository).read(anyLong());
+        doReturn(null).when(lessonRepository).read(ID);
 
         Set<Review> actualReviewSet = lessonService.getReviewOnTheLesson(ID);
         assertNull(actualReviewSet);
@@ -187,21 +187,20 @@ public class LessonServiceTest {
 
     @Test
     public void getRewardForLessonsByProfessorWithoutErrors() {
-        doReturn(EXPECTED_USER_PROFILE).when(profileService).findProfileByUsername(anyString());
+        doReturn(EXPECTED_USER_PROFILE).when(profileService).getProfileByUsername(USERNAME);
         doReturn(Arrays.asList(EXPECTED_LESSON)).when(lessonRepository).findByProfessor(EXPECTED_USER_PROFILE);
 
-        int actualReward = lessonService.getRewardForLessonsByProfessor("user");
+        int actualReward = lessonService.getRewardForLessonsByProfessor(USERNAME);
         assertEquals(EXPECTED_REWARD, actualReward);
     }
 
     @Test
     public void changeRewardByLessonIdWithoutErrors() {
-        Lesson actualLesson = getLesson();
-        actualLesson.setReviews(EXPECTED_LESSON.getReviews());
+        Lesson actualLesson = copyLesson();
         actualLesson.setReward(200);
 
-        doReturn(actualLesson).when(lessonRepository).read(anyLong());
-        doReturn(EXPECTED_USER).when(userService).loadUserByUsername(anyString());
+        doReturn(actualLesson).when(lessonRepository).read(ID);
+        doReturn(EXPECTED_USER).when(userService).loadUserByUsername(USERNAME);
         doNothing().when(lessonRepository).update(any(Lesson.class));
 
         assertTrue(lessonService.changeRewardByLessonId(ID, EXPECTED_REWARD));
@@ -210,12 +209,33 @@ public class LessonServiceTest {
 
     @Test
     public void changeRewardByLessonIdWhenLessonNotInDatabase() {
-        doReturn(null).when(lessonRepository).read(anyLong());
+        doReturn(null).when(lessonRepository).read(ID);
 
         assertFalse(lessonService.changeRewardByLessonId(ID, EXPECTED_REWARD));
     }
 
-    private Lesson getLesson() {
+    @Test
+    public void signUpForTheLessonWithoutErrors() {
+        Lesson actualLesson = copyLesson();
+        actualLesson.setMembers(new HashSet<>());
+
+        doReturn(EXPECTED_USER_PROFILE).when(profileService).getProfileByUsername(USERNAME);
+        doReturn(actualLesson).when(lessonRepository).read(ID);
+        doNothing().when(lessonRepository).update(actualLesson);
+
+        assertTrue(lessonService.signUpForTheLesson(ID, USERNAME));
+        assertEquals(EXPECTED_LESSON, actualLesson);
+    }
+
+    @Test
+    public void signUpForTheLessonWhenUserProfileWithCurrentUsernameNotInDatabase() {
+        doReturn(null).when(profileService).getProfileByUsername(USERNAME);
+        doReturn(EXPECTED_LESSON).when(lessonRepository).read(ID);
+
+        assertFalse(lessonService.signUpForTheLesson(ID, USERNAME));
+    }
+
+    private Lesson copyLesson() {
         Lesson lesson = new Lesson();
         lesson.setId(EXPECTED_LESSON.getId());
         lesson.setTheme(EXPECTED_LESSON.getTheme());
@@ -223,6 +243,8 @@ public class LessonServiceTest {
         lesson.setType(EXPECTED_LESSON.getType());
         lesson.setDate(EXPECTED_LESSON.getDate());
         lesson.setMembers(EXPECTED_LESSON.getMembers());
+        lesson.setReviews(EXPECTED_LESSON.getReviews());
+        lesson.setReward(EXPECTED_LESSON.getReward());
         return lesson;
     }
 }

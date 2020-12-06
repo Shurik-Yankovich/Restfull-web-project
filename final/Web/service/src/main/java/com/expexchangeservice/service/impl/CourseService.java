@@ -97,7 +97,7 @@ public class CourseService implements ICourseService {
 
     @Override
     public List<CourseDto> getCoursesForTheProfessor(ProfileDto profileDto) {
-        UserProfile professor = profileService.findProfileByUsername(profileDto.getUsername());
+        UserProfile professor = profileService.getProfileByUsername(profileDto.getUsername());
         List<Course> courses = courseRepository.findByProfessor(professor);
         return converter.convertCourseListToDtoList(courses);
     }
@@ -131,7 +131,7 @@ public class CourseService implements ICourseService {
 
     @Override
     public int getRewardForCoursesByProfessor(String username) {
-        UserProfile professor = profileService.findProfileByUsername(username);
+        UserProfile professor = profileService.getProfileByUsername(username);
         List<Course> courses = courseRepository.findByProfessor(professor);
         int sum = 0;
         for (Course course : courses) {
@@ -148,6 +148,23 @@ public class CourseService implements ICourseService {
         }
         course.setReward(reward);
         courseRepository.update(course);
+        return true;
+    }
+
+    @Override
+    public boolean signUpForTheCourse(Long courseId, String username) {
+        UserProfile profile = profileService.getProfileByUsername(username);
+        Course course = courseRepository.read(courseId);
+        if (profile == null || course == null) {
+            return false;
+        }
+        if (course.getMembers() == null) {
+            course.setMembers(new HashSet<>());
+        }
+//        profile.getCourses().add(course);
+        course.getMembers().add(profile);
+        courseRepository.update(course);
+//        profileRepository.update(profile);
         return true;
     }
 

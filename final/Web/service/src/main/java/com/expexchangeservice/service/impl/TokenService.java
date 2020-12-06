@@ -6,6 +6,7 @@ import com.expexchangeservice.model.entities.User;
 import com.expexchangeservice.model.entities.UserAuthentication;
 import com.expexchangeservice.repository.interfaces.ITokenRepository;
 import com.expexchangeservice.service.interfaces.ITokenService;
+import com.expexchangeservice.service.interfaces.IUserService;
 import com.expexchangeservice.utils.security.ITokenHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -17,20 +18,20 @@ import javax.servlet.http.HttpServletRequest;
 @Service
 public class TokenService implements ITokenService {
 
-    private final ITokenRepository tokenRepository;
-    private final ITokenHandler tokenHandler;
-    private final UserService userService;
+    private ITokenRepository tokenRepository;
+    private ITokenHandler tokenHandler;
+    private IUserService userService;
 
     @Autowired
-    public TokenService(ITokenRepository tokenRepository, ITokenHandler tokenHandler, UserService userService) {
+    public TokenService(ITokenRepository tokenRepository, ITokenHandler tokenHandler, IUserService userService) {
         this.tokenRepository = tokenRepository;
         this.tokenHandler = tokenHandler;
         this.userService = userService;
     }
 
     @Override
-    public Authentication getAuthentication(ServletRequest servletRequest) {
-        HttpServletRequest request = (HttpServletRequest) servletRequest;
+    public Authentication getAuthentication(HttpServletRequest request) {
+//        HttpServletRequest request = (HttpServletRequest) servletRequest;
         String tokenValue = request.getHeader(AUTH_HEADER_NAME);
         if (tokenHandler.checkToken(tokenValue) && checkTokenInDatabase(tokenValue)) {
             User user = userService.loadUserById(tokenHandler.getUserIdFromToken(tokenValue));

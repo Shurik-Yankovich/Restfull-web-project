@@ -206,4 +206,16 @@ public class CourseController {
         int reward = courseService.getRewardForCoursesByProfessor(username);
         return new ResponseEntity<>(reward, HttpStatus.CREATED);
     }
+
+    @PostMapping(value = "/{courseId}/signup")
+    public ResponseEntity<?> signUpForTheCourse(@PathVariable(name = "courseId") long courseId,
+                                                HttpServletRequest httpRequest) {
+        String username = tokenService.getUsernameByRequest(httpRequest);
+        boolean isSigned = courseService.signUpForTheCourse(courseId, username);
+        return isSigned ? new ResponseEntity<>(HttpStatus.OK) :
+                new ResponseEntity<>(new RequestError(404,
+                        "profiles not found",
+                        "profile with current username not found"),
+                        HttpStatus.NOT_FOUND);
+    }
 }

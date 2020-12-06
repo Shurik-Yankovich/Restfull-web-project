@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -70,7 +69,7 @@ public class DictionaryServiceTest {
 
     @Test
     public void getThemeDictionaryOnTheSectionWithoutErrors() {
-        doReturn(EXPECTED_SECTION).when(sectionRepository).read(anyLong());
+        doReturn(EXPECTED_SECTION).when(sectionRepository).read(ID);
 
         List<Theme> actualThemeList = dictionaryService.getThemeDictionaryOnTheSection(ID);
         assertEquals(EXPECTED_THEME_LIST, actualThemeList);
@@ -86,7 +85,7 @@ public class DictionaryServiceTest {
 
     @Test
     public void getThemeByIdWithoutErrors() {
-        doReturn(EXPECTED_THEME).when(themeRepository).read(anyLong());
+        doReturn(EXPECTED_THEME).when(themeRepository).read(ID);
 
         Theme actualTheme = dictionaryService.getThemeById(ID);
         assertEquals(EXPECTED_THEME, actualTheme);
@@ -94,7 +93,7 @@ public class DictionaryServiceTest {
 
     @Test
     public void getSectionByIdWithoutErrors() {
-        doReturn(EXPECTED_SECTION).when(sectionRepository).read(anyLong());
+        doReturn(EXPECTED_SECTION).when(sectionRepository).read(ID);
 
         SectionDto actualSectionDto = dictionaryService.getSectionById(ID);
         assertEquals(EXPECTED_SECTION_DTO, actualSectionDto);
@@ -105,7 +104,7 @@ public class DictionaryServiceTest {
         Theme actualTheme = new Theme("123");
         actualTheme.setId(EXPECTED_THEME.getId());
 
-        doReturn(actualTheme).when(themeRepository).read(anyLong());
+        doReturn(actualTheme).when(themeRepository).read(ID);
         doNothing().when(themeRepository).update(any(Theme.class));
 
         boolean isUpdate = dictionaryService.updateTheme(ID, EXPECTED_THEME_DTO);
@@ -115,7 +114,7 @@ public class DictionaryServiceTest {
 
     @Test
     public void updateThemeWhenThemeNotInDatabase() {
-        doReturn(null).when(themeRepository).read(anyLong());
+        doReturn(null).when(themeRepository).read(ID);
 
         boolean isUpdate = dictionaryService.updateTheme(ID, EXPECTED_THEME_DTO);
         assertFalse(isUpdate);
@@ -127,7 +126,7 @@ public class DictionaryServiceTest {
         actualSection.setId(EXPECTED_SECTION.getId());
         actualSection.setThemes(EXPECTED_THEME_LIST);
 
-        doReturn(actualSection).when(sectionRepository).read(anyLong());
+        doReturn(actualSection).when(sectionRepository).read(ID);
         doNothing().when(sectionRepository).update(any(Section.class));
 
         boolean isUpdate = dictionaryService.updateSection(EXPECTED_SECTION_DTO);
@@ -147,7 +146,7 @@ public class DictionaryServiceTest {
         actualSection.setThemes(new ArrayList<>());
 
         doNothing().when(themeRepository).create(any(Theme.class));
-        doReturn(actualSection).when(sectionRepository).read(anyLong());
+        doReturn(actualSection).when(sectionRepository).read(ID);
         doNothing().when(sectionRepository).update(any(Section.class));
 
         assertTrue(dictionaryService.createTheme(ID, EXPECTED_THEME_DTO));
@@ -155,7 +154,7 @@ public class DictionaryServiceTest {
 
     @Test
     public void createThemeWhenSectionNotInDatabase() {
-        doReturn(null).when(sectionRepository).read(anyLong());
+        doReturn(null).when(sectionRepository).read(ID);
 
         boolean isUpdate = dictionaryService.createTheme(ID, EXPECTED_THEME_DTO);
         assertFalse(isUpdate);
@@ -185,10 +184,10 @@ public class DictionaryServiceTest {
         actualSection.setId(ID);
         actualSection.setThemes(themeList);
 
-        doReturn(actualSection).when(sectionRepository).read(anyLong());
-        doReturn(theme).when(themeRepository).read(anyLong());
+        doReturn(actualSection).when(sectionRepository).read(ID);
+        doReturn(theme).when(themeRepository).read(themeId);
         doNothing().when(sectionRepository).update(any(Section.class));
-        doNothing().when(themeRepository).delete(any(Theme.class));
+        doNothing().when(themeRepository).delete(theme);
 
         assertTrue(dictionaryService.deleteTheme(ID, themeId));
         assertEquals(EXPECTED_SECTION, actualSection);
@@ -196,23 +195,23 @@ public class DictionaryServiceTest {
 
     @Test
     public void deleteThemeWhenSectionOrThemeNotInDatabase() {
-        doReturn(null).when(sectionRepository).read(anyLong());
-        doReturn(null).when(themeRepository).read(anyLong());
+        doReturn(null).when(sectionRepository).read(ID);
+        doReturn(null).when(themeRepository).read(ID);
 
         assertFalse(dictionaryService.deleteTheme(ID, ID));
     }
 
     @Test
     public void deleteSectionWithoutErrors() {
-        doReturn(EXPECTED_SECTION).when(sectionRepository).read(anyLong());
-        doNothing().when(sectionRepository).delete(any(Section.class));
+        doReturn(EXPECTED_SECTION).when(sectionRepository).read(ID);
+        doNothing().when(sectionRepository).delete(EXPECTED_SECTION);
 
         assertTrue(dictionaryService.deleteSection(ID));
     }
 
     @Test
     public void deleteSectionWhenSectionNotInDatabase() {
-        doReturn(null).when(sectionRepository).read(anyLong());
+        doReturn(null).when(sectionRepository).read(ID);
 
         assertFalse(dictionaryService.deleteSection(ID));
     }

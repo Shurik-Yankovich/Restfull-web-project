@@ -34,9 +34,13 @@ public class UserProfileService implements IUserProfileService {
     }
 
     @Override
-    public void createUserProfile(ProfileDto profileDto) {
+    public boolean createUserProfile(ProfileDto profileDto) {
+        if (profileDto == null) {
+            return false;
+        }
         UserProfile userProfile = converter.convertDtoToUserProfile(new UserProfile(), profileDto);
         profileRepository.create(userProfile);
+        return true;
     }
 
     @Override
@@ -61,47 +65,47 @@ public class UserProfileService implements IUserProfileService {
 
     @Override
     public ProfileDto getProfileDtoByUsername(String username) {
-        UserProfile userProfile = findProfileByUsername(username);
+        UserProfile userProfile = getProfileByUsername(username);
         return converter.convertUserProfileToDto(userProfile);
     }
 
     @Override
-    public UserProfile findProfileByUsername(String username) {
+    public UserProfile getProfileByUsername(String username) {
         User user = userService.loadUserByUsername(username);
         return user == null ? null : profileRepository.findByUser(user);
     }
 
-    @Override
-    public boolean signUpForTheLesson(String username, Lesson lesson) {
-        UserProfile profile = findProfileByUsername(username);
-        if (profile == null) {
-            return false;
-        }
-        profile.getLessons().add(lesson);
-        profileRepository.update(profile);
-        return true;
-    }
+//    @Override
+//    public boolean signUpForTheLesson(String username, LessonDto lessonDto) {
+//        UserProfile profile = getProfileByUsername(username);
+//        if (profile == null) {
+//            return false;
+//        }
+//        profile.getLessons().add(lessonDto);
+//        profileRepository.update(profile);
+//        return true;
+//    }
+
+//    @Override
+//    public boolean signUpForTheCourse(String username, CourseDto courseDto) {
+//        UserProfile profile = getProfileByUsername(username);
+//        if (profile == null) {
+//            return false;
+//        }
+//        profile.getCourses().add(courseDto);
+//        profileRepository.update(profile);
+//        return true;
+//    }
 
     @Override
-    public boolean signUpForTheCourse(String username, Course course) {
-        UserProfile profile = findProfileByUsername(username);
-        if (profile == null) {
-            return false;
-        }
-        profile.getCourses().add(course);
-        profileRepository.update(profile);
-        return true;
-    }
-
-    @Override
-    public ProfileDto getUserProfileById(Long profileId) {
+    public ProfileDto getProfileById(Long profileId) {
         UserProfile profile = profileRepository.read(profileId);
         return converter.convertUserProfileToDto(profile);
     }
 
     @Override
     public List<LessonDto> getLessonListForUser(String username) {
-        UserProfile profile = findProfileByUsername(username);
+        UserProfile profile = getProfileByUsername(username);
         if (profile == null) {
             return null;
         }
@@ -114,7 +118,7 @@ public class UserProfileService implements IUserProfileService {
 
     @Override
     public List<CourseDto> getCourseListForUser(String username) {
-        UserProfile profile = findProfileByUsername(username);
+        UserProfile profile = getProfileByUsername(username);
         if (profile == null) {
             return null;
         }
@@ -125,15 +129,15 @@ public class UserProfileService implements IUserProfileService {
         return converter.convertCourseListToDtoList(courses);
     }
 
-    @Override
-    public boolean changeUserRole(String username, boolean isAdmin) {
-        UserProfile profile = findProfileByUsername(username);
-        User user = userService.changeUserRole(username, isAdmin);
-        if (user == null) {
-            return false;
-        }
-        profile.setUser(user);
-        profileRepository.update(profile);
-        return true;
-    }
+//    @Override
+//    public boolean changeUserRole(String username, boolean isAdmin) {
+//        UserProfile profile = getProfileByUsername(username);
+//        User user = userService.changeUserRole(username, isAdmin);
+//        if (user == null) {
+//            return false;
+//        }
+//        profile.setUser(user);
+//        profileRepository.update(profile);
+//        return true;
+//    }
 }

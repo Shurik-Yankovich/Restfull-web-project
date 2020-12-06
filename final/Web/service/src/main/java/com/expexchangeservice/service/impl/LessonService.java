@@ -100,7 +100,7 @@ public class LessonService implements ILessonService {
 
     @Override
     public List<LessonDto> getLessonsForTheProfessor(ProfileDto profileDto) {
-        UserProfile professor = profileService.findProfileByUsername(profileDto.getUsername());
+        UserProfile professor = profileService.getProfileByUsername(profileDto.getUsername());
         List<Lesson> lessons = lessonRepository.findByProfessor(professor);
         return converter.convertLessonListToDtoList(lessons);
     }
@@ -134,7 +134,7 @@ public class LessonService implements ILessonService {
 
     @Override
     public int getRewardForLessonsByProfessor(String username) {
-        UserProfile professor = profileService.findProfileByUsername(username);
+        UserProfile professor = profileService.getProfileByUsername(username);
         List<Lesson> lessons = lessonRepository.findByProfessor(professor);
         int sum = 0;
         for (Lesson lesson : lessons) {
@@ -154,4 +154,20 @@ public class LessonService implements ILessonService {
         return true;
     }
 
+    @Override
+    public boolean signUpForTheLesson(Long lessonId, String username) {
+        UserProfile profile = profileService.getProfileByUsername(username);
+        Lesson lesson = lessonRepository.read(lessonId);
+        if (profile == null || lesson == null) {
+            return false;
+        }
+        if (lesson.getMembers() == null) {
+            lesson.setMembers(new HashSet<>());
+        }
+//        profile.getLessons().add(lesson);
+        lesson.getMembers().add(profile);
+        lessonRepository.update(lesson);
+//        profileRepository.update(profile);
+        return true;
+    }
 }

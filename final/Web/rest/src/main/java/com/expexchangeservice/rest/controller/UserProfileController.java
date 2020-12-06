@@ -1,8 +1,6 @@
 package com.expexchangeservice.rest.controller;
 
 import com.expexchangeservice.model.dto.*;
-import com.expexchangeservice.model.entities.Course;
-import com.expexchangeservice.model.entities.Lesson;
 import com.expexchangeservice.service.interfaces.ITokenService;
 import com.expexchangeservice.service.interfaces.IUserProfileService;
 import com.expexchangeservice.service.interfaces.IUserService;
@@ -90,7 +88,7 @@ public class UserProfileController {
     })
     @GetMapping(value = "/{profileId}")
     public ResponseEntity<?> getProfileById(@PathVariable(name = "profileId") long profileId) {
-        ProfileDto profile = profileService.getUserProfileById(profileId);
+        ProfileDto profile = profileService.getProfileById(profileId);
         return profile != null ? new ResponseEntity<>(profile, HttpStatus.OK) :
                 new ResponseEntity<>(new RequestError(404,
                         "profile not found",
@@ -160,42 +158,6 @@ public class UserProfileController {
                         HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping(value = "/user/{username}/lessons")
-    public ResponseEntity<?> signUpForTheLesson(@PathVariable(name = "username") String username,
-                                                @RequestBody Lesson lessonDto,
-                                                HttpServletRequest httpRequest) {
-        if (!tokenService.checkUser(httpRequest, username)) {
-            return new ResponseEntity<>(new RequestError(403,
-                    "Hasn't access",
-                    "Hasn't access with this user"),
-                    HttpStatus.FORBIDDEN);
-        }
-        boolean isSigned = profileService.signUpForTheLesson(username, lessonDto);
-        return isSigned ? new ResponseEntity<>(HttpStatus.OK) :
-                new ResponseEntity<>(new RequestError(404,
-                        "profiles not found",
-                        "profile with current username not found"),
-                        HttpStatus.NOT_FOUND);
-    }
-
-    @PostMapping(value = "/user/{username}/courses")
-    public ResponseEntity<?> signUpForTheCourse(@PathVariable(name = "username") String username,
-                                                @RequestBody Course courseDto,
-                                                HttpServletRequest httpRequest) {
-        if (!tokenService.checkUser(httpRequest, username)) {
-            return new ResponseEntity<>(new RequestError(403,
-                    "Hasn't access",
-                    "Hasn't access with this user"),
-                    HttpStatus.FORBIDDEN);
-        }
-        boolean isSigned = profileService.signUpForTheCourse(username, courseDto);
-        return isSigned ? new ResponseEntity<>(HttpStatus.OK) :
-                new ResponseEntity<>(new RequestError(404,
-                        "profiles not found",
-                        "profile with current username not found"),
-                        HttpStatus.NOT_FOUND);
-    }
-
     @PutMapping(value = "/user/password/change")
     public ResponseEntity<?> changePassword(@RequestBody UserCreds userCreds,
                                             HttpServletRequest httpRequest) {
@@ -224,7 +186,7 @@ public class UserProfileController {
     @PutMapping(value = "/user/{username}/role")
     public ResponseEntity<?> changeRole(@PathVariable(name = "username") String username,
                                         @RequestParam boolean isAdmin) {
-        if (profileService.changeUserRole(username, isAdmin)) {
+        if (userService.changeUserRole(username, isAdmin)) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(new RequestError(400,

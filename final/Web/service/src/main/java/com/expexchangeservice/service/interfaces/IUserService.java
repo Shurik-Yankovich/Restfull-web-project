@@ -12,5 +12,5 @@ public interface IUserService {
     boolean createUser(UserDto userDto);
     boolean deleteUser(Long primaryKey);
     boolean changeUserPassword(UserCreds userCreds);
-    User changeUserRole(String username, boolean isAdmin);
+    boolean changeUserRole(String username, boolean isAdmin);
 }

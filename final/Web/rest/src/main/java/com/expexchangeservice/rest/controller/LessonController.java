@@ -206,4 +206,16 @@ public class LessonController {
         return new ResponseEntity<>(reward, HttpStatus.CREATED);
     }
 
+    @PostMapping(value = "/{lessonId}/signup")
+    public ResponseEntity<?> signUpForTheLesson(@PathVariable(name = "lessonId") long lessonId,
+                                                HttpServletRequest httpRequest) {
+        String username = tokenService.getUsernameByRequest(httpRequest);
+        boolean isSigned = lessonService.signUpForTheLesson(lessonId, username);
+        return isSigned ? new ResponseEntity<>(HttpStatus.OK) :
+                new ResponseEntity<>(new RequestError(404,
+                        "profiles not found",
+                        "profile with current username not found"),
+                        HttpStatus.NOT_FOUND);
+    }
+
 }

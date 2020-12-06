@@ -1,6 +1,7 @@
 package com.expexchangeservice.model.entities;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "Token")
@@ -46,5 +47,20 @@ public class Token {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Token token = (Token) o;
+        return id == token.id &&
+                Objects.equals(value, token.value) &&
+                Objects.equals(user, token.user);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, value, user);
     }
 }

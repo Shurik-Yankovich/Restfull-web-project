@@ -36,7 +36,7 @@ public class ReviewServiceTest {
 
     @Test
     public void createReviewWithoutErrors() {
-        doNothing().when(reviewRepository).create(any(Review.class));
+        doNothing().when(reviewRepository).create(EXPECTED_REVIEW);
 
         assertTrue(reviewService.createReview(EXPECTED_REVIEW));
     }
@@ -48,7 +48,7 @@ public class ReviewServiceTest {
 
     @Test
     public void updateReviewWithoutErrors() {
-        doNothing().when(reviewRepository).update(any(Review.class));
+        doNothing().when(reviewRepository).update(EXPECTED_REVIEW);
 
         assertTrue(reviewService.updateReview(EXPECTED_REVIEW));
     }
@@ -60,7 +60,7 @@ public class ReviewServiceTest {
 
     @Test
     public void readReviewWithoutErrors() {
-        doReturn(EXPECTED_REVIEW).when(reviewRepository).read(anyLong());
+        doReturn(EXPECTED_REVIEW).when(reviewRepository).read(ID);
 
         Review actualReview = reviewService.readReview(ID);
         assertEquals(EXPECTED_REVIEW, actualReview);
@@ -68,7 +68,7 @@ public class ReviewServiceTest {
 
     @Test
     public void deleteReviewWithoutErrors() {
-        doReturn(EXPECTED_REVIEW).when(reviewRepository).read(anyLong());
+        doReturn(EXPECTED_REVIEW).when(reviewRepository).read(ID);
         doNothing().when(reviewRepository).delete(any(Review.class));
 
         assertTrue(reviewService.deleteReview(ID));
@@ -76,7 +76,7 @@ public class ReviewServiceTest {
 
     @Test
     public void deleteReviewWhenReviewNotInDatabase() {
-        doReturn(null).when(reviewRepository).read(anyLong());
+        doReturn(null).when(reviewRepository).read(ID);
 
         assertFalse(reviewService.deleteReview(ID));
     }
