@@ -75,28 +75,6 @@ public class UserProfileService implements IUserProfileService {
         return user == null ? null : profileRepository.findByUser(user);
     }
 
-//    @Override
-//    public boolean signUpForTheLesson(String username, LessonDto lessonDto) {
-//        UserProfile profile = getProfileByUsername(username);
-//        if (profile == null) {
-//            return false;
-//        }
-//        profile.getLessons().add(lessonDto);
-//        profileRepository.update(profile);
-//        return true;
-//    }
-
-//    @Override
-//    public boolean signUpForTheCourse(String username, CourseDto courseDto) {
-//        UserProfile profile = getProfileByUsername(username);
-//        if (profile == null) {
-//            return false;
-//        }
-//        profile.getCourses().add(courseDto);
-//        profileRepository.update(profile);
-//        return true;
-//    }
-
     @Override
     public ProfileDto getProfileById(Long profileId) {
         UserProfile profile = profileRepository.read(profileId);
@@ -128,16 +106,4 @@ public class UserProfileService implements IUserProfileService {
         }
         return converter.convertCourseListToDtoList(courses);
     }
-
-//    @Override
-//    public boolean changeUserRole(String username, boolean isAdmin) {
-//        UserProfile profile = getProfileByUsername(username);
-//        User user = userService.changeUserRole(username, isAdmin);
-//        if (user == null) {
-//            return false;
-//        }
-//        profile.setUser(user);
-//        profileRepository.update(profile);
-//        return true;
-//    }
 }

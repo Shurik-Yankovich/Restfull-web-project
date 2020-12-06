@@ -161,10 +161,8 @@ public class CourseService implements ICourseService {
         if (course.getMembers() == null) {
             course.setMembers(new HashSet<>());
         }
-//        profile.getCourses().add(course);
         course.getMembers().add(profile);
         courseRepository.update(course);
-//        profileRepository.update(profile);
         return true;
     }
 

@@ -22,13 +22,13 @@ public class UserProfile {
     private String fullName;
     @Column(name = "workplace")
     private String placeOfWork;
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.PERSIST})
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(name = "Course_Members",
             joinColumns = @JoinColumn(name = "id_member"),
             inverseJoinColumns = @JoinColumn(name = "id_course"))
     private List<Course> courses;
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.PERSIST})
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(name = "Lesson_Members",
             joinColumns = @JoinColumn(name = "id_member"),

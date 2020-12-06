@@ -33,7 +33,7 @@ public class Lesson {
     private LocalDate date;
     @Column(name = "reward")
     private int reward;
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.PERSIST})
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(name = "Lesson_Members",
             joinColumns = @JoinColumn(name = "id_lesson"),

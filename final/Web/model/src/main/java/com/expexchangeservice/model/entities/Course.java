@@ -35,14 +35,13 @@ public class Course {
     private int countLesson;
     @Column(name = "reward")
     private int reward;
-    @ManyToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.PERSIST})
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(name = "Course_Members",
             joinColumns = @JoinColumn(name = "id_course"),
             inverseJoinColumns = @JoinColumn(name = "id_member"))
     private Set<UserProfile> members;
-    @OneToMany(cascade = CascadeType.ALL)
-    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "Course_Review",
             joinColumns = @JoinColumn(name = "id_course"),
             inverseJoinColumns = @JoinColumn(name = "id_review"))

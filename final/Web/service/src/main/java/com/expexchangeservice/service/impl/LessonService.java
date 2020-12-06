@@ -164,10 +164,8 @@ public class LessonService implements ILessonService {
         if (lesson.getMembers() == null) {
             lesson.setMembers(new HashSet<>());
         }
-//        profile.getLessons().add(lesson);
         lesson.getMembers().add(profile);
         lessonRepository.update(lesson);
-//        profileRepository.update(profile);
         return true;
     }
 }
