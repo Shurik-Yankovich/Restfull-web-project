@@ -45,13 +45,13 @@
     </dependencies>
 
     <build>
-        <finalName>Bookstore</finalName>
+        <finalName>experience_exchange_service</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>BookstoreApplication</mainClass>
+                    <mainClass>MainApplication</mainClass>
                 </configuration>
             </plugin>
         </plugins>
