@@ -256,6 +256,31 @@ CREATE TABLE IF NOT EXISTS `expexchangeservice`.`Token` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+-- -----------------------------------------------------
+-- Added tets date
+-- -----------------------------------------------------
+
+INSERT INTO User
+VALUES 
+(1,'admin','$2a$10$Y95gYv1s5yVBDHuZo.FlYegHhB26WPfj6QLusSAAI2sE5t8FNMyRy','ROLE_ADMIN');
+
+INSERT INTO Profile
+VALUES 
+(1,1,'Abraham Linkoln','Parlament USA');
+
+INSERT INTO Section
+VALUES 
+(1,'Test section');
+
+INSERT INTO Theme
+VALUES 
+(1,'Test theme 1'),
+(2,'Test theme 2');
+
+INSERT INTO Section_Themes
+VALUES 
+(1,1),
+(1,2);
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
