@@ -33,7 +33,7 @@ public class DictionaryController {
                         HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping(value = "/section")
+    @PostMapping(value = "/section/create")
     public ResponseEntity<?> createSection(@RequestBody SectionDto sectionDto) {
         boolean isCreated = dictionaryService.createSection(sectionDto);
         return isCreated ? new ResponseEntity<>(HttpStatus.OK) :

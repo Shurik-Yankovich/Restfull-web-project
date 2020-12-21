@@ -32,7 +32,7 @@ public class CourseController {
         this.tokenService = tokenService;
     }
 
-    @PostMapping(value = "/")
+    @PostMapping(value = "/create")
     public ResponseEntity<?> createCourse(@RequestBody CourseDto courseDto,
                                           HttpServletRequest httpRequest) {
         if (!tokenService.checkUser(httpRequest, courseDto.getProfessor().getUsername())) {
@@ -171,7 +171,7 @@ public class CourseController {
                         HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping(value = "/{courseId}/review")
+    @PostMapping(value = "/{courseId}/review/create")
     public ResponseEntity<?> addReviewToTheCourse(@PathVariable(name = "courseId") long courseId,
                                                   @RequestBody Review review,
                                                   HttpServletRequest httpRequest) {

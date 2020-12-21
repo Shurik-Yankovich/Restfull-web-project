@@ -31,7 +31,7 @@ public class UserProfileController {
         this.tokenService = tokenService;
     }
 
-    @PostMapping(value = "/")
+    @PostMapping(value = "/create")
     public ResponseEntity<?> createProfile(@RequestBody ProfileDto profile,
                                            HttpServletRequest httpRequest) {
         if (!tokenService.checkUser(httpRequest, profile.getUsername())) {
