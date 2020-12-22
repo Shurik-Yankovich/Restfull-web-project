@@ -1,4 +1,4 @@
-package com.expexchangeservice.rest.config;
+package com.expexchangeservice.rest.handler;
 
 import com.expexchangeservice.service.interfaces.ITokenService;
 import org.springframework.beans.factory.annotation.Autowired;

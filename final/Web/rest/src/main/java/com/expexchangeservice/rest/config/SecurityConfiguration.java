@@ -1,5 +1,7 @@
 package com.expexchangeservice.rest.config;
 
+import com.expexchangeservice.rest.filters.AuthFilter;
+import com.expexchangeservice.rest.handler.CustomLogoutHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import com.expexchangeservice.service.impl.UserService;
@@ -36,7 +38,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/profile/user/*/role", "/lessons/*/reward", "/course/*/reward").hasRole("ADMIN")
-                .antMatchers("/", "/login/", "/registration/").permitAll()
+                .antMatchers("/", "/login/", "/registration/", "/v2/api-docs", "/swagger-ui/").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
