@@ -80,12 +80,6 @@ public class UserProfileController {
                         HttpStatus.NOT_FOUND);
     }
 
-    @ApiOperation(value = "Get profile by id")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Profile received successfully", response = ProfileDto.class),
-            @ApiResponse(code = 400, message = "Invalid path variable", response = RequestError.class),
-            @ApiResponse(code = 404, message = "Can't find profile", response = RequestError.class)
-    })
     @GetMapping(value = "/{profileId}")
     public ResponseEntity<?> getProfileById(@PathVariable(name = "profileId") long profileId) {
         ProfileDto profile = profileService.getProfileById(profileId);
@@ -96,12 +90,6 @@ public class UserProfileController {
                         HttpStatus.NOT_FOUND);
     }
 
-    @ApiOperation(value = "Get profile by username")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Profile received successfully", response = ProfileDto.class),
-            @ApiResponse(code = 400, message = "Invalid path variable", response = RequestError.class),
-            @ApiResponse(code = 404, message = "Can't find profile", response = RequestError.class)
-    })
     @GetMapping(value = "/user/{username}")
     public ResponseEntity<?> getProfileByUsername(@PathVariable(name = "username") String username) {
         ProfileDto profile = profileService.getProfileDtoByUsername(username);
@@ -112,12 +100,6 @@ public class UserProfileController {
                         HttpStatus.NOT_FOUND);
     }
 
-    @ApiOperation(value = "Get lessons list for user")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Profile received successfully", response = List.class),
-            @ApiResponse(code = 400, message = "Invalid path variable", response = RequestError.class),
-            @ApiResponse(code = 404, message = "Can't find profile", response = RequestError.class)
-    })
     @GetMapping(value = "/user/{username}/lessons")
     public ResponseEntity<?> getLessonsForUser(@PathVariable(name = "username") String username,
                                                HttpServletRequest httpRequest) {
@@ -135,12 +117,6 @@ public class UserProfileController {
                         HttpStatus.NOT_FOUND);
     }
 
-    @ApiOperation(value = "Get courses list for user")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Profile received successfully", response = List.class),
-            @ApiResponse(code = 400, message = "Invalid path variable", response = RequestError.class),
-            @ApiResponse(code = 404, message = "Can't find profile", response = RequestError.class)
-    })
     @GetMapping(value = "/user/{username}/courses")
     public ResponseEntity<?> getCoursesForUser(@PathVariable(name = "username") String username,
                                                HttpServletRequest httpRequest) {
